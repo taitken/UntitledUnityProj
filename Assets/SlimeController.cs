@@ -26,10 +26,6 @@ public class SlimeController : MonoBehaviour
     {
         this.animator = GetComponent<Animator>();
 
-        this.actionController.testobs.subscribe(delegate(string val )
-        {
-            print(val);
-        });
     }
 
     // Update is called once per frame

@@ -26,11 +26,6 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
 
-        this.actionController.testobs.subscribe(delegate(string val)
-        {
-            print(val);
-        });
-        this.actionController.testobs.next("yo dawgy");
     }
 
     // Update is called once per frame
@@ -76,7 +71,8 @@ public class PlayerController : MonoBehaviour
 
     void OnFire()
     {
-        //this.animator.SetTrigger("attack");
+        print("yes");
+        this.animator.SetTrigger("attack");
     }
 
     public void activateAttack(){

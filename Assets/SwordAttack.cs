@@ -14,11 +14,6 @@ public class SwordAttack : MonoBehaviour
     {
         this.tf = GetComponent<Transform>();
         this.attackOffset = transform.localPosition;
-        Subscription sub = this.actionController.testobs.subscribe(delegate(string val)
-        {
-            print(val);
-        });
-        sub.unsubscribe();
     }
     public void Attack(bool flipX)
     {
