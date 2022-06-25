@@ -5,6 +5,7 @@ using UnityEngine;
 public class SlimeController : MonoBehaviour
 {
     Animator animator;
+    public ActionController actionController;
     public float HitPoints {
        get{
             return _hitPoints;
@@ -24,6 +25,11 @@ public class SlimeController : MonoBehaviour
     void Start()
     {
         this.animator = GetComponent<Animator>();
+
+        this.actionController.testobs.subscribe(delegate(string val )
+        {
+            print(val);
+        });
     }
 
     // Update is called once per frame

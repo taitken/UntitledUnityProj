@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public SwordAttack swordAttack;
+    public ActionController actionController;
     public float moveSpeed = 1f;
     public float collisionOffset = 0.05f;
     public ContactFilter2D movementFilter;
@@ -24,6 +25,12 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
+
+        this.actionController.testobs.subscribe(delegate(string val)
+        {
+            print(val);
+        });
+        this.actionController.testobs.next("yo dawgy");
     }
 
     // Update is called once per frame

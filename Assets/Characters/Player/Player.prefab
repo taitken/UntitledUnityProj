@@ -133,6 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   swordAttack: {fileID: 8480867238418000429}
+  actionController: {fileID: 988703567492631337, guid: 9101f7c6bb32b0c4b82082996467b29e, type: 3}
   moveSpeed: 1
   collisionOffset: 0.05
   movementFilter:
@@ -288,3 +289,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   col: {fileID: 0}
+  actionController: {fileID: 0}

@@ -19,7 +19,7 @@ public class MineableTilesLayerController : MonoBehaviour
                 if(tile)
                 {
                     
-                    print(tile.GetType().FullName.ToString());
+                    //print(tile.GetType().FullName.ToString());
                 }
             }
         }

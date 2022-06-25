@@ -1,17 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+using UtilityClasses;
 
-
-public class BaseButton : MonoBehaviour
+public class ActionController : MonoBehaviour
 {
-
-    Button button;
+    public Observable<string> testobs {get;set;}
     // Start is called before the first frame update
     void Start()
     {
-        this.button = GetComponent<Button>();
+        this.testobs = new Observable<string>("hello");
     }
 
     // Update is called once per frame
