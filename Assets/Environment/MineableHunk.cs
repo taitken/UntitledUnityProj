@@ -3,28 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using Extensions;
 
-public class MineableHunk : MonoBehaviour2
+namespace Environment
 {
-    // Start is called before the first frame update
-    void Start()
+    public class MineableHunk : MonoBehaviour2
     {
-        
-    }
+        public Sprite[] spriteList;
+        private SpriteRenderer spriteRenderer;
+        // Start is called before the first frame update
+        void Start()
+        {
+            this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        // Update is called once per frame
+        void Update()
+        {
 
-    void OnMouseDown()
-    {
-        print("clicked");
-    }
+        }
 
-    public override void OnClickedByUser()
-    {
-        Destroy(gameObject);
+        void OnMouseDown()
+        {
+            print("clicked");
+        }
+
+        public override void OnClickedByUser()
+        {
+            this.DestroySelf();
+        }
+
+        public void updateSprite(int spriteID)
+        {
+            this.spriteRenderer.sprite = this.spriteList[spriteID];
+        }
+
     }
-    
 }
