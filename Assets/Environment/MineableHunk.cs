@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Extensions;
 
-public class MineableHunkController : MonoBehaviour2
+public class MineableHunk : MonoBehaviour2
 {
     // Start is called before the first frame update
     void Start()

@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class MineableTilesLayerController : MonoBehaviour
 {
     public Tilemap tilemap;
-    public MineableHunkController hunk;
+    public MineableHunk hunk;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,7 @@ public class MineableTilesLayerController : MonoBehaviour
         {
             for (int y = 0; y < this.tilemap.size.y; y++)
             {
-                    MineableHunkController obj = Instantiate(hunk, this.tilemap.CellToLocal(new Vector3Int(x,y,0)), Quaternion.identity);
+                    MineableHunk obj = Instantiate(hunk, this.tilemap.CellToLocal(new Vector3Int(x,y,0)), Quaternion.identity);
             }
         }
     }
