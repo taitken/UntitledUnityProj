@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Extensions;
 
-public class MineableHunkController : MonoBehaviour
+public class MineableHunkController : MonoBehaviour2
 {
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,9 @@ public class MineableHunkController : MonoBehaviour
         print("clicked");
     }
 
-    // void OnFire(){
-    //     print("test");
-    // }
+    public override void OnClickedByUser()
+    {
+        Destroy(gameObject);
+    }
+    
 }

@@ -69,11 +69,11 @@ public class PlayerController : MonoBehaviour
         this.setSpriteDirection(moveVal);
     }
 
-    void OnFire()
-    {
-        print("yes");
-        this.animator.SetTrigger("attack");
-    }
+    // void OnFire()
+    // {
+    //     print("yes");
+    //     this.animator.SetTrigger("attack");
+    // }
 
     public void activateAttack(){
         this.animator.SetTrigger("attack");

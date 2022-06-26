@@ -19,7 +19,6 @@ public class MineableTilesLayerController : MonoBehaviour
             for (int y = 0; y < this.tilemap.size.y; y++)
             {
                     MineableHunkController obj = Instantiate(hunk, this.tilemap.CellToLocal(new Vector3Int(x,y,0)), Quaternion.identity);
-                    //obj.GetComponent<PlayerInput>().BroadcastMessage("OnFire",null);
             }
         }
     }
