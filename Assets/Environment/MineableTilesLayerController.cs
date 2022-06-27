@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using GameControllers.Services;
+using Zenject;
 
 namespace Environment
 {
@@ -10,12 +12,24 @@ namespace Environment
         public MineableHunk mineableHunkPrefab;
         public Tilemap tilemap;
 
+        private IUnitActionService actionService;
+
         private IList<MineableHunk> mineableHunks = new List<MineableHunk>();
+
+        [Inject]
+        public void Construct(IUnitActionService _actionService)
+        {
+            this.actionService = _actionService;
+            this.subscriptions.Add(this.actionService.actionQueue.Subscribe(actionQueue =>
+            {
+                Debug.Log(actionQueue.Count);
+            })
+            );
+        }
 
         // Start is called before the first frame update
         void Start()
         {
-            print(this.tilemap.size);
             this.tilemap = GetComponent<Tilemap>();
             for (int x = 0; x < this.tilemap.size.x; x++)
             {
@@ -30,6 +44,7 @@ namespace Environment
                     });
                 }
             }
+            this.UpdateTileMap();
         }
 
         // Update is called once per frame

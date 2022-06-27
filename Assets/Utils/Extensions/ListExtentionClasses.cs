@@ -19,9 +19,13 @@ namespace System.Collections.Generic
             }
             return default(t1);
         }
-        public static void OnClickedByUser(this MonoBehaviour monoBehaviour)
+
+        public static void ForEach<t1>(this IList<t1> list, Action<t1> callback)
         {
-            Debug.Log("parent");
+            foreach(t1 listItem in list)
+            {
+                callback(listItem);
+            }
         }
     }
 }

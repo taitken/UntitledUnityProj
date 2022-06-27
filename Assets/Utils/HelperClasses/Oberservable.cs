@@ -9,7 +9,11 @@ namespace UtilityClasses {
             this.subscribers = new List<Action<t1>>();
             this.observableObject = initialObject;
         }
-        public void next(t1 updatedObject)
+        public t1 Get()
+        {
+            return this.observableObject;
+        }
+        public void Next(t1 updatedObject)
         {
             this.observableObject = updatedObject;
             foreach (Action<t1> subscriber in this.subscribers)
@@ -18,7 +22,7 @@ namespace UtilityClasses {
             }
         }
 
-        public Subscription subscribe(Action<t1> subscription)
+        public Subscription Subscribe(Action<t1> subscription)
         {
             this.subscribers.Add(subscription);
             Subscription subscriptionRefernce = new Subscription(delegate(){

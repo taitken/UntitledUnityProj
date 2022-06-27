@@ -2,19 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UtilityClasses;
+using GameControllers.Services;
+using Zenject;
 
-public class ActionController : MonoBehaviour
+public class ActionController : MonoBehaviour2
 {
-    public Observable<string> testobs {get;set;}
+    private IUnitActionService actionService;
+    private IList<UnitActionModel> unitActionQueue;
+
+    [Inject]
+    public void Construct(IUnitActionService _actionService)
+    {
+        this.actionService = _actionService;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        this.testobs = new Observable<string>("hello");
+        this.subscriptions.Add(this.actionService.actionQueue.Subscribe(queue =>
+        {
+            this.unitActionQueue = queue;
+        })
+        );
+        this.actionService.addAction(new UnitActionModel{ID = 1, actionCategory = eActionCategories.Build, actionName = "Test", priority = 1});
+        this.actionService.addAction(new UnitActionModel{ID = 2, actionCategory = eActionCategories.Dig, actionName = "Test2", priority = 2});
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    void BeforeDestroy()
+    {
+
     }
 }

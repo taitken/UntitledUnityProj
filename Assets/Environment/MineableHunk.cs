@@ -9,10 +9,14 @@ namespace Environment
     {
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
+
+        void Awake()
+        {
+            this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+        }
         // Start is called before the first frame update
         void Start()
         {
-            this.spriteRenderer = this.GetComponent<SpriteRenderer>();
         }
 
         // Update is called once per frame
@@ -28,7 +32,7 @@ namespace Environment
 
         public override void OnClickedByUser()
         {
-            this.DestroySelf();
+            this.Destroy();
         }
 
         public void updateSprite(int spriteID)

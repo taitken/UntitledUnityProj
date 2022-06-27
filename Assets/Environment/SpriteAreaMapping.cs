@@ -31,14 +31,14 @@ namespace Environment
         new TileSpriteMap(19, 1, 0, 1, 0, 2, 1, 0, 1),
         new TileSpriteMap(20, 1, 0, 1, 2, 2, 1, 0, 1),
         new TileSpriteMap(21, 1, 0, 1, 2, 0, 1, 0, 1),
-        new TileSpriteMap(36, 1, 2, 1, 0, 2, 1, 2, 1)
+        new TileSpriteMap(37, 1, 2, 1, 0, 2, 1, 2, 1)
     };
 
         public static int getMapping(bool _x0y0, bool _x1y0, bool _x2y0,
                                              bool _x0y1, bool _x2y1,
                                              bool _x0y2, bool _x1y2, bool _x2y2)
         {
-            return SpriteTileMapping.spriteMap.Find(delegate (TileSpriteMap map)
+            return SpriteTileMapping.spriteMap.Find( map =>
             {
                 return (map.x0y0 == 1 || map.x0y0 == (_x0y0 ? 2 : 0)) &&
                         (map.x0y1 == 1 || map.x0y1 == (_x0y1 ? 2 : 0)) &&
