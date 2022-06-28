@@ -13,12 +13,15 @@ namespace Environment
         public Tilemap tilemap;
 
         private IUnitActionService actionService;
+        private MineableHunk.Factory hunkFactory;
 
         private IList<MineableHunk> mineableHunks = new List<MineableHunk>();
 
         [Inject]
-        public void Construct(IUnitActionService _actionService)
+        public void Construct(IUnitActionService _actionService,
+                              MineableHunk.Factory _hunkFactory)
         {
+            this.hunkFactory = _hunkFactory;
             this.actionService = _actionService;
             this.subscriptions.Add(this.actionService.actionQueue.Subscribe(actionQueue =>
             {
@@ -34,9 +37,9 @@ namespace Environment
             {
                 for (int y = 0; y < this.tilemap.size.y; y++)
                 {
-                    MineableHunk newHunk = Instantiate(mineableHunkPrefab, this.tilemap.CellToLocal(new Vector3Int(x, y, 0)), Quaternion.identity);
+                    MineableHunk newHunk = this.hunkFactory.Create(this.tilemap.CellToLocal(new Vector3Int(x, y, 0)));
                     mineableHunks.Add(newHunk);
-                    newHunk.BeforeDestroy(delegate ()
+                    newHunk.BeforeDestroy(()=>
                     {
                         mineableHunks.Remove(newHunk);
                         this.UpdateTileMap();

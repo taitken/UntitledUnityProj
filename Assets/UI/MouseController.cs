@@ -9,7 +9,7 @@ namespace UI
 {
     public class MouseController : MonoBehaviour2
     {
-        public Sprite[] cursorTexures;
+        public Texture2D[] cursorTexures;
         private CursorMode cursorMode = CursorMode.Auto;
         private Vector2 hotSpot = Vector2.zero;
         private IUnitActionService actionService;
@@ -43,7 +43,7 @@ namespace UI
             }
             else
             {
-                Cursor.SetCursor(this.cursorTexures[(int)action].texture, this.hotSpot, this.cursorMode);
+                Cursor.SetCursor(this.cursorTexures[(int)action], this.hotSpot, this.cursorMode);
             }
         }
     }
