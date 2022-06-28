@@ -22,7 +22,6 @@ namespace Environment
             this.actionService = _actionService;
             this.subscriptions.Add(this.actionService.actionQueue.Subscribe(actionQueue =>
             {
-                Debug.Log(actionQueue.Count);
             })
             );
         }

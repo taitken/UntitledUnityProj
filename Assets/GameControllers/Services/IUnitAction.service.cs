@@ -7,7 +7,7 @@ namespace GameControllers.Services
 {
     public interface IUnitActionService
     {
-        Observable<IList<UnitActionModel>> actionQueue { get; set; }
+        Subscribable<IList<UnitActionModel>> actionQueue { get; set; }
 
         void addAction(UnitActionModel action);
     }

@@ -2,23 +2,23 @@ using System;
 using System.Collections.Generic;
 
 namespace UtilityClasses {
-    public class Observable<t1>{
-        private t1 observableObject;
+    public class Subscribable<t1>{
+        private t1 subscribableObject;
         private IList<Action<t1>> subscribers;
-        public Observable(t1 initialObject){
+        public Subscribable(t1 initialObject){
             this.subscribers = new List<Action<t1>>();
-            this.observableObject = initialObject;
+            this.subscribableObject = initialObject;
         }
         public t1 Get()
         {
-            return this.observableObject;
+            return this.subscribableObject;
         }
-        public void Next(t1 updatedObject)
+        public void Set(t1 updatedObject)
         {
-            this.observableObject = updatedObject;
+            this.subscribableObject = updatedObject;
             foreach (Action<t1> subscriber in this.subscribers)
             {
-                subscriber(this.observableObject);
+                subscriber(this.subscribableObject);
             }
         }
 
@@ -28,7 +28,7 @@ namespace UtilityClasses {
             Subscription subscriptionRefernce = new Subscription(delegate(){
                 this.subscribers.Remove(subscription);
             });
-            subscription(this.observableObject);
+            subscription(this.subscribableObject);
 
             return subscriptionRefernce;
         }
