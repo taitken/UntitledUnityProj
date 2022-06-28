@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Extensions;
 
-public class ClickManager : MonoBehaviour
+public class ClickManager : MonoBehaviour2
 {
     // Start is called before the first frame update
     void Start()

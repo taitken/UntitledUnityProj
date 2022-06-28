@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UtilityClasses;
 using GameControllers.Services;
+using GameControllers.Models;
 using Zenject;
 
 public class ActionController : MonoBehaviour2
