@@ -219,7 +219,7 @@ RectTransform:
   - {fileID: 340587395}
   - {fileID: 179992788}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -555,6 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ac8a14d10362e44a44de52eb4ea001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MineableHunkPrefab: {fileID: 6699492878389840883, guid: f054ddb65914b7a4094b29206a877736, type: 3}
 --- !u!114 &156683541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1032,7 +1033,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1189057063}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1042,7 +1043,7 @@ Transform:
   - {fileID: 1936298338}
   - {fileID: 124387310}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1219061240 stripped
 Transform:
@@ -4631,11 +4632,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1130485146741828985, guid: e2524b5b4d176124099a19adc1e931b5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.162
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1130485146741828985, guid: e2524b5b4d176124099a19adc1e931b5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.327
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1130485146741828985, guid: e2524b5b4d176124099a19adc1e931b5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -4673,6 +4674,14 @@ PrefabInstance:
       propertyPath: tilemap
       value: 
       objectReference: {fileID: 2053227254}
+    - target: {fileID: 5729236192776470861, guid: e2524b5b4d176124099a19adc1e931b5, type: 3}
+      propertyPath: m_Size.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5729236192776470861, guid: e2524b5b4d176124099a19adc1e931b5, type: 3}
+      propertyPath: m_Size.y
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5729236192776470861, guid: e2524b5b4d176124099a19adc1e931b5, type: 3}
       propertyPath: m_Tiles.Array.size
       value: 0
