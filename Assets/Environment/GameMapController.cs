@@ -1,29 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using Zenject;
 using GameControllers.Services;
-using GameControllers.Models;
+using Zenject;
 
 
-namespace UI
+namespace Environment
 {
-    public class DigCommandButton : HiveBaseButton
+    public class GameMapController : MonoBehaviour2
     {
+        public MineableLayer mineableLayer;
+        public UnitOrdersLayer unitOrdersLayer;
         private IUnitActionService actionService;
-        public Button buttonComponent;
 
         [Inject]
         public void Construct(IUnitActionService _actionService)
         {
             this.actionService = _actionService;
+
         }
         // Start is called before the first frame update
         void Start()
         {
-            this.buttonComponent = GetComponent<Button>();
-            this.buttonComponent.onClick.AddListener(ActivateDigMode);
+
         }
 
         // Update is called once per frame
@@ -32,10 +31,9 @@ namespace UI
 
         }
 
-        void ActivateDigMode()
+        public override void OnClickedByUser()
         {
-            this.actionService.mouseAction.Set(eMouseAction.Dig);
-            Debug.Log("Hi Uwu");
+            Debug.Log("clicked");
         }
     }
 }

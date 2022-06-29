@@ -5,9 +5,14 @@ namespace GameControllers.Models
     {
         None,
         Dig,
+        Build,
+        Cancel
+    }
+    public enum eOrderTypes
+    {
+        Dig,
         Build
     }
-
     public enum eActionCategories
     {
         Dig,

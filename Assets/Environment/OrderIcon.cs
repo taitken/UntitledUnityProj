@@ -8,27 +8,30 @@ using Zenject;
 
 namespace Environment
 {
-    public class MineableHunk : MonoBehaviour2
+    public class OrderIcon : MonoBehaviour2
     {
         private IUnitActionService actionService;
-        public Sprite[] spriteList;
-        private SpriteRenderer spriteRenderer;
         private eMouseAction mouseAction;
-
+        private SpriteRenderer spriteRenderer;
+        public UnitOrderModel unitOrder;
+        public Sprite[] spriteList;
         [Inject]
-        public void Construct(IUnitActionService _actionService, Vector3 position)
+        public void Construct(IUnitActionService _actionService, UnitOrderModel _order)
         {
-            this.transform.position = position;
+            this.transform.position = _order.coordinates;
             this.actionService = _actionService;
+            this.unitOrder = _order;
             this.subscriptions.Add(this.actionService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
         }
         void Awake()
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+            this.updateSprite((int)this.unitOrder.orderType);
         }
         // Start is called before the first frame update
         void Start()
         {
+
         }
 
         // Update is called once per frame
@@ -37,24 +40,20 @@ namespace Environment
 
         }
 
-        void OnMouseDown()
-        {
-        }
-
-        public override void OnClickedByUser()
-        {
-            if (this.mouseAction == eMouseAction.Dig)
-            {
-                this.actionService.addOrder(new UnitOrderModel(this.transform.position, this.mouseAction));
-            }
-        }
-
         public void updateSprite(int spriteID)
         {
             this.spriteRenderer.sprite = this.spriteList[spriteID];
         }
 
-        public class Factory : PlaceholderFactory<Vector3,  MineableHunk>
+        public override void OnClickedByUser()
+        {
+            if (this.mouseAction == eMouseAction.Cancel)
+            {
+                this.actionService.removeOrder(this.unitOrder.ID);
+            }
+        }
+
+        public class Factory : PlaceholderFactory<UnitOrderModel, OrderIcon>
         {
         }
     }

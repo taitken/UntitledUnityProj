@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Environment
 {
-    public class MineableTilesLayerController : MonoBehaviour2
+    public class MineableLayer : MonoBehaviour2
     {
         public MineableHunk mineableHunkPrefab;
         public Tilemap tilemap;
