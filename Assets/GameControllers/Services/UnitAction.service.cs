@@ -13,14 +13,22 @@ namespace GameControllers.Services
         public Subscribable<IList<UnitActionModel>> actionQueue { get; set; } = new Subscribable<IList<UnitActionModel>>(new List<UnitActionModel>());
         public Subscribable<IList<UnitOrderModel>> orders { get; set; } = new Subscribable<IList<UnitOrderModel>>(new List<UnitOrderModel>());
 
-        public void addAction(UnitActionModel action)
+        public void AddAction(UnitActionModel action)
         {
             IList<UnitActionModel> _queue = this.actionQueue.Get();
             _queue.Add(action);
             this.actionQueue.Set(_queue);
         }
 
-        public void addOrder(UnitOrderModel order)
+        public UnitOrderModel GetNextOrder()
+        {
+            if (this.orders.Get().Count > 0)
+            {
+                return this.orders.Get()[0];
+            }
+            return null;
+        }
+        public void AddOrder(UnitOrderModel order)
         {
             IList<UnitOrderModel> _orders = this.orders.Get();
             if (_orders.Find(existingOrder => { return order.coordinates == existingOrder.coordinates; }) == null)
@@ -29,7 +37,9 @@ namespace GameControllers.Services
                 this.orders.Set(_orders);
             }
         }
-        public void removeOrder(long id)
+
+
+        public void RemoveOrder(long id)
         {
             this.orders.Set(this.orders.Get().Filter(order => { return order.ID != id; }));
         }

@@ -2,111 +2,116 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Characters;
 
-public class PlayerController : MonoBehaviour
+namespace Characters
 {
-    public SwordAttack swordAttack;
-    public ActionController actionController;
-    public float moveSpeed = 1f;
-    public float collisionOffset = 0.05f;
-    public ContactFilter2D movementFilter;
-    Vector2 movementInput;
-    Rigidbody2D rb;
-    Animator animator;
-    SpriteRenderer sr;
-
-    private bool canMove = true;
-
-    List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
-
-    // Start is called before the first frame update
-    void Start()
+    public class PlayerController : WorldCharacter
     {
-        rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        sr = GetComponent<SpriteRenderer>();
+        public SwordAttack swordAttack;
+        public ActionController actionController;
+        public float moveSpeed = 1f;
+        public float collisionOffset = 0.05f;
+        public ContactFilter2D movementFilter;
+        Vector2 movementInput;
+        Rigidbody2D rb;
+        Animator animator;
+        SpriteRenderer sr;
 
-    }
+        private bool canMove = true;
 
-    // Update is called once per frame
-    private void FixedUpdate()
-    {
-        if (this.canMove)
+        List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
+
+        // Start is called before the first frame update
+        void Start()
         {
-            this.moveUnit(this.movementInput);
+            rb = GetComponent<Rigidbody2D>();
+            animator = GetComponent<Animator>();
+            sr = GetComponent<SpriteRenderer>();
+
         }
-    }
 
-    private void moveUnit(Vector2 movement)
-    {
-        if (this.movementInput != Vector2.zero)
+        // Update is called once per frame
+        private void FixedUpdate()
         {
-            bool horizontalCollison = this.collisionCheck(new Vector2(movement.x, 0));
-            bool verticalCollison = this.collisionCheck(new Vector2(0, movement.y));
-            rb.MovePosition(rb.position + new Vector2(horizontalCollison ? 0 : movement.x, verticalCollison ? 0 : movement.y) * moveSpeed * Time.fixedDeltaTime);
-            if (!horizontalCollison || !verticalCollison)
+            if (this.canMove)
             {
+                this.moveUnit(this.movementInput);
             }
         }
-        this.animator.SetBool("isMoving", this.movementInput != Vector2.zero);
-    }
 
-    private bool collisionCheck(Vector2 movement)
-    {
-        int count = rb.Cast(
-            movement,
-            movementFilter,
-            castCollisions,
-            moveSpeed * Time.fixedDeltaTime + collisionOffset
-        );
-        return count != 0;
-    }
-
-    void OnMove(InputValue moveVal)
-    {
-
-        this.movementInput = moveVal.Get<Vector2>();
-        this.setSpriteDirection(moveVal);
-    }
-
-    // void OnFire()
-    // {
-    //     print("yes");
-    //     this.animator.SetTrigger("attack");
-    // }
-
-    public void activateAttack(){
-        this.animator.SetTrigger("attack");
-
-    }
-
-    private void setSpriteDirection(InputValue moveVal)
-    {
-        if (moveVal.Get<Vector2>().x != 0)
+        private void moveUnit(Vector2 movement)
         {
-            this.sr.flipX = moveVal.Get<Vector2>().x < 0;
+            if (this.movementInput != Vector2.zero)
+            {
+                bool horizontalCollison = this.collisionCheck(new Vector2(movement.x, 0));
+                bool verticalCollison = this.collisionCheck(new Vector2(0, movement.y));
+                rb.MovePosition(rb.position + new Vector2(horizontalCollison ? 0 : movement.x, verticalCollison ? 0 : movement.y) * moveSpeed * Time.fixedDeltaTime);
+                if (!horizontalCollison || !verticalCollison)
+                {
+                }
+            }
+            this.animator.SetBool("isMoving", this.movementInput != Vector2.zero);
         }
-    }
 
-    public void SwordAttack()
-    {
-        this.lockMovement();
-        this.swordAttack.Attack(this.sr.flipX);
-    }
+        private bool collisionCheck(Vector2 movement)
+        {
+            int count = rb.Cast(
+                movement,
+                movementFilter,
+                castCollisions,
+                moveSpeed * Time.fixedDeltaTime + collisionOffset
+            );
+            return count != 0;
+        }
 
-    public void EndSwordAttack()
-    {
-        this.unlockMovement();
-        this.swordAttack.StopAttack();
-    }
+        void OnMove(InputValue moveVal)
+        {
 
-    public void lockMovement()
-    {
-        this.canMove = false;
-    }
+            this.movementInput = moveVal.Get<Vector2>();
+            this.setSpriteDirection(moveVal);
+        }
 
-    public void unlockMovement()
-    {
-        this.canMove = true;
+        // void OnFire()
+        // {
+        //     print("yes");
+        //     this.animator.SetTrigger("attack");
+        // }
+
+        public void activateAttack()
+        {
+            this.animator.SetTrigger("attack");
+
+        }
+
+        private void setSpriteDirection(InputValue moveVal)
+        {
+            if (moveVal.Get<Vector2>().x != 0)
+            {
+                this.sr.flipX = moveVal.Get<Vector2>().x < 0;
+            }
+        }
+
+        public void SwordAttack()
+        {
+            this.lockMovement();
+            this.swordAttack.Attack(this.sr.flipX);
+        }
+
+        public void EndSwordAttack()
+        {
+            this.unlockMovement();
+            this.swordAttack.StopAttack();
+        }
+
+        public void lockMovement()
+        {
+            this.canMove = false;
+        }
+
+        public void unlockMovement()
+        {
+            this.canMove = true;
+        }
     }
 }

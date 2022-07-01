@@ -25,8 +25,8 @@ public class ActionController : MonoBehaviour2
             this.unitActionQueue = queue;
         })
         );
-        this.actionService.addAction(new UnitActionModel{ID = 1, actionCategory = eActionCategories.Build, actionName = "Test", priority = 1});
-        this.actionService.addAction(new UnitActionModel{ID = 2, actionCategory = eActionCategories.Dig, actionName = "Test2", priority = 2});
+        this.actionService.AddAction(new UnitActionModel{ID = 1, actionCategory = eActionCategories.Build, actionName = "Test", priority = 1});
+        this.actionService.AddAction(new UnitActionModel{ID = 2, actionCategory = eActionCategories.Dig, actionName = "Test2", priority = 2});
     }
 
     // Update is called once per frame

@@ -3,37 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UtilityClasses;
 
-public class SwordAttack : MonoBehaviour
+namespace Characters
 {
-    public Collider2D col;
-    Vector2 attackOffset;
-    public ActionController actionController;
-    Transform tf;
+    public class SwordAttack : MonoBehaviour
+    {
+        public Collider2D col;
+        Vector2 attackOffset;
+        public ActionController actionController;
+        Transform tf;
 
-    void Start()
-    {
-        this.tf = GetComponent<Transform>();
-        this.attackOffset = transform.localPosition;
-    }
-    public void Attack(bool flipX)
-    {
-       this.col.enabled = true;
-        transform.localPosition = new Vector2(flipX ? -this.attackOffset.x : this.attackOffset.x, this.attackOffset.y);
-    }
-
-    public void StopAttack()
-    {
-        this.col.enabled = false;
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Enemy")
+        void Start()
         {
-            SlimeController slime = other.GetComponent<SlimeController>();
-            if (slime)
+            this.tf = GetComponent<Transform>();
+            this.attackOffset = transform.localPosition;
+        }
+        public void Attack(bool flipX)
+        {
+            this.col.enabled = true;
+            transform.localPosition = new Vector2(flipX ? -this.attackOffset.x : this.attackOffset.x, this.attackOffset.y);
+        }
+
+        public void StopAttack()
+        {
+            this.col.enabled = false;
+        }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.tag == "Enemy")
             {
-                slime.TakeDamage(3);
+                SlimeController slime = other.GetComponent<SlimeController>();
+                if (slime)
+                {
+                    slime.TakeDamage(3);
+                }
             }
         }
     }

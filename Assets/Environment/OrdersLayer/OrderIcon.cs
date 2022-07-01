@@ -49,7 +49,7 @@ namespace Environment
         {
             if (this.mouseAction == eMouseAction.Cancel)
             {
-                this.actionService.removeOrder(this.unitOrder.ID);
+                this.actionService.RemoveOrder(this.unitOrder.ID);
             }
         }
 

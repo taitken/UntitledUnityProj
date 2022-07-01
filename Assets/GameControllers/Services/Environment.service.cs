@@ -10,7 +10,7 @@ namespace GameControllers.Services
     {
         public Subscribable<IList<MineableObjectModel>> mineableObjects { get; set; } = new Subscribable<IList<MineableObjectModel>>(new List<MineableObjectModel>());
 
-        public void addMineableObject(MineableObjectModel mineableObject)
+        public void AddMineableObject(MineableObjectModel mineableObject)
         {
             IList<MineableObjectModel> _mineableObjects = this.mineableObjects.Get();
             if (_mineableObjects.Find(existingMineableObject => { return mineableObject.localPosition == existingMineableObject.localPosition; }) == null)
@@ -19,7 +19,7 @@ namespace GameControllers.Services
                 this.mineableObjects.Set(_mineableObjects);
             }
         }
-        public void removeMineableObject(long id)
+        public void RemoveMineableObject(long id)
         {
             this.mineableObjects.Set(this.mineableObjects.Get().Filter(mineableObject => { return mineableObject.ID != id; }));
         }

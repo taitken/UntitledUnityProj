@@ -11,9 +11,10 @@ namespace GameControllers.Services
         Subscribable<eMouseAction> mouseAction { get; set; }
         Subscribable<IList<UnitActionModel>> actionQueue { get; set; }
         public Subscribable<IList<UnitOrderModel>> orders { get; set; }
-        void addAction(UnitActionModel action);
-        void addOrder(UnitOrderModel order);
-        void removeOrder(long id);
+        void AddAction(UnitActionModel action);
+        UnitOrderModel GetNextOrder();
+        void AddOrder(UnitOrderModel order);
+        void RemoveOrder(long id);
     }
 }
 
