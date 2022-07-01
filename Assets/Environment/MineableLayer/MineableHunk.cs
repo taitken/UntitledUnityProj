@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Extensions;
 using GameControllers.Services;
 using GameControllers.Models;
+using Environment.Models;
 using Zenject;
 
 namespace Environment
@@ -14,11 +14,13 @@ namespace Environment
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
         private eMouseAction mouseAction;
+        public MineableObjectModel mineableObjectModel;
 
         [Inject]
-        public void Construct(IUnitActionService _actionService, Vector3 position)
+        public void Construct(IUnitActionService _actionService, MineableObjectModel _mineableObjectModel)
         {
-            this.transform.position = position;
+            this.mineableObjectModel = _mineableObjectModel;
+            this.transform.position = mineableObjectModel.localPosition;
             this.actionService = _actionService;
             this.subscriptions.Add(this.actionService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
         }
@@ -54,7 +56,7 @@ namespace Environment
             this.spriteRenderer.sprite = this.spriteList[spriteID];
         }
 
-        public class Factory : PlaceholderFactory<Vector3,  MineableHunk>
+        public class Factory : PlaceholderFactory<MineableObjectModel,  MineableHunk>
         {
         }
     }

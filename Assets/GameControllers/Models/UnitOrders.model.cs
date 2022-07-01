@@ -5,11 +5,9 @@ namespace GameControllers.Models
 {
     public class UnitOrderModel : BaseModel
     {
-        public UnitOrderModel(Vector3 _coordinates, eMouseAction mouseType)
+        public UnitOrderModel(Vector3 _coordinates, eMouseAction mouseType) : base()
         {
-            this.ID = idIncrementer;
             this.coordinates = _coordinates;
-            idIncrementer++;
             switch (mouseType)
             {
                 case eMouseAction.Dig:
@@ -23,8 +21,6 @@ namespace GameControllers.Models
                     break;
             }
         }
-        private static long idIncrementer;
-        public long ID { get; set; }
         public eOrderTypes orderType { get; set; }
         public Vector3 coordinates { get; set; }
         public float prioritySetting { get; set; }

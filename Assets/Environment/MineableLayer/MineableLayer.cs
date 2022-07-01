@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Environment.Models;
 using GameControllers.Services;
 using Zenject;
 
@@ -11,41 +12,39 @@ namespace Environment
     {
         public MineableHunk mineableHunkPrefab;
         public Tilemap tilemap;
-
         private IUnitActionService actionService;
+        private IEnvironmentService environmentService;
         private MineableHunk.Factory hunkFactory;
-
         private IList<MineableHunk> mineableHunks = new List<MineableHunk>();
 
         [Inject]
         public void Construct(IUnitActionService _actionService,
-                              MineableHunk.Factory _hunkFactory)
+                              MineableHunk.Factory _hunkFactory,
+                              IEnvironmentService _environmentService)
         {
             this.hunkFactory = _hunkFactory;
             this.actionService = _actionService;
-            this.subscriptions.Add(this.actionService.actionQueue.Subscribe(actionQueue =>
+            this.environmentService = _environmentService;
+
+            this.subscriptions.Add(this.environmentService.mineableObjects.Subscribe(mineableObj =>
             {
-            })
-            );
+                this.refreshMinables(mineableObj);
+            }));
         }
 
         // Start is called before the first frame update
         void Start()
         {
+            IList<MineableObjectModel> objsToCreate = new List<MineableObjectModel>();
             this.tilemap = GetComponent<Tilemap>();
             for (int x = 0; x < this.tilemap.size.x; x++)
             {
                 for (int y = 0; y < this.tilemap.size.y; y++)
                 {
-                    MineableHunk newHunk = this.hunkFactory.Create(this.tilemap.CellToLocal(new Vector3Int(x, y, 0)));
-                    mineableHunks.Add(newHunk);
-                    newHunk.BeforeDestroy(()=>
-                    {
-                        mineableHunks.Remove(newHunk);
-                        this.UpdateTileMap();
-                    });
+                    objsToCreate.Add(new MineableObjectModel(this.tilemap.CellToLocal(new Vector3Int(x, y, 0))));
                 }
             }
+            this.environmentService.mineableObjects.Set(objsToCreate);
             this.UpdateTileMap();
         }
 
@@ -58,6 +57,27 @@ namespace Environment
         private void UpdateTileMap()
         {
             this.ReMapSpries();
+        }
+
+        private void refreshMinables(IList<MineableObjectModel> mineableObjs)
+        {
+            IList<MineableObjectModel> objsToAdd = mineableObjs.Filter(obj => { return this.mineableHunks.Find(hunk => { return hunk.mineableObjectModel.ID == obj.ID; }) == null; });
+            IList<MineableHunk> objsToRemove = this.mineableHunks.Filter(hunk => { return mineableObjs.Find(obj => { return hunk.mineableObjectModel.ID == obj.ID; }) == null; });
+            objsToAdd.ForEach(mineableObj =>
+            {
+                this.mineableHunks.Add(this.createMineableObject(mineableObj));
+            });
+            objsToRemove.ForEach(hunk =>{
+                mineableHunks.Remove(hunk);
+                this.UpdateTileMap();
+                hunk.Destroy();
+            });
+        }
+
+        private MineableHunk createMineableObject(MineableObjectModel mineableObj)
+        {
+            MineableHunk newHunk = this.hunkFactory.Create(mineableObj);
+            return newHunk;
         }
 
         private void ReMapSpries()
