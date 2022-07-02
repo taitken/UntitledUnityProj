@@ -37,13 +37,9 @@ namespace Environment
         {
             IList<MineableObjectModel> objsToCreate = new List<MineableObjectModel>();
             this.tilemap = GetComponent<Tilemap>();
-            for (int x = 0; x < this.tilemap.size.x; x++)
-            {
-                for (int y = 0; y < this.tilemap.size.y; y++)
-                {
-                    objsToCreate.Add(new MineableObjectModel(this.tilemap.CellToLocal(new Vector3Int(x, y, 0))));
-                }
-            }
+            this.tilemap.size.ForEach((x,y) =>{
+                    objsToCreate.Add(new MineableObjectModel(new Vector3Int(x, y, 0)));
+            });
             this.environmentService.mineableObjects.Set(objsToCreate);
             this.UpdateTileMap();
         }
@@ -77,6 +73,7 @@ namespace Environment
         private MineableHunk createMineableObject(MineableObjectModel mineableObj)
         {
             MineableHunk newHunk = this.hunkFactory.Create(mineableObj);
+            newHunk.transform.position = this.tilemap.CellToLocal(mineableObj.position);
             return newHunk;
         }
 

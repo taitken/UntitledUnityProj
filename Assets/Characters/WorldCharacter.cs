@@ -17,6 +17,9 @@ namespace Characters
         {
             this.actionService = _actionService;
             InvokeRepeating("CheckAndAssignOrder", 2.0f, 2.0f);
+            this.actionService.orders.Subscribe(orders =>{
+                this.currentOrder = orders.Find(order =>{return order.ID == this.currentOrder?.ID;});
+            });
         }
 
         void Start()
@@ -35,12 +38,12 @@ namespace Characters
                 this.currentOrder = this.actionService.GetNextOrder();
                 if (currentOrder != null)
                 {
-                    Debug.Log("Order assigned");
+                    //Debug.Log("Order assigned");
                 } else {
-                    Debug.Log("No orders to assign");
+                    //Debug.Log("No orders to assign");
                 }
             } else {
-                    Debug.Log("Order already assigned");
+                    //Debug.Log("Order already assigned");
             }
         }
     }

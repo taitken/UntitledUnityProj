@@ -20,7 +20,6 @@ namespace Environment
         public void Construct(IUnitActionService _actionService, MineableObjectModel _mineableObjectModel)
         {
             this.mineableObjectModel = _mineableObjectModel;
-            this.transform.position = mineableObjectModel.localPosition;
             this.actionService = _actionService;
             this.subscriptions.Add(this.actionService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
         }
