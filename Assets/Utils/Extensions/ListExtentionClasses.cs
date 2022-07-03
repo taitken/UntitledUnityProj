@@ -33,6 +33,16 @@ namespace System.Collections.Generic
             return returnList;
         }
 
+        public static IList<t2> Map<t1, t2>(this IList<t1> list, Func<t1, t2> callback)
+        {
+            IList<t2> returnList = new List<t2>();
+            foreach (t1 listItem in list)
+            {
+                returnList.Add(callback(listItem));
+            }
+            return returnList;
+        }
+
         public static void ForEach<t1>(this IList<t1> list, Action<t1> callback)
         {
             foreach (t1 listItem in list)

@@ -12,10 +12,14 @@ namespace Characters
     {
         protected UnitOrderModel currentOrder;
         protected IUnitActionService actionService;
+        protected IPathFinderService pathFinderService;
         [Inject]
-        public void Construct(IUnitActionService _actionService)
+        public void Construct(IUnitActionService _actionService,
+                              IPathFinderService _pathFinderService
+        )
         {
             this.actionService = _actionService;
+            this.pathFinderService = _pathFinderService;
             InvokeRepeating("CheckAndAssignOrder", 2.0f, 2.0f);
             this.actionService.orders.Subscribe(orders =>{
                 this.currentOrder = orders.Find(order =>{return order.ID == this.currentOrder?.ID;});

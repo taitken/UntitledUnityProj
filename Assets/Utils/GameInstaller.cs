@@ -14,6 +14,7 @@ public class GameInstaller : MonoInstaller
     {
         Container.Bind<IUnitActionService>().To<UnitActionService>().AsSingle();
         Container.Bind<IEnvironmentService>().To<EnvironmentService>().AsSingle();
+        Container.Bind<IPathFinderService>().To<PathFinderService>().AsSingle();
         Container.BindFactory<MineableObjectModel,  MineableHunk, MineableHunk.Factory >().FromComponentInNewPrefab(MineableHunkPrefab);
         Container.BindFactory<UnitOrderModel, OrderIcon, OrderIcon.Factory >().FromComponentInNewPrefab(OrderIconPrefab);
     }

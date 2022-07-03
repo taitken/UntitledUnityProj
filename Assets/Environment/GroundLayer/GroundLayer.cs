@@ -10,22 +10,20 @@ namespace Environment
 {
     public class GroundLayer : MonoBehaviour2
     {
-        private const int MAP_WIDTH = 22;
-        private const int MAP_HEIGHT = 12;
         private Tilemap tilemap;
         private TilemapRenderer tilemapRenderer;
-        private IEnvironmentService EnvironmentService;
+        private IEnvironmentService environmentService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
 
 
         [Inject]
-        public void Construct(IEnvironmentService _EnvironmentService)
+        public void Construct(IEnvironmentService _environmentService)
         {
             this.tilemap = this.GetComponent<Tilemap>();
             this.tilemapRenderer = this.GetComponent<TilemapRenderer>();
-            this.EnvironmentService = _EnvironmentService;
-            this.EnvironmentService.groundTiles.Subscribe(groundTiles =>
+            this.environmentService = _environmentService;
+            this.environmentService.groundTiles.Subscribe(groundTiles =>
             {
                 this.RefreshTiles(groundTiles);
             });
@@ -33,15 +31,7 @@ namespace Environment
         // Start is called before the first frame update
         void Start()
         {
-            IList<GroundTileModel> newGroundTiles = new List<GroundTileModel>();
-            for (int x = 0; x < MAP_WIDTH; x++)
-            {
-                for (int y = 0; y < MAP_HEIGHT; y++)
-                {   
-                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x,y,0), GroundTileModel.eGroundTypes.grass));
-                }
-            }
-            this.EnvironmentService.groundTiles.Set(newGroundTiles);
+
         }
 
         // Update is called once per frame
