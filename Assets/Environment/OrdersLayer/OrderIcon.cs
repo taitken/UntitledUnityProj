@@ -16,9 +16,9 @@ namespace Environment
         public UnitOrderModel unitOrder;
         public Sprite[] spriteList;
         [Inject]
-        public void Construct(IUnitActionService _actionService, UnitOrderModel _order)
+        public void Construct(IUnitActionService _actionService, UnitOrderModel _order, IEnvironmentService _envService)
         {
-            this.transform.position = _order.coordinates;
+            this.transform.position = _envService.CellToLocal(_order.coordinates);
             this.actionService = _actionService;
             this.unitOrder = _order;
             this.subscriptions.Add(this.actionService.mouseAction.Subscribe(action => { this.mouseAction = action; }));

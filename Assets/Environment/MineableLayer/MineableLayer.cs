@@ -26,22 +26,16 @@ namespace Environment
             this.actionService = _actionService;
             this.environmentService = _environmentService;
 
-            this.subscriptions.Add(this.environmentService.mineableObjects.Subscribe(mineableObj =>
-            {
-                this.refreshMinables(mineableObj);
-            }));
         }
 
         // Start is called before the first frame update
         void Start()
         {
-            IList<MineableObjectModel> objsToCreate = new List<MineableObjectModel>();
             this.tilemap = GetComponent<Tilemap>();
-            this.tilemap.size.ForEach((x,y) =>{
-                    objsToCreate.Add(new MineableObjectModel(new Vector3Int(x, y, 0)));
-            });
-            this.environmentService.mineableObjects.Set(objsToCreate);
-            this.UpdateTileMap();
+            this.subscriptions.Add(this.environmentService.mineableObjects.Subscribe(mineableObj =>
+            {
+                this.refreshMinables(mineableObj);
+            }));
         }
 
         // Update is called once per frame
@@ -57,17 +51,21 @@ namespace Environment
 
         private void refreshMinables(IList<MineableObjectModel> mineableObjs)
         {
-            IList<MineableObjectModel> objsToAdd = mineableObjs.Filter(obj => { return this.mineableHunks.Find(hunk => { return hunk.mineableObjectModel.ID == obj.ID; }) == null; });
-            IList<MineableHunk> objsToRemove = this.mineableHunks.Filter(hunk => { return mineableObjs.Find(obj => { return hunk.mineableObjectModel.ID == obj.ID; }) == null; });
-            objsToAdd.ForEach(mineableObj =>
+            if (this.tilemap != null)
             {
-                this.mineableHunks.Add(this.createMineableObject(mineableObj));
-            });
-            objsToRemove.ForEach(hunk =>{
-                mineableHunks.Remove(hunk);
+                IList<MineableObjectModel> objsToAdd = mineableObjs.Filter(obj => { return this.mineableHunks.Find(hunk => { return hunk.mineableObjectModel.ID == obj.ID; }) == null; });
+                IList<MineableHunk> objsToRemove = this.mineableHunks.Filter(hunk => { return mineableObjs.Find(obj => { return hunk.mineableObjectModel.ID == obj.ID; }) == null; });
+                objsToAdd.ForEach(mineableObj =>
+                {
+                    this.mineableHunks.Add(this.createMineableObject(mineableObj));
+                });
+                objsToRemove.ForEach(hunk =>
+                {
+                    mineableHunks.Remove(hunk);
+                    hunk.Destroy();
+                });
                 this.UpdateTileMap();
-                hunk.Destroy();
-            });
+            }
         }
 
         private MineableHunk createMineableObject(MineableObjectModel mineableObj)

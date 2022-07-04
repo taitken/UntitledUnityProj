@@ -5,10 +5,11 @@ namespace GameControllers.Models
 {
     public class PathFinderMapItem : BaseModel
     {
-        public PathFinderMapItem(int _x, int _y) : base()
+        public PathFinderMapItem(int _x, int _y, bool _impassable = false) : base()
         {
             this.x = _x;
             this.y = _y;
+            this.impassable = _impassable;
         }
 
         public static PathFinderMapItem Copy(PathFinderMapItem itemToCopy)

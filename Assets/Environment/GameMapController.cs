@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using GameControllers.Services;
 using GameControllers.Models;
 using Zenject;
@@ -19,6 +20,8 @@ namespace Environment
         private IUnitActionService actionService;
         private IEnvironmentService environmentService;
         private IPathFinderService pathFinderService;
+        private IList<GroundTileModel> groundTiles;
+        private IList<MineableObjectModel> mineableObjects;
         private Grid grid;
 
         [Inject]
@@ -30,40 +33,77 @@ namespace Environment
             this.environmentService = _environmentService;
             this.pathFinderService = _pathFinderService;
             this.grid = this.GetComponent<Grid>();
+            this.environmentService.tileMapRef = this.groundLayer.GetComponent<Tilemap>();
         }
         // Start is called before the first frame update
         void Start()
         {
-            IList<GroundTileModel> newGroundTiles = new List<GroundTileModel>();
-            IList<IList<PathFinderMapItem>> newMap = new List<IList<PathFinderMapItem>>();
-            for (int x = 0; x < MAP_WIDTH; x++)
+            this.ConfigureGroundTiles();
+            this.ConfigureMineableTiles();
+            this.subscriptions.Add(this.environmentService.groundTiles.Subscribe(groundLayer =>
             {
-                IList<PathFinderMapItem> column = new List<PathFinderMapItem>();
-                for (int y = 0; y < MAP_HEIGHT; y++)
-                {
-                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), GroundTileModel.eGroundTypes.grass));
-                    column.Add(new PathFinderMapItem(x, y));
-                }
-                newMap.Add(column);
-            }
-            this.environmentService.groundTiles.Set(newGroundTiles);
-            this.pathFinderService.pathFinderMap.mapitems = newMap;
-            IList<Vector3Int> path = this.pathFinderService.FindPath(new Vector3Int(12, 8), -new Vector3Int(5, 8), this.pathFinderService.pathFinderMap);
-            path.ForEach(item =>
+                this.groundTiles = groundLayer;
+                this.ConfigurePathfinderMap();
+            }));
+            this.subscriptions.Add(this.environmentService.mineableObjects.Subscribe(_mineableObjects =>
             {
-                Debug.Log(item);
-            });
-            IList<Vector3Int> secondPath = this.pathFinderService.FindPath(new Vector3Int(12, 8), -new Vector3Int(16, 8), this.pathFinderService.pathFinderMap);
-            secondPath.ForEach(item =>
-            {
-                Debug.Log(item);
-            });
+                this.mineableObjects = _mineableObjects;
+                this.ConfigurePathfinderMap();
+            }));
         }
 
         // Update is called once per frame
         void Update()
         {
 
+        }
+
+        void ConfigureGroundTiles()
+        {
+            IList<GroundTileModel> newGroundTiles = new List<GroundTileModel>();
+            for (int x = 0; x < MAP_WIDTH; x++)
+            {
+                for (int y = 0; y < MAP_HEIGHT; y++)
+                {
+                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), GroundTileModel.eGroundTypes.grass));
+                }
+            }
+            this.environmentService.groundTiles.Set(newGroundTiles);
+        }
+
+        void ConfigureMineableTiles()
+        {
+            IList<MineableObjectModel> newMinableTiles = new List<MineableObjectModel>();
+            for (int x = 0; x < MAP_WIDTH; x++)
+            {
+                for (int y = 0; y < MAP_HEIGHT; y++)
+                {
+                    if (!(x >= 9 && x <= 13 && y >= 5 && y <= 7))
+                    {
+                        newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0)));
+                    }
+                }
+            }
+            this.environmentService.mineableObjects.Set(newMinableTiles);
+        }
+
+
+        void ConfigurePathfinderMap()
+        {
+            if (this.mineableObjects != null && this.groundLayer != null)
+            {
+                IList<IList<PathFinderMapItem>> newMap = new List<IList<PathFinderMapItem>>();
+                for (int x = 0; x < MAP_WIDTH; x++)
+                {
+                    IList<PathFinderMapItem> column = new List<PathFinderMapItem>();
+                    for (int y = 0; y < MAP_HEIGHT; y++)
+                    {
+                        column.Add(new PathFinderMapItem(x, y, false));
+                    }
+                    newMap.Add(column);
+                }
+                this.pathFinderService.pathFinderMap.Set(new PathFinderMap(newMap));
+            }
         }
 
         public override void OnClickedByUser()

@@ -46,7 +46,7 @@ namespace Environment
         {
             if (this.mouseAction == eMouseAction.Dig)
             {
-                this.actionService.AddOrder(new UnitOrderModel(this.transform.position, this.mouseAction));
+                this.actionService.AddOrder(new UnitOrderModel(this.mineableObjectModel.position, this.mouseAction));
             }
         }
 

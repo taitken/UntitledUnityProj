@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UtilityClasses;
+using UnityEngine.Tilemaps;
 using Environment.Models;
 
 namespace GameControllers.Services
@@ -10,6 +11,7 @@ namespace GameControllers.Services
     {
         public Subscribable<IList<MineableObjectModel>> mineableObjects { get; set; } = new Subscribable<IList<MineableObjectModel>>(new List<MineableObjectModel>());
         public Subscribable<IList<GroundTileModel>> groundTiles { get; set; } = new Subscribable<IList<GroundTileModel>>(new List<GroundTileModel>());
+        public Tilemap tileMapRef { get; set; }
 
         public void AddMineableObject(MineableObjectModel mineableObject)
         {
@@ -23,6 +25,23 @@ namespace GameControllers.Services
         public void RemoveMineableObject(long id)
         {
             this.mineableObjects.Set(this.mineableObjects.Get().Filter(mineableObject => { return mineableObject.ID != id; }));
+        }
+
+        public Vector3Int LocalToCell(Vector3 localPosition)
+        {
+            if(this.tileMapRef != null)
+            {
+                return this.tileMapRef.LocalToCell(localPosition);
+            }
+            return new Vector3Int();
+        }
+        public Vector3 CellToLocal(Vector3Int localPosition)
+        {
+            if(this.tileMapRef != null)
+            {
+                return this.tileMapRef.CellToLocal(localPosition);
+            }
+            return new Vector3();
         }
     }
 }

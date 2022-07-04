@@ -1,11 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Extensions;
+using Zenject;
+using GameControllers.Services;
 
 public class ClickManager : MonoBehaviour2
 {
+    IUnitActionService actionService;
+    [Inject]
+    public void Construct(IUnitActionService _actionService)
+    {
+        this.actionService = _actionService;
+
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -24,10 +30,15 @@ public class ClickManager : MonoBehaviour2
             RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
             if (hit.collider != null)
             {
-                if(hit.collider.gameObject.GetComponent<MonoBehaviour2>()){
+                if (hit.collider.gameObject.GetComponent<MonoBehaviour2>())
+                {
                     hit.collider.gameObject.GetComponent<MonoBehaviour2>().OnClickedByUser();
                 };
             }
+        }
+        if (Mouse.current.rightButton.wasPressedThisFrame)
+        {
+            this.actionService.mouseAction.Set(GameControllers.Models.eMouseAction.None);
         }
     }
 

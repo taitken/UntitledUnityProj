@@ -18,16 +18,19 @@ namespace GameControllers.Models
                         $"{nameof(value)} must have all inner lists of equal length.");
                 }
                 _mapitems = value;
-                height = mapitems[0].Count;
+                height = mapitems.Count > 0 ? mapitems[0].Count : 0;
                 width = mapitems.Count;
             }
         }
 
+        public PathFinderMap(IList<IList<PathFinderMapItem>> newMap)
+        {
+            this.mapitems = newMap;
+        }
+
         public static PathFinderMap Copy(PathFinderMap itemToCopy)
         {
-            PathFinderMap newMap = new PathFinderMap();
-            Debug.Log(itemToCopy);
-            newMap.mapitems = itemToCopy.mapitems.Map(column =>{return column.Map(item =>{ return PathFinderMapItem.Copy(item);});});
+            PathFinderMap newMap = new PathFinderMap(itemToCopy.mapitems.Map(column => { return column.Map(item => { return PathFinderMapItem.Copy(item); }); }));
             return newMap;
         }
         public int height { get; private set; }
@@ -36,6 +39,12 @@ namespace GameControllers.Models
         public PathFinderMapItem GetMapItemAt(int x, int y)
         {
             return (x < mapitems.Count && x >= 0 && y >= 0 && y < mapitems[0].Count) ? mapitems[x][y] : null;
+        }
+
+        public PathFinderMapItem GetPassableMapItemAt(int x, int y)
+        {
+            PathFinderMapItem item = this.GetMapItemAt(x,y);
+            return item == null || item.impassable ? null : item;
         }
 
         public void Refresh()

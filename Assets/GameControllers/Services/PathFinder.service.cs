@@ -8,13 +8,14 @@ namespace GameControllers.Services
 {
     public class PathFinderService : IPathFinderService
     {
-        public PathFinderMap pathFinderMap {get; set;} = new PathFinderMap();
+        public Subscribable<PathFinderMap> pathFinderMap { get; set; } = new Subscribable<PathFinderMap>(new PathFinderMap(new List<IList<PathFinderMapItem>>()));
 
         public IList<Vector3Int> FindPath(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _map)
         {
             if (_map == null) return null;
             bool pathFound = false;
             PathFinderMapItem endPosItem = _map.GetMapItemAt(endPos.x, endPos.y);
+            if (endPosItem == null) return null;
             endPosItem.distance = 0;
             List<PathFinderMapItem> neighbours = new List<PathFinderMapItem> { endPosItem };
 
@@ -30,21 +31,21 @@ namespace GameControllers.Services
                 neighbours.RemoveAt(0);
             }
             IList<Vector3Int> returnMap = pathFound ? PathBack(startingPos, _map) : null;
-            this.pathFinderMap.Refresh();
+            this.pathFinderMap.Get().Refresh();
             return returnMap;
         }
 
         private List<PathFinderMapItem> IncrementNeigbours(PathFinderMapItem item, PathFinderMap _map)
         {
             List<PathFinderMapItem> neighbours = new List<PathFinderMapItem>();
-            neighbours.Add(_map.GetMapItemAt(item.x, item.y - 1));
-            neighbours.Add(_map.GetMapItemAt(item.x - 1, item.y));
-            neighbours.Add(_map.GetMapItemAt(item.x + 1, item.y));
-            neighbours.Add(_map.GetMapItemAt(item.x, item.y + 1));
-            neighbours.Add(_map.GetMapItemAt(item.x - 1, item.y - 1));
-            neighbours.Add(_map.GetMapItemAt(item.x + 1, item.y - 1));
-            neighbours.Add(_map.GetMapItemAt(item.x - 1, item.y + 1));
-            neighbours.Add(_map.GetMapItemAt(item.x + 1, item.y + 1));
+            neighbours.Add(_map.GetPassableMapItemAt(item.x, item.y - 1));
+            neighbours.Add(_map.GetPassableMapItemAt(item.x - 1, item.y));
+            neighbours.Add(_map.GetPassableMapItemAt(item.x + 1, item.y));
+            neighbours.Add(_map.GetPassableMapItemAt(item.x, item.y + 1));
+            neighbours.Add(_map.GetPassableMapItemAt(item.x - 1, item.y - 1));
+            neighbours.Add(_map.GetPassableMapItemAt(item.x + 1, item.y - 1));
+            neighbours.Add(_map.GetPassableMapItemAt(item.x - 1, item.y + 1));
+            neighbours.Add(_map.GetPassableMapItemAt(item.x + 1, item.y + 1));
             // Remove out of bounds (null) tiles, and items that have already been assigned a lower
             neighbours = (List<PathFinderMapItem>)neighbours.Filter(neighbour => { return neighbour != null && !(neighbour.distance != null && neighbour.distance < item.distance); });
             neighbours.ForEach(neighbour => { neighbour.distance = item.distance + 1; });
