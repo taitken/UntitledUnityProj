@@ -62,6 +62,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fae1716043553cb408df8ae39e67b08a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundLayer: {fileID: 0}
   mineableLayer: {fileID: 0}
   unitOrdersLayer: {fileID: 0}
 --- !u!1 &6032539925096379642
@@ -796,6 +797,10 @@ PrefabInstance:
     - target: {fileID: 2023010372370210707, guid: 5ccabc550f5af6d47b8e61c1f9b952ac, type: 3}
       propertyPath: m_Name
       value: UnitOrdersLayer
+      objectReference: {fileID: 0}
+    - target: {fileID: 8827659836522121937, guid: 5ccabc550f5af6d47b8e61c1f9b952ac, type: 3}
+      propertyPath: m_SortingOrder
+      value: 280
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ccabc550f5af6d47b8e61c1f9b952ac, type: 3}

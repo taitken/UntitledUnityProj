@@ -10,7 +10,7 @@ namespace GameControllers.Services
     {
         public Subscribable<PathFinderMap> pathFinderMap { get; set; } = new Subscribable<PathFinderMap>(new PathFinderMap(new List<IList<PathFinderMapItem>>()));
 
-        public IList<Vector3Int> FindPath(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _map)
+        public IList<Vector3Int> FindPath(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _map, bool adjacentToEndPos)
         {
             if (_map == null) return null;
             bool pathFound = false;
@@ -31,6 +31,7 @@ namespace GameControllers.Services
                 neighbours.RemoveAt(0);
             }
             IList<Vector3Int> returnMap = pathFound ? PathBack(startingPos, _map) : null;
+            if(adjacentToEndPos) returnMap = this.AdjustPathToBeAdjacent(returnMap, _map);
             this.pathFinderMap.Get().Refresh();
             return returnMap;
         }
@@ -47,7 +48,7 @@ namespace GameControllers.Services
             neighbours.Add(_map.GetPassableMapItemAt(item.x - 1, item.y + 1));
             neighbours.Add(_map.GetPassableMapItemAt(item.x + 1, item.y + 1));
             // Remove out of bounds (null) tiles, and items that have already been assigned a lower
-            neighbours = (List<PathFinderMapItem>)neighbours.Filter(neighbour => { return neighbour != null && !(neighbour.distance != null && neighbour.distance < item.distance); });
+            neighbours = (List<PathFinderMapItem>)neighbours.Filter(neighbour => { return neighbour != null && !(neighbour.distance != null && neighbour.distance <= item.distance); });
             neighbours.ForEach(neighbour => { neighbour.distance = item.distance + 1; });
             return neighbours;
         }
@@ -101,6 +102,30 @@ namespace GameControllers.Services
                 }
             }
             return pathBack;
+        }
+
+        private IList<Vector3Int> AdjustPathToBeAdjacent(IList<Vector3Int> path, PathFinderMap _map)
+        {
+            if (path == null || path.Count <= 1) return null;
+            if ((path[path.Count - 1].x - path[path.Count - 2].x) != 0 && (path[path.Count - 1].y - path[path.Count - 2].y) != 0)
+            {
+                // Diagonal condition
+                PathFinderMapItem newTile = _map.GetPassableMapItemAt(path[path.Count - 2].x + (path[path.Count - 1].x - path[path.Count - 2].x), path[path.Count - 2].y)
+                    ?? _map.GetPassableMapItemAt(path[path.Count - 2].x, path[path.Count - 2].y + (path[path.Count - 1].y - path[path.Count - 2].y));
+                if (newTile != null) {
+                    path[path.Count - 1] = new Vector3Int(newTile.x, newTile.y);
+                    if(path.Count >= 3 && (Math.Abs(path[path.Count - 1].x - path[path.Count - 3].x) + Math.Abs(path[path.Count - 1].y - path[path.Count - 3].y)) == 2)
+                    {
+                        path.RemoveAt(path.Count-2);
+                    }
+                }
+            }
+            else
+            {
+                // Uni condition
+                path.RemoveAt(path.Count - 1);
+            }
+            return path;
         }
     }
 }

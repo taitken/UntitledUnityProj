@@ -98,7 +98,7 @@ namespace Environment
                     IList<PathFinderMapItem> column = new List<PathFinderMapItem>();
                     for (int y = 0; y < MAP_HEIGHT; y++)
                     {
-                        column.Add(new PathFinderMapItem(x, y, false));
+                        column.Add(new PathFinderMapItem(x, y, this.mineableObjects.Find(obj =>{return obj.position.x == x && obj.position.y == y;}) != null));
                     }
                     newMap.Add(column);
                 }
