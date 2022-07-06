@@ -583,22 +583,6 @@ PrefabInstance:
       propertyPath: m_Offset.x
       value: 0.09691064
       objectReference: {fileID: 0}
-    - target: {fileID: 5004719275211450062, guid: 6f166ee70dd83d646b6163e501f6c03c, type: 3}
-      propertyPath: m_Size.x
-      value: 0.081486344
-      objectReference: {fileID: 0}
-    - target: {fileID: 5004719275211450062, guid: 6f166ee70dd83d646b6163e501f6c03c, type: 3}
-      propertyPath: m_Size.y
-      value: 0.019032955
-      objectReference: {fileID: 0}
-    - target: {fileID: 5004719275211450062, guid: 6f166ee70dd83d646b6163e501f6c03c, type: 3}
-      propertyPath: m_Offset.x
-      value: 0.0006633401
-      objectReference: {fileID: 0}
-    - target: {fileID: 5004719275211450062, guid: 6f166ee70dd83d646b6163e501f6c03c, type: 3}
-      propertyPath: m_Offset.y
-      value: -0.03389299
-      objectReference: {fileID: 0}
     - target: {fileID: 6741095914292416372, guid: 6f166ee70dd83d646b6163e501f6c03c, type: 3}
       propertyPath: actionController
       value: 

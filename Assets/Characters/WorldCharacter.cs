@@ -22,10 +22,10 @@ namespace Characters
         protected Rigidbody2D rb;
         protected SpriteRenderer sr;
         protected Animator animator;
-        public ContactFilter2D movementFilter;
+        public ContactFilter2D movementFilter = new ContactFilter2D();
         protected List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
-        public virtual float moveSpeed { get; set; } = 1f;
-        public virtual float collisionOffset { get; set; } = 0.05f;
+        public virtual float moveSpeed { get; set; } = .5f;
+        public virtual float collisionOffset { get; set; } = 0.00f;
         [Inject]
         public void Construct(IUnitActionService _actionService,
                               IPathFinderService _pathFinderService,
@@ -42,6 +42,7 @@ namespace Characters
                 this.currentOrder = orders.Find(order => { return order.ID == this.currentOrder?.ID; });
                 if (this.currentOrder == null && this.currentPath != null) this.CancelMoving();
             }));
+            this.movementFilter.SetLayerMask(LayerMask.GetMask("MineableLayer"));
             this.pathFinderService.pathFinderMap.Subscribe(map =>
             {
                 this.pathFindMap = map;
@@ -67,7 +68,7 @@ namespace Characters
             if (this.currentPath != null && this.currentPath.Count > 0)
             {
                 Vector3 nextPoint = this.environmentService.CellToLocal(this.currentPath[0]);
-                Vector2 direction = this.getDirection(this.gameObject.transform.position, nextPoint);
+                Vector2 direction = this.gameObject.transform.position.GetDirection(nextPoint);
                 if (direction == Vector2.zero)
                 {
                     this.currentPath.RemoveAt(0);
@@ -75,42 +76,11 @@ namespace Characters
                 else
                 {
                     this.moveUnit(direction);
-                    IList<Vector3> newLinePath = this.currentPath.Map(item => { return this.environmentService.CellToLocal(item); });
-                    newLinePath.Insert(0, this.gameObject.transform.position);
-                    this.pathingLine.UpdateLine(newLinePath);
                 }
+                IList<Vector3> newLinePath = this.currentPath.Map(item => { return this.environmentService.CellToLocal(item); });
+                newLinePath.Insert(0, this.gameObject.transform.position);
+                this.pathingLine.UpdateLine(newLinePath);
             }
-        }
-
-        private Vector2 getDirection(Vector3 startingPoint, Vector3 endPoint)
-        {
-            float x = 0;
-            float y = 0;
-            if (startingPoint.x < endPoint.x)
-            {
-                x = 1;
-            }
-            if (startingPoint.x > endPoint.x)
-            {
-                x = -1;
-            }
-            if (startingPoint.y < endPoint.y)
-            {
-                y = 1;
-            }
-            if (startingPoint.y > endPoint.y)
-            {
-                y = -1;
-            }
-            if (Math.Abs(startingPoint.x - endPoint.x) < 0.04f)
-            {
-                x = 0;
-            }
-            if (Math.Abs(startingPoint.y - endPoint.y) < 0.04f)
-            {
-                y = 0;
-            }
-            return new Vector2(x, y);
         }
 
         public bool TryMoveTo(Vector3Int endPos)
@@ -118,6 +88,7 @@ namespace Characters
             this.currentPath = this.pathFinderService.FindPath(this.environmentService.LocalToCell(this.gameObject.transform.position), endPos, this.pathFindMap, true);
             if (this.currentPath != null)
             {
+                this.currentPath.RemoveAt(0);
                 IList<Vector3> vec3Path = this.currentPath.Map(pathStep => { return this.environmentService.CellToLocal(pathStep); });
                 vec3Path[0] = this.gameObject.transform.position;
                 this.pathingLine = this.createMovePath(vec3Path);
@@ -143,20 +114,18 @@ namespace Characters
                 bool horizontalCollison = this.collisionCheck(new Vector2(movement.x, 0));
                 bool verticalCollison = this.collisionCheck(new Vector2(0, movement.y));
                 rb.MovePosition(rb.position + new Vector2(horizontalCollison ? 0 : movement.x, verticalCollison ? 0 : movement.y) * moveSpeed * Time.fixedDeltaTime);
-                if (!horizontalCollison || !verticalCollison)
-                {
-                }
             }
             this.animator.SetBool("isMoving", movement != Vector2.zero);
         }
 
         protected bool collisionCheck(Vector2 movement)
         {
-            int count = rb.Cast(
+            int count = Physics2D.Raycast(
+                this.transform.position,
                 movement,
                 movementFilter,
                 castCollisions,
-                moveSpeed * Time.fixedDeltaTime + collisionOffset
+                moveSpeed * (Time.fixedDeltaTime * 1f) + collisionOffset
             );
             return count != 0;
         }

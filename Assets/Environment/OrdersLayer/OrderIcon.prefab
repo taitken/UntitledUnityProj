@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6199484723986856238}
   - component: {fileID: -3866491561635195101}
   - component: {fileID: 8063443770741262229}
-  - component: {fileID: 5117848853355599576}
-  m_Layer: 0
+  - component: {fileID: 196729822269026653}
+  m_Layer: 6
   m_Name: OrderIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -101,7 +101,7 @@ MonoBehaviour:
   spriteList:
   - {fileID: 21300000, guid: 2d7069b99e8ba8a4a94daef211ba1a26, type: 3}
   - {fileID: 21300000, guid: 0acf05d98fc48c747929e85c11728b3c, type: 3}
---- !u!61 &5117848853355599576
+--- !u!61 &196729822269026653
 BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
