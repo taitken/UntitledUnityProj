@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &416369310228623332
+--- !u!1 &468302232966348745
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,39 +8,43 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1766900894690701389}
-  - component: {fileID: 988703567492631337}
+  - component: {fileID: 6399454968277455816}
+  - component: {fileID: 3201757026209800227}
   m_Layer: 0
-  m_Name: ActionController
+  m_Name: GameSceneController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1766900894690701389
+--- !u!4 &6399454968277455816
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416369310228623332}
+  m_GameObject: {fileID: 468302232966348745}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.33416998, y: 0.03140509, z: -0.0003687722}
+  m_LocalPosition: {x: -0.10349634, y: -0.034247003, z: -2.2423594}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &988703567492631337
+--- !u!114 &3201757026209800227
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 416369310228623332}
+  m_GameObject: {fileID: 468302232966348745}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de081e44d2fb12b46a70776ad9766b2d, type: 3}
+  m_Script: {fileID: 11500000, guid: fa503865af514ba4bb8b01f4ec6b9b08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actionController: {fileID: 988703567492631337, guid: 9101f7c6bb32b0c4b82082996467b29e, type: 3}
+  mouseActionController: {fileID: 2793231051403670035, guid: 8bf39e7549db4c541a40629649360564, type: 3}
+  gameMapController: {fileID: -5989134291759377336, guid: 9bd0d0acabaefde449704e0b3b258981, type: 3}
+  unitController: {fileID: -3069611266903688571, guid: bbaa6e77a94e2bb4484c0ff80700b38c, type: 3}

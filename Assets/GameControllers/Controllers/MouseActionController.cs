@@ -5,15 +5,15 @@ using GameControllers.Services;
 using GameControllers.Models;
 using System.Collections.Generic;
 
-public class ClickManager : MonoBehaviour2
+public class MouseActionController : MonoBehaviour2
 {
     eMouseAction currentMouseAction;
-    IUnitActionService actionService;
+    IUnitOrderService orderService;
     [Inject]
-    public void Construct(IUnitActionService _actionService)
+    public void Construct(IUnitOrderService _orderService)
     {
-        this.actionService = _actionService;
-        this.actionService.mouseAction.Subscribe(action =>
+        this.orderService = _orderService;
+        this.orderService.mouseAction.Subscribe(action =>
         {
             this.currentMouseAction = action;
         });
@@ -45,7 +45,7 @@ public class ClickManager : MonoBehaviour2
         }
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            this.actionService.mouseAction.Set(eMouseAction.None);
+            this.orderService.mouseAction.Set(eMouseAction.None);
         }
     }
 

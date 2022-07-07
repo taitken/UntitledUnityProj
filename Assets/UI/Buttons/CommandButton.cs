@@ -12,13 +12,13 @@ namespace UI
     public class CommandButton : HiveBaseButton
     {
         public eMouseAction mouseType;
-        private IUnitActionService actionService;
+        private IUnitOrderService orderService;
         public Button buttonComponent;
 
         [Inject]
-        public void Construct(IUnitActionService _actionService)
+        public void Construct(IUnitOrderService _orderService)
         {
-            this.actionService = _actionService;
+            this.orderService = _orderService;
         }
         // Start is called before the first frame update
         void Start()
@@ -35,7 +35,7 @@ namespace UI
 
         void ActivateMouseMode()
         {
-            this.actionService.mouseAction.Set(this.mouseType);
+            this.orderService.mouseAction.Set(this.mouseType);
         }
     }
 }

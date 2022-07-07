@@ -10,18 +10,18 @@ namespace Environment
 {
     public class OrderIcon : MonoBehaviour2
     {
-        private IUnitActionService actionService;
+        private IUnitOrderService orderService;
         private eMouseAction mouseAction;
         private SpriteRenderer spriteRenderer;
         public UnitOrderModel unitOrder;
         public Sprite[] spriteList;
         [Inject]
-        public void Construct(IUnitActionService _actionService, UnitOrderModel _order, IEnvironmentService _envService)
+        public void Construct(IUnitOrderService _orderService, UnitOrderModel _order, IEnvironmentService _envService)
         {
             this.transform.position = _envService.CellToLocal(_order.coordinates);
-            this.actionService = _actionService;
+            this.orderService = _orderService;
             this.unitOrder = _order;
-            this.subscriptions.Add(this.actionService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
+            this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
         }
         void Awake()
         {
@@ -49,7 +49,7 @@ namespace Environment
         {
             if (this.mouseAction == eMouseAction.Cancel)
             {
-                this.actionService.RemoveOrder(this.unitOrder.ID);
+                this.orderService.RemoveOrder(this.unitOrder.ID);
             }
         }
 

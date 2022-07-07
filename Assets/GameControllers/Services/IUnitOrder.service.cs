@@ -6,13 +6,11 @@ using GameControllers.Models;
 
 namespace GameControllers.Services
 {
-    public interface IUnitActionService
+    public interface IUnitOrderService
     {
         Subscribable<eMouseAction> mouseAction { get; set; }
-        Subscribable<IList<UnitActionModel>> actionQueue { get; set; }
         public Subscribable<IList<UnitOrderModel>> orders { get; set; }
-        void AddAction(UnitActionModel action);
-        UnitOrderModel GetNextOrder();
+        UnitOrderModel GetNextOrder(UnitModel requestingUnit);
         void AddOrder(UnitOrderModel order);
         void RemoveOrder(long id);
     }

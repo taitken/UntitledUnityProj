@@ -1,4 +1,4 @@
-using System.Collections;
+                                                                                                                                                                                                                          using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameControllers.Services;
@@ -9,20 +9,20 @@ namespace Environment
 {
     public class UnitOrdersLayer : MonoBehaviour2
     {
-        private IUnitActionService actionService;
+        private IUnitOrderService orderService;
         private IList<UnitOrderModel> unitOrders;
         private IList<OrderIcon> orderIcons;
         private OrderIcon.Factory orderIconFactory;
 
         [Inject]
-        public void Construct(IUnitActionService _actionService,
+        public void Construct(IUnitOrderService _orderService,
                               OrderIcon.Factory _orderIconFactory)
         {
             this.orderIconFactory = _orderIconFactory;
             this.orderIcons = new List<OrderIcon>();
             this.unitOrders = new List<UnitOrderModel>();
-            this.actionService = _actionService;
-            this.subscriptions.Add(this.actionService.orders.Subscribe(orders =>
+            this.orderService = _orderService;
+            this.subscriptions.Add(this.orderService.orders.Subscribe(orders =>
             {
                 this.RecalculateOrders(orders);
             }));

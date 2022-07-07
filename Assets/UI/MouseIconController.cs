@@ -7,17 +7,17 @@ using Zenject;
 
 namespace UI
 {
-    public class MouseController : MonoBehaviour2
+    public class MouseIconController : MonoBehaviour2
     {
         public Texture2D[] cursorTexures;
         private CursorMode cursorMode = CursorMode.Auto;
         private Vector2 hotSpot = Vector2.zero;
-        private IUnitActionService actionService;
+        private IUnitOrderService orderService;
         [Inject]
-        public void Construct(IUnitActionService _actionService)
+        public void Construct(IUnitOrderService _orderService)
         {
-            this.actionService = _actionService;
-            this.subscriptions.Add(this.actionService.mouseAction.Subscribe(action =>
+            this.orderService = _orderService;
+            this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action =>
             {
                 this.setMouseIcon(action);
             })

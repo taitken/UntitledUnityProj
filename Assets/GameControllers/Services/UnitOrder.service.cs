@@ -6,38 +6,38 @@ using GameControllers.Models;
 
 namespace GameControllers.Services
 {
-    public class UnitActionService : IUnitActionService
+    public class UnitOrderService : IUnitOrderService
     {
         public Subscribable<eMouseAction> mouseAction { get; set; } = new Subscribable<eMouseAction>(eMouseAction.None);
-
-        public Subscribable<IList<UnitActionModel>> actionQueue { get; set; } = new Subscribable<IList<UnitActionModel>>(new List<UnitActionModel>());
         public Subscribable<IList<UnitOrderModel>> orders { get; set; } = new Subscribable<IList<UnitOrderModel>>(new List<UnitOrderModel>());
 
-        public void AddAction(UnitActionModel action)
-        {
-            IList<UnitActionModel> _queue = this.actionQueue.Get();
-            _queue.Add(action);
-            this.actionQueue.Set(_queue);
-        }
-
-        public UnitOrderModel GetNextOrder()
+        public UnitOrderModel GetNextOrder(UnitModel requestingUnit)
         {
             if (this.orders.Get().Count > 0)
             {
-                return this.orders.Get()[0];
+                UnitOrderModel nextOrder = null;
+                this.orders.Get().ForEach(order =>
+                {
+                    bool exitBreak = false;
+                    if (order.assignedUnit == null && exitBreak == false)
+                    {
+                        nextOrder = order;
+                        exitBreak = true;
+                    }
+                });
+                return nextOrder;
             }
             return null;
         }
         public void AddOrder(UnitOrderModel order)
         {
             IList<UnitOrderModel> _orders = this.orders.Get();
-            if (_orders.Find(existingOrder => { return order.coordinates == existingOrder.coordinates; }) == null)
+            if (_orders.Find(existingOrder => { return order.ID == existingOrder.ID; }) == null)
             {
                 _orders.Add(order);
                 this.orders.Set(_orders);
             }
         }
-
 
         public void RemoveOrder(long id)
         {

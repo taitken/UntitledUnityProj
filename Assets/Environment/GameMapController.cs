@@ -17,7 +17,7 @@ namespace Environment
         public GroundLayer groundLayer;
         public MineableLayer mineableLayer;
         public UnitOrdersLayer unitOrdersLayer;
-        private IUnitActionService actionService;
+        private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private IPathFinderService pathFinderService;
         private IList<GroundTileModel> groundTiles;
@@ -25,11 +25,11 @@ namespace Environment
         private Grid grid;
 
         [Inject]
-        public void Construct(IUnitActionService _actionService,
+        public void Construct(IUnitOrderService _orderService,
                               IEnvironmentService _environmentService,
                               IPathFinderService _pathFinderService)
         {
-            this.actionService = _actionService;
+            this.orderService = _orderService;
             this.environmentService = _environmentService;
             this.pathFinderService = _pathFinderService;
             this.grid = this.GetComponent<Grid>();

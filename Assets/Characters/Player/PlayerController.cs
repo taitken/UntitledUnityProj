@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Characters;
+using GameControllers.Models;
 
 namespace Characters
 {
     public class PlayerController : WorldCharacter
     {
-        public override float moveSpeed { get; set; } = 1f;
         public override float collisionOffset { get; set; } = 0.05f;
         public SwordAttack swordAttack;
         public ActionController actionController;
@@ -17,7 +17,6 @@ namespace Characters
         // Start is called before the first frame update
         void Start()
         {
-
         }
         // Update is called once per frame
         private new void FixedUpdate()

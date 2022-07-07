@@ -24,6 +24,7 @@ namespace GameControllers.Models
         public eOrderTypes orderType { get; set; }
         public Vector3Int coordinates { get; set; }
         public float prioritySetting { get; set; }
+        public UnitModel assignedUnit {get; set;}
     }
 }
 

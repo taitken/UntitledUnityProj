@@ -10,18 +10,18 @@ namespace Environment
 {
     public class MineableHunk : MonoBehaviour2
     {
-        private IUnitActionService actionService;
+        private IUnitOrderService orderService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
         private eMouseAction mouseAction;
         public MineableObjectModel mineableObjectModel;
 
         [Inject]
-        public void Construct(IUnitActionService _actionService, MineableObjectModel _mineableObjectModel)
+        public void Construct(IUnitOrderService _orderService, MineableObjectModel _mineableObjectModel)
         {
             this.mineableObjectModel = _mineableObjectModel;
-            this.actionService = _actionService;
-            this.subscriptions.Add(this.actionService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
+            this.orderService = _orderService;
+            this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
         }
         void Awake()
         {
@@ -46,7 +46,7 @@ namespace Environment
         {
             if (this.mouseAction == eMouseAction.Dig)
             {
-                this.actionService.AddOrder(new UnitOrderModel(this.mineableObjectModel.position, this.mouseAction));
+                this.orderService.AddOrder(new UnitOrderModel(this.mineableObjectModel.position, this.mouseAction));
             }
         }
 

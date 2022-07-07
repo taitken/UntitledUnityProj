@@ -90,5 +90,19 @@ namespace System.Collections.Generic
             });
 
         }
+
+        // Compares this list to the parameter list, and will match items by ID. 
+        // Returns those that are in this list but not the parameter list.
+        public static IList<t> GetNewModels<t>(this IList<t> newList, IList<t> oldList) where t : BaseModel
+        {
+            return newList.Filter(newModel => { return oldList.Find(oldModel => { return oldModel.ID == newModel.ID; }) == null; });
+        }
+
+        // Compares this list to the parameter list, and will match items by ID. 
+        // Returns those that are in the parameter list, but not this list.
+        public static IList<t> GetRemovedModels<t>(this IList<t> newList, IList<t> oldList) where t : BaseModel
+        {
+            return oldList.Filter(oldModel => { return newList.Find(newModel => { return newModel.ID == oldModel.ID; }) == null; });
+        }
     }
 }

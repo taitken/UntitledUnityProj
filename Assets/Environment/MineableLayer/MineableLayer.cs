@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using Environment.Models;
 using GameControllers.Services;
+using Extensions;
 using Zenject;
 
 namespace Environment
@@ -12,18 +13,25 @@ namespace Environment
     {
         public MineableHunk mineableHunkPrefab;
         public Tilemap tilemap;
-        private IUnitActionService actionService;
+        private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private MineableHunk.Factory hunkFactory;
         private IList<MineableHunk> mineableHunks = new List<MineableHunk>();
+        private IList<MineableObjectModel> mineableObjectModels
+        {
+            get
+            {
+                return this.mineableHunks.Map(hunk =>{return hunk.mineableObjectModel;});
+            }
+        }
 
         [Inject]
-        public void Construct(IUnitActionService _actionService,
+        public void Construct(IUnitOrderService _orderService,
                               MineableHunk.Factory _hunkFactory,
                               IEnvironmentService _environmentService)
         {
             this.hunkFactory = _hunkFactory;
-            this.actionService = _actionService;
+            this.orderService = _orderService;
             this.environmentService = _environmentService;
 
         }
@@ -53,15 +61,16 @@ namespace Environment
         {
             if (this.tilemap != null)
             {
-                IList<MineableObjectModel> objsToAdd = mineableObjs.Filter(obj => { return this.mineableHunks.Find(hunk => { return hunk.mineableObjectModel.ID == obj.ID; }) == null; });
-                IList<MineableHunk> objsToRemove = this.mineableHunks.Filter(hunk => { return mineableObjs.Find(obj => { return hunk.mineableObjectModel.ID == obj.ID; }) == null; });
+                IList<MineableObjectModel> objsToAdd = mineableObjs.GetNewModels(this.mineableObjectModels);
+                IList<MineableObjectModel> objsToRemove = mineableObjs.GetRemovedModels(this.mineableObjectModels);
                 objsToAdd.ForEach(mineableObj =>
                 {
                     this.mineableHunks.Add(this.createMineableObject(mineableObj));
                 });
-                objsToRemove.ForEach(hunk =>
+                objsToRemove.ForEach(hunkModel =>
                 {
-                    mineableHunks.Remove(hunk);
+                    MineableHunk hunk = this.mineableHunks.Find(hunk =>{return hunk.mineableObjectModel.ID == hunkModel.ID;});
+                    this.mineableHunks.Remove(hunk);
                     hunk.Destroy();
                 });
                 this.UpdateTileMap();

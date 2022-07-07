@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7095688511008190096}
   - component: {fileID: 7792391620747549597}
   m_Layer: 0
-  m_Name: MouseController
+  m_Name: MouseIconController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +41,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5715498945639263755}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5237fb890acdd64eae143cdff1dbbe4, type: 3}
+  m_Script: {fileID: 11500000, guid: 02eec044e7a9a0d43925001e0f7c7406, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cursorTexures:
