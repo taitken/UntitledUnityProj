@@ -33,11 +33,11 @@ public class ActionController : MonoBehaviour2
         this.unitService = _unitService;
         this.environmentService = _environmentService;
         this.pathFinderService = _pathFinderService;
-        this.actionFactory = new ActionFactory(_pathFinderService, _environmentService);
+        this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService);
         this.subscriptions.Add(this.orderService.orders.Subscribe(updatedOrders =>
         {
             IList<UnitOrderModel> removedOrders = updatedOrders.GetRemovedModels(this.currentOrders);
-            this.unassignOrders(removedOrders);
+            this.UnassignOrders(removedOrders);
             this.currentOrders = updatedOrders;
         }));
         this.subscriptions.Add(this.unitService.unitSubscribable.Subscribe(updatedUnits =>
@@ -73,7 +73,6 @@ public class ActionController : MonoBehaviour2
         if (unitWithoutOrder != null && this.unassignedOrders.Count > 0)
         {
             unitWithoutOrder.currentOrder = this.unassignedOrders[0];
-            Debug.Log("Order assigned");
             this.CreateAndBeginSequence(unitWithoutOrder);
         }
         else
@@ -89,7 +88,7 @@ public class ActionController : MonoBehaviour2
         this.actionSequences.Add(actionSequence);
     }
 
-    void unassignOrders(IList<UnitOrderModel> ordersToUnassign)
+    void UnassignOrders(IList<UnitOrderModel> ordersToUnassign)
     {
         this.currentUnits.ForEach(unit =>
         {
@@ -100,4 +99,6 @@ public class ActionController : MonoBehaviour2
         });
         this.actionSequences = this.actionSequences.Filter(sequence => { return ordersToUnassign.Find(order => { return order.ID == sequence.unitOrder.ID; }) == null; });
     }
+
+
 }

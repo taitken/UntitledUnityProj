@@ -1,6 +1,8 @@
 
 using System;
 using UnityEngine;
+using System.Collections.Generic;
+using Environment.Models;
 using GameControllers.Models;
 using GameControllers.Services;
 
@@ -23,11 +25,12 @@ namespace UnitAction
 
         public bool CheckCompleted()
         {
-            return false;
+            return this.environmentService.mineableObjects.Get().Find(obj =>{return obj.position == this.unit.currentOrder.coordinates;}) == null;
         }
         public bool PerformAction()
         {
-            Debug.Log("Any diggers in the chat?");
+            MineableObjectModel mineableObj = this.environmentService.mineableObjects.Get().Find(obj =>{return obj.position == this.unit.currentOrder.coordinates;});
+            this.environmentService.RemoveMineableObject(mineableObj.ID);
             return true;
         }
     }

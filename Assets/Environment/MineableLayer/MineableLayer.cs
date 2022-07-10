@@ -11,7 +11,6 @@ namespace Environment
 {
     public class MineableLayer : MonoBehaviour2
     {
-        public MineableHunk mineableHunkPrefab;
         public Tilemap tilemap;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
@@ -21,7 +20,7 @@ namespace Environment
         {
             get
             {
-                return this.mineableHunks.Map(hunk =>{return hunk.mineableObjectModel;});
+                return this.mineableHunks.Map(hunk => { return hunk.mineableObjectModel; });
             }
         }
 
@@ -33,7 +32,6 @@ namespace Environment
             this.hunkFactory = _hunkFactory;
             this.orderService = _orderService;
             this.environmentService = _environmentService;
-
         }
 
         // Start is called before the first frame update
@@ -69,7 +67,7 @@ namespace Environment
                 });
                 objsToRemove.ForEach(hunkModel =>
                 {
-                    MineableHunk hunk = this.mineableHunks.Find(hunk =>{return hunk.mineableObjectModel.ID == hunkModel.ID;});
+                    MineableHunk hunk = this.mineableHunks.Find(hunk => { return hunk.mineableObjectModel.ID == hunkModel.ID; });
                     this.mineableHunks.Remove(hunk);
                     hunk.Destroy();
                 });

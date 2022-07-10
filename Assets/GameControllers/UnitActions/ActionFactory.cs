@@ -13,13 +13,16 @@ namespace UnitAction
     {
         IPathFinderService pathFinderService;
         IEnvironmentService environmentService;
+        IUnitOrderService orderService;
         Func<bool> completeCondition { get; set; }
 
         public ActionFactory(IPathFinderService _pathFinderService,
-                             IEnvironmentService _environmentService)
+                             IEnvironmentService _environmentService,
+                             IUnitOrderService _orderService)
         {
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
+            this.orderService = _orderService;
         }
 
         public ActionSequence CreateSequence(UnitModel _unit)
@@ -28,8 +31,8 @@ namespace UnitAction
             switch (_unit.currentOrder.orderType)
             {
                 case eOrderTypes.Dig:
-                    newSequence = new ActionSequence(_unit.currentOrder, new MoveAction(_unit, this.pathFinderService, this.environmentService))
-                                    .Then(new DigAction(_unit, this.pathFinderService, this.environmentService));
+                    newSequence = new ActionSequence(this.orderService,_unit.currentOrder, new MoveAction(_unit, this.pathFinderService, this.environmentService))
+                        .Then(new DigAction(_unit, this.pathFinderService, this.environmentService));
                     break;
             }
             return newSequence;

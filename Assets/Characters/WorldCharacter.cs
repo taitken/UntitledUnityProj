@@ -91,7 +91,7 @@ namespace Characters
         protected void CancelMoving()
         {
             this.unitModel.currentPath = null;
-            this.pathingLine.Destroy();
+            if (this.pathingLine != null) this.pathingLine.Destroy();
         }
 
         private CharacterPathLine createMovePath(IList<Vector3> path)

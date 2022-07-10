@@ -20,6 +20,11 @@ namespace UnityEngine
             this.onDeathCallbacks.Add(callback);
         }
 
+        protected virtual void BeforeDeath()
+        {
+
+        }
+
         public void Destroy()
         {
             this.subscriptions.ForEach(sub =>{
@@ -29,6 +34,7 @@ namespace UnityEngine
             {
                 callback();
             }
+            this.BeforeDeath();
             Destroy(gameObject);
         }
     }

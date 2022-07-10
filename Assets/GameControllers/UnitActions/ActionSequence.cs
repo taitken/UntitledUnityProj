@@ -11,26 +11,37 @@ namespace UnitAction
     {
         private IList<IUnitAction> actions = new List<IUnitAction>();
         private IUnitAction currentAction;
+        private IUnitOrderService unitOrderService;
         public UnitOrderModel unitOrder;
-        public bool completed {
+        public bool completed
+        {
             get
             {
-                return this.actions.Find(action =>{return action.CheckCompleted() == false;}) == null;
+                return this.actions.Find(action => { return action.CheckCompleted() == false; }) == null;
             }
         }
-        public ActionSequence(UnitOrderModel unitOrder, IUnitAction firstAction)
+        public ActionSequence(IUnitOrderService _orderService, UnitOrderModel unitOrder, IUnitAction firstAction)
         {
             this.actions.Add(firstAction);
             this.currentAction = firstAction;
             this.unitOrder = unitOrder;
+            this.unitOrderService = _orderService;
         }
 
         public void Update()
         {
-            if(this.currentAction != null && this.currentAction.CheckCompleted())
+            if (this.currentAction != null && this.currentAction.CheckCompleted())
             {
                 this.currentAction = this.GetNextAction();
-                this.TryPerformAction(this.currentAction);
+                if (this.currentAction != null)
+                {
+                    this.TryPerformAction(this.currentAction);
+                }
+
+            }
+            if(this.completed)
+            {
+                this.unitOrderService.RemoveOrder(this.unitOrder.ID);
             }
         }
 
@@ -41,9 +52,9 @@ namespace UnitAction
 
         public void TryPerformAction(IUnitAction action)
         {
-            if(action.PerformAction() == false)
+            if (action.PerformAction() == false)
             {
-                
+
             }
         }
 
@@ -55,7 +66,7 @@ namespace UnitAction
 
         private IUnitAction GetNextAction()
         {
-            return this.actions.Find(action =>{return action.completed == false;});
+            return this.actions.Find(action => { return action.completed == false; });
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Environment
         private const int MAP_HEIGHT = 12;
         public GroundLayer groundLayer;
         public MineableLayer mineableLayer;
+        public ItemObjectLayer itemObjectLayer;
         public UnitOrdersLayer unitOrdersLayer;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;

@@ -5,22 +5,27 @@ using GameControllers.Services;
 using GameControllers.Models;
 using Environment.Models;
 using Zenject;
+using Item.Models;
 
 namespace Environment
 {
     public class MineableHunk : MonoBehaviour2
     {
         private IUnitOrderService orderService;
+        private IItemObjectService itemService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
         private eMouseAction mouseAction;
         public MineableObjectModel mineableObjectModel;
 
         [Inject]
-        public void Construct(IUnitOrderService _orderService, MineableObjectModel _mineableObjectModel)
+        public void Construct(IUnitOrderService _orderService, 
+                                IItemObjectService _itemService,
+                                MineableObjectModel _mineableObjectModel)
         {
             this.mineableObjectModel = _mineableObjectModel;
             this.orderService = _orderService;
+            this.itemService = _itemService;
             this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
         }
         void Awake()
@@ -38,9 +43,12 @@ namespace Environment
 
         }
 
-        void OnMouseDown()
+        protected override void BeforeDeath()
         {
+            this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position));
         }
+
+
 
         public override void OnClickedByUser()
         {
