@@ -9,6 +9,7 @@ public class MouseActionController : MonoBehaviour2
 {
     eMouseAction currentMouseAction;
     IUnitOrderService orderService;
+    IList<RaycastHit2D> oldMouseOverHits = new List<RaycastHit2D>();
     [Inject]
     public void Construct(IUnitOrderService _orderService)
     {
@@ -28,6 +29,7 @@ public class MouseActionController : MonoBehaviour2
     // Update is called once per frame
     void Update()
     {
+        this.MouseOverCheck();
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             switch (this.currentMouseAction)
@@ -49,7 +51,41 @@ public class MouseActionController : MonoBehaviour2
         }
     }
 
-    List<RaycastHit2D> LeftClick(ContactFilter2D contactFilter)
+    private void MouseOverCheck()
+    {
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.GetMask("MineableLayer"));
+        IList<RaycastHit2D> newHits = this.RayCastOnMouse(filter);
+        newHits.ForEach(hit =>
+        {
+            if (hit.collider != null)
+            {
+                if (hit.collider.gameObject.GetComponent<MonoBehaviour2>())
+                {
+                    if (this.oldMouseOverHits.Find(oldHit => { return oldHit.collider.gameObject == hit.collider.gameObject; }) == default(RaycastHit2D))
+                    {
+                        hit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseEnter();
+                    }
+                    hit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseOver();
+                };
+            }
+        });
+        this.oldMouseOverHits.ForEach(oldHit =>{
+            if (oldHit.collider != null)
+            {
+                if (oldHit.collider.gameObject.GetComponent<MonoBehaviour2>())
+                {
+                    if (newHits.Find(newHit => { return oldHit.collider.gameObject == newHit.collider.gameObject; }) == default(RaycastHit2D))
+                    {
+                        oldHit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseExit();
+                    }
+                };
+            }
+        });
+        this.oldMouseOverHits = newHits;
+    }
+
+    private List<RaycastHit2D> RayCastOnMouse(ContactFilter2D contactFilter)
     {
         Vector2 mousePosition = Mouse.current.position.ReadValue();
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -59,7 +95,7 @@ public class MouseActionController : MonoBehaviour2
         return hitResults;
     }
 
-    void ClickObject(RaycastHit2D hitObject)
+    private void ClickObject(RaycastHit2D hitObject)
     {
         if (hitObject.collider != null)
         {
@@ -71,7 +107,7 @@ public class MouseActionController : MonoBehaviour2
     }
 
     // Checks a Raycast list and clicks the first object
-    void ClickObject(List<RaycastHit2D> hitObjects)
+    private void ClickObject(List<RaycastHit2D> hitObjects)
     {
         if (hitObjects.Count > 0)
         {
@@ -79,23 +115,23 @@ public class MouseActionController : MonoBehaviour2
         }
     }
 
-    void DigCommandClick()
+    private void DigCommandClick()
     {
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(LayerMask.GetMask("MineableLayer"));
-        this.ClickObject(this.LeftClick(filter));
+        this.ClickObject(this.RayCastOnMouse(filter));
     }
 
-    void BuildCommandClick()
+    private void BuildCommandClick()
     {
         ContactFilter2D filter = new ContactFilter2D();
-        this.ClickObject(this.LeftClick(filter));
+        this.ClickObject(this.RayCastOnMouse(filter));
     }
 
-    void CancelCommandClick()
+    private void CancelCommandClick()
     {
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(LayerMask.GetMask("UnitOrderLayer"));
-        this.ClickObject(this.LeftClick(filter));
+        this.ClickObject(this.RayCastOnMouse(filter));
     }
 }

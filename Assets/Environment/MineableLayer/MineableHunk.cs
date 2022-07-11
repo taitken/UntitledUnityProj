@@ -6,6 +6,8 @@ using GameControllers.Models;
 using Environment.Models;
 using Zenject;
 using Item.Models;
+using UI.Services;
+using UI.Models;
 
 namespace Environment
 {
@@ -13,34 +15,47 @@ namespace Environment
     {
         private IUnitOrderService orderService;
         private IItemObjectService itemService;
+        private IContextWindowService contextService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
         private eMouseAction mouseAction;
         public MineableObjectModel mineableObjectModel;
 
         [Inject]
-        public void Construct(IUnitOrderService _orderService, 
+        public void Construct(IUnitOrderService _orderService,
                                 IItemObjectService _itemService,
+                                IContextWindowService _contextService,
                                 MineableObjectModel _mineableObjectModel)
         {
             this.mineableObjectModel = _mineableObjectModel;
             this.orderService = _orderService;
             this.itemService = _itemService;
+            this.contextService = _contextService;
             this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
         }
-        void Awake()
+        private void Awake()
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
         }
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
 
+        }
+
+        public override void OnMouseEnter()
+        {
+            this.contextService.AddContext(new ContextWindowModel(this.mineableObjectModel.ID, "MINEABLE CHUNK",new List<string>(){"test", "best"}));
+        }
+
+        public override void OnMouseExit()
+        {
+            this.contextService.RemoveContext(this.mineableObjectModel.ID);
         }
 
         protected override void BeforeDeath()
@@ -63,7 +78,7 @@ namespace Environment
             this.spriteRenderer.sprite = this.spriteList[spriteID];
         }
 
-        public class Factory : PlaceholderFactory<MineableObjectModel,  MineableHunk>
+        public class Factory : PlaceholderFactory<MineableObjectModel, MineableHunk>
         {
         }
     }

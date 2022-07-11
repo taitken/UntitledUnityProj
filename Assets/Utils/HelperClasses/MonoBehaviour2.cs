@@ -15,6 +15,21 @@ namespace UnityEngine
 
         }
 
+        public virtual void OnMouseEnter()
+        {
+
+        }
+
+        public virtual void OnMouseOver()
+        {
+
+        }
+
+        public virtual void OnMouseExit()
+        {
+
+        }
+
         public void BeforeDestroy(Action callback)
         {
             this.onDeathCallbacks.Add(callback);
@@ -27,7 +42,8 @@ namespace UnityEngine
 
         public void Destroy()
         {
-            this.subscriptions.ForEach(sub =>{
+            this.subscriptions.ForEach(sub =>
+            {
                 sub.unsubscribe();
             });
             foreach (Action callback in this.onDeathCallbacks)
