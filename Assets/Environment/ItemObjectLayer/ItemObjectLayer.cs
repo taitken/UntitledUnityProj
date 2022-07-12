@@ -11,18 +11,18 @@ using Zenject;
 
 namespace Environment
 {
-    public class ItemObjectLayer : MonoBehaviour2
+    public class ItemObjectLayer : MonoBehaviourLayer
     {
         private ItemObject.Factory itemObjectFactory;
         private IItemObjectService itemService;
         private IList<ItemObjectModel> itemObjectModels = new List<ItemObjectModel>();
         private IList<ItemObject> itemObjects = new List<ItemObject>();
-        private Tilemap tilemap;
 
         [Inject]
         public void Construct(IItemObjectService _itemService,
                                 ItemObject.Factory _itemObjectFactory)
         {
+            this.InitiliseMonoLayer();
             this.itemObjectFactory = _itemObjectFactory;
             this.itemService = _itemService;
 

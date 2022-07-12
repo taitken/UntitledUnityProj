@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using UI.Models;
+using TMPro;
 
 namespace UI
 {
@@ -21,6 +22,7 @@ namespace UI
         // Start is called before the first frame update
         void Start()
         {
+            this.cwTitle.setText(this.contextWindowModel.title);
         }
 
         // Update is called once per frame

@@ -49,7 +49,7 @@ namespace UI
             {
                 ContextWindow newWindow = this.windowFactory.Create(contextModel);
                 newWindow.rectTransform.SetParent(this.GetComponent<RectTransform>().transform);
-                newWindow.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+                newWindow.rectTransform.sizeDelta = new Vector2(50, -20);
                 newWindow.transform.position = new Vector3(Mouse.current.position.ReadValue().x + 100, Mouse.current.position.ReadValue().y - 80, 1);
                 this.windows.Add(newWindow);
             });

@@ -50,7 +50,7 @@ namespace Environment
 
         public override void OnMouseEnter()
         {
-            this.contextService.AddContext(new ContextWindowModel(this.mineableObjectModel.ID, "MINEABLE CHUNK",new List<string>(){"test", "best"}));
+            this.contextService.AddContext(new ContextWindowModel(this.mineableObjectModel.ID, "sdsd CHUNK",new List<string>(){"test", "best"}));
         }
 
         public override void OnMouseExit()
@@ -60,10 +60,9 @@ namespace Environment
 
         protected override void BeforeDeath()
         {
+            this.contextService.RemoveContext(this.mineableObjectModel.ID);
             this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position));
         }
-
-
 
         public override void OnClickedByUser()
         {

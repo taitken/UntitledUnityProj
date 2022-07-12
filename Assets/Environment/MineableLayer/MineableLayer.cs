@@ -9,9 +9,8 @@ using Zenject;
 
 namespace Environment
 {
-    public class MineableLayer : MonoBehaviour2
+    public class MineableLayer : MonoBehaviourLayer
     {
-        public Tilemap tilemap;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private MineableHunk.Factory hunkFactory;
@@ -29,6 +28,7 @@ namespace Environment
                               MineableHunk.Factory _hunkFactory,
                               IEnvironmentService _environmentService)
         {
+            this.InitiliseMonoLayer();
             this.hunkFactory = _hunkFactory;
             this.orderService = _orderService;
             this.environmentService = _environmentService;

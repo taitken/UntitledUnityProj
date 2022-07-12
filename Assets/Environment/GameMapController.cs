@@ -18,6 +18,7 @@ namespace Environment
         public MineableLayer mineableLayer;
         public ItemObjectLayer itemObjectLayer;
         public UnitOrdersLayer unitOrdersLayer;
+        public BuildingLayer buildingLayer;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private IPathFinderService pathFinderService;

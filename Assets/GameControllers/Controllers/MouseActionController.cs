@@ -51,38 +51,52 @@ public class MouseActionController : MonoBehaviour2
         }
     }
 
+    private bool isMouseOverUI()
+    {
+        return UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+    }
+
     private void MouseOverCheck()
     {
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(LayerMask.GetMask("MineableLayer"));
-        IList<RaycastHit2D> newHits = this.RayCastOnMouse(filter);
-        newHits.ForEach(hit =>
+        if (!isMouseOverUI())
         {
-            if (hit.collider != null)
+            ContactFilter2D filter = new ContactFilter2D();
+            filter.SetLayerMask(LayerMask.GetMask("MineableLayer", "BuildingLayer"));
+            IList<RaycastHit2D> newHits = this.RayCastOnMouse(filter);
+            newHits.ForEach(hit =>
             {
-                if (hit.collider.gameObject.GetComponent<MonoBehaviour2>())
+                if (hit.collider != null)
                 {
-                    if (this.oldMouseOverHits.Find(oldHit => { return oldHit.collider.gameObject == hit.collider.gameObject; }) == default(RaycastHit2D))
+                    if (hit.collider.gameObject.GetComponent<MonoBehaviour2>())
                     {
-                        hit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseEnter();
-                    }
-                    hit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseOver();
-                };
-            }
-        });
-        this.oldMouseOverHits.ForEach(oldHit =>{
-            if (oldHit.collider != null)
+                        if (this.oldMouseOverHits.Find(oldHit => { return oldHit.collider.gameObject == hit.collider.gameObject; }) == default(RaycastHit2D))
+                        {
+                            hit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseEnter();
+                        }
+                        hit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseOver();
+                    };
+                }
+            });
+            this.oldMouseOverHits.ForEach(oldHit =>
             {
-                if (oldHit.collider.gameObject.GetComponent<MonoBehaviour2>())
+                if (oldHit.collider != null)
                 {
-                    if (newHits.Find(newHit => { return oldHit.collider.gameObject == newHit.collider.gameObject; }) == default(RaycastHit2D))
+                    if (oldHit.collider.gameObject.GetComponent<MonoBehaviour2>())
                     {
-                        oldHit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseExit();
-                    }
-                };
-            }
-        });
-        this.oldMouseOverHits = newHits;
+                        if (newHits.Find(newHit => { return oldHit.collider.gameObject == newHit.collider.gameObject; }) == default(RaycastHit2D))
+                        {
+                            oldHit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseExit();
+                        }
+                    };
+                }
+            });
+            this.oldMouseOverHits = newHits;
+        }
+        else
+        {
+            this.oldMouseOverHits.ForEach(hit => { hit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseExit(); });
+            this.oldMouseOverHits = new List<RaycastHit2D>();
+        }
     }
 
     private List<RaycastHit2D> RayCastOnMouse(ContactFilter2D contactFilter)

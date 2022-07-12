@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Environment
 {
-    public class UnitOrdersLayer : MonoBehaviour2
+    public class UnitOrdersLayer : MonoBehaviourLayer
     {
         private IUnitOrderService orderService;
         private IList<UnitOrderModel> unitOrders;
@@ -18,6 +18,7 @@ namespace Environment
         public void Construct(IUnitOrderService _orderService,
                               OrderIcon.Factory _orderIconFactory)
         {
+            this.InitiliseMonoLayer();
             this.orderIconFactory = _orderIconFactory;
             this.orderIcons = new List<OrderIcon>();
             this.unitOrders = new List<UnitOrderModel>();

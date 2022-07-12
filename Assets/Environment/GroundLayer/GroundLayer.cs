@@ -5,12 +5,12 @@ using UnityEngine.Tilemaps;
 using GameControllers.Services;
 using Environment.Models;
 using Zenject;
+using UnityEngine.InputSystem;
 
 namespace Environment
 {
-    public class GroundLayer : MonoBehaviour2
+    public class GroundLayer : MonoBehaviourLayer
     {
-        private Tilemap tilemap;
         private TilemapRenderer tilemapRenderer;
         private IEnvironmentService environmentService;
         public Sprite[] spriteList;
@@ -20,6 +20,7 @@ namespace Environment
         [Inject]
         public void Construct(IEnvironmentService _environmentService)
         {
+            this.InitiliseMonoLayer();
             this.tilemap = this.GetComponent<Tilemap>();
             this.tilemapRenderer = this.GetComponent<TilemapRenderer>();
             this.environmentService = _environmentService;
