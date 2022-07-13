@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public class MouseActionController : MonoBehaviour2
 {
-    eMouseAction currentMouseAction;
+    MouseActionModel currentMouseAction;
     IUnitOrderService orderService;
     IList<RaycastHit2D> oldMouseOverHits = new List<RaycastHit2D>();
     [Inject]
@@ -32,7 +32,7 @@ public class MouseActionController : MonoBehaviour2
         this.MouseOverCheck();
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            switch (this.currentMouseAction)
+            switch (this.currentMouseAction.mouseType)
             {
                 case eMouseAction.Build:
                     this.BuildCommandClick();
@@ -47,7 +47,7 @@ public class MouseActionController : MonoBehaviour2
         }
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            this.orderService.mouseAction.Set(eMouseAction.None);
+            this.orderService.mouseAction.Set(new MouseActionModel(eMouseAction.None));
         }
     }
 
@@ -139,6 +139,7 @@ public class MouseActionController : MonoBehaviour2
     private void BuildCommandClick()
     {
         ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.GetMask("BuildingLayer"));
         this.ClickObject(this.RayCastOnMouse(filter));
     }
 

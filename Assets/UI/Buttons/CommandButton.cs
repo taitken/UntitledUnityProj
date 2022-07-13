@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
+using Building.Models;
 using GameControllers.Services;
 using GameControllers.Models;
 
@@ -12,6 +13,7 @@ namespace UI
     public class CommandButton : HiveBaseButton
     {
         public eMouseAction mouseType;
+        public eBuildingType buildingType;
         private IUnitOrderService orderService;
         public Button buttonComponent;
 
@@ -35,7 +37,7 @@ namespace UI
 
         void ActivateMouseMode()
         {
-            this.orderService.mouseAction.Set(this.mouseType);
+            this.orderService.mouseAction.Set(new MouseActionModel(this.mouseType, this.buildingType));
         }
     }
 }

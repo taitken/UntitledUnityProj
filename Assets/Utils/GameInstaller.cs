@@ -1,5 +1,6 @@
 using System;
 using Zenject;
+using GameControllers;
 using GameControllers.Services;
 using GameControllers.Models;
 using Environment;
@@ -22,6 +23,8 @@ public class GameInstaller : MonoInstaller
     public GameObject CharacterPathLine;
     public GameObject ItemObject;
     public GameObject ContextWindow;
+    public GameObject LayerCollider;
+    public BuildingAssetController BuildingAssetController;
     public override void InstallBindings()
     {
         // Services
@@ -31,6 +34,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<IPathFinderService>().To<PathFinderService>().AsSingle();
         Container.Bind<IItemObjectService>().To<ItemObjectService>().AsSingle();
         Container.Bind<IContextWindowService>().To<ContextWindowService>().AsSingle();
+        Container.Bind<IBuildingService>().To<BuildingService>().AsSingle().OnInstantiated<BuildingService>((ctx, service) =>{service.SetBuildingAssetController(BuildingAssetController);});
 
         // World Objects
         Container.BindFactory<UnitModel,  WorldCharacter, WorldCharacter.Factory >().FromComponentInNewPrefab(WorldCharacter);
@@ -38,6 +42,7 @@ public class GameInstaller : MonoInstaller
         Container.BindFactory<UnitOrderModel, OrderIcon, OrderIcon.Factory >().FromComponentInNewPrefab(OrderIconPrefab);
         Container.BindFactory<ItemObjectModel, ItemObject, ItemObject.Factory >().FromComponentInNewPrefab(ItemObject);
         Container.BindFactory<IList<Vector3>, CharacterPathLine, CharacterPathLine.Factory >().FromComponentInNewPrefab(CharacterPathLine);
+        Container.BindFactory<Vector2, string, Action, LayerCollider, LayerCollider.Factory >().FromComponentInNewPrefab(LayerCollider);
 
         // UI
         Container.BindFactory<ContextWindowModel, ContextWindow, ContextWindow.Factory >().FromComponentInNewPrefab(ContextWindow);

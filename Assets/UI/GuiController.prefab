@@ -414,6 +414,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseType: 1
+  buildingType: 0
   buttonComponent: {fileID: 0}
 --- !u!224 &8120646417003232979 stripped
 RectTransform:
@@ -557,6 +558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseType: 3
+  buildingType: 0
   buttonComponent: {fileID: 0}
 --- !u!1001 &7259936069246159451
 PrefabInstance:
@@ -695,4 +697,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseType: 2
+  buildingType: 1
   buttonComponent: {fileID: 0}

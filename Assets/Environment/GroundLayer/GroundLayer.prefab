@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -5206409646947955230}
   m_Layer: 0
   m_Name: GroundLayer
-  m_TagString: Untagged
+  m_TagString: AllowMovement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2845,6 +2845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9914eaad089956241ad39f14283cdcf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilemap: {fileID: 0}
   spriteList:
   - {fileID: 21300000, guid: 25ff524a8432d814b96ce5f53f5eca11, type: 3}
   - {fileID: -1431205297, guid: 6248306972889944fa8915f298c144ee, type: 3}

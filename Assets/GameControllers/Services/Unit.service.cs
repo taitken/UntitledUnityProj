@@ -10,7 +10,7 @@ namespace GameControllers.Services
     {
         public UnitService()
         {
-            Debug.Log("constructor");
+            
         }
         public Subscribable<IList<UnitModel>> unitSubscribable { get; set; } = new Subscribable<IList<UnitModel>>(new List<UnitModel>());
 

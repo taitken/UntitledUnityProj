@@ -18,7 +18,7 @@ namespace Environment
         private IContextWindowService contextService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
-        private eMouseAction mouseAction;
+        private MouseActionModel mouseAction;
         public MineableObjectModel mineableObjectModel;
 
         [Inject]
@@ -66,9 +66,9 @@ namespace Environment
 
         public override void OnClickedByUser()
         {
-            if (this.mouseAction == eMouseAction.Dig)
+            if (this.mouseAction.mouseType == eMouseAction.Dig)
             {
-                this.orderService.AddOrder(new UnitOrderModel(this.mineableObjectModel.position, this.mouseAction));
+                this.orderService.AddOrder(new UnitOrderModel(this.mineableObjectModel.position, this.mouseAction.mouseType));
             }
         }
 

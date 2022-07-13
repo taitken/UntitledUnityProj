@@ -18,9 +18,10 @@ namespace Environment
 
 
         [Inject]
-        public void Construct(IEnvironmentService _environmentService)
+        public void Construct(IEnvironmentService _environmentService,
+                              LayerCollider.Factory _layerColliderFactory)
         {
-            this.InitiliseMonoLayer();
+            this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "GroundLayer");
             this.tilemap = this.GetComponent<Tilemap>();
             this.tilemapRenderer = this.GetComponent<TilemapRenderer>();
             this.environmentService = _environmentService;

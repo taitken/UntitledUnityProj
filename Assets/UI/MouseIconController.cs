@@ -19,7 +19,7 @@ namespace UI
             this.orderService = _orderService;
             this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action =>
             {
-                this.setMouseIcon(action);
+                this.setMouseIcon(action.mouseType);
             })
             );
         }

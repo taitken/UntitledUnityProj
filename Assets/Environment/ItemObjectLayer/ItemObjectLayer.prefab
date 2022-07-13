@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1974305094804014263}
   - component: {fileID: 4410879188547553961}
   - component: {fileID: 4950093468390608269}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ItemObjectLayer
-  m_TagString: Untagged
+  m_TagString: AllowMovement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,5 +133,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a51e132ad3058441bc27ebc5b6cf94c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mineableHunkPrefab: {fileID: 0}
   tilemap: {fileID: 0}

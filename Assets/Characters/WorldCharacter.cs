@@ -112,14 +112,9 @@ namespace Characters
 
         protected bool collisionCheck(Vector2 movement)
         {
-            int count = Physics2D.Raycast(
-                this.transform.position,
-                movement,
-                movementFilter,
-                castCollisions,
-                this.unitModel.moveSpeed * (Time.fixedDeltaTime * 1f) + collisionOffset
+            Physics2D.Raycast(this.transform.position, movement, movementFilter, castCollisions, this.unitModel.moveSpeed * (Time.fixedDeltaTime * 1f) + collisionOffset
             );
-            return count != 0;
+            return castCollisions.Filter(collision =>{return collision.collider.gameObject.tag != "AllowMovement";}).Count != 0;
         }
 
         public class Factory : PlaceholderFactory<UnitModel, WorldCharacter>

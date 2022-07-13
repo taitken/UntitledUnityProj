@@ -20,9 +20,10 @@ namespace Environment
 
         [Inject]
         public void Construct(IItemObjectService _itemService,
-                                ItemObject.Factory _itemObjectFactory)
+                                ItemObject.Factory _itemObjectFactory,
+                              LayerCollider.Factory _layerColliderFactory)
         {
-            this.InitiliseMonoLayer();
+            this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "ItemLayer");
             this.itemObjectFactory = _itemObjectFactory;
             this.itemService = _itemService;
 

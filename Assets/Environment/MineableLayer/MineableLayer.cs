@@ -26,9 +26,10 @@ namespace Environment
         [Inject]
         public void Construct(IUnitOrderService _orderService,
                               MineableHunk.Factory _hunkFactory,
-                              IEnvironmentService _environmentService)
+                              IEnvironmentService _environmentService,
+                              LayerCollider.Factory _layerColliderFactory)
         {
-            this.InitiliseMonoLayer();
+            this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "MineableLayer");
             this.hunkFactory = _hunkFactory;
             this.orderService = _orderService;
             this.environmentService = _environmentService;

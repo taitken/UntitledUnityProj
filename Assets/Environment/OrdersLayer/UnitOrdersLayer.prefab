@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -8787823031889439553}
   m_Layer: 0
   m_Name: UnitOrdersLayer
-  m_TagString: Untagged
+  m_TagString: AllowMovement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,3 +133,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fb7b77b6f39bb458dcea2df163f090, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tilemap: {fileID: 0}

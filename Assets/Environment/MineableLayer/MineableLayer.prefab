@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -3735787583435099740}
   m_Layer: 0
   m_Name: MineableLayer
-  m_TagString: Untagged
+  m_TagString: AllowMovement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -194,5 +194,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc5766510e3bbbc45840f0aa5dcc8a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mineableHunkPrefab: {fileID: 2583389982170914256, guid: f054ddb65914b7a4094b29206a877736, type: 3}
   tilemap: {fileID: 0}

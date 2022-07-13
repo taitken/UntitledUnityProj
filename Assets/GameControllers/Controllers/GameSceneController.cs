@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using GameControllers.Services;
-using Characters;
-using GameControllers.Models;
+using GameControllers;
 using Zenject;
-using Environment.Models;
 
 namespace Environment
 {
@@ -19,6 +15,7 @@ namespace Environment
         public UnitController unitController;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
+        private IBuildingService buildingService;
         private IPathFinderService pathFinderService;
 
         [Inject]

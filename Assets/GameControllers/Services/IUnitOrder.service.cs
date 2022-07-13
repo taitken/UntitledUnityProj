@@ -8,7 +8,7 @@ namespace GameControllers.Services
 {
     public interface IUnitOrderService
     {
-        Subscribable<eMouseAction> mouseAction { get; set; }
+        Subscribable<MouseActionModel> mouseAction { get; set; }
         public Subscribable<IList<UnitOrderModel>> orders { get; set; }
         UnitOrderModel GetNextOrder(UnitModel requestingUnit);
         void AddOrder(UnitOrderModel order);

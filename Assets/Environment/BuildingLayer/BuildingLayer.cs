@@ -1,11 +1,8 @@
 
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using Environment.Models;
-using UnityEngine.InputSystem;
 using GameControllers.Services;
-using Extensions;
+using Building.Models;
 using Zenject;
 using GameControllers.Models;
 
@@ -17,13 +14,14 @@ namespace Environment
         private GameObject ghostBuilding;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
-        private eMouseAction mouseAction;
+        private MouseActionModel mouseAction;
 
         [Inject]
         public void Construct(IUnitOrderService _orderService,
-                              IEnvironmentService _environmentService)
+                              IEnvironmentService _environmentService,
+                              LayerCollider.Factory _layerColliderFactory)
         {
-            this.InitiliseMonoLayer();
+            this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "BuildingLayer");
             this.orderService = _orderService;
             this.environmentService = _environmentService;
             this.orderService.mouseAction.Subscribe(_mouseAction =>
@@ -41,25 +39,36 @@ namespace Environment
         // Update is called once per frame
         void Update()
         {
-            if (this.mouseAction == eMouseAction.Build)
+            if (this.mouseAction.mouseType == eMouseAction.Build)
             {
-                this.ShowBuildGhost();
+                this.ShowBuildGhost(this.mouseAction.buildingType);
             }
             else
             {
-                if(this.ghostBuilding != null) Destroy(this.ghostBuilding);
+                if (this.ghostBuilding != null) Destroy(this.ghostBuilding);
             }
         }
 
-        private void ShowBuildGhost()
+        public override void OnMouseOver()
+        {
+            Debug.Log("test");
+        }
+
+        public override void OnClickedByUser()
+        {
+            Debug.Log(this.GetCellCoorAtMouse());
+            this.orderService.AddOrder(new BuildOrderModel(this.GetCellCoorAtMouse(), this.mouseAction.buildingType));
+        }
+
+        private void ShowBuildGhost(eBuildingType _buildingType)
         {
             if (this.ghostBuilding == null)
             {
-                this.ghostBuilding = Instantiate(this.buildingGhostPrefab, this.GetCellCoorAtMouse(), new Quaternion());
+                this.ghostBuilding = Instantiate(this.buildingGhostPrefab, this.GetLocalPositionOfCellAtMouse(), new Quaternion());
             }
             else
             {
-                this.ghostBuilding.GetComponent<Transform>().position = this.GetCellCoorAtMouse();
+                this.ghostBuilding.GetComponent<Transform>().position = this.GetLocalPositionOfCellAtMouse();
             }
         }
 
