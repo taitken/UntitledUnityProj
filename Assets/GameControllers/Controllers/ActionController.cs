@@ -27,13 +27,14 @@ public class ActionController : MonoBehaviour2
     public void Construct(IUnitOrderService _orderService,
                           IUnitService _unitService,
                           IEnvironmentService _environmentService,
-                          IPathFinderService _pathFinderService)
+                          IPathFinderService _pathFinderService,
+                          IBuildingService _buildingService)
     {
         this.orderService = _orderService;
         this.unitService = _unitService;
         this.environmentService = _environmentService;
         this.pathFinderService = _pathFinderService;
-        this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService);
+        this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService);
         this.subscriptions.Add(this.orderService.orders.Subscribe(updatedOrders =>
         {
             IList<UnitOrderModel> removedOrders = updatedOrders.GetRemovedModels(this.currentOrders);

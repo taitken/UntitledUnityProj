@@ -64,7 +64,7 @@ namespace Environment
                 IList<MineableObjectModel> objsToRemove = mineableObjs.GetRemovedModels(this.mineableObjectModels);
                 objsToAdd.ForEach(mineableObj =>
                 {
-                    this.mineableHunks.Add(this.createMineableObject(mineableObj));
+                    this.mineableHunks.Add(this.CreateMineableObject(mineableObj));
                 });
                 objsToRemove.ForEach(hunkModel =>
                 {
@@ -76,7 +76,7 @@ namespace Environment
             }
         }
 
-        private MineableHunk createMineableObject(MineableObjectModel mineableObj)
+        private MineableHunk CreateMineableObject(MineableObjectModel mineableObj)
         {
             MineableHunk newHunk = this.hunkFactory.Create(mineableObj);
             newHunk.transform.position = this.tilemap.CellToLocal(mineableObj.position);

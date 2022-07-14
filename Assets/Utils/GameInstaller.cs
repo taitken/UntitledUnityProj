@@ -9,6 +9,8 @@ using UnityEngine;
 using System.Collections.Generic;
 using Characters;
 using Characters.Utils;
+using Building;
+using Building.Models;
 using Item.Models;
 using Item;
 using UI;
@@ -43,6 +45,8 @@ public class GameInstaller : MonoInstaller
         Container.BindFactory<ItemObjectModel, ItemObject, ItemObject.Factory >().FromComponentInNewPrefab(ItemObject);
         Container.BindFactory<IList<Vector3>, CharacterPathLine, CharacterPathLine.Factory >().FromComponentInNewPrefab(CharacterPathLine);
         Container.BindFactory<Vector2, string, Action, LayerCollider, LayerCollider.Factory >().FromComponentInNewPrefab(LayerCollider);
+
+        // Building Objects
 
         // UI
         Container.BindFactory<ContextWindowModel, ContextWindow, ContextWindow.Factory >().FromComponentInNewPrefab(ContextWindow);

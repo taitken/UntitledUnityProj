@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
-using GameControllers.Services;
-using Characters;
+using Building;
 using Building.Models;
 using Zenject;
 using Environment.Models;
@@ -13,7 +11,7 @@ namespace GameControllers
     public class BuildingAssetController : MonoBehaviour2
     {
 
-        public List<MonoBehaviour2> buildingPrefabs;
+        public List<BuildingObject> buildingPrefabs;
 
         [Inject]
         public void Construct()
@@ -21,16 +19,35 @@ namespace GameControllers
 
         }
 
-        public SpriteRenderer GetBuildingSprite(eBuildingType buildingType)
+        public BuildingObject GetBuildingPrefab(eBuildingType buildingType)
         {
-            if(this.buildingPrefabs.Count > (int)buildingType)
+            if (this.buildingPrefabs.Count > (int)buildingType)
             {
-                return this.buildingPrefabs[(int)buildingType].gameObject.GetComponent<SpriteRenderer>();
-            } else
+                return this.buildingPrefabs[(int)buildingType] as BuildingObject;
+            }
+            else
             {
-                Debug.LogException(new System.Exception("Chosen building prefab has not been added to the Building Asset Controller. Attemped type: " + buildingType.ToString()));
+                this.ThrowMissingPrefabError(buildingType);
                 return null;
             }
+        }
+
+        public SpriteRenderer GetBuildingSprite(eBuildingType buildingType)
+        {
+            if (this.buildingPrefabs.Count > (int)buildingType)
+            {
+                return this.buildingPrefabs[(int)buildingType].gameObject.GetComponent<SpriteRenderer>();
+            }
+            else
+            {
+                this.ThrowMissingPrefabError(buildingType);
+                return null;
+            }
+        }
+
+        private void ThrowMissingPrefabError(eBuildingType buildingType)
+        {
+                Debug.LogException(new System.Exception("Chosen building prefab has not been added to the Building Asset Controller. Attemped type: " + buildingType.ToString()));
         }
     }
 }
