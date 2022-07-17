@@ -6,6 +6,7 @@ using Building.Models;
 using Building;
 using Zenject;
 using GameControllers.Models;
+using UI.Services;
 
 namespace Environment
 {
@@ -17,6 +18,7 @@ namespace Environment
         private IBuildingService buildingService;
         private IEnvironmentService environmentService;
         private MouseActionModel mouseAction;
+        private IContextWindowService contextService;
         private IList<BuildingObject> buildingPrefabs = new List<BuildingObject>();
         private IList<BuildingObjectModel> buildingObjectModels
         {
@@ -30,13 +32,14 @@ namespace Environment
         public void Construct(IUnitOrderService _orderService,
                               IEnvironmentService _environmentService,
                               IBuildingService _buildingService,
+                              IContextWindowService _contextService,
                               LayerCollider.Factory _layerColliderFactory)
         {
             this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "BuildingLayer");
             this.orderService = _orderService;
             this.environmentService = _environmentService;
             this.buildingService = _buildingService;
-
+            this.contextService = _contextService;
         }
 
         void Start()
@@ -81,8 +84,8 @@ namespace Environment
 
         private BuildingObject CreateBuilding(BuildingObjectModel buildingObj)
         {
-            BuildingObject building = Instantiate<BuildingObject>(this.buildingService.buildingAssetController.GetBuildingPrefab(buildingObj.buildingType)); 
-            building.Initialise(buildingObj, this.tilemap);
+            BuildingObject building = Instantiate<BuildingObject>(this.buildingService.buildingAssetController.GetBuildingPrefab(buildingObj.buildingType));
+            building.Initialise(this.contextService, buildingObj, this.tilemap);
             return building;
         }
 
@@ -93,12 +96,11 @@ namespace Environment
 
         public override void OnMouseOver()
         {
-            Debug.Log("test");
+
         }
 
         public override void OnClickedByUser()
         {
-            Debug.Log(this.GetCellCoorAtMouse());
             this.orderService.AddOrder(new BuildOrderModel(this.GetCellCoorAtMouse(), this.mouseAction.buildingType));
         }
 

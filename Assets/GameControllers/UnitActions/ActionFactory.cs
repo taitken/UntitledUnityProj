@@ -1,6 +1,7 @@
 using System;
 using GameControllers.Models;
 using GameControllers.Services;
+using Unit.Models;
 
 namespace UnitAction
 {
@@ -15,17 +16,20 @@ namespace UnitAction
         IEnvironmentService environmentService;
         IUnitOrderService orderService;
         IBuildingService buildingService;
+        IItemObjectService itemService;
         Func<bool> completeCondition { get; set; }
 
         public ActionFactory(IPathFinderService _pathFinderService,
                              IEnvironmentService _environmentService,
                              IUnitOrderService _orderService,
-                             IBuildingService _buildingService)
+                             IBuildingService _buildingService,
+                             IItemObjectService _itemService)
         {
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
             this.orderService = _orderService;
             this.buildingService = _buildingService;
+            this.itemService = _itemService;
         }
 
         public ActionSequence CreateSequence(UnitModel _unit)
@@ -34,12 +38,16 @@ namespace UnitAction
             switch (_unit.currentOrder.orderType)
             {
                 case eOrderTypes.Dig:
-                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, this.pathFinderService, this.environmentService))
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
                         .Then(new DigAction(_unit, this.pathFinderService, this.environmentService));
                     break;
                 case eOrderTypes.Build:
-                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, this.pathFinderService, this.environmentService))
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
                         .Then(new BuildAction(_unit, this.buildingService));
+                    break;
+                case eOrderTypes.Store:
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, false))
+                        .Then(new PickupItemAction(_unit, this.itemService));
                     break;
             }
             return newSequence;

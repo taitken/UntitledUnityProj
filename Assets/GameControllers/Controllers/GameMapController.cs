@@ -6,21 +6,24 @@ using GameControllers.Services;
 using GameControllers.Models;
 using Zenject;
 using Environment.Models;
+using Unit.Models;
+using Item;
+using Characters;
 
 namespace Environment
 {
     public class GameMapController : MonoBehaviour2
     {
-
-
-        public GroundLayer groundLayer;
-        public MineableLayer mineableLayer;
-        public ItemObjectLayer itemObjectLayer;
-        public UnitOrdersLayer unitOrdersLayer;
-        public BuildingLayer buildingLayer;
+        private GroundLayer groundLayer;
+        private MineableLayer mineableLayer;
+        private ItemObjectLayer itemObjectLayer;
+        private UnitOrdersLayer unitOrdersLayer;
+        private BuildingLayer buildingLayer;
+        private CharacterLayer characterLayer;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private IPathFinderService pathFinderService;
+        private IItemObjectService itemObjectService;
         private IList<GroundTileModel> groundTiles;
         private IList<MineableObjectModel> mineableObjects;
         private Grid grid;
@@ -28,13 +31,30 @@ namespace Environment
         [Inject]
         public void Construct(IUnitOrderService _orderService,
                               IEnvironmentService _environmentService,
-                              IPathFinderService _pathFinderService)
+                              IPathFinderService _pathFinderService,
+                              IItemObjectService _itemObjectService)
         {
             this.orderService = _orderService;
             this.environmentService = _environmentService;
             this.pathFinderService = _pathFinderService;
+            this.itemObjectService = _itemObjectService;
             this.grid = this.GetComponent<Grid>();
+            this.groundLayer = this.GetComponentInChildren<GroundLayer>();
+            this.mineableLayer = this.GetComponentInChildren<MineableLayer>();
+            this.itemObjectLayer = this.GetComponentInChildren<ItemObjectLayer>();
+            this.unitOrdersLayer = this.GetComponentInChildren<UnitOrdersLayer>();
+            this.buildingLayer = this.GetComponentInChildren<BuildingLayer>();
+            this.characterLayer = this.GetComponentInChildren<CharacterLayer>();
             this.environmentService.tileMapRef = this.groundLayer.GetComponent<Tilemap>();
+
+            this.subscriptions.Add(this.itemObjectService.unitPickedUpItem.Subscribe(unit =>
+            {
+                if (unit != null) this.AttachItemToUnit(unit);
+            }));
+            this.subscriptions.Add(this.itemObjectService.unitItemDropped.Subscribe(unit =>
+            {
+                this.DetachItemFromUnit(unit);
+            }));
         }
         // Start is called before the first frame update
         void Start()
@@ -66,7 +86,7 @@ namespace Environment
             {
                 for (int y = 0; y < MonoBehaviourLayer.MAP_HEIGHT; y++)
                 {
-                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), Random.Range(200, 400) ,GroundTileModel.eGroundTypes.grass));
+                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), Random.Range(200, 400), GroundTileModel.eGroundTypes.grass));
                 }
             }
             this.environmentService.groundTiles.Set(newGroundTiles);
@@ -99,11 +119,33 @@ namespace Environment
                     IList<PathFinderMapItem> column = new List<PathFinderMapItem>();
                     for (int y = 0; y < MonoBehaviourLayer.MAP_HEIGHT; y++)
                     {
-                        column.Add(new PathFinderMapItem(x, y, this.mineableObjects.Find(obj =>{return obj.position.x == x && obj.position.y == y;}) != null));
+                        column.Add(new PathFinderMapItem(x, y, this.mineableObjects.Find(obj => { return obj.position.x == x && obj.position.y == y; }) != null));
                     }
                     newMap.Add(column);
                 }
                 this.pathFinderService.pathFinderMap.Set(new PathFinderMap(newMap));
+            }
+        }
+
+        private void AttachItemToUnit(UnitModel unitModel)
+        {
+            ItemObject foundItemObj = this.itemObjectLayer.itemObjects.Find(item => { return item.itemObjectModel.ID == unitModel.carriedItem.ID; });
+            if (foundItemObj == null)
+            {
+                unitModel.carriedItem = null;
+            }
+            else
+            {
+                this.characterLayer.worldCharacters.Find(character => { return character.unitModel.ID == unitModel.ID; }).AttachItem(foundItemObj);
+            }
+        }
+
+        private void DetachItemFromUnit(UnitModel unitModel)
+        {
+            WorldCharacter foundCharacter = this.characterLayer.worldCharacters.Find(character => { return character.unitModel.ID == unitModel.ID; });
+            if (foundCharacter != null)
+            {
+                foundCharacter.DetachItem();
             }
         }
 

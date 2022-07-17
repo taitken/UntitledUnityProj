@@ -1,8 +1,10 @@
 using System;
 using UnityEngine;
 using System.Collections.Generic;
+using Item.Models;
+using GameControllers.Models;
 
-namespace GameControllers.Models
+namespace Unit.Models
 {
     public class UnitModel : BaseModel
     {
@@ -17,6 +19,7 @@ namespace GameControllers.Models
         public float moveSpeed { get; set; }
         public Vector3 position { get; set; }
         public UnitOrderModel currentOrder { get; set; }
+        public ItemObjectModel carriedItem { get; set; }
     }
 }
 

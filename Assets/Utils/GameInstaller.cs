@@ -16,6 +16,7 @@ using Item;
 using UI;
 using UI.Services;
 using UI.Models;
+using Unit.Models;
 
 public class GameInstaller : MonoInstaller
 {

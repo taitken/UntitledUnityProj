@@ -6,6 +6,8 @@ using GameControllers.Services;
 using GameControllers.Models;
 using Characters.Utils;
 using Zenject;
+using Item;
+using Unit.Models;
 
 namespace Characters
 {
@@ -14,12 +16,14 @@ namespace Characters
         protected IUnitOrderService orderService;
         protected IPathFinderService pathFinderService;
         protected IEnvironmentService environmentService;
+        protected IItemObjectService itemService;
         protected PathFinderMap pathFindMap;
         protected CharacterPathLine.Factory pathLineFactory;
         protected CharacterPathLine pathingLine;
         protected Rigidbody2D rb;
         protected SpriteRenderer sr;
         protected Animator animator;
+        protected ItemObject carriedObj;
         public ContactFilter2D movementFilter = new ContactFilter2D();
         protected List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
         public UnitModel unitModel { get; set; }
@@ -28,6 +32,7 @@ namespace Characters
         public void Construct(IUnitOrderService _orderService,
                               IPathFinderService _pathFinderService,
                               IEnvironmentService _environmentService,
+                              IItemObjectService _itemService,
                               CharacterPathLine.Factory _pathLineFactory,
                               UnitModel _unitModel
         )
@@ -35,11 +40,16 @@ namespace Characters
             this.orderService = _orderService;
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
+            this.itemService = _itemService;
             this.pathLineFactory = _pathLineFactory;
             this.unitModel = _unitModel;
             this.subscriptions.Add(this.orderService.orders.Subscribe(orders =>
             {
-                if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null) this.CancelMoving();
+                if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null)
+                {
+                    this.CancelMoving();
+                    this.DetachItem();
+                }
             }));
             this.movementFilter.SetLayerMask(LayerMask.GetMask("MineableLayer"));
             this.pathFinderService.pathFinderMap.Subscribe(map =>
@@ -73,7 +83,7 @@ namespace Characters
                 }
                 else
                 {
-                    this.moveUnit(direction);
+                    this.MoveUnit(direction);
                 }
                 IList<Vector3> newLinePath = this.unitModel.currentPath.Map(item => { return this.environmentService.CellToLocal(item); });
                 newLinePath.Insert(0, this.gameObject.transform.position);
@@ -99,22 +109,34 @@ namespace Characters
             return this.pathLineFactory.Create(path);
         }
 
-        protected void moveUnit(Vector2 movement)
+        protected void MoveUnit(Vector2 movement)
         {
             if (movement != Vector2.zero)
             {
-                bool horizontalCollison = this.collisionCheck(new Vector2(movement.x, 0));
-                bool verticalCollison = this.collisionCheck(new Vector2(0, movement.y));
+                bool horizontalCollison = this.CollisionCheck(new Vector2(movement.x, 0));
+                bool verticalCollison = this.CollisionCheck(new Vector2(0, movement.y));
                 rb.MovePosition(rb.position + new Vector2(horizontalCollison ? 0 : movement.x, verticalCollison ? 0 : movement.y) * this.unitModel.moveSpeed * Time.fixedDeltaTime);
             }
             this.animator.SetBool("isMoving", movement != Vector2.zero);
         }
 
-        protected bool collisionCheck(Vector2 movement)
+        protected bool CollisionCheck(Vector2 movement)
         {
             Physics2D.Raycast(this.transform.position, movement, movementFilter, castCollisions, this.unitModel.moveSpeed * (Time.fixedDeltaTime * 1f) + collisionOffset
             );
-            return castCollisions.Filter(collision =>{return collision.collider.gameObject.tag != "AllowMovement";}).Count != 0;
+            return castCollisions.Filter(collision => { return collision.collider.gameObject.tag != "AllowMovement"; }).Count != 0;
+        }
+
+        public void AttachItem(ItemObject itemObj)
+        {
+            this.carriedObj = itemObj;
+            itemObj.transform.SetParent(this.transform);
+        }
+        public void DetachItem()
+        {
+            this.carriedObj = null;
+            ItemObject foundItem = this.GetComponentInChildren<ItemObject>();
+            if(foundItem) foundItem.transform.SetParent(null);
         }
 
         public class Factory : PlaceholderFactory<UnitModel, WorldCharacter>

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Environment.Models;
 using GameControllers.Models;
 using GameControllers.Services;
+using Unit.Models;
 
 namespace UnitAction
 {
@@ -14,6 +15,7 @@ namespace UnitAction
         private IPathFinderService pathFinderService;
         private IEnvironmentService environmentService;
         public bool completed { get; set; } = false;
+        public bool cancel { get; set; } = false;
         public DigAction(UnitModel _unit,
                           IPathFinderService _pathFinderService,
                           IEnvironmentService _environmentService)
@@ -29,6 +31,7 @@ namespace UnitAction
         }
         public bool PerformAction()
         {
+            
             MineableObjectModel mineableObj = this.environmentService.mineableObjects.Get().Find(obj =>{return obj.position == this.unit.currentOrder.coordinates;});
             this.environmentService.RemoveMineableObject(mineableObj.ID);
             return true;

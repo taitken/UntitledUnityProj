@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Characters;
 using GameControllers.Models;
+using Zenject;
+using Unit.Models;
 
 namespace Characters
 {
@@ -24,7 +26,7 @@ namespace Characters
             base.FixedUpdate();
             if (this.canMove)
             {
-                this.moveUnit(this.movementInput);
+                this.MoveUnit(this.movementInput);
             }
         }
         void OnMove(InputValue moveVal)

@@ -4,13 +4,10 @@ using GameControllers.Services;
 using GameControllers.Models;
 using UnitAction;
 using Zenject;
+using Unit.Models;
 
 public class ActionController : MonoBehaviour2
 {
-    private IUnitOrderService orderService;
-    private IUnitService unitService;
-    private IEnvironmentService environmentService;
-    private IPathFinderService pathFinderService;
     private ActionFactory actionFactory;
     private IList<ActionSequence> actionSequences = new List<ActionSequence>();
     private IList<UnitOrderModel> currentOrders = new List<UnitOrderModel>();
@@ -28,20 +25,17 @@ public class ActionController : MonoBehaviour2
                           IUnitService _unitService,
                           IEnvironmentService _environmentService,
                           IPathFinderService _pathFinderService,
-                          IBuildingService _buildingService)
+                          IBuildingService _buildingService,
+                          IItemObjectService _itemService)
     {
-        this.orderService = _orderService;
-        this.unitService = _unitService;
-        this.environmentService = _environmentService;
-        this.pathFinderService = _pathFinderService;
-        this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService);
-        this.subscriptions.Add(this.orderService.orders.Subscribe(updatedOrders =>
+        this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService, _itemService);
+        this.subscriptions.Add(_orderService.orders.Subscribe(updatedOrders =>
         {
             IList<UnitOrderModel> removedOrders = updatedOrders.GetRemovedModels(this.currentOrders);
             this.UnassignOrders(removedOrders);
             this.currentOrders = updatedOrders;
         }));
-        this.subscriptions.Add(this.unitService.unitSubscribable.Subscribe(updatedUnits =>
+        this.subscriptions.Add(_unitService.unitSubscribable.Subscribe(updatedUnits =>
         {
             this.currentUnits = updatedUnits;
         }));

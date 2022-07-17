@@ -12,7 +12,6 @@ namespace Environment
         public ActionController actionController;
         public MouseActionController mouseActionController;
         public GameMapController gameMapController;
-        public UnitController unitController;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private IBuildingService buildingService;

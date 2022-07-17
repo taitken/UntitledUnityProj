@@ -15,8 +15,14 @@ namespace Environment
     {
         private ItemObject.Factory itemObjectFactory;
         private IItemObjectService itemService;
-        private IList<ItemObjectModel> itemObjectModels = new List<ItemObjectModel>();
-        private IList<ItemObject> itemObjects = new List<ItemObject>();
+        public IList<ItemObject> itemObjects = new List<ItemObject>();
+        private IList<ItemObjectModel> itemObjectModels
+        {
+            get
+            {
+                return this.itemObjects.Map(item => { return item.itemObjectModel; });
+            }
+        }
 
         [Inject]
         public void Construct(IItemObjectService _itemService,
@@ -30,7 +36,10 @@ namespace Environment
             this.itemService.itemSubscribable.Subscribe(items =>
             {
                 IList<ItemObjectModel> newItems = items.GetNewModels(this.itemObjectModels);
-                newItems.ForEach(items => { this.createItemObject(items); });
+                newItems.ForEach(items =>
+                {
+                    this.itemObjects.Add(this.createItemObject(items));
+                });
             });
         }
 
@@ -50,7 +59,6 @@ namespace Environment
         {
             ItemObject newItem = this.itemObjectFactory.Create(itemObj);
             newItem.transform.position = this.tilemap.CellToLocal(itemObj.position);
-            this.itemObjectModels.Add(itemObj);
             return newItem;
         }
 

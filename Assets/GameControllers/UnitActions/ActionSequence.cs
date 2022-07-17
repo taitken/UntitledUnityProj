@@ -37,9 +37,8 @@ namespace UnitAction
                 {
                     this.TryPerformAction(this.currentAction);
                 }
-
             }
-            if(this.completed)
+            if(this.completed || this.currentAction.cancel)
             {
                 this.unitOrderService.RemoveOrder(this.unitOrder.ID);
             }
@@ -52,9 +51,13 @@ namespace UnitAction
 
         public void TryPerformAction(IUnitAction action)
         {
-            if (action.PerformAction() == false)
+            try
             {
-
+                action.PerformAction();
+            }
+            catch (System.Exception)
+            {
+                action.cancel = true;
             }
         }
 

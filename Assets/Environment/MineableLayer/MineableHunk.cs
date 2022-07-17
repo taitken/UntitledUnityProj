@@ -52,7 +52,7 @@ namespace Environment
         public override void OnMouseEnter()
         {
             List<string> newContext = new List<string>();
-            newContext.Add(this.mineableObjectModel.mass.ToString() + " " + LocalisationDict.weight);
+            newContext.Add(this.mineableObjectModel.mass.ToString() + " " + LocalisationDict.mass);
             newContext.Add("Mineable");
             this.contextService.AddContext(new ContextWindowModel(this.mineableObjectModel.ID, "Dirt Block", newContext));
         }

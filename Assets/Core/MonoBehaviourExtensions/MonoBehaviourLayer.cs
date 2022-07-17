@@ -12,7 +12,7 @@ namespace UnityEngine
     {
         public const int MAP_WIDTH = 22;
         public const int MAP_HEIGHT = 12;
-        public Tilemap tilemap;
+        protected Tilemap tilemap;
         LayerCollider layerCollider;
         protected void InitiliseMonoLayer(LayerCollider.Factory _layerColliderFactory, Vector2 _size, string _layer)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace UtilityClasses {
     public class LocalisationDict{  
-        static public string weight = "kg";
+        static public string mass = "kg";
 
     }
 }

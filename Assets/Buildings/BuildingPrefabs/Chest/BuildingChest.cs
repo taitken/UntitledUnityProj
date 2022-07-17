@@ -5,33 +5,18 @@ using Zenject;
 using Building.Models;
 using UtilityClasses;
 using UI.Models;
+using UnityEngine.Tilemaps;
+using UI.Services;
 
 namespace Building
 {
-    public class BuildingChest : BuildingObject
+    public class BuildingChest : StorageBuildingObject
     {
-        // Start is called before the first frame update
-        void Start()
+        public ChestBuildingModel chestBuildingModel;
+        public override void Initialise(IContextWindowService _contextService, BuildingObjectModel _buildingObjectModel, Tilemap tilemap)
         {
-
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
-        public override void OnMouseEnter()
-        {
-            List<string> newContext = new List<string>();
-            newContext.Add(this.buildingObjectModel.mass.ToString() + " " + LocalisationDict.weight);
-            newContext.Add("Can store other items");
-            this.contextService.AddContext(new ContextWindowModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString(), newContext));
-        }
-
-        public class Factory : PlaceholderFactory<BuildingObjectModel, BuildingChest>
-        {
+            base.Initialise(_contextService, _buildingObjectModel, tilemap);
+            this.chestBuildingModel = _buildingObjectModel as ChestBuildingModel;
         }
     }
 }

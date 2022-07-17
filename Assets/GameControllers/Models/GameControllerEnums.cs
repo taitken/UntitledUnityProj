@@ -6,16 +6,13 @@ namespace GameControllers.Models
         None,
         Dig,
         Build,
-        Cancel
+        Cancel,
+        Store
     }
     public enum eOrderTypes
     {
         Dig,
-        Build
-    }
-    public enum eActionCategories
-    {
-        Dig,
-        Build
+        Build,
+        Store
     }
 }

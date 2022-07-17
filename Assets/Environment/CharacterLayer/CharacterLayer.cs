@@ -1,50 +1,53 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using GameControllers.Services;
-using Characters;
-using GameControllers.Models;
 using Zenject;
-using Environment.Models;
+using GameControllers.Models;
+using UI.Services;
+using Characters;
+using Unit.Models;
 
 namespace Environment
 {
-    public class UnitController : MonoBehaviour2
+    public class CharacterLayer : MonoBehaviourLayer
     {
-        private WorldCharacter.Factory characterFactory;
         private IUnitOrderService orderService;
         private IUnitService unitService;
+        private MouseActionModel mouseAction;
+        private PlayerController.Factory characterFactory;
+        private IContextWindowService contextService;
         public IList<WorldCharacter> worldCharacters = new List<WorldCharacter>();
-
-        public IList<UnitModel> unitModels
+        private IList<UnitModel> unitModels
         {
             get
             {
-                return worldCharacters.Map(character => { return character.unitModel; });
+                return this.worldCharacters.Map(character => { return character.unitModel; });
             }
         }
 
         [Inject]
         public void Construct(IUnitOrderService _orderService,
                               IUnitService _unitService,
-                              WorldCharacter.Factory _characterFactory)
+                              LayerCollider.Factory _layerColliderFactory,
+                              PlayerController.Factory _characterFactory)
         {
+            this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "BuildingLayer");
             this.orderService = _orderService;
             this.unitService = _unitService;
             this.characterFactory = _characterFactory;
         }
-        // Start is called before the first frame update
+
         void Start()
         {
             this.subscriptions.Add(this.unitService.unitSubscribable.Subscribe(updatedUnitModels =>
             {
                 IList<UnitModel> newModels = updatedUnitModels.GetNewModels(this.unitModels);
+                IList<UnitModel> removedModels = updatedUnitModels.GetRemovedModels(unitModels);
                 newModels.ForEach(newModel =>
                 {
                     this.worldCharacters.Add(this.createUnit(newModel));
                 });
-                IList<UnitModel> removedModels = updatedUnitModels.GetRemovedModels(unitModels);
                 removedModels.ForEach(removedModels =>
                 {
                     WorldCharacter worldCharacterToRemove = this.worldCharacters.Find(character => { return character.unitModel.ID == removedModels.ID; });
@@ -54,7 +57,6 @@ namespace Environment
             }));
             this.unitService.AddUnit(new UnitModel(.75f, new Vector3(1.729f, 0.966f, 0)));
         }
-
         // Update is called once per frame
         void Update()
         {

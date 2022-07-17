@@ -101,6 +101,7 @@ MonoBehaviour:
   spriteList:
   - {fileID: 21300000, guid: 2d7069b99e8ba8a4a94daef211ba1a26, type: 3}
   - {fileID: 21300000, guid: 0acf05d98fc48c747929e85c11728b3c, type: 3}
+  - {fileID: 21300000, guid: c5408b78273e6a143944cf12ab6ec38b, type: 3}
 --- !u!61 &196729822269026653
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -7,10 +7,8 @@ namespace Building.Models
     {
         public ChestBuildingModel(Vector3Int _position, eBuildingType _buildingType) : base(_position, _buildingType)
         {
-            this.storageMax = 10000.00;
+            this.storageMax = 10000.00M;
         }
-        public decimal storageMax;
-        public decimal storageCurrent;
     }
 }
 

@@ -40,6 +40,9 @@ public class MouseActionController : MonoBehaviour2
                 case eMouseAction.Dig:
                     this.DigCommandClick();
                     break;
+                case eMouseAction.Store:
+                    this.StoreCommandClick();
+                    break;
                 case eMouseAction.Cancel:
                     this.CancelCommandClick();
                     break;
@@ -140,6 +143,13 @@ public class MouseActionController : MonoBehaviour2
     {
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(LayerMask.GetMask("BuildingLayer"));
+        this.ClickObject(this.RayCastOnMouse(filter));
+    }
+
+    private void StoreCommandClick()
+    {
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(LayerMask.GetMask("ItemLayer"));
         this.ClickObject(this.RayCastOnMouse(filter));
     }
 
