@@ -3,13 +3,12 @@ using UnityEngine;
 
 namespace Item.Models
 {
-    public class ItemObjectModel : BaseModel
+    public class ItemObjectModel : BasePhysicalObjectModel
     {
-        public ItemObjectModel(Vector3Int _position) :base()
+        public ItemObjectModel(Vector3Int _position, decimal _weight) :base(_position, _weight)
         {
-            this.position = _position;
+
         }
-        public Vector3Int position { get; set; }
     }
 }
 

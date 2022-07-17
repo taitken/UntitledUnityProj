@@ -5,6 +5,7 @@ using GameControllers.Services;
 using GameControllers.Models;
 using Environment.Models;
 using Zenject;
+using UtilityClasses;
 using Item.Models;
 using UI.Services;
 using UI.Models;
@@ -50,7 +51,10 @@ namespace Environment
 
         public override void OnMouseEnter()
         {
-            this.contextService.AddContext(new ContextWindowModel(this.mineableObjectModel.ID, "sdsd CHUNK",new List<string>(){"test", "best"}));
+            List<string> newContext = new List<string>();
+            newContext.Add(this.mineableObjectModel.mass.ToString() + " " + LocalisationDict.weight);
+            newContext.Add("Mineable");
+            this.contextService.AddContext(new ContextWindowModel(this.mineableObjectModel.ID, "Dirt Block", newContext));
         }
 
         public override void OnMouseExit()
@@ -61,7 +65,7 @@ namespace Environment
         protected override void BeforeDeath()
         {
             this.contextService.RemoveContext(this.mineableObjectModel.ID);
-            this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position));
+            this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position, mineableObjectModel.mass));
         }
 
         public override void OnClickedByUser()

@@ -50,6 +50,7 @@ namespace Environment
         {
             ItemObject newItem = this.itemObjectFactory.Create(itemObj);
             newItem.transform.position = this.tilemap.CellToLocal(itemObj.position);
+            this.itemObjectModels.Add(itemObj);
             return newItem;
         }
 

@@ -5,27 +5,35 @@ using GameControllers.Services;
 using GameControllers.Models;
 using Item.Models;
 using Zenject;
+using UI.Services;
+using UI.Models;
+using UtilityClasses;
 
 namespace Item
 {
     public class ItemObject : MonoBehaviour2
     {
-        ItemObjectModel itemObject;
+        public ItemObjectModel itemObjectModel;
+        private IContextWindowService contextService;
         [Inject]
-        public void Construct(ItemObjectModel _itemObjectModel)
+        public void Construct(ItemObjectModel _itemObjectModel,
+                                IContextWindowService _contextWindowService)
         {
-            this.itemObject = _itemObjectModel;
-        }
-        // Start is called before the first frame update
-        void Start()
-        {
-
+            this.itemObjectModel = _itemObjectModel;
+            this.contextService = _contextWindowService;
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void OnMouseEnter()
         {
+            List<string> newContext = new List<string>();
+            newContext.Add(this.itemObjectModel.mass.ToString() + " " + LocalisationDict.weight);
+            newContext.Add("Item");
+            this.contextService.AddContext(new ContextWindowModel(this.itemObjectModel.ID, "Stone", newContext));
+        }
 
+        public override void OnMouseExit()
+        {
+            this.contextService.RemoveContext(this.itemObjectModel.ID);
         }
 
         public class Factory : PlaceholderFactory<ItemObjectModel, ItemObject>

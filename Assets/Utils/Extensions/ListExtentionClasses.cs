@@ -51,6 +51,14 @@ namespace System.Collections.Generic
             }
         }
 
+        public static void ForEach<t1>(this IList<t1> list, Action<t1, int> callback)
+        {
+            for(int i = 0; i < list.Count; i++ )
+            {
+                callback(list[i], i);
+            }
+        }
+
         public static Vector3Int ConvertToVector3Int(this Vector3 vec3)
         {
             return new Vector3Int((int)vec3.x, (int)vec3.y, (int)vec3.z);

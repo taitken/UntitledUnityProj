@@ -35,9 +35,9 @@ namespace UI
         void Update()
         {
             Vector2 mousePosition = Mouse.current.position.ReadValue();
-            this.windows.ForEach(window =>
+            this.windows.ForEach((window, index) =>
             {
-                window.transform.position = new Vector3(Mouse.current.position.ReadValue().x + 100, Mouse.current.position.ReadValue().y - 80, 1);
+                window.transform.position = CalcWindowPosition(Mouse.current.position.ReadValue(), window.rectTransform.rect.height, index);
             });
         }
 
@@ -45,14 +45,21 @@ namespace UI
         {
             this.windows.ForEach(window => { window.Destroy(); });
             this.windows = new List<ContextWindow>();
-            context.ForEach(contextModel =>
+            context.ForEach((contextModel, index) =>
             {
                 ContextWindow newWindow = this.windowFactory.Create(contextModel);
                 newWindow.rectTransform.SetParent(this.GetComponent<RectTransform>().transform);
                 newWindow.rectTransform.sizeDelta = new Vector2(50, -20);
-                newWindow.transform.position = new Vector3(Mouse.current.position.ReadValue().x + 100, Mouse.current.position.ReadValue().y - 80, 1);
+                newWindow.transform.position = CalcWindowPosition(Mouse.current.position.ReadValue(), newWindow.rectTransform.rect.height, index);
                 this.windows.Add(newWindow);
             });
+        }
+
+        private Vector3 CalcWindowPosition(Vector2 mousePos, float windowHeight, int windowIndex)
+        {
+            return new Vector3(Mouse.current.position.ReadValue().x + 100,
+                                (Mouse.current.position.ReadValue().y - 80) - ((windowHeight + 5) * windowIndex),
+                                 1);
         }
     }
 }

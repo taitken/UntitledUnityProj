@@ -61,7 +61,7 @@ public class MouseActionController : MonoBehaviour2
         if (!isMouseOverUI())
         {
             ContactFilter2D filter = new ContactFilter2D();
-            filter.SetLayerMask(LayerMask.GetMask("MineableLayer", "BuildingLayer"));
+            filter.SetLayerMask(LayerMask.GetMask("MineableLayer", "BuildingLayer", "ItemLayer"));
             IList<RaycastHit2D> newHits = this.RayCastOnMouse(filter);
             newHits.ForEach(hit =>
             {
@@ -69,7 +69,7 @@ public class MouseActionController : MonoBehaviour2
                 {
                     if (hit.collider.gameObject.GetComponent<MonoBehaviour2>())
                     {
-                        if (this.oldMouseOverHits.Find(oldHit => { return oldHit.collider.gameObject == hit.collider.gameObject; }) == default(RaycastHit2D))
+                        if (this.oldMouseOverHits.Find(oldHit => { return oldHit != default(RaycastHit2D) && oldHit.collider.gameObject == hit.collider.gameObject; }) == default(RaycastHit2D))
                         {
                             hit.collider.gameObject.GetComponent<MonoBehaviour2>().OnMouseEnter();
                         }

@@ -66,7 +66,7 @@ namespace Environment
             {
                 for (int y = 0; y < MonoBehaviourLayer.MAP_HEIGHT; y++)
                 {
-                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), GroundTileModel.eGroundTypes.grass));
+                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), Random.Range(200, 400) ,GroundTileModel.eGroundTypes.grass));
                 }
             }
             this.environmentService.groundTiles.Set(newGroundTiles);
@@ -81,7 +81,7 @@ namespace Environment
                 {
                     if (!(x >= 9 && x <= 13 && y >= 5 && y <= 7))
                     {
-                        newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0)));
+                        newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0), Random.Range(200, 400)));
                     }
                 }
             }

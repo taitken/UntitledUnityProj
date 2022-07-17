@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Environment.Models
 {
-    public class MineableObjectModel : TileObject
+    public class MineableObjectModel : TileObjectModel
     {
-        public MineableObjectModel(Vector3Int _position) : base(_position)
+        public MineableObjectModel(Vector3Int _position, decimal _weight) : base(_position, _weight)
         {
+
         }
-        public long weight { get; set; } = 400;
     }
 }
 
