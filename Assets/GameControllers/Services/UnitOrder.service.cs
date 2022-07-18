@@ -9,8 +9,8 @@ namespace GameControllers.Services
 {
     public class UnitOrderService : IUnitOrderService
     {
-        public Subscribable<MouseActionModel> mouseAction { get; set; } = new Subscribable<MouseActionModel>(new MouseActionModel(eMouseAction.None));
-        public Subscribable<IList<UnitOrderModel>> orders { get; set; } = new Subscribable<IList<UnitOrderModel>>(new List<UnitOrderModel>());
+        public Obseravable<MouseActionModel> mouseAction { get; set; } = new Obseravable<MouseActionModel>(new MouseActionModel(eMouseAction.None));
+        public Obseravable<IList<UnitOrderModel>> orders { get; set; } = new Obseravable<IList<UnitOrderModel>>(new List<UnitOrderModel>());
 
         public UnitOrderModel GetNextOrder(UnitModel requestingUnit)
         {

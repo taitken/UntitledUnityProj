@@ -14,12 +14,12 @@ namespace Environment
 {
     public class GameMapController : MonoBehaviour2
     {
-        private GroundLayer groundLayer;
-        private MineableLayer mineableLayer;
-        private ItemObjectLayer itemObjectLayer;
-        private UnitOrdersLayer unitOrdersLayer;
-        private BuildingLayer buildingLayer;
-        private CharacterLayer characterLayer;
+        public GroundLayer groundLayer;
+        public MineableLayer mineableLayer;
+        public ItemObjectLayer itemObjectLayer;
+        public UnitOrdersLayer unitOrdersLayer;
+        public BuildingLayer buildingLayer;
+        public CharacterLayer characterLayer;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private IPathFinderService pathFinderService;
@@ -47,14 +47,6 @@ namespace Environment
             this.characterLayer = this.GetComponentInChildren<CharacterLayer>();
             this.environmentService.tileMapRef = this.groundLayer.GetComponent<Tilemap>();
 
-            this.subscriptions.Add(this.itemObjectService.unitPickedUpItem.Subscribe(unit =>
-            {
-                if (unit != null) this.AttachItemToUnit(unit);
-            }));
-            this.subscriptions.Add(this.itemObjectService.unitItemDropped.Subscribe(unit =>
-            {
-                this.DetachItemFromUnit(unit);
-            }));
         }
         // Start is called before the first frame update
         void Start()
@@ -127,27 +119,7 @@ namespace Environment
             }
         }
 
-        private void AttachItemToUnit(UnitModel unitModel)
-        {
-            ItemObject foundItemObj = this.itemObjectLayer.itemObjects.Find(item => { return item.itemObjectModel.ID == unitModel.carriedItem.ID; });
-            if (foundItemObj == null)
-            {
-                unitModel.carriedItem = null;
-            }
-            else
-            {
-                this.characterLayer.worldCharacters.Find(character => { return character.unitModel.ID == unitModel.ID; }).AttachItem(foundItemObj);
-            }
-        }
 
-        private void DetachItemFromUnit(UnitModel unitModel)
-        {
-            WorldCharacter foundCharacter = this.characterLayer.worldCharacters.Find(character => { return character.unitModel.ID == unitModel.ID; });
-            if (foundCharacter != null)
-            {
-                foundCharacter.DetachItem();
-            }
-        }
 
         public override void OnClickedByUser()
         {

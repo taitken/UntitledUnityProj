@@ -8,7 +8,7 @@ namespace GameControllers.Services
 {
     public interface IUnitService
     {
-        public Subscribable<IList<UnitModel>> unitSubscribable { get; set; }
+        public Obseravable<IList<UnitModel>> unitObseravable { get; set; }
         void AddUnit(UnitModel unit);
         void RemoveUnit(long id);
     }

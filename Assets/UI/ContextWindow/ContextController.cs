@@ -20,7 +20,7 @@ namespace UI
         {
             this.windowFactory = _windowFactory;
             this.contextWindowService = _contextService;
-            this.subscriptions.Add(this.contextWindowService.contextSubscribable.Subscribe(_newContext =>
+            this.subscriptions.Add(this.contextWindowService.contextObseravable.Subscribe(_newContext =>
             {
                 this.contextModels = _newContext;
                 this.GenerateWindows(this.contextModels);

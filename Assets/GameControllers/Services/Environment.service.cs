@@ -9,8 +9,8 @@ namespace GameControllers.Services
 {
     public class EnvironmentService : IEnvironmentService
     {
-        public Subscribable<IList<MineableObjectModel>> mineableObjects { get; set; } = new Subscribable<IList<MineableObjectModel>>(new List<MineableObjectModel>());
-        public Subscribable<IList<GroundTileModel>> groundTiles { get; set; } = new Subscribable<IList<GroundTileModel>>(new List<GroundTileModel>());
+        public Obseravable<IList<MineableObjectModel>> mineableObjects { get; set; } = new Obseravable<IList<MineableObjectModel>>(new List<MineableObjectModel>());
+        public Obseravable<IList<GroundTileModel>> groundTiles { get; set; } = new Obseravable<IList<GroundTileModel>>(new List<GroundTileModel>());
         public Tilemap tileMapRef { get; set; }
 
         public void AddMineableObject(MineableObjectModel mineableObject)

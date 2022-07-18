@@ -30,7 +30,7 @@ namespace UnitAction
         }
         public bool PerformAction()
         {
-            ItemObjectModel itemObjectModel = this.itemObjectService.itemSubscribable.Get().Find(item =>{return item.position == this.unit.currentOrder.coordinates;});
+            ItemObjectModel itemObjectModel = this.itemObjectService.itemObseravable.Get().Find(item =>{return item.position == this.unit.currentOrder.coordinates;});
             this.unit.carriedItem = itemObjectModel;
             this.itemObjectService.unitPickedUpItem.Set(this.unit);
             return true;

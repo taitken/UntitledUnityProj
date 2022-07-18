@@ -3,22 +3,22 @@ using System.Collections.Generic;
 
 namespace UtilityClasses
 {
-    public class Subscribable<t1>
+    public class Obseravable<t1>
     {
-        private t1 subscribableObject;
+        private t1 ObseravableObject;
         private IList<Action<t1>> subscribers;
-        public Subscribable(t1 initialObject)
+        public Obseravable(t1 initialObject)
         {
             this.subscribers = new List<Action<t1>>();
-            this.subscribableObject = initialObject;
+            this.ObseravableObject = initialObject;
         }
         public t1 Get()
         {
-            return this.subscribableObject;
+            return this.ObseravableObject;
         }
         public void Set(t1 updatedObject)
         {
-            this.subscribableObject = updatedObject;
+            this.ObseravableObject = updatedObject;
             this.NotifyAllSubscribers();
         }
 
@@ -29,7 +29,7 @@ namespace UtilityClasses
             {
                 this.subscribers.Remove(subscription);
             });
-            subscription(this.subscribableObject);
+            subscription(this.ObseravableObject);
 
             return subscriptionRefernce;
         }
@@ -38,7 +38,7 @@ namespace UtilityClasses
         {
             foreach (Action<t1> subscriber in this.subscribers)
             {
-                subscriber(this.subscribableObject);
+                subscriber(this.ObseravableObject);
             }
         }
     }

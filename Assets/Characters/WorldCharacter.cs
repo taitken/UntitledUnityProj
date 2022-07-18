@@ -59,6 +59,16 @@ namespace Characters
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             sr = GetComponent<SpriteRenderer>();
+
+
+            this.subscriptions.Add(this.itemObjectService.unitPickedUpItem.Subscribe(unit =>
+            {
+                if (unit != null) this.AttachItemToUnit(unit);
+            }));
+            this.subscriptions.Add(this.itemObjectService.unitItemDropped.Subscribe(unit =>
+            {
+                this.DetachItemFromUnit(unit);
+            }));
         }
 
         void Start()
@@ -127,16 +137,29 @@ namespace Characters
             return castCollisions.Filter(collision => { return collision.collider.gameObject.tag != "AllowMovement"; }).Count != 0;
         }
 
-        public void AttachItem(ItemObject itemObj)
+        private void AttachItemToUnit(UnitModel unitModel)
         {
-            this.carriedObj = itemObj;
-            itemObj.transform.SetParent(this.transform);
+            ItemObject foundItemObj = this.itemObjectLayer.itemObjects.Find(item => { return item.itemObjectModel.ID == unitModel.carriedItem.ID; });
+            if (foundItemObj == null)
+            {
+                unitModel.carriedItem = null;
+            }
+            else
+            {
+                this.carriedObj = itemObj;
+                itemObj.transform.SetParent(this.transform);
+            }
         }
-        public void DetachItem()
+
+        private void DetachItemFromUnit(UnitModel unitModel)
         {
-            this.carriedObj = null;
-            ItemObject foundItem = this.GetComponentInChildren<ItemObject>();
-            if(foundItem) foundItem.transform.SetParent(null);
+            WorldCharacter foundCharacter = this.characterLayer.worldCharacters.Find(character => { return character.unitModel.ID == unitModel.ID; });
+            if (foundCharacter != null)
+            {
+                this.carriedObj = null;
+                ItemObject foundItem = this.GetComponentInChildren<ItemObject>();
+                if (foundItem) foundItem.transform.SetParent(null);
+            }
         }
 
         public class Factory : PlaceholderFactory<UnitModel, WorldCharacter>

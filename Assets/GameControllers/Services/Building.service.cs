@@ -10,7 +10,7 @@ namespace GameControllers.Services
     public class BuildingService : IBuildingService
     {
         public BuildingAssetController buildingAssetController { get; set; }
-        public Subscribable<IList<BuildingObjectModel>> buildingSubscribable { get; set; } = new Subscribable<IList<BuildingObjectModel>>(new List<BuildingObjectModel>());
+        public Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; } = new Obseravable<IList<BuildingObjectModel>>(new List<BuildingObjectModel>());
 
         public void SetBuildingAssetController(BuildingAssetController _buildingAssetController)
         {
@@ -23,16 +23,16 @@ namespace GameControllers.Services
         }
         public void AddBuilding(BuildingObjectModel building)
         {
-            IList<BuildingObjectModel> _buildings = this.buildingSubscribable.Get();
+            IList<BuildingObjectModel> _buildings = this.buildingObseravable.Get();
             if (_buildings.Find(existingUnit => { return building.ID == existingUnit.ID; }) == null)
             {
                 _buildings.Add(building);
-                this.buildingSubscribable.Set(_buildings);
+                this.buildingObseravable.Set(_buildings);
             }
         }
         public void RemoveBuilding(long id)
         {
-            this.buildingSubscribable.Set(this.buildingSubscribable.Get().Filter(building => { return building.ID != id; }));
+            this.buildingObseravable.Set(this.buildingObseravable.Get().Filter(building => { return building.ID != id; }));
         }
     }
 }

@@ -48,7 +48,7 @@ namespace Environment
             {
                 this.mouseAction = _mouseAction;
             });
-            this.buildingService.buildingSubscribable.Subscribe(buildings =>
+            this.buildingService.buildingObseravable.Subscribe(buildings =>
             {
                 this.RefreshBuildings(buildings);
             });

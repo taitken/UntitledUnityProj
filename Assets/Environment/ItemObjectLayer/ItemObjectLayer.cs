@@ -33,7 +33,7 @@ namespace Environment
             this.itemObjectFactory = _itemObjectFactory;
             this.itemService = _itemService;
 
-            this.itemService.itemSubscribable.Subscribe(items =>
+            this.itemService.itemObseravable.Subscribe(items =>
             {
                 IList<ItemObjectModel> newItems = items.GetNewModels(this.itemObjectModels);
                 newItems.ForEach(items =>

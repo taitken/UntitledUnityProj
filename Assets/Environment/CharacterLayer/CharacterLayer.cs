@@ -32,7 +32,7 @@ namespace Environment
                               LayerCollider.Factory _layerColliderFactory,
                               PlayerController.Factory _characterFactory)
         {
-            this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "BuildingLayer");
+            this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "CharacterLayer");
             this.orderService = _orderService;
             this.unitService = _unitService;
             this.characterFactory = _characterFactory;
@@ -40,7 +40,7 @@ namespace Environment
 
         void Start()
         {
-            this.subscriptions.Add(this.unitService.unitSubscribable.Subscribe(updatedUnitModels =>
+            this.subscriptions.Add(this.unitService.unitObseravable.Subscribe(updatedUnitModels =>
             {
                 IList<UnitModel> newModels = updatedUnitModels.GetNewModels(this.unitModels);
                 IList<UnitModel> removedModels = updatedUnitModels.GetRemovedModels(unitModels);

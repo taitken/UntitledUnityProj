@@ -12,21 +12,21 @@ namespace UI.Services
         {
 
         }
-        public Subscribable<IList<ContextWindowModel>> contextSubscribable { get; set; } = new Subscribable<IList<ContextWindowModel>>(new List<ContextWindowModel>());
+        public Obseravable<IList<ContextWindowModel>> contextObseravable { get; set; } = new Obseravable<IList<ContextWindowModel>>(new List<ContextWindowModel>());
 
         public void AddContext(ContextWindowModel context)
         {
-            IList<ContextWindowModel> _contexts = this.contextSubscribable.Get();
+            IList<ContextWindowModel> _contexts = this.contextObseravable.Get();
             if (_contexts.Find(existingcontext => { return context.ID == existingcontext.ID; }) == null)
             {
                 _contexts.Add(context);
-                this.contextSubscribable.Set(_contexts);
+                this.contextObseravable.Set(_contexts);
             }
         }
 
         public void RemoveContext(long modelID)
         {
-            this.contextSubscribable.Set(this.contextSubscribable.Get().Filter(context => { return context.objectID != modelID; }));
+            this.contextObseravable.Set(this.contextObseravable.Get().Filter(context => { return context.objectID != modelID; }));
         }
     }
 }

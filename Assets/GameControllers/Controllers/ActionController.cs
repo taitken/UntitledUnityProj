@@ -35,7 +35,7 @@ public class ActionController : MonoBehaviour2
             this.UnassignOrders(removedOrders);
             this.currentOrders = updatedOrders;
         }));
-        this.subscriptions.Add(_unitService.unitSubscribable.Subscribe(updatedUnits =>
+        this.subscriptions.Add(_unitService.unitObseravable.Subscribe(updatedUnits =>
         {
             this.currentUnits = updatedUnits;
         }));

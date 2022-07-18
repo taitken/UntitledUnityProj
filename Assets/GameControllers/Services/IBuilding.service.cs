@@ -9,7 +9,7 @@ namespace GameControllers.Services
     public interface IBuildingService
     {
         public BuildingAssetController buildingAssetController { get; set; }
-        Subscribable<IList<BuildingObjectModel>> buildingSubscribable { get; set; }
+        Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; }
         public void SetBuildingAssetController(BuildingAssetController _buildingAssetController);
         public SpriteRenderer GetBuildingSprite(eBuildingType buildingType);
         void AddBuilding(BuildingObjectModel building);

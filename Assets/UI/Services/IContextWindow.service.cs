@@ -9,7 +9,7 @@ namespace UI.Services
 {
     public interface IContextWindowService
     {
-        public Subscribable<IList<ContextWindowModel>> contextSubscribable { get; set; }
+        public Obseravable<IList<ContextWindowModel>> contextObseravable { get; set; }
         void AddContext(ContextWindowModel context);
         void RemoveContext(long modelID);
     }

@@ -12,21 +12,21 @@ namespace GameControllers.Services
         {
             
         }
-        public Subscribable<IList<UnitModel>> unitSubscribable { get; set; } = new Subscribable<IList<UnitModel>>(new List<UnitModel>());
+        public Obseravable<IList<UnitModel>> unitObseravable { get; set; } = new Obseravable<IList<UnitModel>>(new List<UnitModel>());
 
         public void AddUnit(UnitModel unit)
         {
-            IList<UnitModel> _units = this.unitSubscribable.Get();
+            IList<UnitModel> _units = this.unitObseravable.Get();
             if (_units.Find(existingUnit => { return unit.ID == existingUnit.ID; }) == null)
             {
                 _units.Add(unit);
-                this.unitSubscribable.Set(_units);
+                this.unitObseravable.Set(_units);
             }
         }
 
         public void RemoveUnit(long id)
         {
-            this.unitSubscribable.Set(this.unitSubscribable.Get().Filter(order => { return order.ID != id; }));
+            this.unitObseravable.Set(this.unitObseravable.Get().Filter(order => { return order.ID != id; }));
         }
     }
 }
