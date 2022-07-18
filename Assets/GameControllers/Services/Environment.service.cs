@@ -12,7 +12,6 @@ namespace GameControllers.Services
         public Obseravable<IList<MineableObjectModel>> mineableObjects { get; set; } = new Obseravable<IList<MineableObjectModel>>(new List<MineableObjectModel>());
         public Obseravable<IList<GroundTileModel>> groundTiles { get; set; } = new Obseravable<IList<GroundTileModel>>(new List<GroundTileModel>());
         public Tilemap tileMapRef { get; set; }
-
         public void AddMineableObject(MineableObjectModel mineableObject)
         {
             IList<MineableObjectModel> _mineableObjects = this.mineableObjects.Get();

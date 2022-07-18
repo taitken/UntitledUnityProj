@@ -34,11 +34,49 @@ namespace UtilityClasses
             return subscriptionRefernce;
         }
 
+        // Subscribes without triggering the subscription
+        public Subscription SubscribeQuietly(Action<t1> subscription)
+        {
+            this.subscribers.Add(subscription);
+            Subscription subscriptionRefernce = new Subscription(delegate ()
+            {
+                this.subscribers.Remove(subscription);
+            });
+            return subscriptionRefernce;
+        }
+
         public void NotifyAllSubscribers()
         {
             foreach (Action<t1> subscriber in this.subscribers)
             {
                 subscriber(this.ObseravableObject);
+            }
+        }
+    }
+
+    public class Obseravable
+    {
+        private IList<Action> subscribers;
+        public Obseravable()
+        {
+            this.subscribers = new List<Action>();
+        }
+
+        public Subscription Subscribe(Action subscription)
+        {
+            this.subscribers.Add(subscription);
+            Subscription subscriptionRefernce = new Subscription(delegate ()
+            {
+                this.subscribers.Remove(subscription);
+            });
+            return subscriptionRefernce;
+        }
+
+        public void NotifyAllSubscribers()
+        {
+            foreach (Action subscriber in this.subscribers)
+            {
+                subscriber();
             }
         }
     }

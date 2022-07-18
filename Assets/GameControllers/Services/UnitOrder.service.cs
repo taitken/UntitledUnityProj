@@ -10,6 +10,7 @@ namespace GameControllers.Services
     public class UnitOrderService : IUnitOrderService
     {
         public Obseravable<MouseActionModel> mouseAction { get; set; } = new Obseravable<MouseActionModel>(new MouseActionModel(eMouseAction.None));
+        public Obseravable<UnitOrderModel> hideOrderIconTrigger { get; set; } = new Obseravable<UnitOrderModel>(null);
         public Obseravable<IList<UnitOrderModel>> orders { get; set; } = new Obseravable<IList<UnitOrderModel>>(new List<UnitOrderModel>());
 
         public UnitOrderModel GetNextOrder(UnitModel requestingUnit)

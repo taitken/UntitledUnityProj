@@ -37,38 +37,31 @@ namespace Characters
                               UnitModel _unitModel
         )
         {
+            this.movementFilter.SetLayerMask(LayerMask.GetMask("MineableLayer"));
             this.orderService = _orderService;
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
             this.itemService = _itemService;
             this.pathLineFactory = _pathLineFactory;
             this.unitModel = _unitModel;
+
             this.subscriptions.Add(this.orderService.orders.Subscribe(orders =>
             {
                 if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null)
                 {
                     this.CancelMoving();
-                    this.DetachItem();
+                    this.DetachItemFromUnit();
                 }
             }));
-            this.movementFilter.SetLayerMask(LayerMask.GetMask("MineableLayer"));
             this.pathFinderService.pathFinderMap.Subscribe(map =>
             {
                 this.pathFindMap = map;
             });
+            this.ListenForItemPickupTriggers();
+
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             sr = GetComponent<SpriteRenderer>();
-
-
-            this.subscriptions.Add(this.itemObjectService.unitPickedUpItem.Subscribe(unit =>
-            {
-                if (unit != null) this.AttachItemToUnit(unit);
-            }));
-            this.subscriptions.Add(this.itemObjectService.unitItemDropped.Subscribe(unit =>
-            {
-                this.DetachItemFromUnit(unit);
-            }));
         }
 
         void Start()
@@ -137,10 +130,26 @@ namespace Characters
             return castCollisions.Filter(collision => { return collision.collider.gameObject.tag != "AllowMovement"; }).Count != 0;
         }
 
-        private void AttachItemToUnit(UnitModel unitModel)
+        private void ListenForItemPickupTriggers()
         {
-            ItemObject foundItemObj = this.itemObjectLayer.itemObjects.Find(item => { return item.itemObjectModel.ID == unitModel.carriedItem.ID; });
-            if (foundItemObj == null)
+            this.subscriptions.Add(this.itemService.onItemPickupTrigger.Subscribe(() =>
+            {
+                // Only picks up if not carrying item
+                // To do -- Implement item switch logic eg. drop carried obj and pickup new obj
+                if (this.unitModel.carriedItem != null && this.carriedObj == null)
+                {
+                    this.AttachItemToUnit(this.itemService.GetItemObject(this.unitModel.carriedItem.ID));
+                }
+                if (this.unitModel.carriedItem == null && this.carriedObj != null)
+                {
+                    this.DetachItemFromUnit();
+                }
+            }));
+        }
+
+        private void AttachItemToUnit(ItemObject itemObj)
+        {
+            if (itemObj == null)
             {
                 unitModel.carriedItem = null;
             }
@@ -151,15 +160,11 @@ namespace Characters
             }
         }
 
-        private void DetachItemFromUnit(UnitModel unitModel)
+        private void DetachItemFromUnit()
         {
-            WorldCharacter foundCharacter = this.characterLayer.worldCharacters.Find(character => { return character.unitModel.ID == unitModel.ID; });
-            if (foundCharacter != null)
-            {
-                this.carriedObj = null;
-                ItemObject foundItem = this.GetComponentInChildren<ItemObject>();
-                if (foundItem) foundItem.transform.SetParent(null);
-            }
+            this.carriedObj = null;
+            ItemObject foundItem = this.GetComponentInChildren<ItemObject>();
+            if (foundItem) foundItem.transform.SetParent(null);
         }
 
         public class Factory : PlaceholderFactory<UnitModel, WorldCharacter>

@@ -5,10 +5,12 @@ using GameControllers.Models;
 using UnitAction;
 using Zenject;
 using Unit.Models;
+using UnityEngine.Tilemaps;
 
 public class ActionController : MonoBehaviour2
 {
     private ActionFactory actionFactory;
+    private IBuildingService buildingService;
     private IList<ActionSequence> actionSequences = new List<ActionSequence>();
     private IList<UnitOrderModel> currentOrders = new List<UnitOrderModel>();
     private IList<UnitOrderModel> unassignedOrders
@@ -28,6 +30,7 @@ public class ActionController : MonoBehaviour2
                           IBuildingService _buildingService,
                           IItemObjectService _itemService)
     {
+        this.buildingService = _buildingService;
         this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService, _itemService);
         this.subscriptions.Add(_orderService.orders.Subscribe(updatedOrders =>
         {
@@ -62,18 +65,43 @@ public class ActionController : MonoBehaviour2
 
     }
 
-    void CheckAndAssignOrder()
+    private void CheckAndAssignOrder()
     {
         UnitModel unitWithoutOrder = this.currentUnits.Find(unit => { return unit.currentOrder == null; });
         if (unitWithoutOrder != null && this.unassignedOrders.Count > 0)
         {
-            unitWithoutOrder.currentOrder = this.unassignedOrders[0];
-            this.CreateAndBeginSequence(unitWithoutOrder);
+            for (int i = 0; i < this.unassignedOrders.Count; i++)
+            {
+                if (this.PreOrderAssignCheck(this.unassignedOrders[i]))
+                {
+                    unitWithoutOrder.currentOrder = this.unassignedOrders[i];
+                    this.CreateAndBeginSequence(unitWithoutOrder);
+                    break;
+                }
+            }
         }
         else
         {
             //Debug.Log("Order already assigned");
         }
+    }
+
+    private bool PreOrderAssignCheck(UnitOrderModel order)
+    {
+        bool returnVal = true;
+        switch (order.orderType)
+        {
+            case eOrderTypes.Build:
+                // code block
+                break;
+            case eOrderTypes.Dig:
+                // code block
+                break;
+            case eOrderTypes.Store:
+                returnVal = this.buildingService.IsStorageAvailable();
+                break;
+        }
+        return returnVal;
     }
 
     private void CreateAndBeginSequence(UnitModel unitModel)

@@ -46,7 +46,6 @@ namespace Environment
             this.buildingLayer = this.GetComponentInChildren<BuildingLayer>();
             this.characterLayer = this.GetComponentInChildren<CharacterLayer>();
             this.environmentService.tileMapRef = this.groundLayer.GetComponent<Tilemap>();
-
         }
         // Start is called before the first frame update
         void Start()

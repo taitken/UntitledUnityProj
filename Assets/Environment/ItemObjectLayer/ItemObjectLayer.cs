@@ -55,6 +55,11 @@ namespace Environment
 
         }
 
+        public IList<ItemObject> GetItemObjects()
+        {
+            return this.itemObjects;
+        }
+
         private ItemObject createItemObject(ItemObjectModel itemObj)
         {
             ItemObject newItem = this.itemObjectFactory.Create(itemObj);

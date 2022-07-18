@@ -2,6 +2,8 @@ using System;
 using GameControllers.Models;
 using GameControllers.Services;
 using Unit.Models;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace UnitAction
 {
@@ -17,6 +19,7 @@ namespace UnitAction
         IUnitOrderService orderService;
         IBuildingService buildingService;
         IItemObjectService itemService;
+        Tilemap tilemap;
         Func<bool> completeCondition { get; set; }
 
         public ActionFactory(IPathFinderService _pathFinderService,
@@ -47,7 +50,9 @@ namespace UnitAction
                     break;
                 case eOrderTypes.Store:
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, false))
-                        .Then(new PickupItemAction(_unit, this.itemService));
+                        .Then(new PickupItemAction(_unit, this.itemService))
+                        .Then(new HideOrderIconAction(_unit, this.orderService))
+                        .Then(new MoveAction(_unit, this.buildingService.GetClosestStorageLocation(this.environmentService.tileMapRef.LocalToCell(_unit.position)),this.pathFinderService, this.environmentService, true ));
                     break;
             }
             return newSequence;

@@ -20,6 +20,7 @@ namespace UnitAction
                 return this.actions.Find(action => { return action.CheckCompleted() == false; }) == null;
             }
         }
+        public int size { get { return this.actions.Count; } }
         public ActionSequence(IUnitOrderService _orderService, UnitOrderModel unitOrder, IUnitAction firstAction)
         {
             this.actions.Add(firstAction);
@@ -38,7 +39,7 @@ namespace UnitAction
                     this.TryPerformAction(this.currentAction);
                 }
             }
-            if(this.completed || this.currentAction.cancel)
+            if (this.completed || this.currentAction.cancel)
             {
                 this.unitOrderService.RemoveOrder(this.unitOrder.ID);
             }
@@ -69,7 +70,7 @@ namespace UnitAction
 
         private IUnitAction GetNextAction()
         {
-            return this.actions.Find(action => { return action.completed == false; });
+            return this.actions.Find(action => { return !action.CheckCompleted(); });
         }
     }
 }

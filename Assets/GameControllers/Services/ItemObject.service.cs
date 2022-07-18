@@ -11,14 +11,13 @@ namespace GameControllers.Services
 {
     public class ItemObjectService : IItemObjectService
     {
-        private ItemObjectLayer itemLayer { get; set; }
+        private Func<IList<ItemObject>> ItemObjectHook;
         public Obseravable<IList<ItemObjectModel>> itemObseravable { get; set; } = new Obseravable<IList<ItemObjectModel>>(new List<ItemObjectModel>());
-        public Obseravable<UnitModel> unitPickedUpItem { get; set; } = new Obseravable<UnitModel>(null);
-        public Obseravable<UnitModel> unitItemDropped { get; set; } = new Obseravable<UnitModel>(null);
+        public Obseravable onItemPickupTrigger { get; set; } = new Obseravable();
 
-        public void InstantiateLayer(ItemObjectLayer _itemLayer)
+        public void SetItemObjectHook(Func<IList<ItemObject>> _itemObjectHook)
         {
-            this.itemLayer = _itemLayer;
+            this.ItemObjectHook = _itemObjectHook;
         }
         public void AddItem(ItemObjectModel unit)
         {
@@ -38,7 +37,7 @@ namespace GameControllers.Services
         
         public ItemObject GetItemObject(long id)
         {
-            return this.itemLayer.itemObjects.Find(item =>{return item.itemObjectModel.ID == id;});
+            return this.ItemObjectHook().Find(item =>{return item.itemObjectModel.ID == id;});
         }
     }
 }

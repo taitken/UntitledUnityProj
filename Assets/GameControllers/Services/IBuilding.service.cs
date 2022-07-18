@@ -14,5 +14,7 @@ namespace GameControllers.Services
         public SpriteRenderer GetBuildingSprite(eBuildingType buildingType);
         void AddBuilding(BuildingObjectModel building);
         void RemoveBuilding(long id);
+        Vector3Int GetClosestStorageLocation(Vector3Int startPos);
+        bool IsStorageAvailable();
     }
 }

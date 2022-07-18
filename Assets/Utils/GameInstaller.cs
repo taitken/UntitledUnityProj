@@ -28,7 +28,7 @@ public class GameInstaller : MonoInstaller
     public GameObject ContextWindow;
     public GameObject LayerCollider;
     public BuildingAssetController BuildingAssetController;
-    public GameMapController GameMapController;
+    public ItemObjectLayer ItemObjectLayer;
     public override void InstallBindings()
     {
         // Services
@@ -36,7 +36,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<IUnitService>().To<UnitService>().AsSingle();
         Container.Bind<IEnvironmentService>().To<EnvironmentService>().AsSingle();
         Container.Bind<IPathFinderService>().To<PathFinderService>().AsSingle();
-        Container.Bind<IItemObjectService>().To<ItemObjectService>().AsSingle().OnInstantiated<ItemObjectService>((ctx, service) =>{service.InstantiateLayer(GameMapController.itemObjectLayer);});
+        Container.Bind<IItemObjectService>().To<ItemObjectService>().AsSingle().OnInstantiated<ItemObjectService>((ctx, service) =>{service.SetItemObjectHook(()=>{return this.ItemObjectLayer.GetItemObjects();});});
         Container.Bind<IContextWindowService>().To<ContextWindowService>().AsSingle();
         Container.Bind<IBuildingService>().To<BuildingService>().AsSingle().OnInstantiated<BuildingService>((ctx, service) =>{service.SetBuildingAssetController(BuildingAssetController);});
 

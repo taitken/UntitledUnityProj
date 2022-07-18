@@ -28,6 +28,10 @@ namespace Environment
             this.buildingService = _buildingService;
             this.unitOrder = _order;
             this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
+            
+            this.subscriptions.Add(this.orderService.hideOrderIconTrigger.SubscribeQuietly((order =>{
+                if(this.unitOrder.ID == order.ID) this.GetComponent<SpriteRenderer>().enabled = false;
+            })));
         }
         void Awake()
         {
@@ -53,7 +57,6 @@ namespace Environment
         {
 
         }
-
         public void UpdateSprite(int spriteID)
         {
             this.spriteRenderer.sprite = this.spriteList[spriteID];

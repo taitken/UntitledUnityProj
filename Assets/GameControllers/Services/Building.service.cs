@@ -11,6 +11,7 @@ namespace GameControllers.Services
     {
         public BuildingAssetController buildingAssetController { get; set; }
         public Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; } = new Obseravable<IList<BuildingObjectModel>>(new List<BuildingObjectModel>());
+        private IList<StorageBuildingModel> storageBuilding { get { return this.buildingObseravable.Get().Filter(building => { return building is StorageBuildingModel; }).Map(storageBuilding => { return storageBuilding as StorageBuildingModel; }); } }
 
         public void SetBuildingAssetController(BuildingAssetController _buildingAssetController)
         {
@@ -34,5 +35,25 @@ namespace GameControllers.Services
         {
             this.buildingObseravable.Set(this.buildingObseravable.Get().Filter(building => { return building.ID != id; }));
         }
+        public Vector3Int GetClosestStorageLocation(Vector3Int startPos)
+        {
+            long? lowestDistance = null;
+            Vector3Int returnVec = default(Vector3Int);
+            this.storageBuilding.ForEach(building =>
+            {
+                long distance = Math.Abs(startPos.x - building.position.x) + Math.Abs(startPos.y - building.position.y);
+                if(lowestDistance == null || distance < lowestDistance)
+                {
+                    lowestDistance = distance;
+                    returnVec = building.position;
+                }
+            });
+            return returnVec;
+        }
+        public bool IsStorageAvailable()
+        {
+            return this.storageBuilding.Count > 0;
+        }
+
     }
 }
