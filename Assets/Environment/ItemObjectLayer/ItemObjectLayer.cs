@@ -36,9 +36,12 @@ namespace Environment
             this.itemService.itemObseravable.Subscribe(items =>
             {
                 IList<ItemObjectModel> newItems = items.GetNewModels(this.itemObjectModels);
-                newItems.ForEach(items =>
+                newItems.ForEach(item =>
                 {
-                    this.itemObjects.Add(this.createItemObject(items));
+                    if (item.itemState == ItemObjectModel.eItemState.OnGround)
+                    {
+                        this.itemObjects.Add(this.createItemObject(item));
+                    }
                 });
             });
         }

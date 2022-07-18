@@ -52,7 +52,8 @@ namespace UnitAction
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, false))
                         .Then(new PickupItemAction(_unit, this.itemService))
                         .Then(new HideOrderIconAction(_unit, this.orderService))
-                        .Then(new MoveAction(_unit, this.buildingService.GetClosestStorageLocation(this.environmentService.tileMapRef.LocalToCell(_unit.position)),this.pathFinderService, this.environmentService, true ));
+                        .Then(new MoveAction(_unit, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position)).position,this.pathFinderService, this.environmentService, true ))
+                        .Then(new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position))));
                     break;
             }
             return newSequence;

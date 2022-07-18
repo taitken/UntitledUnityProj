@@ -20,7 +20,8 @@ namespace Item
         [Inject]
         public void Construct(ItemObjectModel _itemObjectModel,
                                 IContextWindowService _contextWindowService,
-                                IUnitOrderService _orderService)
+                                IUnitOrderService _orderService,
+                                IItemObjectService _itemService)
         {
             this.itemObjectModel = _itemObjectModel;
             this.contextService = _contextWindowService;

@@ -43,7 +43,6 @@ namespace Building
         {
             List<string> newContext = new List<string>();
             newContext.Add("Is a building");
-            newContext.Add(this.buildingObjectModel.mass.ToString() + " " + LocalisationDict.mass);
             return newContext;
         }
 

@@ -32,7 +32,7 @@ namespace UnitAction
         {
             ItemObjectModel itemObjectModel = this.itemObjectService.itemObseravable.Get().Find(item =>{return item.position == this.unit.currentOrder.coordinates;});
             this.unit.carriedItem = itemObjectModel;
-            this.itemObjectService.onItemPickupTrigger.NotifyAllSubscribers();
+            this.itemObjectService.onItemPickupOrDropTrigger.NotifyAllSubscribers();
             return true;
         }
     }

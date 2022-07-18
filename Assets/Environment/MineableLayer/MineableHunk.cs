@@ -65,7 +65,7 @@ namespace Environment
         protected override void BeforeDeath()
         {
             this.contextService.RemoveContext(this.mineableObjectModel.ID);
-            this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position, mineableObjectModel.mass));
+            this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position, mineableObjectModel.mass, ItemObjectModel.eItemState.OnGround));
         }
 
         public override void OnClickedByUser()

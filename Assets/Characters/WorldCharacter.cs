@@ -132,7 +132,7 @@ namespace Characters
 
         private void ListenForItemPickupTriggers()
         {
-            this.subscriptions.Add(this.itemService.onItemPickupTrigger.Subscribe(() =>
+            this.subscriptions.Add(this.itemService.onItemPickupOrDropTrigger.Subscribe(() =>
             {
                 // Only picks up if not carrying item
                 // To do -- Implement item switch logic eg. drop carried obj and pickup new obj
@@ -144,6 +144,9 @@ namespace Characters
                 {
                     this.DetachItemFromUnit();
                 }
+            }));
+            this.subscriptions.Add(this.itemService.onItemStoreTrigger.SubscribeQuietly(item =>{
+                if(this.carriedObj.itemObjectModel.ID == item.ID) this.DetachItemFromUnit();
             }));
         }
 

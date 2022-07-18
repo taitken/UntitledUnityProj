@@ -218,6 +218,7 @@ MonoBehaviour:
   ContextWindow: {fileID: 9045927156703606938, guid: c055d567dde0a7a4b8ecf1da0098318e, type: 3}
   LayerCollider: {fileID: 2919357594930836622, guid: f29456b2636e3b14785de59cdc888b5a, type: 3}
   BuildingAssetController: {fileID: 4649490261548486794, guid: d4cd166f806427248920d6967e20c57b, type: 3}
+  ItemObjectLayer: {fileID: 746842677}
 --- !u!114 &156683541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3266,6 +3267,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3705595252840822620, guid: 72194478bdc3f5b4a9a4124459330c68, type: 3}
+    - {fileID: 2398066718091222639, guid: 72194478bdc3f5b4a9a4124459330c68, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 72194478bdc3f5b4a9a4124459330c68, type: 3}
 --- !u!1 &519420028
 GameObject:
@@ -3372,6 +3374,17 @@ MonoBehaviour:
   m_CropFrameX: 0
   m_CropFrameY: 0
   m_StretchFill: 0
+--- !u!114 &746842677 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9175475124168547259, guid: 72194478bdc3f5b4a9a4124459330c68, type: 3}
+  m_PrefabInstance: {fileID: 482173630}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a51e132ad3058441bc27ebc5b6cf94c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &922038488
 PrefabInstance:
   m_ObjectHideFlags: 0

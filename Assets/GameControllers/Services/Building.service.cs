@@ -35,20 +35,20 @@ namespace GameControllers.Services
         {
             this.buildingObseravable.Set(this.buildingObseravable.Get().Filter(building => { return building.ID != id; }));
         }
-        public Vector3Int GetClosestStorageLocation(Vector3Int startPos)
+        public BuildingObjectModel GetClosestStorage(Vector3Int startPos)
         {
             long? lowestDistance = null;
-            Vector3Int returnVec = default(Vector3Int);
+            BuildingObjectModel returnModel = null;
             this.storageBuilding.ForEach(building =>
             {
                 long distance = Math.Abs(startPos.x - building.position.x) + Math.Abs(startPos.y - building.position.y);
                 if(lowestDistance == null || distance < lowestDistance)
                 {
                     lowestDistance = distance;
-                    returnVec = building.position;
+                    returnModel = building;
                 }
             });
-            return returnVec;
+            return returnModel;
         }
         public bool IsStorageAvailable()
         {
