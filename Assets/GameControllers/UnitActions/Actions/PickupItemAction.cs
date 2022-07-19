@@ -1,12 +1,9 @@
 
-using System;
-using UnityEngine;
 using System.Collections.Generic;
-using Environment.Models;
-using GameControllers.Models;
 using GameControllers.Services;
 using Item.Models;
 using Unit.Models;
+using UnityEngine;
 
 namespace UnitAction
 {
@@ -15,13 +12,21 @@ namespace UnitAction
         private UnitModel unit;
         private IPathFinderService pathFinderService;
         private IItemObjectService itemObjectService;
+        private ItemObjectModel itemObjModel;
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public PickupItemAction(UnitModel _unit,
-                          IItemObjectService _itemObjectService)
+                          IItemObjectService _itemObjectService,
+                          ItemObjectModel _itemObjModel)
         {
             this.unit = _unit;
             this.itemObjectService = _itemObjectService;
+            this.itemObjModel = _itemObjModel;
+            this.cancel = this.itemObjModel == null;
+            this.itemObjectService.itemObseravable.SubscribeQuietly(items =>
+            {
+                this.cancel = !items.Any(item => { return item.ID == this.itemObjModel.ID; });
+            });
         }
 
         public bool CheckCompleted()
@@ -30,8 +35,8 @@ namespace UnitAction
         }
         public bool PerformAction()
         {
-            ItemObjectModel itemObjectModel = this.itemObjectService.itemObseravable.Get().Find(item =>{return item.position == this.unit.currentOrder.coordinates;});
-            this.unit.carriedItem = itemObjectModel;
+            this.cancel = this.itemObjModel == null;
+            this.unit.carriedItem = this.itemObjModel;
             this.itemObjectService.onItemPickupOrDropTrigger.NotifyAllSubscribers();
             return true;
         }

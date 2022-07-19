@@ -35,10 +35,25 @@ namespace GameControllers.Services
             this.itemObseravable.Set(this.itemObseravable.Get().Filter(order => { return order.ID != id; }));
         }
 
-        
+        public ItemObjectModel FindClosestItem(eItemType _itemType, Vector3Int _startingPos)
+        {
+            IList<ItemObjectModel> itemObjs = this.itemObseravable.Get().Filter(item => { return item.itemType == _itemType; });
+            long? lowestDistance = null;
+            ItemObjectModel returnModel = null;
+            itemObjs.ForEach(item =>
+            {
+                long distance = Math.Abs(_startingPos.x - item.position.x) + Math.Abs(_startingPos.y - item.position.y);
+                if (lowestDistance == null || distance < lowestDistance)
+                {
+                    lowestDistance = distance;
+                    returnModel = item;
+                }
+            });
+            return returnModel;
+        }
         public ItemObject GetItemObject(long id)
         {
-            return this.ItemObjectHook().Find(item =>{return item.itemObjectModel.ID == id;});
+            return this.ItemObjectHook().Find(item => { return item.itemObjectModel.ID == id; });
         }
     }
 }

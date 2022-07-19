@@ -36,9 +36,9 @@ namespace Environment
         void Awake()
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
-            if (this.unitOrder is BuildOrderModel)
+            if (this.unitOrder is SupplyOrderModel)
             {
-                BuildOrderModel buildOrder = this.unitOrder as BuildOrderModel;
+                SupplyOrderModel buildOrder = this.unitOrder as SupplyOrderModel;
                 this.UpdateBuildingSprite(buildOrder.buildingType);
             }
             else

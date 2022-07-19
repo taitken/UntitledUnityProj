@@ -46,8 +46,13 @@ namespace Item
         {
             if (this.mouseAction.mouseType == eMouseAction.Store)
             {
-                this.orderService.AddOrder(new UnitOrderModel(this.itemObjectModel.position, this.mouseAction.mouseType));
+                this.orderService.AddOrder(new UnitOrderModel(this.itemObjectModel.position, eOrderTypes.Store));
             }
+        }
+
+        protected override void BeforeDeath()
+        {
+            this.contextService.RemoveContext(this.itemObjectModel.ID);
         }
 
 

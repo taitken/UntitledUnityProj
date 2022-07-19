@@ -17,6 +17,7 @@ namespace GameControllers.Services
         void SetItemObjectHook(Func<IList<ItemObject>> _itemObjectHook);
         void AddItem(ItemObjectModel item);
         void RemoveItem(long id);
+        ItemObjectModel FindClosestItem(eItemType _itemType, Vector3Int _startingPos);
         public ItemObject GetItemObject(long id);
     }
 }

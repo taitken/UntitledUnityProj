@@ -7,6 +7,7 @@ using Building;
 using Zenject;
 using GameControllers.Models;
 using UI.Services;
+using Item.Models;
 
 namespace Environment
 {
@@ -18,6 +19,7 @@ namespace Environment
         private IBuildingService buildingService;
         private IEnvironmentService environmentService;
         private MouseActionModel mouseAction;
+        private BuildSiteObject.Factory buildSiteFactory;
         private IContextWindowService contextService;
         private IList<BuildingObject> buildingPrefabs = new List<BuildingObject>();
         private IList<BuildingObjectModel> buildingObjectModels
@@ -27,19 +29,29 @@ namespace Environment
                 return this.buildingPrefabs.Map(building => { return building.buildingObjectModel; });
             }
         }
+        private IList<BuildSiteObject> buildingSiteObjects = new List<BuildSiteObject>();
+        private IList<BuildSiteModel> buildSiteModels
+        {
+            get
+            {
+                return this.buildingSiteObjects.Map(buildSite => { return buildSite.buildSiteModel; });
+            }
+        }
 
         [Inject]
         public void Construct(IUnitOrderService _orderService,
                               IEnvironmentService _environmentService,
                               IBuildingService _buildingService,
                               IContextWindowService _contextService,
-                              LayerCollider.Factory _layerColliderFactory)
+                              LayerCollider.Factory _layerColliderFactory,
+                              BuildSiteObject.Factory _buildSiteFactory)
         {
             this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "BuildingLayer");
             this.orderService = _orderService;
             this.environmentService = _environmentService;
             this.buildingService = _buildingService;
             this.contextService = _contextService;
+            this.buildSiteFactory = _buildSiteFactory;
         }
 
         void Start()
@@ -51,6 +63,10 @@ namespace Environment
             this.buildingService.buildingObseravable.Subscribe(buildings =>
             {
                 this.RefreshBuildings(buildings);
+            });
+            this.buildingService.buildingSiteObseravable.Subscribe(buildSites =>
+            {
+                this.RefreshBuildSites(buildSites);
             });
         }
         // Update is called once per frame
@@ -82,11 +98,34 @@ namespace Environment
             });
         }
 
+        private void RefreshBuildSites(IList<BuildSiteModel> buildSites)
+        {
+            IList<BuildSiteModel> objsToAdd = buildSites.GetNewModels(this.buildSiteModels);
+            IList<BuildSiteModel> objsToRemove = buildSites.GetRemovedModels(this.buildSiteModels);
+            objsToAdd.ForEach(buildSite =>
+            {
+                this.buildingSiteObjects.Add(this.CreateBuildSite(buildSite));
+            });
+            objsToRemove.ForEach(buildingObj =>
+            {
+                BuildSiteObject buildSite = this.buildingSiteObjects.Find(buildSite => { return buildSite.buildSiteModel.ID == buildingObj.ID; });
+                this.buildingSiteObjects.Remove(buildSite);
+                buildSite.Destroy();
+            });
+        }
+
         private BuildingObject CreateBuilding(BuildingObjectModel buildingObj)
         {
             BuildingObject building = Instantiate<BuildingObject>(this.buildingService.buildingAssetController.GetBuildingPrefab(buildingObj.buildingType));
-            building.Initialise(this.contextService, buildingObj, this.tilemap);
+            building.Initialise(this.contextService, buildingObj, this.environmentService);
             return building;
+        }
+
+        private BuildSiteObject CreateBuildSite(BuildSiteModel buildSiteModel)
+        {
+            BuildSiteObject buildSite = this.buildSiteFactory.Create(buildSiteModel);
+            buildSite.transform.position = this.tilemap.CellToLocal(buildSiteModel.position);
+            return buildSite;
         }
 
         private void RemoveBuildings()
@@ -101,7 +140,7 @@ namespace Environment
 
         public override void OnClickedByUser()
         {
-            this.orderService.AddOrder(new BuildOrderModel(this.GetCellCoorAtMouse(), this.mouseAction.buildingType));
+            this.orderService.AddOrder(new SupplyOrderModel(this.GetCellCoorAtMouse(), eItemType.stone, this.mouseAction.buildingType));
         }
 
         private void ShowBuildGhost(eBuildingType _buildingType)

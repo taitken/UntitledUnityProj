@@ -107,8 +107,11 @@ public class ActionController : MonoBehaviour2
     private void CreateAndBeginSequence(UnitModel unitModel)
     {
         ActionSequence actionSequence = this.actionFactory.CreateSequence(unitModel);
-        actionSequence.Begin();
-        this.actionSequences.Add(actionSequence);
+        if (actionSequence != null)
+        {
+            actionSequence.Begin();
+            this.actionSequences.Add(actionSequence);
+        }
     }
 
     void UnassignOrders(IList<UnitOrderModel> ordersToUnassign)

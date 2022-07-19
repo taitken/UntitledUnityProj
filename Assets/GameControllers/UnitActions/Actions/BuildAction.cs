@@ -11,7 +11,6 @@ namespace UnitAction
     public class BuildAction : IUnitAction
     {
         private UnitModel unit;
-        private IPathFinderService pathFinderService;
         private IBuildingService buildingService;
         private BuildOrderModel buildOrder;
         private BuildingObjectFactory buildingFactory; 

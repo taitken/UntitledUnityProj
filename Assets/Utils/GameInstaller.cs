@@ -27,6 +27,7 @@ public class GameInstaller : MonoInstaller
     public GameObject ItemObject;
     public GameObject ContextWindow;
     public GameObject LayerCollider;
+    public GameObject BuildSiteObject;
     public BuildingAssetController BuildingAssetController;
     public ItemObjectLayer ItemObjectLayer;
     public override void InstallBindings()
@@ -47,6 +48,7 @@ public class GameInstaller : MonoInstaller
         Container.BindFactory<ItemObjectModel, ItemObject, ItemObject.Factory >().FromComponentInNewPrefab(ItemObject);
         Container.BindFactory<IList<Vector3>, CharacterPathLine, CharacterPathLine.Factory >().FromComponentInNewPrefab(CharacterPathLine);
         Container.BindFactory<Vector2, string, Action, LayerCollider, LayerCollider.Factory >().FromComponentInNewPrefab(LayerCollider);
+        Container.BindFactory<BuildSiteModel,  BuildSiteObject, BuildSiteObject.Factory >().FromComponentInNewPrefab(BuildSiteObject);
 
         // Building Objects
 

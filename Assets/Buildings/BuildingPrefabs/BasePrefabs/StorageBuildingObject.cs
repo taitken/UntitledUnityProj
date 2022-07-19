@@ -1,11 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using GameControllers.Services;
-using GameControllers.Models;
 using Building.Models;
-using Zenject;
-using UnityEngine.Tilemaps;
 using UI.Services;
 using UtilityClasses;
 using UI.Models;
@@ -15,9 +11,10 @@ namespace Building
     public class StorageBuildingObject : BuildingObject
     {
         public StorageBuildingModel storageBuildingModel;
-        public override void Initialise(IContextWindowService _contextService, BuildingObjectModel _buildingObjectModel, Tilemap tilemap)
+        public override void Initialise(IContextWindowService _contextService, BuildingObjectModel _buildingObjectModel,
+                                        IEnvironmentService _environmentService)
         {
-            base.Initialise(_contextService, _buildingObjectModel, tilemap);
+            base.Initialise(_contextService, _buildingObjectModel, _environmentService);
             this.storageBuildingModel = _buildingObjectModel as StorageBuildingModel;
         }
 

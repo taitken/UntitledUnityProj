@@ -13,6 +13,7 @@ namespace GameControllers.Models
     {
         Dig,
         Build,
-        Store
+        Store,
+        Supply
     }
 }

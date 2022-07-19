@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 using UI.Services;
 using UtilityClasses;
 using UI.Models;
+using GameControllers.Services;
 
 namespace Building
 {
@@ -16,10 +17,10 @@ namespace Building
 
         public virtual void Initialise(IContextWindowService _contextService,
                                         BuildingObjectModel _buildingObjectModel,
-                                        Tilemap tilemap)
+                                        IEnvironmentService _environmentService)
         {
             this.buildingObjectModel = _buildingObjectModel;
-            this.transform.position = tilemap.CellToLocal(_buildingObjectModel.position);
+            this.transform.position = _environmentService.CellToLocal(_buildingObjectModel.position);
             this.contextService = _contextService;
         }
 

@@ -39,7 +39,7 @@ namespace UnitAction
                     this.TryPerformAction(this.currentAction);
                 }
             }
-            if (this.completed || this.currentAction.cancel)
+            if (this.completed || this.actions.Any(action =>{return action.cancel;}))
             {
                 this.unitOrderService.RemoveOrder(this.unitOrder.ID);
             }

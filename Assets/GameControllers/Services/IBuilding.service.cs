@@ -10,10 +10,13 @@ namespace GameControllers.Services
     {
         public BuildingAssetController buildingAssetController { get; set; }
         Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; }
+        Obseravable<IList<BuildSiteModel>> buildingSiteObseravable { get; set; }
         public void SetBuildingAssetController(BuildingAssetController _buildingAssetController);
         public SpriteRenderer GetBuildingSprite(eBuildingType buildingType);
         void AddBuilding(BuildingObjectModel building);
         void RemoveBuilding(long id);
+        void AddBuildSite(BuildSiteModel buildSite);
+        void RemoveBuildSite(long id);
         BuildingObjectModel GetClosestStorage(Vector3Int startPos);
         bool IsStorageAvailable();
     }

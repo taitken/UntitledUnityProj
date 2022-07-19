@@ -20,6 +20,18 @@ namespace System.Collections.Generic
             return default(t1);
         }
 
+        public static bool Any<t1>(this IList<t1> list, Func<t1, bool> callback)
+        {
+            foreach (t1 listItem in list)
+            {
+                if (callback(listItem))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static IList<t1> Filter<t1>(this IList<t1> list, Func<t1, bool> callback)
         {
             IList<t1> returnList = new List<t1>();
@@ -53,7 +65,7 @@ namespace System.Collections.Generic
 
         public static void ForEach<t1>(this IList<t1> list, Action<t1, int> callback)
         {
-            for(int i = 0; i < list.Count; i++ )
+            for (int i = 0; i < list.Count; i++)
             {
                 callback(list[i], i);
             }
@@ -96,7 +108,6 @@ namespace System.Collections.Generic
             {
                 callback(tilemap.GetTile<Tile>(new Vector3Int(x, y, z)));
             });
-
         }
 
         // Compares this list to the parameter list, and will match items by ID. 

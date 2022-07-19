@@ -13,7 +13,7 @@ namespace UnitAction
         private IPathFinderService pathFinderService;
         private IEnvironmentService environmentService;
         private Vector3Int destination;
-        private bool moveOnTopOfDest { get; set; }
+        private bool MoveAdjacentToDest { get; set; }
         private bool actionStarted { get; set; } = false;
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
@@ -21,10 +21,10 @@ namespace UnitAction
                           Vector3Int _destination,
                           IPathFinderService _pathFinderService,
                           IEnvironmentService _environmentService,
-                          bool _moveOnTopOfDest)
+                          bool _MoveAdjacentToDest)
         {
             this.unit = _unit;
-            this.moveOnTopOfDest = _moveOnTopOfDest;
+            this.MoveAdjacentToDest = _MoveAdjacentToDest;
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
             this.destination = _destination;
@@ -44,7 +44,7 @@ namespace UnitAction
             unit.currentPath = this.pathFinderService.FindPath(this.environmentService.LocalToCell(unit.position),
                                                                 this.destination,
                                                                 this.pathFinderService.pathFinderMap.Get(),
-                                                                this.moveOnTopOfDest);
+                                                                this.MoveAdjacentToDest);
             if (unit.currentPath != null)
             {
                 unit.currentPath.RemoveAt(0);

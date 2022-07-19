@@ -11,6 +11,7 @@ namespace GameControllers.Services
     {
         public BuildingAssetController buildingAssetController { get; set; }
         public Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; } = new Obseravable<IList<BuildingObjectModel>>(new List<BuildingObjectModel>());
+        public Obseravable<IList<BuildSiteModel>> buildingSiteObseravable { get; set; } = new Obseravable<IList<BuildSiteModel>>(new List<BuildSiteModel>());
         private IList<StorageBuildingModel> storageBuilding { get { return this.buildingObseravable.Get().Filter(building => { return building is StorageBuildingModel; }).Map(storageBuilding => { return storageBuilding as StorageBuildingModel; }); } }
 
         public void SetBuildingAssetController(BuildingAssetController _buildingAssetController)
@@ -35,6 +36,19 @@ namespace GameControllers.Services
         {
             this.buildingObseravable.Set(this.buildingObseravable.Get().Filter(building => { return building.ID != id; }));
         }
+        public void AddBuildSite(BuildSiteModel buildSite)
+        {
+            IList<BuildSiteModel> _buildSites = this.buildingSiteObseravable.Get();
+            if (_buildSites.Find(existingBuildSite => { return buildSite.ID == existingBuildSite.ID; }) == null)
+            {
+                _buildSites.Add(buildSite);
+                this.buildingSiteObseravable.Set(_buildSites);
+            }
+        }
+        public void RemoveBuildSite(long id)
+        {
+            this.buildingSiteObseravable.Set(this.buildingSiteObseravable.Get().Filter(buildSite => { return buildSite.ID != id; }));
+        }
         public BuildingObjectModel GetClosestStorage(Vector3Int startPos)
         {
             long? lowestDistance = null;
@@ -42,7 +56,7 @@ namespace GameControllers.Services
             this.storageBuilding.ForEach(building =>
             {
                 long distance = Math.Abs(startPos.x - building.position.x) + Math.Abs(startPos.y - building.position.y);
-                if(lowestDistance == null || distance < lowestDistance)
+                if (lowestDistance == null || distance < lowestDistance)
                 {
                     lowestDistance = distance;
                     returnModel = building;
