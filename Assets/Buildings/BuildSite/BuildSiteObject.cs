@@ -44,7 +44,7 @@ namespace Building
         protected virtual List<string> GenerateContextWindowBody()
         {
             List<string> newContext = new List<string>();
-            newContext.Add("Is a building");
+            newContext.Add("Required: " + this.buildSiteModel.buildingModel.requiredItems[0].itemType.ToString() + ":" + ((int)this.buildSiteModel.buildingModel.requiredItems[0].mass).ToString() + " " + LocalisationDict.mass);
             newContext.Add(((int)this.buildSiteModel.supplyCurrent).ToString() + " " + LocalisationDict.mass);
             return newContext;
         }

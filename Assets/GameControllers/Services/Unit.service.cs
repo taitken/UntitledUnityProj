@@ -6,7 +6,7 @@ using Unit.Models;
 
 namespace GameControllers.Services
 {
-    public class UnitService : IUnitService
+    public class UnitService : BaseService, IUnitService
     {
         public UnitService()
         {
@@ -17,7 +17,7 @@ namespace GameControllers.Services
         public void AddUnit(UnitModel unit)
         {
             IList<UnitModel> _units = this.unitObseravable.Get();
-            if (_units.Find(existingUnit => { return unit.ID == existingUnit.ID; }) == null)
+            if (unit != null && _units.Find(existingUnit => { return unit.ID == existingUnit.ID; }) == null)
             {
                 _units.Add(unit);
                 this.unitObseravable.Set(_units);

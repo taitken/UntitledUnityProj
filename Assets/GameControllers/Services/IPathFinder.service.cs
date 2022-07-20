@@ -6,7 +6,7 @@ using GameControllers.Models;
 
 namespace GameControllers.Services
 {
-    public interface IPathFinderService
+    public interface IPathFinderService : IBaseService
     {
         public Obseravable<PathFinderMap> pathFinderMap {get; set;}
 

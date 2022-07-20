@@ -7,11 +7,10 @@ namespace Building.Models
 {
     public class BuildSiteModel : BasePhysicalObjectModel
     {
-        public BuildSiteModel(Vector3Int _position, eBuildingType _buildingType) : base(_position, 0)
-        {
-            this.buildingType = _buildingType;
-            this.suppliedItems = new List<ItemObjectModel>();
-        }
+        public eBuildingType buildingType;
+        public BuildingObjectModel buildingModel;
+        public IList<ItemObjectModel> suppliedItems { get; set; }
+
         public decimal supplyCurrent
         {
             get
@@ -21,10 +20,33 @@ namespace Building.Models
                 return supplyCurrent;
             }
         }
-        public eBuildingType buildingType;
-        public IList<ItemObjectModel> suppliedItems { get; set; }
+        public bool isFullySupplied
+        {
+            get
+            {
+                bool suppliedItems = true;
+                this.buildingModel.requiredItems.ForEach(requiredItem =>
+                {
+                    if (this.suppliedItems.Filter(item => { return item.itemType == requiredItem.itemType; }).AddNumbers(item => { return item.mass; }) < requiredItem.mass)
+                    {
+                        suppliedItems = false;
+                    }
+                });
+                return suppliedItems;
+            }
+        }
+
+        public BuildSiteModel(BuildingObjectModel buildingModel) : base(buildingModel.position, 0)
+        {
+            this.buildingType = buildingModel.buildingType;
+            this.buildingModel = buildingModel;
+            this.suppliedItems = new List<ItemObjectModel>();
+        }
+
         public void SupplyItem(ItemObjectModel itemObj)
         {
+            itemObj.itemState = ItemObjectModel.eItemState.InSupply;
+            itemObj.position = this.position;
             this.suppliedItems.Add(itemObj);
         }
     }

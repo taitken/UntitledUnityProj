@@ -7,7 +7,7 @@ using Unit.Models;
 
 namespace GameControllers.Services
 {
-    public class UnitOrderService : IUnitOrderService
+    public class UnitOrderService : BaseService, IUnitOrderService
     {
         public Obseravable<MouseActionModel> mouseAction { get; set; } = new Obseravable<MouseActionModel>(new MouseActionModel(eMouseAction.None));
         public Obseravable<UnitOrderModel> hideOrderIconTrigger { get; set; } = new Obseravable<UnitOrderModel>(null);
@@ -34,7 +34,7 @@ namespace GameControllers.Services
         public void AddOrder(UnitOrderModel order)
         {
             IList<UnitOrderModel> _orders = this.orders.Get();
-            if (_orders.Find(existingOrder => { return order.ID == existingOrder.ID; }) == null)
+            if (order != null && _orders.Find(existingOrder => { return order.ID == existingOrder.ID; }) == null)
             {
                 _orders.Add(order);
                 this.orders.Set(_orders);

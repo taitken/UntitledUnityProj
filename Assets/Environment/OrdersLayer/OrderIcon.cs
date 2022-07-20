@@ -36,6 +36,7 @@ namespace Environment
         void Awake()
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
+            if(!this.unitOrder.displayIcon) this.spriteRenderer.enabled = false;
             if (this.unitOrder is SupplyOrderModel)
             {
                 SupplyOrderModel buildOrder = this.unitOrder as SupplyOrderModel;

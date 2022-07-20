@@ -7,7 +7,7 @@ using Building.Models;
 
 namespace GameControllers.Services
 {
-    public class BuildingService : IBuildingService
+    public class BuildingService : BaseService,  IBuildingService
     {
         public BuildingAssetController buildingAssetController { get; set; }
         public Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; } = new Obseravable<IList<BuildingObjectModel>>(new List<BuildingObjectModel>());
@@ -26,7 +26,7 @@ namespace GameControllers.Services
         public void AddBuilding(BuildingObjectModel building)
         {
             IList<BuildingObjectModel> _buildings = this.buildingObseravable.Get();
-            if (_buildings.Find(existingUnit => { return building.ID == existingUnit.ID; }) == null)
+            if (building != null && _buildings.Find(existingUnit => { return building.ID == existingUnit.ID; }) == null)
             {
                 _buildings.Add(building);
                 this.buildingObseravable.Set(_buildings);

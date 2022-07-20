@@ -5,6 +5,7 @@ using GameControllers.Services;
 using Building.Models;
 using Building;
 using Unit.Models;
+using System.Collections.Generic;
 
 namespace UnitAction
 {
@@ -13,7 +14,7 @@ namespace UnitAction
         private UnitModel unit;
         private IBuildingService buildingService;
         private BuildOrderModel buildOrder;
-        private BuildingObjectFactory buildingFactory; 
+        private BuildingObjectFactory buildingFactory;
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public BuildAction(UnitModel _unit,
@@ -31,6 +32,7 @@ namespace UnitAction
         }
         public bool PerformAction()
         {
+            this.buildingService.RemoveBuildSite(this.buildingService.buildingSiteObseravable.Get().Find(site =>{return site.position == this.buildOrder.coordinates;}).ID);
             this.buildingService.AddBuilding(this.buildingFactory.CreateBuildingModel(this.buildOrder.coordinates, this.buildOrder.buildingType));
             this.completed = true;
             return true;

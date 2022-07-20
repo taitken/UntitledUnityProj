@@ -55,6 +55,48 @@ namespace System.Collections.Generic
             return returnList;
         }
 
+        public static int AddNumbers<t1>(this IList<t1> list, Func<t1, int> callback)
+        {
+            int returnVal = 0;
+            foreach (t1 listItem in list)
+            {
+                returnVal += callback(listItem);
+            }
+            return returnVal;
+        }
+
+        public static long AddNumbers<t1>(this IList<t1> list, Func<t1, long> callback)
+        {
+            long returnVal = 0;
+            foreach (t1 listItem in list)
+            {
+                returnVal += callback(listItem);
+            }
+            return returnVal;
+        }
+
+        public static float AddNumbers<t1>(this IList<t1> list, Func<t1, float> callback)
+        {
+            float returnVal = 0;
+            foreach (t1 listItem in list)
+            {
+                returnVal += callback(listItem);
+            }
+            return returnVal;
+        }
+
+
+        public static decimal AddNumbers<t1>(this IList<t1> list, Func<t1, decimal> callback)
+        {
+            decimal returnVal = 0;
+            foreach (t1 listItem in list)
+            {
+                returnVal += callback(listItem);
+            }
+            return returnVal;
+        }
+
+
         public static void ForEach<t1>(this IList<t1> list, Action<t1> callback)
         {
             foreach (t1 listItem in list)

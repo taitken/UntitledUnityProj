@@ -11,6 +11,7 @@ public class ActionController : MonoBehaviour2
 {
     private ActionFactory actionFactory;
     private IBuildingService buildingService;
+    private IItemObjectService itemService;
     private IList<ActionSequence> actionSequences = new List<ActionSequence>();
     private IList<UnitOrderModel> currentOrders = new List<UnitOrderModel>();
     private IList<UnitOrderModel> unassignedOrders
@@ -31,6 +32,7 @@ public class ActionController : MonoBehaviour2
                           IItemObjectService _itemService)
     {
         this.buildingService = _buildingService;
+        this.itemService = _itemService;
         this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService, _itemService);
         this.subscriptions.Add(_orderService.orders.Subscribe(updatedOrders =>
         {
@@ -86,6 +88,7 @@ public class ActionController : MonoBehaviour2
         }
     }
 
+    // Action controller probably shouldnt know about order sub-types
     private bool PreOrderAssignCheck(UnitOrderModel order)
     {
         bool returnVal = true;
@@ -96,6 +99,10 @@ public class ActionController : MonoBehaviour2
                 break;
             case eOrderTypes.Dig:
                 // code block
+                break;
+            case eOrderTypes.Supply:
+                SupplyOrderModel supplyOrder = order as SupplyOrderModel;
+                returnVal = this.itemService.IsItemAvailable(supplyOrder.itemType);
                 break;
             case eOrderTypes.Store:
                 returnVal = this.buildingService.IsStorageAvailable();

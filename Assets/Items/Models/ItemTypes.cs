@@ -5,7 +5,7 @@ namespace Item.Models
 {
     public enum eItemType
     {
-        stone
+        Stone
     }
 }
 

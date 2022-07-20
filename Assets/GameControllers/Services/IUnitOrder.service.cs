@@ -7,7 +7,7 @@ using Unit.Models;
 
 namespace GameControllers.Services
 {
-    public interface IUnitOrderService
+    public interface IUnitOrderService : IBaseService
     {
         Obseravable<MouseActionModel> mouseAction { get; set; }
         public Obseravable<IList<UnitOrderModel>> orders { get; set; }

@@ -19,6 +19,7 @@ namespace Environment
         private IBuildingService buildingService;
         private IEnvironmentService environmentService;
         private MouseActionModel mouseAction;
+        private BuildingObjectFactory buildingModelFactory;
         private BuildSiteObject.Factory buildSiteFactory;
         private IContextWindowService contextService;
         private IList<BuildingObject> buildingPrefabs = new List<BuildingObject>();
@@ -52,6 +53,7 @@ namespace Environment
             this.buildingService = _buildingService;
             this.contextService = _contextService;
             this.buildSiteFactory = _buildSiteFactory;
+            this.buildingModelFactory = new BuildingObjectFactory();
         }
 
         void Start()
@@ -140,7 +142,10 @@ namespace Environment
 
         public override void OnClickedByUser()
         {
-            this.orderService.AddOrder(new SupplyOrderModel(this.GetCellCoorAtMouse(), eItemType.stone, this.mouseAction.buildingType));
+            this.buildingModelFactory.CreateBuildingModel(this.GetCellCoorAtMouse(), this.mouseAction.buildingType).requiredItems.ForEach(requiredItem =>
+            {
+                this.orderService.AddOrder(new SupplyOrderModel(this.GetCellCoorAtMouse(), requiredItem.itemType, requiredItem.mass, this.mouseAction.buildingType));
+            });
         }
 
         private void ShowBuildGhost(eBuildingType _buildingType)

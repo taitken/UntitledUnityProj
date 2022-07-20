@@ -7,7 +7,7 @@ using Environment.Models;
 
 namespace GameControllers.Services
 {
-    public class EnvironmentService : IEnvironmentService
+    public class EnvironmentService : BaseService, IEnvironmentService
     {
         public Obseravable<IList<MineableObjectModel>> mineableObjects { get; set; } = new Obseravable<IList<MineableObjectModel>>(new List<MineableObjectModel>());
         public Obseravable<IList<GroundTileModel>> groundTiles { get; set; } = new Obseravable<IList<GroundTileModel>>(new List<GroundTileModel>());
@@ -15,7 +15,7 @@ namespace GameControllers.Services
         public void AddMineableObject(MineableObjectModel mineableObject)
         {
             IList<MineableObjectModel> _mineableObjects = this.mineableObjects.Get();
-            if (_mineableObjects.Find(existingMineableObject => { return mineableObject.position == existingMineableObject.position; }) == null)
+            if (mineableObject != null && _mineableObjects.Find(existingMineableObject => { return mineableObject.position == existingMineableObject.position; }) == null)
             {
                 _mineableObjects.Add(mineableObject);
                 this.mineableObjects.Set(_mineableObjects);

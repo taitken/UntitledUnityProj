@@ -9,7 +9,7 @@ using Item;
 
 namespace GameControllers.Services
 {
-    public interface IItemObjectService
+    public interface IItemObjectService : IBaseService
     {
         Obseravable<IList<ItemObjectModel>> itemObseravable { get; set; }
         Obseravable onItemPickupOrDropTrigger { get; set; }
@@ -18,6 +18,7 @@ namespace GameControllers.Services
         void AddItem(ItemObjectModel item);
         void RemoveItem(long id);
         ItemObjectModel FindClosestItem(eItemType _itemType, Vector3Int _startingPos);
+        public bool IsItemAvailable(eItemType _itemType);
         public ItemObject GetItemObject(long id);
     }
 }

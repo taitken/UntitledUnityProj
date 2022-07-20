@@ -6,7 +6,7 @@ using UtilityClasses;
 
 namespace GameControllers.Services
 {
-    public interface IBuildingService
+    public interface IBuildingService : IBaseService
     {
         public BuildingAssetController buildingAssetController { get; set; }
         Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; }

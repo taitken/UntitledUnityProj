@@ -54,15 +54,16 @@ namespace UnitAction
                         this.orderService.RemoveOrder(_unit.currentOrder.ID);
                         break;
                     }
-                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, itemToSupply.position, this.pathFinderService, this.environmentService, false))
-                        .Then(new PickupItemAction(_unit, this.itemService, itemToSupply))
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new SplitSupplyAction(_unit, this.orderService, new List<ItemObjectModel>{itemToSupply}))
+                        .Then(new MoveAction(_unit, itemToSupply.position, this.pathFinderService, this.environmentService, false))
+                        .Then(new PickupItemAction(_unit, this.itemService, itemToSupply, supplyOrder.itemMass))
                         .Then(new MoveAction(_unit, supplyOrder.coordinates, this.pathFinderService, this.environmentService, true))
-                        .Then(new SupplyAction(_unit, this.buildingService, this.itemService));
+                        .Then(new SupplyAction(_unit, this.buildingService, this.itemService, this.orderService));
                     break;
                 case eOrderTypes.Store:
                     ItemObjectModel itemToStore = this.itemService.itemObseravable.Get().Find(item =>{return item.position == _unit.currentOrder.coordinates;});
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, false))
-                        .Then(new PickupItemAction(_unit, this.itemService, itemToStore))
+                        .Then(new PickupItemAction(_unit, this.itemService, itemToStore, _unit.maxCarryWeight))
                         .Then(new HideOrderIconAction(_unit, this.orderService))
                         .Then(new MoveAction(_unit, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position)).position, this.pathFinderService, this.environmentService, true))
                         .Then(new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position))));

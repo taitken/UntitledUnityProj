@@ -6,7 +6,7 @@ using Unit.Models;
 
 namespace GameControllers.Services
 {
-    public interface IUnitService
+    public interface IUnitService : IBaseService
     {
         public Obseravable<IList<UnitModel>> unitObseravable { get; set; }
         void AddUnit(UnitModel unit);

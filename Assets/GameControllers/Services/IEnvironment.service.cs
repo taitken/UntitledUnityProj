@@ -7,7 +7,7 @@ using UnityEngine.Tilemaps;
 
 namespace GameControllers.Services
 {
-    public interface IEnvironmentService
+    public interface IEnvironmentService : IBaseService
     {
         Obseravable<IList<MineableObjectModel>> mineableObjects { get; set; }
         Obseravable<IList<GroundTileModel>> groundTiles { get; set; }

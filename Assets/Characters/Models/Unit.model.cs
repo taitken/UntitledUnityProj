@@ -12,10 +12,12 @@ namespace Unit.Models
         {
             this.moveSpeed = _movespeed;
             this.position = _position;
+            this.maxCarryWeight = 400;
         }
         public string currentHealth { get; set; }
         public IList<Vector3Int> currentPath { get; set; }
         public string maxHealth { get; set; }
+        public int maxCarryWeight {get;set;}
         public float moveSpeed { get; set; }
         public Vector3 position { get; set; }
         public UnitOrderModel currentOrder { get; set; }
