@@ -13,7 +13,6 @@ namespace Building.Models
             this.buildingType = _buildingType;
             this.requiredItems = new List<BuildingSupply>();
         }
-
     }
 }
 

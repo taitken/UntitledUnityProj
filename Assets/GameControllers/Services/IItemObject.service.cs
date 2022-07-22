@@ -12,8 +12,8 @@ namespace GameControllers.Services
     public interface IItemObjectService : IBaseService
     {
         Obseravable<IList<ItemObjectModel>> itemObseravable { get; set; }
-        Obseravable onItemPickupOrDropTrigger { get; set; }
-        Obseravable<ItemObjectModel> onItemStoreTrigger { get; set; }
+        Obseravable<ItemObjectModel> onItemPickupOrDropTrigger { get; set; }
+        Obseravable<ItemObjectModel> onItemStoreOrSupplyTrigger { get; set; }
         void SetItemObjectHook(Func<IList<ItemObject>> _itemObjectHook);
         void AddItem(ItemObjectModel item);
         void RemoveItem(long id);

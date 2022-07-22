@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Building.Models;
 using Item.Models;
+using System.Collections.Generic;
 
 namespace GameControllers.Models
 {
@@ -20,9 +21,14 @@ namespace GameControllers.Models
         public SupplyOrderModel SplitOrder(decimal massToKeep)
         {
             decimal newMass = this.itemMass - massToKeep;
-            if(newMass <= 0) return null;
+            if (newMass <= 0) return null;
             this.itemMass = massToKeep;
             return new SupplyOrderModel(this.coordinates, this.itemType, newMass, this.buildingType, false);
+        }
+
+        public override bool IsUniqueCheck(IList<UnitOrderModel> orderList)
+        {
+            return orderList.Find(existingOrder => { return this.ID == existingOrder.ID;}) == null;
         }
     }
 }

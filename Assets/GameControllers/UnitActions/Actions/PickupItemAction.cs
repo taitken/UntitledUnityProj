@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using Building.Models;
 using GameControllers.Services;
 using Item.Models;
 using Unit.Models;
@@ -12,17 +13,20 @@ namespace UnitAction
         private UnitModel unit;
         private IPathFinderService pathFinderService;
         private IItemObjectService itemObjectService;
+        private IBuildingService buildingService;
         private ItemObjectModel itemObjModel;
         private decimal massToPickup;
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public PickupItemAction(UnitModel _unit,
                           IItemObjectService _itemObjectService,
+                          IBuildingService _buildingService,
                           ItemObjectModel _itemObjModel,
                           decimal _massToPickup)
         {
             this.unit = _unit;
             this.itemObjectService = _itemObjectService;
+            this.buildingService = _buildingService;
             this.itemObjModel = _itemObjModel;
             this.cancel = this.itemObjModel == null;
             this.massToPickup = _massToPickup;
@@ -44,11 +48,26 @@ namespace UnitAction
             }
             else
             {
+                ItemObjectModel itemToAttach = this.itemObjModel;
+                ItemObjectModel.eItemState originState = this.itemObjModel.itemState;
                 if (this.itemObjModel.mass > this.massToPickup)
                 {
-                    this.itemObjectService.AddItem(this.itemObjModel.SplitItemModel(this.massToPickup));
+                    itemToAttach = this.itemObjModel.SplitItemModel(this.massToPickup);
+                    this.unit.carriedItem = itemToAttach;
+                    this.itemObjectService.AddItem(itemToAttach);
                 }
-                this.unit.carriedItem = this.itemObjModel;
+                else if (originState == ItemObjectModel.eItemState.InStorage)
+                {
+                    this.itemObjectService.RemoveItem(itemToAttach.ID);
+                    this.unit.carriedItem = itemToAttach;
+                    Debug.Log("adding item");
+                    this.itemObjectService.AddItem(itemToAttach);
+                    this.buildingService.buildingObseravable.Get()
+                        .Map(building => { return building as StorageBuildingModel; })
+                        .Find(building => { return building.position == this.itemObjModel.position; })
+                        .RemoveItem(itemToAttach.ID);
+                }
+                this.unit.carriedItem = itemToAttach;
                 this.itemObjectService.onItemPickupOrDropTrigger.NotifyAllSubscribers();
                 this.completed = true;
             }

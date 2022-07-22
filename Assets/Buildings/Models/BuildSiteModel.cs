@@ -9,7 +9,7 @@ namespace Building.Models
     {
         public eBuildingType buildingType;
         public BuildingObjectModel buildingModel;
-        public IList<ItemObjectModel> suppliedItems { get; set; }
+        public IList<ItemObjectModel> suppliedItems { get; }
 
         public decimal supplyCurrent
         {

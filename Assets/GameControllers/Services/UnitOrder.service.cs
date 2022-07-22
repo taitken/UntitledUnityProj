@@ -34,7 +34,7 @@ namespace GameControllers.Services
         public void AddOrder(UnitOrderModel order)
         {
             IList<UnitOrderModel> _orders = this.orders.Get();
-            if (order != null && _orders.Find(existingOrder => { return order.ID == existingOrder.ID; }) == null)
+            if (order != null && order.IsUniqueCheck(_orders))
             {
                 _orders.Add(order);
                 this.orders.Set(_orders);

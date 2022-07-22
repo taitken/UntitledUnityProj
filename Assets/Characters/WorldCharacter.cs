@@ -71,7 +71,7 @@ namespace Characters
 
         void Update()
         {
-            this.unitModel.position = this.gameObject.transform.position;
+            this.unitModel.position = new Vector3(this.gameObject.transform.position.x + 0.08f, this.gameObject.transform.position.y + 0.08f);
         }
 
         protected void FixedUpdate()
@@ -132,7 +132,7 @@ namespace Characters
 
         private void ListenForItemPickupTriggers()
         {
-            this.subscriptions.Add(this.itemService.onItemPickupOrDropTrigger.Subscribe(() =>
+            this.subscriptions.Add(this.itemService.onItemPickupOrDropTrigger.Subscribe((item) =>
             {
                 // Only picks up if not carrying item
                 // To do -- Implement item switch logic eg. drop carried obj and pickup new obj
@@ -145,7 +145,7 @@ namespace Characters
                     this.DetachItemFromUnit();
                 }
             }));
-            this.subscriptions.Add(this.itemService.onItemStoreTrigger.SubscribeQuietly(item =>{
+            this.subscriptions.Add(this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(item =>{
                 if(this.carriedObj.itemObjectModel.ID == item.ID) this.DetachItemFromUnit();
             }));
         }

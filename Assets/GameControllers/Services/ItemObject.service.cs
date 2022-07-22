@@ -14,8 +14,8 @@ namespace GameControllers.Services
     {
         private Func<IList<ItemObject>> ItemObjectHook;
         public Obseravable<IList<ItemObjectModel>> itemObseravable { get; set; } = new Obseravable<IList<ItemObjectModel>>(new List<ItemObjectModel>());
-        public Obseravable<ItemObjectModel> onItemStoreTrigger { get; set; } = new Obseravable<ItemObjectModel>(null);
-        public Obseravable onItemPickupOrDropTrigger { get; set; } = new Obseravable();
+        public Obseravable<ItemObjectModel> onItemStoreOrSupplyTrigger { get; set; } = new Obseravable<ItemObjectModel>(null);
+        public Obseravable<ItemObjectModel> onItemPickupOrDropTrigger { get; set; } = new Obseravable<ItemObjectModel>(null);
 
         public void SetItemObjectHook(Func<IList<ItemObject>> _itemObjectHook)
         {
@@ -28,6 +28,7 @@ namespace GameControllers.Services
             {
                 _items.Add(item);
                 this.itemObseravable.Set(_items);
+                Debug.Log("item added");
             }
         }
 

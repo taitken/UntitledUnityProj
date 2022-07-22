@@ -17,11 +17,23 @@ namespace Unit.Models
         public string currentHealth { get; set; }
         public IList<Vector3Int> currentPath { get; set; }
         public string maxHealth { get; set; }
-        public int maxCarryWeight {get;set;}
+        public int maxCarryWeight { get; set; }
         public float moveSpeed { get; set; }
         public Vector3 position { get; set; }
         public UnitOrderModel currentOrder { get; set; }
-        public ItemObjectModel carriedItem { get; set; }
+        public ItemObjectModel carriedItem
+        {
+            get
+            {
+                return this._carriedItem;
+            } 
+            set
+            {
+                this._carriedItem = value;
+                if(this._carriedItem != null) this._carriedItem.itemState = ItemObjectModel.eItemState.OnCharacter;
+            }
+        }
+        private ItemObjectModel _carriedItem;
     }
 }
 

@@ -14,12 +14,17 @@ namespace Item.Models
             this.itemType = _itemType;
         }
 
-        public ItemObjectModel SplitItemModel(decimal massToKeep)
+        public ItemObjectModel SplitItemModel(decimal massToSplitOff)
         {
-            decimal newMass = this.mass - massToKeep;
-            if(newMass <= 0) return null;
-            this.mass = massToKeep;
-            return new ItemObjectModel(this.position, newMass, this.itemType, this.itemState);
+            decimal newMass = this.mass - massToSplitOff;
+            if(newMass <= 0) return this;
+            this.mass = newMass;
+            return new ItemObjectModel(this.position, massToSplitOff, this.itemType, eItemState.OnCharacter);
+        }
+
+        public void MergeItemModel(decimal newMass)
+        {
+            this.mass += newMass;
         }
 
         public enum eItemState

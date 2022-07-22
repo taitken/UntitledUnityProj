@@ -27,5 +27,10 @@ namespace Building.Models
         {
             this.storedItems.Add(itemObj);
         }
+
+        public void RemoveItem(long itemObjID)
+        {
+            this.storedItems = this.storedItems.Filter(item =>{return item.ID != itemObjID;});
+        }
     }
 }

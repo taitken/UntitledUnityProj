@@ -14,6 +14,7 @@ namespace Item
     public class ItemObject : MonoBehaviour2
     {
         public ItemObjectModel itemObjectModel;
+        public IItemObjectService itemService;
         public IUnitOrderService orderService;
         private IContextWindowService contextService;
         private MouseActionModel mouseAction;
@@ -24,6 +25,7 @@ namespace Item
                                 IItemObjectService _itemService)
         {
             this.itemObjectModel = _itemObjectModel;
+            this.itemService = _itemService;
             this.contextService = _contextWindowService;
             this.orderService = _orderService;
             this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));

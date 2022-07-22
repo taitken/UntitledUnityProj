@@ -55,13 +55,21 @@ namespace UnitAction
                     this.buildingService.AddBuildSite(buildSiteModel);
                 }
                 // Supply build site
-                buildSiteModel.SupplyItem(itemModel);
-                // Remove and unattach item
-                this.itemObjectService.GetItemObject(itemModel.ID)?.Destroy();
-                this.unit.carriedItem = null;
-                // Check if build site has all materials
-                if(buildSiteModel.isFullySupplied)
+                ItemObjectModel existingStoredItem = buildSiteModel.suppliedItems.Find(item => { return item.itemType == itemModel.itemType; });
+                if (existingStoredItem != null)
                 {
+                    existingStoredItem.MergeItemModel(itemModel.mass);
+                    this.itemObjectService.RemoveItem(itemModel.ID);
+                }
+                else
+                {
+                    buildSiteModel.SupplyItem(itemModel);
+                }
+                this.itemObjectService.onItemStoreOrSupplyTrigger.Set(this.unit.carriedItem);
+                // Check if build site has all materials
+                if (buildSiteModel.isFullySupplied)
+                {
+                    this.unitOrderService.RemoveOrder(supplyOrder.ID);
                     this.unitOrderService.AddOrder(new BuildOrderModel(buildSiteModel.position, buildSiteModel.buildingType));
                 }
                 this.completed = true;

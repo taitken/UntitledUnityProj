@@ -43,12 +43,20 @@ namespace UnitAction
             else
             {
                 ItemObjectModel itemModel = this.unit.carriedItem;
-                this.buildingModel.StoreItem(itemModel);
                 itemModel.itemState = ItemObjectModel.eItemState.InStorage;
                 itemModel.position = this.buildingModel.position;
-                this.itemObjectService.GetItemObject(itemModel.ID)?.Destroy();
-                this.unit.carriedItem = null;
-                this.itemObjectService.onItemStoreTrigger.Set(this.unit.carriedItem);
+                // Supply build site
+                ItemObjectModel existingStoredItem = this.buildingModel.storedItems.Find(item => { return item.itemType == itemModel.itemType; });
+                if (existingStoredItem != null)
+                {
+                    existingStoredItem.MergeItemModel(itemModel.mass);
+                    this.itemObjectService.RemoveItem(itemModel.ID);
+                }
+                else
+                {
+                    this.buildingModel.StoreItem(itemModel);
+                }
+                this.itemObjectService.onItemStoreOrSupplyTrigger.Set(this.unit.carriedItem);
                 this.completed = true;
             }
             return true;

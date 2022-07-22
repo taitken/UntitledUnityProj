@@ -38,12 +38,29 @@ namespace Environment
                 IList<ItemObjectModel> newItems = items.GetNewModels(this.itemObjectModels);
                 newItems.ForEach(item =>
                 {
-                    if (item.itemState == ItemObjectModel.eItemState.OnGround)
+                    if (item.itemState == ItemObjectModel.eItemState.OnGround || item.itemState == ItemObjectModel.eItemState.OnCharacter)
                     {
-                        this.itemObjects.Add(this.createItemObject(item));
+                        this.itemObjects.Add(this.CreateItemObject(item));
                     }
                 });
+                IList<ItemObjectModel> itemsToRemove = items.GetRemovedModels(this.itemObjectModels);
+                itemsToRemove.ForEach(itemToRemove =>
+                {
+                    this.itemObjects.Filter(itemObj => { return itemObj.itemObjectModel.ID == itemToRemove.ID; });
+                });
             });
+            this.subscriptions.Add(this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(item =>
+            {
+                this.DeleteItemObject(item.ID);
+            }));
+            this.subscriptions.Add(this.itemService.onItemPickupOrDropTrigger.SubscribeQuietly(item =>
+            {
+                if (item != null && this.itemObjects.Find(obj => { return obj.itemObjectModel.ID == item.ID; }) == null)
+                {
+                    this.itemObjects.Add(this.CreateItemObject(item));
+                }
+            }));
+
         }
 
         // Start is called before the first frame update
@@ -63,11 +80,21 @@ namespace Environment
             return this.itemObjects;
         }
 
-        private ItemObject createItemObject(ItemObjectModel itemObj)
+        private ItemObject CreateItemObject(ItemObjectModel itemObj)
         {
             ItemObject newItem = this.itemObjectFactory.Create(itemObj);
             newItem.transform.position = this.tilemap.CellToLocal(itemObj.position);
             return newItem;
+        }
+
+        private void DeleteItemObject(long itemObjID)
+        {
+            ItemObject itemToDelete = this.itemObjects.Find(obj => { return obj.itemObjectModel.ID == itemObjID; });
+            if (itemToDelete != null)
+            {
+                this.itemObjects.Filter(obj => { return obj.itemObjectModel.ID == itemObjID; });
+                itemToDelete.Destroy();
+            }
         }
 
     }

@@ -36,6 +36,11 @@ namespace Building
             this.contextService.RemoveContext(this.buildSiteModel.ID);
         }
 
+        protected override void BeforeDeath()
+        {
+            this.contextService.RemoveContext(this.buildSiteModel.ID);
+        }
+
         protected string GenerateContextWindowTitle()
         {
             return this.buildSiteModel.buildingType.ToString().FirstCharToUpper() + " (construction)";
