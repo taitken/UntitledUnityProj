@@ -132,6 +132,12 @@ public class MouseActionController : MonoBehaviour2
         }
     }
 
+    // Checks a Raycast list and clicks the first object
+    private void ClickObjects(List<RaycastHit2D> hitObjects)
+    {
+        hitObjects.ForEach(hit =>{this.ClickObject(hit);});
+    }
+
     private void DigCommandClick()
     {
         ContactFilter2D filter = new ContactFilter2D();
@@ -143,7 +149,7 @@ public class MouseActionController : MonoBehaviour2
     {
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(LayerMask.GetMask("BuildingLayer"));
-        this.ClickObject(this.RayCastOnMouse(filter));
+        this.ClickObjects(this.RayCastOnMouse(filter));
     }
 
     private void StoreCommandClick()
@@ -156,7 +162,7 @@ public class MouseActionController : MonoBehaviour2
     private void CancelCommandClick()
     {
         ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(LayerMask.GetMask("UnitOrderLayer"));
+        filter.SetLayerMask(LayerMask.GetMask("UnitOrderLayer", "BuildingLayer"));
         this.ClickObject(this.RayCastOnMouse(filter));
     }
 }

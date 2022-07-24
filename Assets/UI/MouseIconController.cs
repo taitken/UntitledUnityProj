@@ -13,10 +13,13 @@ namespace UI
         private CursorMode cursorMode = CursorMode.Auto;
         private Vector2 hotSpot = Vector2.zero;
         private IUnitOrderService orderService;
+        private IBuildingService buildingService;
         [Inject]
-        public void Construct(IUnitOrderService _orderService)
+        public void Construct(IUnitOrderService _orderService,
+                                IBuildingService _buildingService)
         {
             this.orderService = _orderService;
+            this.buildingService = _buildingService;
             this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action =>
             {
                 this.setMouseIcon(action.mouseType);
@@ -37,13 +40,18 @@ namespace UI
 
         void setMouseIcon(eMouseAction action)
         {
-            if (action == eMouseAction.None)
+            switch (action)
             {
-                Cursor.SetCursor(null, this.hotSpot, this.cursorMode);
-            }
-            else
-            {
-                Cursor.SetCursor(this.cursorTexures[(int)action], this.hotSpot, this.cursorMode);
+                case eMouseAction.None:
+                    {
+                        Cursor.SetCursor(null, this.hotSpot, this.cursorMode);
+                        break;
+                    }
+                default:
+                    {
+                        Cursor.SetCursor(this.cursorTexures[(int)action], this.hotSpot, this.cursorMode);
+                        break;
+                    }
             }
         }
     }

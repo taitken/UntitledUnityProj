@@ -10,6 +10,11 @@ namespace GameControllers.Services
     {
         public Obseravable<PathFinderMap> pathFinderMap { get; set; } = new Obseravable<PathFinderMap>(new PathFinderMap(new List<IList<PathFinderMapItem>>()));
 
+        public bool CanPathTo(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _pathFinderMap, bool adjacentToEndPos)
+        {
+            return this.FindPath(startingPos, endPos, _pathFinderMap, adjacentToEndPos) != null ? true : false;
+        }
+
         public IList<Vector3Int> FindPath(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _map, bool adjacentToEndPos)
         {
             if (_map == null) return null;

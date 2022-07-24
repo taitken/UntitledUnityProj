@@ -8,12 +8,12 @@ using Zenject;
 using GameControllers.Models;
 using UI.Services;
 using Item.Models;
+using UtilityClasses;
 
 namespace Environment
 {
     public class BuildingLayer : MonoBehaviourLayer
     {
-        public GameObject buildingGhostPrefab;
         private GameObject ghostBuilding;
         private IUnitOrderService orderService;
         private IBuildingService buildingService;
@@ -110,9 +110,9 @@ namespace Environment
             });
             objsToRemove.ForEach(buildingObj =>
             {
-                BuildSiteObject buildSite = this.buildingSiteObjects.Find(buildSite => { return buildSite.buildSiteModel.ID == buildingObj.ID; });
-                this.buildingSiteObjects.Remove(buildSite);
-                buildSite.Destroy();
+                BuildSiteObject buildSiteToRemove = this.buildingSiteObjects.Find(buildSite => { return buildSite.buildSiteModel.ID == buildingObj.ID; });
+                buildingSiteObjects.Remove(buildSiteToRemove);
+                buildSiteToRemove.Destroy();
             });
         }
 
@@ -142,17 +142,24 @@ namespace Environment
 
         public override void OnClickedByUser()
         {
-            this.buildingModelFactory.CreateBuildingModel(this.GetCellCoorAtMouse(), this.mouseAction.buildingType).requiredItems.ForEach(requiredItem =>
+            if ((this.buildingService.IsBuildingSpaceAvailable(this.GetCellCoorAtMouse()) || this.mouseAction.buildingType == eBuildingType.FloorTile)
+            && !this.orderService.IsExistingOrderAtLocation(this.GetCellCoorAtMouse()))
             {
-                this.orderService.AddOrder(new SupplyOrderModel(this.GetCellCoorAtMouse(), requiredItem.itemType, requiredItem.mass, this.mouseAction.buildingType));
-            });
+                this.buildingModelFactory.CreateBuildingModel(this.GetCellCoorAtMouse(), this.mouseAction.buildingType).requiredItems.ForEach(requiredItem =>
+                {
+                    this.orderService.AddOrder(new SupplyOrderModel(this.GetCellCoorAtMouse(), requiredItem.itemType, requiredItem.mass, this.mouseAction.buildingType));
+                });
+            }
         }
 
         private void ShowBuildGhost(eBuildingType _buildingType)
         {
             if (this.ghostBuilding == null)
             {
-                this.ghostBuilding = Instantiate(this.buildingGhostPrefab, this.GetLocalPositionOfCellAtMouse(), new Quaternion());
+                this.ghostBuilding = Instantiate(this.buildingService.GetBuildingPrefab(_buildingType).gameObject, this.GetLocalPositionOfCellAtMouse(), new Quaternion());
+                SpriteRenderer sr = this.ghostBuilding.GetComponent<SpriteRenderer>();
+                sr.color = GameColors.AddTransparency(sr.color, 0.6f);
+                this.ghostBuilding.layer = 0;
             }
             else
             {

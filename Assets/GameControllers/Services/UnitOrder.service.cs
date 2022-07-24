@@ -13,24 +13,6 @@ namespace GameControllers.Services
         public Obseravable<UnitOrderModel> hideOrderIconTrigger { get; set; } = new Obseravable<UnitOrderModel>(null);
         public Obseravable<IList<UnitOrderModel>> orders { get; set; } = new Obseravable<IList<UnitOrderModel>>(new List<UnitOrderModel>());
 
-        public UnitOrderModel GetNextOrder(UnitModel requestingUnit)
-        {
-            if (this.orders.Get().Count > 0)
-            {
-                UnitOrderModel nextOrder = null;
-                this.orders.Get().ForEach(order =>
-                {
-                    bool exitBreak = false;
-                    if (order.assignedUnit == null && exitBreak == false)
-                    {
-                        nextOrder = order;
-                        exitBreak = true;
-                    }
-                });
-                return nextOrder;
-            }
-            return null;
-        }
         public void AddOrder(UnitOrderModel order)
         {
             IList<UnitOrderModel> _orders = this.orders.Get();
@@ -44,6 +26,11 @@ namespace GameControllers.Services
         public void RemoveOrder(long id)
         {
             this.orders.Set(this.orders.Get().Filter(order => { return order.ID != id; }));
+        }
+
+        public bool IsExistingOrderAtLocation(Vector3Int _location)
+        {
+            return this.orders.Get().Map(order =>{return order.coordinates;}).Any(orderPos =>{return orderPos == _location;});
         }
     }
 }

@@ -4,10 +4,11 @@ using UnityEngine;
 using UtilityClasses;
 using UnityEngine.Tilemaps;
 using Building.Models;
+using Building;
 
 namespace GameControllers.Services
 {
-    public class BuildingService : BaseService,  IBuildingService
+    public class BuildingService : BaseService, IBuildingService
     {
         public BuildingAssetController buildingAssetController { get; set; }
         public Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; } = new Obseravable<IList<BuildingObjectModel>>(new List<BuildingObjectModel>());
@@ -17,6 +18,12 @@ namespace GameControllers.Services
         public void SetBuildingAssetController(BuildingAssetController _buildingAssetController)
         {
             this.buildingAssetController = _buildingAssetController;
+        }
+
+
+        public BuildingObject GetBuildingPrefab(eBuildingType buildingType)
+        {
+            return this.buildingAssetController.GetBuildingPrefab(buildingType);
         }
 
         public SpriteRenderer GetBuildingSprite(eBuildingType buildingType)
@@ -67,6 +74,13 @@ namespace GameControllers.Services
         public bool IsStorageAvailable()
         {
             return this.storageBuilding.Count > 0;
+        }
+
+        public bool IsBuildingSpaceAvailable(Vector3Int _location)
+        {
+            IList<Vector3Int> locations = this.buildingObseravable.Get().Filter(building =>{return building.buildingType != eBuildingType.FloorTile;}).Map(building => { return building.position; });
+            this.buildingSiteObseravable.Get().ForEach(site => { locations.Add(site.position); });
+            return !locations.Any(location =>{return location == _location;});
         }
 
     }

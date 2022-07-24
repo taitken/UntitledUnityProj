@@ -12,9 +12,9 @@ namespace GameControllers.Services
         Obseravable<MouseActionModel> mouseAction { get; set; }
         public Obseravable<IList<UnitOrderModel>> orders { get; set; }
         Obseravable<UnitOrderModel> hideOrderIconTrigger { get; set; }
-        UnitOrderModel GetNextOrder(UnitModel requestingUnit);
         void AddOrder(UnitOrderModel order);
         void RemoveOrder(long id);
+        bool IsExistingOrderAtLocation(Vector3Int _location);
     }
 }
 

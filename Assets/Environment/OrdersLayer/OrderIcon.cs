@@ -6,6 +6,7 @@ using GameControllers.Services;
 using GameControllers.Models;
 using Building.Models;
 using Zenject;
+using UtilityClasses;
 
 namespace Environment
 {
@@ -66,7 +67,8 @@ namespace Environment
         public void UpdateBuildingSprite(eBuildingType buildType)
         {
             this.spriteRenderer.sprite = this.buildingService.GetBuildingSprite(buildType).sprite;
-            this.spriteRenderer.color = new Color(this.spriteRenderer.color.r, this.spriteRenderer.color.g, this.spriteRenderer.color.b,  0.6f);
+            this.spriteRenderer.sortingOrder = 320;
+            this.spriteRenderer.color =  GameColors.AddTransparency(this.spriteRenderer.color, 0.6f);
         }
 
         public override void OnClickedByUser()

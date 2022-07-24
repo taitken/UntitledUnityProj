@@ -3,6 +3,8 @@ using UnityEngine;
 using Building.Models;
 using Item.Models;
 using System.Collections.Generic;
+using Unit.Models;
+using GameControllers.Services;
 
 namespace GameControllers.Models
 {
@@ -28,7 +30,14 @@ namespace GameControllers.Models
 
         public override bool IsUniqueCheck(IList<UnitOrderModel> orderList)
         {
-            return orderList.Find(existingOrder => { return this.ID == existingOrder.ID;}) == null;
+            return orderList.Find(existingOrder => { return this.ID == existingOrder.ID; }) == null;
+        }
+
+        public override bool CanAssignToUnit(IList<IBaseService> _services, UnitModel _unitModel)
+        {
+            IItemObjectService itemService = this.GetService<IItemObjectService>(_services);
+            if(itemService == null) return false;
+            return base.CanAssignToUnit(_services, _unitModel) && itemService.IsItemAvailable(this.itemType);
         }
     }
 }

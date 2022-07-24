@@ -6,12 +6,14 @@ using UnitAction;
 using Zenject;
 using Unit.Models;
 using UnityEngine.Tilemaps;
+using System;
 
 public class ActionController : MonoBehaviour2
 {
     private ActionFactory actionFactory;
     private IBuildingService buildingService;
     private IItemObjectService itemService;
+    private IList<IBaseService> services;
     private IList<ActionSequence> actionSequences = new List<ActionSequence>();
     private IList<UnitOrderModel> currentOrders = new List<UnitOrderModel>();
     private IList<UnitOrderModel> unassignedOrders
@@ -31,8 +33,7 @@ public class ActionController : MonoBehaviour2
                           IBuildingService _buildingService,
                           IItemObjectService _itemService)
     {
-        this.buildingService = _buildingService;
-        this.itemService = _itemService;
+        this.services = new List<IBaseService>(){_orderService, _unitService, _environmentService, _pathFinderService, _buildingService, _itemService};
         this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService, _itemService);
         this.subscriptions.Add(_orderService.orders.Subscribe(updatedOrders =>
         {
@@ -74,7 +75,7 @@ public class ActionController : MonoBehaviour2
         {
             for (int i = 0; i < this.unassignedOrders.Count; i++)
             {
-                if (this.PreOrderAssignCheck(this.unassignedOrders[i]))
+                if (this.unassignedOrders[i].CanAssignToUnit(this.services, unitWithoutOrder))
                 {
                     unitWithoutOrder.currentOrder = this.unassignedOrders[i];
                     this.CreateAndBeginSequence(unitWithoutOrder);
@@ -86,29 +87,6 @@ public class ActionController : MonoBehaviour2
         {
             //Debug.Log("Order already assigned");
         }
-    }
-
-    // Action controller probably shouldnt know about order sub-types
-    private bool PreOrderAssignCheck(UnitOrderModel order)
-    {
-        bool returnVal = true;
-        switch (order.orderType)
-        {
-            case eOrderTypes.Build:
-                // code block
-                break;
-            case eOrderTypes.Dig:
-                // code block
-                break;
-            case eOrderTypes.Supply:
-                SupplyOrderModel supplyOrder = order as SupplyOrderModel;
-                returnVal = this.itemService.IsItemAvailable(supplyOrder.itemType);
-                break;
-            case eOrderTypes.Store:
-                returnVal = this.buildingService.IsStorageAvailable();
-                break;
-        }
-        return returnVal;
     }
 
     private void CreateAndBeginSequence(UnitModel unitModel)
@@ -132,6 +110,4 @@ public class ActionController : MonoBehaviour2
         });
         this.actionSequences = this.actionSequences.Filter(sequence => { return ordersToUnassign.Find(order => { return order.ID == sequence.unitOrder.ID; }) == null; });
     }
-
-
 }

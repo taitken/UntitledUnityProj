@@ -1,12 +1,11 @@
 
 namespace GameControllers.Models
 {
-    public enum eMouseAction
+    public enum eOrderTypes
     {
-        None,
         Dig,
         Build,
-        Cancel,
-        Store
+        Store,
+        Supply
     }
 }

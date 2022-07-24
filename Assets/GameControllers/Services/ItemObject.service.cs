@@ -28,7 +28,6 @@ namespace GameControllers.Services
             {
                 _items.Add(item);
                 this.itemObseravable.Set(_items);
-                Debug.Log("item added");
             }
         }
 

@@ -8,22 +8,34 @@ using UtilityClasses;
 using UI.Models;
 using GameControllers.Services;
 using Zenject;
+using GameControllers.Models;
+using Item.Models;
 
 namespace Building
 {
     public class BuildSiteObject : MonoBehaviour2
     {
+        public IUnitOrderService orderService { get; set; }
+        private IBuildingService buildingService { get; set; }
+        private IItemObjectService itemService { get; set; }
         public BuildSiteModel buildSiteModel { get; set; }
+        private bool cancelled { get; set; }
         protected IContextWindowService contextService { get; set; }
 
         [Inject]
         public void Construct(IContextWindowService _contextService,
                                 BuildSiteModel _buildSiteModel,
-                                IEnvironmentService _environmentService)
+                                IEnvironmentService _environmentService,
+                                IBuildingService _buildingService,
+                                IItemObjectService _itemService,
+                                IUnitOrderService _orderService)
         {
             this.buildSiteModel = _buildSiteModel;
             this.transform.position = _environmentService.CellToLocal(_buildSiteModel.position);
             this.contextService = _contextService;
+            this.itemService = _itemService;
+            this.orderService = _orderService;
+            this.buildingService = _buildingService;
         }
 
         public override void OnMouseEnter()
@@ -36,9 +48,27 @@ namespace Building
             this.contextService.RemoveContext(this.buildSiteModel.ID);
         }
 
+        public override void OnClickedByUser()
+        {
+            if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Cancel)
+            {
+                this.cancelled = true;
+                this.orderService.RemoveOrder(this.orderService.orders.Get().Find(order => { return order.coordinates == this.buildSiteModel.position; }).ID);
+                this.buildingService.RemoveBuildSite(this.buildSiteModel.ID);
+            }
+        }
+
         protected override void BeforeDeath()
         {
             this.contextService.RemoveContext(this.buildSiteModel.ID);
+            if (this.cancelled)
+            {
+                this.buildSiteModel.suppliedItems.ForEach(item =>
+                {
+                    item.itemState = ItemObjectModel.eItemState.OnGround;
+                    this.itemService.onItemPickupOrDropTrigger.Set(item);
+                });
+            }
         }
 
         protected string GenerateContextWindowTitle()

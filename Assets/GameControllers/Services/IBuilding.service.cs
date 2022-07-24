@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Building.Models;
 using UtilityClasses;
+using Building;
 
 namespace GameControllers.Services
 {
@@ -12,6 +13,7 @@ namespace GameControllers.Services
         Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; }
         Obseravable<IList<BuildSiteModel>> buildingSiteObseravable { get; set; }
         public void SetBuildingAssetController(BuildingAssetController _buildingAssetController);
+        public BuildingObject GetBuildingPrefab(eBuildingType buildingType);
         public SpriteRenderer GetBuildingSprite(eBuildingType buildingType);
         void AddBuilding(BuildingObjectModel building);
         void RemoveBuilding(long id);
@@ -19,5 +21,6 @@ namespace GameControllers.Services
         void RemoveBuildSite(long id);
         BuildingObjectModel GetClosestStorage(Vector3Int startPos);
         bool IsStorageAvailable();
+        bool IsBuildingSpaceAvailable(Vector3Int _location);
     }
 }

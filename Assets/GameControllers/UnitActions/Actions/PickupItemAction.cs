@@ -59,13 +59,12 @@ namespace UnitAction
                 else if (originState == ItemObjectModel.eItemState.InStorage)
                 {
                     this.itemObjectService.RemoveItem(itemToAttach.ID);
-                    this.unit.carriedItem = itemToAttach;
-                    Debug.Log("adding item");
-                    this.itemObjectService.AddItem(itemToAttach);
                     this.buildingService.buildingObseravable.Get()
                         .Map(building => { return building as StorageBuildingModel; })
                         .Find(building => { return building.position == this.itemObjModel.position; })
                         .RemoveItem(itemToAttach.ID);
+                    this.unit.carriedItem = itemToAttach;
+                    this.itemObjectService.AddItem(itemToAttach);
                 }
                 this.unit.carriedItem = itemToAttach;
                 this.itemObjectService.onItemPickupOrDropTrigger.NotifyAllSubscribers();

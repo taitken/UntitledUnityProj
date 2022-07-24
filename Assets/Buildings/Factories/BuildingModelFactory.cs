@@ -21,6 +21,9 @@ namespace Building
                 case eBuildingType.Chest:
                     newBuilding = new ChestBuildingModel(_position, _buildingType);
                     break;
+                case eBuildingType.FloorTile:
+                    newBuilding = new FloorTileModel(_position, _buildingType);
+                    break;
                 default:
                     newBuilding = null;
                     Debug.LogException(new System.Exception("Building Model Factory failed to build model as no legitmate building type was supplied"));

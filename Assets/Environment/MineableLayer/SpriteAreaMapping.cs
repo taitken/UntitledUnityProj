@@ -9,12 +9,12 @@ namespace Environment
         // 1 = empty or occupied
         // 2 = must be occupied
         public static readonly IList<TileSpriteMap> spriteMap = new List<TileSpriteMap>{
-        new TileSpriteMap(0, 0, 0, 0, 0,  0, 0, 2, 0),
-        new TileSpriteMap(1, 1, 0, 1, 0, 2, 1, 2, 1),
+        new TileSpriteMap(0, 0, 0, 0, 0, 0, 0, 2, 0),
+        new TileSpriteMap(1, 1, 0, 1, 0, 2, 1, 2, 2),
         new TileSpriteMap(2, 1, 0, 1, 2, 2, 1, 2, 1),
         new TileSpriteMap(3, 1, 0, 1, 2, 0, 2, 2, 1),
         new TileSpriteMap(4, 2, 2, 1, 2, 2, 2, 2, 0),
-        new TileSpriteMap(5, 2, 2, 2, 2, 2, 0, 2, 1),
+        new TileSpriteMap(5, 2, 2, 2, 2, 2, 0, 2, 2),
         new TileSpriteMap(6, 1, 2, 1, 0, 0, 1, 2, 1),
         new TileSpriteMap(7, 1, 2, 2, 0, 2, 1, 2, 2),
         new TileSpriteMap(8, 2, 2, 2, 2, 2, 2, 2, 2),
@@ -31,7 +31,16 @@ namespace Environment
         new TileSpriteMap(19, 1, 0, 1, 0, 2, 1, 0, 1),
         new TileSpriteMap(20, 1, 0, 1, 2, 2, 1, 0, 1),
         new TileSpriteMap(21, 1, 0, 1, 2, 0, 1, 0, 1),
-        new TileSpriteMap(37, 1, 2, 1, 0, 2, 1, 2, 1)
+        new TileSpriteMap(37, 1, 2, 1, 0, 2, 1, 2, 1),
+        new TileSpriteMap(22, 0, 0, 0, 0, 2, 0, 2, 0),
+        new TileSpriteMap(24, 0, 0, 0, 2, 0, 0, 2, 0),
+        new TileSpriteMap(25, 1, 0, 1, 2, 2, 0, 2, 0),
+        new TileSpriteMap(27, 0, 2, 1, 2, 0, 0, 2, 1),
+        new TileSpriteMap(28, 0, 2, 0, 0, 0, 1, 2, 1),
+        new TileSpriteMap(34, 0, 2, 0, 0, 2, 0, 0, 0),
+        new TileSpriteMap(36, 0, 2, 0, 2, 0, 0, 0, 0),
+        new TileSpriteMap(37, 1, 2, 0, 0, 2, 1, 2, 0),
+        new TileSpriteMap(39, 0, 2, 0, 2, 2, 1, 0, 1)
     };
 
         public static int getMapping(bool _x0y0, bool _x1y0, bool _x2y0,
