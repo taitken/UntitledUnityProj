@@ -30,9 +30,14 @@ namespace UnitAction
         {
             return this.completed;
         }
+
+        public void CancelAction()
+        {
+            this.cancel = true;
+        }
         public bool PerformAction()
         {
-            this.buildingService.RemoveBuildSite(this.buildingService.buildingSiteObseravable.Get().Find(site =>{return site.position == this.buildOrder.coordinates;}).ID);
+            this.buildingService.RemoveBuildSite(this.buildingService.buildingSiteObseravable.Get().Find(site => { return site.position == this.buildOrder.coordinates; }).ID);
             this.buildingService.AddBuilding(this.buildingFactory.CreateBuildingModel(this.buildOrder.coordinates, this.buildOrder.buildingType));
             this.completed = true;
             return true;

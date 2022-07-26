@@ -58,7 +58,7 @@ namespace UnitAction
             }
             catch (System.Exception)
             {
-                action.cancel = true;
+                action.CancelAction();
                 throw new Exception();
             }
         }

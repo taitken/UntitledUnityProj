@@ -22,5 +22,6 @@ namespace GameControllers.Services
         BuildingObjectModel GetClosestStorage(Vector3Int startPos);
         bool IsStorageAvailable();
         bool IsBuildingSpaceAvailable(Vector3Int _location);
+        bool IsFloorSpaceAvailable(Vector3Int _location);
     }
 }

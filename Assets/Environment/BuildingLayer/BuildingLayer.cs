@@ -143,7 +143,8 @@ namespace Environment
         public override void OnClickedByUser()
         {
             if ((this.buildingService.IsBuildingSpaceAvailable(this.GetCellCoorAtMouse()) || this.mouseAction.buildingType == eBuildingType.FloorTile)
-            && !this.orderService.IsExistingOrderAtLocation(this.GetCellCoorAtMouse()))
+            && !this.orderService.IsExistingOrderAtLocation(this.GetCellCoorAtMouse())
+            && (this.mouseAction.buildingType != eBuildingType.FloorTile || this.buildingService.IsFloorSpaceAvailable(this.GetCellCoorAtMouse())))
             {
                 this.buildingModelFactory.CreateBuildingModel(this.GetCellCoorAtMouse(), this.mouseAction.buildingType).requiredItems.ForEach(requiredItem =>
                 {

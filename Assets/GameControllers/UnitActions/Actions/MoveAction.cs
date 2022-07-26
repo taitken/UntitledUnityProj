@@ -39,6 +39,11 @@ namespace UnitAction
             return this.completed;
         }
 
+        public void CancelAction()
+        {
+            this.cancel = true;
+        }
+
         public bool PerformAction()
         {
             unit.currentPath = this.pathFinderService.FindPath(this.environmentService.LocalToCell(unit.position),

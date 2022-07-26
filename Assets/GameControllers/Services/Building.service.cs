@@ -83,5 +83,12 @@ namespace GameControllers.Services
             return !locations.Any(location =>{return location == _location;});
         }
 
+        public bool IsFloorSpaceAvailable(Vector3Int _location)
+        {
+            IList<Vector3Int> locations = this.buildingObseravable.Get().Filter(building =>{return building.buildingType == eBuildingType.FloorTile;}).Map(building => { return building.position; });
+            this.buildingSiteObseravable.Get().ForEach(site => { locations.Add(site.position); });
+            return !locations.Any(location =>{return location == _location;});
+        }
+
     }
 }

@@ -27,7 +27,7 @@ namespace Building.Models
                 bool suppliedItems = true;
                 this.buildingModel.requiredItems.ForEach(requiredItem =>
                 {
-                    if (this.suppliedItems.Filter(item => { return item.itemType == requiredItem.itemType; }).AddNumbers(item => { return item.mass; }) < requiredItem.mass)
+                    if (this.suppliedItems.Filter(item => { return item.itemType == requiredItem.itemType; }).Sum(item => { return item.mass; }) < requiredItem.mass)
                     {
                         suppliedItems = false;
                     }

@@ -55,7 +55,7 @@ namespace System.Collections.Generic
             return returnList;
         }
 
-        public static int AddNumbers<t1>(this IList<t1> list, Func<t1, int> callback)
+        public static int Sum<t1>(this IList<t1> list, Func<t1, int> callback)
         {
             int returnVal = 0;
             foreach (t1 listItem in list)
@@ -65,7 +65,7 @@ namespace System.Collections.Generic
             return returnVal;
         }
 
-        public static long AddNumbers<t1>(this IList<t1> list, Func<t1, long> callback)
+        public static long Sum<t1>(this IList<t1> list, Func<t1, long> callback)
         {
             long returnVal = 0;
             foreach (t1 listItem in list)
@@ -75,7 +75,7 @@ namespace System.Collections.Generic
             return returnVal;
         }
 
-        public static float AddNumbers<t1>(this IList<t1> list, Func<t1, float> callback)
+        public static float Sum<t1>(this IList<t1> list, Func<t1, float> callback)
         {
             float returnVal = 0;
             foreach (t1 listItem in list)
@@ -86,7 +86,7 @@ namespace System.Collections.Generic
         }
 
 
-        public static decimal AddNumbers<t1>(this IList<t1> list, Func<t1, decimal> callback)
+        public static decimal Sum<t1>(this IList<t1> list, Func<t1, decimal> callback)
         {
             decimal returnVal = 0;
             foreach (t1 listItem in list)

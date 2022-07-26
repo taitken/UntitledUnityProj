@@ -27,12 +27,17 @@ namespace UnitAction
 
         public bool CheckCompleted()
         {
-            return this.environmentService.mineableObjects.Get().Find(obj =>{return obj.position == this.unit.currentOrder.coordinates;}) == null;
+            return this.environmentService.mineableObjects.Get().Find(obj => { return obj.position == this.unit.currentOrder.coordinates; }) == null;
+        }
+
+        public void CancelAction()
+        {
+            this.cancel = true;
         }
         public bool PerformAction()
         {
-            
-            MineableObjectModel mineableObj = this.environmentService.mineableObjects.Get().Find(obj =>{return obj.position == this.unit.currentOrder.coordinates;});
+
+            MineableObjectModel mineableObj = this.environmentService.mineableObjects.Get().Find(obj => { return obj.position == this.unit.currentOrder.coordinates; });
             this.environmentService.RemoveMineableObject(mineableObj.ID);
             return true;
         }

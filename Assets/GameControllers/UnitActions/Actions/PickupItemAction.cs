@@ -1,4 +1,5 @@
 
+using System;
 using System.Collections.Generic;
 using Building.Models;
 using GameControllers.Services;
@@ -29,16 +30,33 @@ namespace UnitAction
             this.buildingService = _buildingService;
             this.itemObjModel = _itemObjModel;
             this.cancel = this.itemObjModel == null;
-            this.massToPickup = _massToPickup;
+            this.massToPickup = Math.Min(_massToPickup, _itemObjModel.mass - _itemObjModel.claimedMass);;
+            this.itemObjModel.claimedMass += this.massToPickup;
             this.itemObjectService.itemObseravable.SubscribeQuietly(items =>
             {
-                this.cancel = !items.Any(item => { return item.ID == this.itemObjModel.ID; });
+                if(!items.Any(item => { return item.ID == this.itemObjModel.ID; })) this.CancelAction();
             });
         }
 
         public bool CheckCompleted()
         {
-            return this.completed;
+            if(this.completed)
+            {
+                this.unclaimMass();
+                return true;
+            }
+            return false;
+        }
+
+        public void CancelAction()
+        {
+            this.unclaimMass();
+            this.cancel = true;
+        }
+
+        private void unclaimMass()
+        {
+            this.itemObjModel.claimedMass -= this.massToPickup;
         }
         public bool PerformAction()
         {

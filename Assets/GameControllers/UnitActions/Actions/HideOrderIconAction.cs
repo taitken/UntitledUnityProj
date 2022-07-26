@@ -27,6 +27,11 @@ namespace UnitAction
         {
             return this.completed;
         }
+
+        public void CancelAction()
+        {
+            this.cancel = true;
+        }
         public bool PerformAction()
         {
             this.orderService.hideOrderIconTrigger.Set(this.unit.currentOrder);

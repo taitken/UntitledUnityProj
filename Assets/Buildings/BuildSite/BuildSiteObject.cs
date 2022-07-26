@@ -52,8 +52,9 @@ namespace Building
         {
             if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Cancel)
             {
+                UnitOrderModel order = this.orderService.orders.Get().Find(order => { return order.coordinates == this.buildSiteModel.position; });
                 this.cancelled = true;
-                this.orderService.RemoveOrder(this.orderService.orders.Get().Find(order => { return order.coordinates == this.buildSiteModel.position; }).ID);
+                if(order != null)this.orderService.RemoveOrder(order.ID);
                 this.buildingService.RemoveBuildSite(this.buildSiteModel.ID);
             }
         }

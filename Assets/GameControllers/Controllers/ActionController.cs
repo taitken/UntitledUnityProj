@@ -33,7 +33,7 @@ public class ActionController : MonoBehaviour2
                           IBuildingService _buildingService,
                           IItemObjectService _itemService)
     {
-        this.services = new List<IBaseService>(){_orderService, _unitService, _environmentService, _pathFinderService, _buildingService, _itemService};
+        this.services = new List<IBaseService>() { _orderService, _unitService, _environmentService, _pathFinderService, _buildingService, _itemService };
         this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService, _itemService);
         this.subscriptions.Add(_orderService.orders.Subscribe(updatedOrders =>
         {
@@ -45,7 +45,7 @@ public class ActionController : MonoBehaviour2
         {
             this.currentUnits = updatedUnits;
         }));
-        InvokeRepeating("CheckAndAssignOrder", 2.0f, 2.0f);
+        InvokeRepeating("CheckAndAssignOrder", 1f, 1f);
     }
 
     // Start is called before the first frame update
@@ -57,10 +57,7 @@ public class ActionController : MonoBehaviour2
     // Update is called once per frame
     void Update()
     {
-        this.actionSequences.ForEach(sequence =>
-        {
-            sequence.Update();
-        });
+        this.actionSequences.ForEach(sequence => { sequence.Update(); });
     }
 
     void BeforeDestroy()
@@ -70,23 +67,25 @@ public class ActionController : MonoBehaviour2
 
     private void CheckAndAssignOrder()
     {
-        UnitModel unitWithoutOrder = this.currentUnits.Find(unit => { return unit.currentOrder == null; });
-        if (unitWithoutOrder != null && this.unassignedOrders.Count > 0)
+        this.currentUnits.Filter(unit => { return unit.currentOrder == null; }).ForEach(unitWithoutOrder =>
         {
-            for (int i = 0; i < this.unassignedOrders.Count; i++)
+            if (unitWithoutOrder != null && this.unassignedOrders.Count > 0)
             {
-                if (this.unassignedOrders[i].CanAssignToUnit(this.services, unitWithoutOrder))
+                for (int i = 0; i < this.unassignedOrders.Count; i++)
                 {
-                    unitWithoutOrder.currentOrder = this.unassignedOrders[i];
-                    this.CreateAndBeginSequence(unitWithoutOrder);
-                    break;
+                    if (this.unassignedOrders[i].CanAssignToUnit(this.services, unitWithoutOrder))
+                    {
+                        unitWithoutOrder.currentOrder = this.unassignedOrders[i];
+                        this.CreateAndBeginSequence(unitWithoutOrder);
+                        break;
+                    }
                 }
             }
-        }
-        else
-        {
-            //Debug.Log("Order already assigned");
-        }
+            else
+            {
+                //Debug.Log("Order already assigned");
+            }
+        });
     }
 
     private void CreateAndBeginSequence(UnitModel unitModel)

@@ -37,6 +37,11 @@ namespace UnitAction
         {
             return this.completed;
         }
+
+        public void CancelAction()
+        {
+            this.cancel = true;
+        }
         public bool PerformAction()
         {
             if (this.unit.carriedItem == null)

@@ -23,9 +23,15 @@ namespace GameControllers.Models
         public SupplyOrderModel SplitOrder(decimal massToKeep)
         {
             decimal newMass = this.itemMass - massToKeep;
-            if (newMass <= 0) return null;
-            this.itemMass = massToKeep;
-            return new SupplyOrderModel(this.coordinates, this.itemType, newMass, this.buildingType, false);
+            if (newMass <= 0)
+            {
+                return null;
+            }
+            else
+            {
+                this.itemMass = massToKeep;
+                return new SupplyOrderModel(this.coordinates, this.itemType, newMass, this.buildingType, false);
+            }
         }
 
         public override bool IsUniqueCheck(IList<UnitOrderModel> orderList)
@@ -36,7 +42,7 @@ namespace GameControllers.Models
         public override bool CanAssignToUnit(IList<IBaseService> _services, UnitModel _unitModel)
         {
             IItemObjectService itemService = this.GetService<IItemObjectService>(_services);
-            if(itemService == null) return false;
+            if (itemService == null) return false;
             return base.CanAssignToUnit(_services, _unitModel) && itemService.IsItemAvailable(this.itemType);
         }
     }

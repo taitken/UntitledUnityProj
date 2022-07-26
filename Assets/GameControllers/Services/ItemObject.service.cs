@@ -49,7 +49,8 @@ namespace GameControllers.Services
             itemObjs.ForEach(item =>
             {
                 long distance = Math.Abs(_startingPos.x - item.position.x) + Math.Abs(_startingPos.y - item.position.y);
-                if (lowestDistance == null || distance < lowestDistance)
+                if ((lowestDistance == null || distance < lowestDistance)
+                 && item.claimedMass < item.mass)
                 {
                     lowestDistance = distance;
                     returnModel = item;

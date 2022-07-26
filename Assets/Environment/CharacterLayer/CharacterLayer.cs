@@ -40,27 +40,30 @@ namespace Environment
 
         void Start()
         {
-            this.subscriptions.Add(this.unitService.unitObseravable.Subscribe(updatedUnitModels =>
-            {
-                IList<UnitModel> newModels = updatedUnitModels.GetNewModels(this.unitModels);
-                IList<UnitModel> removedModels = updatedUnitModels.GetRemovedModels(unitModels);
-                newModels.ForEach(newModel =>
-                {
-                    this.worldCharacters.Add(this.createUnit(newModel));
-                });
-                removedModels.ForEach(removedModels =>
-                {
-                    WorldCharacter worldCharacterToRemove = this.worldCharacters.Find(character => { return character.unitModel.ID == removedModels.ID; });
-                    this.worldCharacters.Remove(worldCharacterToRemove);
-                    worldCharacterToRemove.Destroy();
-                });
-            }));
+            this.subscriptions.Add(this.unitService.unitObseravable.Subscribe(this.HandleUnitModels));
             this.unitService.AddUnit(new UnitModel(.75f, new Vector3(1.729f, 0.966f, 0)));
+            this.unitService.AddUnit(new UnitModel(.75f, new Vector3(1.529f, 0.966f, 0)));
         }
         // Update is called once per frame
         void Update()
         {
 
+        }
+
+        void HandleUnitModels(IList<UnitModel> updatedUnitModels)
+        {
+            IList<UnitModel> newModels = updatedUnitModels.GetNewModels(this.unitModels);
+            IList<UnitModel> removedModels = updatedUnitModels.GetRemovedModels(unitModels);
+            newModels.ForEach(newModel =>
+            {
+                this.worldCharacters.Add(this.createUnit(newModel));
+            });
+            removedModels.ForEach(removedModels =>
+            {
+                WorldCharacter worldCharacterToRemove = this.worldCharacters.Find(character => { return character.unitModel.ID == removedModels.ID; });
+                this.worldCharacters.Remove(worldCharacterToRemove);
+                worldCharacterToRemove.Destroy();
+            });
         }
 
         private WorldCharacter createUnit(UnitModel newUnit)

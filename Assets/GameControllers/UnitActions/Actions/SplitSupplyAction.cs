@@ -1,4 +1,5 @@
 
+using System.Diagnostics;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -17,30 +18,38 @@ namespace UnitAction
         private IList<ItemObjectModel> itemsToCollect;
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
+        private decimal maxMassInTrip { get; set; }
+        private SupplyOrderModel originalSupplyOrder { get; set; }
         public SplitSupplyAction(UnitModel _unit,
                           IUnitOrderService _orderService,
                           IList<ItemObjectModel> _itemsToCollect)
         {
             this.orderService = _orderService;
             this.unit = _unit;
+            this.originalSupplyOrder = _unit.currentOrder as SupplyOrderModel;
             this.itemsToCollect = _itemsToCollect;
+            decimal availableMass = 0;
+            this.itemsToCollect.ForEach(item => { availableMass += (item.mass - item.claimedMass); });
+            this.maxMassInTrip = Math.Min(Math.Min(originalSupplyOrder.itemMass, availableMass), this.unit.maxCarryWeight);
         }
 
         public bool CheckCompleted()
         {
             return this.completed;
         }
+
+        public void CancelAction()
+        {
+            this.cancel = true;
+        }
         public bool PerformAction()
         {
             if (this.unit.currentOrder is SupplyOrderModel)
             {
-                SupplyOrderModel originalSupplyOrder = this.unit.currentOrder as SupplyOrderModel;
-                decimal availableMass = 0;
-                this.itemsToCollect.ForEach(item =>{availableMass += item.mass;});
-                decimal maxMassInTrip = Math.Min(Math.Min(originalSupplyOrder.itemMass, availableMass), this.unit.maxCarryWeight);
-                if(maxMassInTrip < originalSupplyOrder.itemMass)
+
+                if (this.maxMassInTrip < originalSupplyOrder.itemMass)
                 {
-                    this.orderService.AddOrder(originalSupplyOrder.SplitOrder(maxMassInTrip));
+                    this.orderService.AddOrder(originalSupplyOrder.SplitOrder(this.maxMassInTrip));
                 }
                 this.completed = true;
             }

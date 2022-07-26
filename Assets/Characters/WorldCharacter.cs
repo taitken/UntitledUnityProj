@@ -8,6 +8,7 @@ using Characters.Utils;
 using Zenject;
 using Item;
 using Unit.Models;
+using Item.Models;
 
 namespace Characters
 {
@@ -57,7 +58,8 @@ namespace Characters
             {
                 this.pathFindMap = map;
             });
-            this.ListenForItemPickupTriggers();
+            this.subscriptions.Add(this.itemService.onItemPickupOrDropTrigger.Subscribe(this.OnItemPickupOrDrop));
+            this.subscriptions.Add(this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this.OnItemStoreOrSupply));
 
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
@@ -130,24 +132,23 @@ namespace Characters
             return castCollisions.Filter(collision => { return collision.collider.gameObject.tag != "AllowMovement"; }).Count != 0;
         }
 
-        private void ListenForItemPickupTriggers()
+        private void OnItemStoreOrSupply(ItemObjectModel item)
         {
-            this.subscriptions.Add(this.itemService.onItemPickupOrDropTrigger.Subscribe((item) =>
+            if (this.carriedObj?.itemObjectModel.ID == item.ID) this.DetachItemFromUnit();
+        }
+
+        private void OnItemPickupOrDrop(ItemObjectModel item)
+        {
+            // Only picks up if not carrying item
+            // To do -- Implement item switch logic eg. drop carried obj and pickup new obj
+            if (this.unitModel.carriedItem != null && this.carriedObj == null)
             {
-                // Only picks up if not carrying item
-                // To do -- Implement item switch logic eg. drop carried obj and pickup new obj
-                if (this.unitModel.carriedItem != null && this.carriedObj == null)
-                {
-                    this.AttachItemToUnit(this.itemService.GetItemObject(this.unitModel.carriedItem.ID));
-                }
-                if (this.unitModel.carriedItem == null && this.carriedObj != null)
-                {
-                    this.DetachItemFromUnit();
-                }
-            }));
-            this.subscriptions.Add(this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(item =>{
-                if(this.carriedObj.itemObjectModel.ID == item.ID) this.DetachItemFromUnit();
-            }));
+                this.AttachItemToUnit(this.itemService.GetItemObject(this.unitModel.carriedItem.ID));
+            }
+            if (this.unitModel.carriedItem == null && this.carriedObj != null)
+            {
+                this.DetachItemFromUnit();
+            }
         }
 
         private void AttachItemToUnit(ItemObject itemObj)

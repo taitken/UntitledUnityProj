@@ -8,5 +8,6 @@ namespace UnitAction
         bool cancel { get; set; }
         bool CheckCompleted();
         bool PerformAction();
+        void CancelAction();
     }
 }
