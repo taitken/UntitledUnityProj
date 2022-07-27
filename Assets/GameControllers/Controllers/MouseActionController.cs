@@ -1,23 +1,33 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 using GameControllers.Services;
 using GameControllers.Models;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 
 public class MouseActionController : MonoBehaviour2
 {
     MouseActionModel currentMouseAction;
     IUnitOrderService orderService;
+    IEnvironmentService environmentService;
+    private const float DRAG_TIME_LENGTH = 0.2f;
+    private float leftClickDownDuration;
+    private Vector3 dragClickStart;
+    private DragEventModel dragEvent;
     IList<RaycastHit2D> oldMouseOverHits = new List<RaycastHit2D>();
     [Inject]
-    public void Construct(IUnitOrderService _orderService)
+    public void Construct(IUnitOrderService _orderService,
+                            IEnvironmentService _environmentService)
     {
         this.orderService = _orderService;
+        this.environmentService = _environmentService;
         this.orderService.mouseAction.Subscribe(action =>
         {
             this.currentMouseAction = action;
         });
+        this.leftClickDownDuration = 0;
 
     }
     // Start is called before the first frame update
@@ -30,28 +40,83 @@ public class MouseActionController : MonoBehaviour2
     void Update()
     {
         this.MouseOverCheck();
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        if (!isMouseOverUI())
         {
-            switch (this.currentMouseAction.mouseType)
+            if (Mouse.current.leftButton.isPressed)
             {
-                case eMouseAction.Build:
-                    this.BuildCommandClick();
-                    break;
-                case eMouseAction.Dig:
-                    this.DigCommandClick();
-                    break;
-                case eMouseAction.Store:
-                    this.StoreCommandClick();
-                    break;
-                case eMouseAction.Cancel:
-                    this.CancelCommandClick();
-                    break;
+                if (this.dragClickStart == default(Vector3)) this.dragClickStart = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+                this.leftClickDownDuration += Time.deltaTime;
+                if (this.leftClickDownDuration > 0 && this.leftClickDownDuration > DRAG_TIME_LENGTH) this.HandleLeftDrag();
+            }
+            else
+            {
+                this.dragClickStart = default(Vector3);
+                if (this.leftClickDownDuration > 0 && this.leftClickDownDuration < DRAG_TIME_LENGTH) this.HandleLeftClick();
+                if (leftClickDownDuration > 0)
+                {
+                    this.leftClickDownDuration = 0;
+                    if (this.dragEvent != null)
+                    {
+                        this.HandleLeftDragEnd();
+                    }
+                }
             }
         }
         if (Mouse.current.rightButton.wasPressedThisFrame)
         {
             this.orderService.mouseAction.Set(new MouseActionModel(eMouseAction.None));
         }
+    }
+
+    private void HandleLeftClick()
+    {
+        switch (this.currentMouseAction.mouseType)
+        {
+            case eMouseAction.Build:
+                this.CommandClick(false, "BuildingLayer");
+                break;
+            case eMouseAction.Dig:
+                this.CommandClick(true, "MineableLayer");
+                break;
+            case eMouseAction.Store:
+                this.CommandClick(true, "ItemLayer");
+                break;
+            case eMouseAction.Cancel:
+                this.CommandClick(true, "UnitOrderLayer", "BuildingLayer");
+                break;
+        }
+    }
+
+    private void HandleLeftDrag()
+    {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        if (this.dragEvent == null)
+        {
+            this.dragEvent = new DragEventModel(this.dragClickStart, this.RayCastOnMouse(new ContactFilter2D()).Map(hit => { return hit.collider.gameObject; }));
+        }
+        this.dragEvent.currentDragLocation = mousePos;
+        this.dragEvent.draggedObjects.ForEach(obj =>
+        {
+            obj.GetComponent<MonoBehaviour2>().OnDrag(this.dragEvent);
+        });
+    }
+
+    private void HandleLeftDragEnd()
+    {
+        this.dragEvent.draggedObjects.ForEach(obj => { obj.GetComponent<MonoBehaviour2>().OnDragEnd(this.dragEvent); });
+        switch (this.currentMouseAction.mouseType)
+        {
+            case eMouseAction.Dig:
+                this.DragClick(this.dragEvent, "MineableLayer");
+                break;
+            case eMouseAction.Store:
+                this.DragClick(this.dragEvent, "ItemLayer");
+                break;
+            case eMouseAction.Cancel:
+                this.DragClick(this.dragEvent, "UnitOrderLayer", "BuildingLayer");
+                break;
+        }
+        this.dragEvent = null;
     }
 
     private bool isMouseOverUI()
@@ -102,15 +167,23 @@ public class MouseActionController : MonoBehaviour2
         }
     }
 
+    private List<RaycastHit2D> BoxCastOnDragEvent(DragEventModel dragEvent, ContactFilter2D contactFilter)
+    {
+        List<RaycastHit2D> hitResults = new List<RaycastHit2D>();
+        Vector2 size = new Vector2(dragEvent.currentDragLocation.x - dragEvent.initialDragLocation.x, dragEvent.currentDragLocation.y - dragEvent.initialDragLocation.y);
+        Physics2D.BoxCast(dragEvent.initialDragLocation, size, 0, Vector2.zero, contactFilter, hitResults);
+        return hitResults;
+    }
+
     private List<RaycastHit2D> RayCastOnMouse(ContactFilter2D contactFilter)
     {
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
-        Vector3 mousePos = Camera.main.ScreenToWorldPoint(mousePosition);
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
         List<RaycastHit2D> hitResults = new List<RaycastHit2D>();
         Physics2D.Raycast(mousePos2D, Vector2.zero, contactFilter, hitResults);
         return hitResults;
     }
+
 
     private void ClickObject(RaycastHit2D hitObject)
     {
@@ -135,34 +208,27 @@ public class MouseActionController : MonoBehaviour2
     // Checks a Raycast list and clicks the first object
     private void ClickObjects(List<RaycastHit2D> hitObjects)
     {
-        hitObjects.ForEach(hit =>{this.ClickObject(hit);});
+        hitObjects.ForEach(hit => { this.ClickObject(hit); });
     }
 
-    private void DigCommandClick()
+    private void DragClick(DragEventModel dragEvent, params string[] layers)
     {
         ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(LayerMask.GetMask("MineableLayer"));
-        this.ClickObject(this.RayCastOnMouse(filter));
+        filter.SetLayerMask(LayerMask.GetMask(layers));
+        this.ClickObjects(this.BoxCastOnDragEvent(dragEvent, filter));
     }
 
-    private void BuildCommandClick()
+    private void CommandClick(bool onlyClickFirstObject, params string[] layers)
     {
         ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(LayerMask.GetMask("BuildingLayer"));
-        this.ClickObjects(this.RayCastOnMouse(filter));
-    }
-
-    private void StoreCommandClick()
-    {
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(LayerMask.GetMask("ItemLayer"));
-        this.ClickObject(this.RayCastOnMouse(filter));
-    }
-
-    private void CancelCommandClick()
-    {
-        ContactFilter2D filter = new ContactFilter2D();
-        filter.SetLayerMask(LayerMask.GetMask("UnitOrderLayer", "BuildingLayer"));
-        this.ClickObject(this.RayCastOnMouse(filter));
+        filter.SetLayerMask(LayerMask.GetMask(layers));
+        if (onlyClickFirstObject)
+        {
+            this.ClickObject(this.RayCastOnMouse(filter));
+        }
+        else
+        {
+            this.ClickObjects(this.RayCastOnMouse(filter));
+        }
     }
 }

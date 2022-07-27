@@ -218,6 +218,7 @@ MonoBehaviour:
   ContextWindow: {fileID: 9045927156703606938, guid: c055d567dde0a7a4b8ecf1da0098318e, type: 3}
   LayerCollider: {fileID: 2919357594930836622, guid: f29456b2636e3b14785de59cdc888b5a, type: 3}
   BuildSiteObject: {fileID: 7100766024207940398, guid: 376ae8a9d9a664b4391363b4a804d34b, type: 3}
+  OrderSelectionPrefab: {fileID: 4782722188414989856, guid: 61297c39b20faf248ae03fb4f53439d7, type: 3}
   BuildingAssetController: {fileID: 4649490261548486794, guid: d4cd166f806427248920d6967e20c57b, type: 3}
   ItemObjectLayer: {fileID: 746842677}
 --- !u!114 &156683541

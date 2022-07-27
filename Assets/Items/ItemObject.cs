@@ -48,7 +48,7 @@ namespace Item
         {
             if (this.mouseAction.mouseType == eMouseAction.Store)
             {
-                this.orderService.AddOrder(new StoreOrder(this.itemObjectModel.position));
+                this.orderService.AddOrder(new StoreOrderModel(this.itemObjectModel.position, this.itemObjectModel));
             }
         }
 

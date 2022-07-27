@@ -159,6 +159,7 @@ namespace Environment
             {
                 this.ghostBuilding = Instantiate(this.buildingService.GetBuildingPrefab(_buildingType).gameObject, this.GetLocalPositionOfCellAtMouse(), new Quaternion());
                 SpriteRenderer sr = this.ghostBuilding.GetComponent<SpriteRenderer>();
+                sr.sortingOrder = 500;
                 sr.color = GameColors.AddTransparency(sr.color, 0.6f);
                 this.ghostBuilding.layer = 0;
             }

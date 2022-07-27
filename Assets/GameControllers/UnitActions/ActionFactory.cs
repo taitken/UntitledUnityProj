@@ -49,21 +49,26 @@ namespace UnitAction
                 case eOrderTypes.Supply:
                     SupplyOrderModel supplyOrder = _unit.currentOrder as SupplyOrderModel;
                     ItemObjectModel itemToSupply = this.itemService.FindClosestItem(supplyOrder.itemType, this.environmentService.tileMapRef.LocalToCell(_unit.position));
-                    if(itemToSupply == null)
+                    if (itemToSupply == null)
                     {
-                        this.orderService.RemoveOrder(_unit.currentOrder.ID);
+                        this.orderService.RemoveOrder(supplyOrder.ID);
                         break;
                     }
-                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new SplitSupplyAction(_unit, this.orderService, new List<ItemObjectModel>{itemToSupply}))
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new SplitSupplyAction(_unit, this.orderService, new List<ItemObjectModel> { itemToSupply }))
                         .Then(new MoveAction(_unit, itemToSupply.position, this.pathFinderService, this.environmentService, false))
                         .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, itemToSupply, supplyOrder.itemMass))
                         .Then(new MoveAction(_unit, supplyOrder.coordinates, this.pathFinderService, this.environmentService, true))
                         .Then(new SupplyAction(_unit, this.buildingService, this.itemService, this.orderService));
                     break;
                 case eOrderTypes.Store:
-                    ItemObjectModel itemToStore = this.itemService.itemObseravable.Get().Find(item =>{return item.position == _unit.currentOrder.coordinates;});
+                    StoreOrderModel storeOrder = _unit.currentOrder as StoreOrderModel;
+                    if (storeOrder.itemModel == null)
+                    {
+                        this.orderService.RemoveOrder(storeOrder.ID);
+                        break;
+                    }
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, false))
-                        .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, itemToStore, _unit.maxCarryWeight))
+                        .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, storeOrder.itemModel, _unit.maxCarryWeight))
                         .Then(new HideOrderIconAction(_unit, this.orderService))
                         .Then(new MoveAction(_unit, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position)).position, this.pathFinderService, this.environmentService, true))
                         .Then(new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position))));

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Environment;
+using GameControllers.Models;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
@@ -17,10 +18,9 @@ namespace UnityEngine
         protected void InitiliseMonoLayer(LayerCollider.Factory _layerColliderFactory, Vector2 _size, string _layer)
         {
             this.tilemap = this.GetComponent<Tilemap>();
-            this.layerCollider = _layerColliderFactory.Create(_size, _layer, () =>
-            {
-                this.OnClickedByUser();
-            });
+            IList<Action> callbacks = new List<Action>(){this.OnClickedByUser, this.OnMouseEnter, this.OnMouseExit};
+            IList<Action<DragEventModel>> dragCallbacks = new List<Action<DragEventModel>>(){this.OnDrag, this.OnDragEnd};
+            this.layerCollider = _layerColliderFactory.Create(_size, _layer, callbacks, dragCallbacks);
             this.layerCollider.gameObject.transform.SetParent(this.transform);
         }
 

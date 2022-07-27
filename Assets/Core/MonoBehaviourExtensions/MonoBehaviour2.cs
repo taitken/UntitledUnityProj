@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GameControllers.Models;
 using UnityEngine;
 using UtilityClasses;
 
@@ -26,6 +27,16 @@ namespace UnityEngine
         }
 
         public virtual void OnMouseExit()
+        {
+
+        }
+
+        public virtual void OnDrag(DragEventModel dragEvent)
+        {
+
+        }
+
+        public virtual void OnDragEnd(DragEventModel dragEvent)
         {
 
         }

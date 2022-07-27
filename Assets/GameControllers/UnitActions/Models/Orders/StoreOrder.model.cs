@@ -4,14 +4,16 @@ using Building.Models;
 using System.Collections.Generic;
 using Unit.Models;
 using GameControllers.Services;
+using Item.Models;
 
 namespace GameControllers.Models
 {
-    public class StoreOrder : UnitOrderModel
+    public class StoreOrderModel : UnitOrderModel
     {
-        public StoreOrder(Vector3Int _coordinates, bool showIcon = true) : base(_coordinates, eOrderTypes.Store, showIcon)
+        public ItemObjectModel itemModel {get;set;}
+        public StoreOrderModel(Vector3Int _coordinates,  ItemObjectModel _itemModel, bool showIcon = true) : base(_coordinates, eOrderTypes.Store, showIcon)
         {
-
+            this.itemModel = _itemModel;
         }
 
         public override bool CanAssignToUnit(IList<IBaseService> _services, UnitModel _unitModel)
