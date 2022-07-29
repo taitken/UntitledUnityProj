@@ -4,7 +4,7 @@ using GameControllers.Services;
 using GameControllers;
 using Zenject;
 
-namespace Environment
+namespace GameControllers
 {
     public class GameSceneController : MonoBehaviour2
     {

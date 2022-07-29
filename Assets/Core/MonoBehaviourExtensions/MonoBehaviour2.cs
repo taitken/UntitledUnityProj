@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GameControllers.Models;
 using UnityEngine;
 using UtilityClasses;
+using Zenject;
 
 namespace UnityEngine
 {
@@ -11,6 +12,11 @@ namespace UnityEngine
 
         private IList<Action> onDeathCallbacks = new List<Action>();
         protected IList<Subscription> subscriptions = new List<Subscription>();
+
+        [Inject]
+        public void Construct()
+        {
+        }
         public virtual void OnClickedByUser()
         {
 

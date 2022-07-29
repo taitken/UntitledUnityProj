@@ -9,8 +9,9 @@ using Environment.Models;
 using Unit.Models;
 using Item;
 using Characters;
+using Environment;
 
-namespace Environment
+namespace GameControllers
 {
     public class GameMapController : MonoBehaviour2
     {
