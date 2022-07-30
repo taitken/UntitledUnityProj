@@ -13,10 +13,7 @@ namespace UnityEngine
         private IList<Action> onDeathCallbacks = new List<Action>();
         protected IList<Subscription> subscriptions = new List<Subscription>();
 
-        [Inject]
-        public void Construct()
-        {
-        }
+ 
         public virtual void OnClickedByUser()
         {
 

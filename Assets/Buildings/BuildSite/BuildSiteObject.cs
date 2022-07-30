@@ -69,6 +69,11 @@ namespace Building
                     item.itemState = ItemObjectModel.eItemState.OnGround;
                     this.itemService.onItemPickupOrDropTrigger.Set(item);
                 });
+            } else 
+            {
+                this.buildSiteModel.suppliedItems.ForEach(item =>{
+                    this.itemService.RemoveItem(item.ID);
+                });
             }
         }
 

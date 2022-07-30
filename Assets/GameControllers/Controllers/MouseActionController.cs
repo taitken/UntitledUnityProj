@@ -71,7 +71,6 @@ namespace GameControllers
 
         private void HandleLeftClick()
         {
-            Debug.Log(Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()));
             switch (this.currentMouseAction.mouseType)
             {
                 case eMouseAction.Build:

@@ -16,11 +16,18 @@ namespace GameControllers.Services
         public Obseravable<IList<ItemObjectModel>> itemObseravable { get; set; } = new Obseravable<IList<ItemObjectModel>>(new List<ItemObjectModel>());
         public Obseravable<ItemObjectModel> onItemStoreOrSupplyTrigger { get; set; } = new Obseravable<ItemObjectModel>(null);
         public Obseravable<ItemObjectModel> onItemPickupOrDropTrigger { get; set; } = new Obseravable<ItemObjectModel>(null);
+        private ItemAssetController itemAssetController;
 
         public void SetItemObjectHook(Func<IList<ItemObject>> _itemObjectHook)
         {
             this.ItemObjectHook = _itemObjectHook;
         }
+
+        public void SetItemAssetController(ItemAssetController _itemAssetController)
+        {
+            this.itemAssetController = _itemAssetController;
+        }
+
         public void AddItem(ItemObjectModel item)
         {
             IList<ItemObjectModel> _items = this.itemObseravable.Get();
@@ -61,6 +68,11 @@ namespace GameControllers.Services
         public ItemObject GetItemObject(long id)
         {
             return this.ItemObjectHook().Find(item => { return item.itemObjectModel.ID == id; });
+        }
+
+        public Sprite GetItemSprite(eItemType itemType)
+        {
+            return this.itemAssetController.GetItemSprite(itemType);
         }
 
         public IList<ItemObjectModel> GetAvailableItems(eItemType _itemType)

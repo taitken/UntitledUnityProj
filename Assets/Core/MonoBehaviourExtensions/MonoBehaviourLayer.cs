@@ -11,8 +11,8 @@ namespace UnityEngine
 {
     public abstract class MonoBehaviourLayer : MonoBehaviour2
     {
-        public const int MAP_WIDTH = 22;
-        public const int MAP_HEIGHT = 12;
+        public const int MAP_WIDTH = 42;
+        public const int MAP_HEIGHT = 22;
         protected Tilemap tilemap;
         LayerCollider layerCollider;
         protected void InitiliseMonoLayer(LayerCollider.Factory _layerColliderFactory, Vector2 _size, string _layer)

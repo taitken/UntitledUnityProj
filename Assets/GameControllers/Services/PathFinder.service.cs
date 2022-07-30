@@ -44,14 +44,22 @@ namespace GameControllers.Services
         private List<PathFinderMapItem> IncrementNeigbours(PathFinderMapItem item, PathFinderMap _map)
         {
             List<PathFinderMapItem> neighbours = new List<PathFinderMapItem>();
-            neighbours.Add(_map.GetPassableMapItemAt(item.x, item.y - 1));
-            neighbours.Add(_map.GetPassableMapItemAt(item.x - 1, item.y));
-            neighbours.Add(_map.GetPassableMapItemAt(item.x + 1, item.y));
-            neighbours.Add(_map.GetPassableMapItemAt(item.x, item.y + 1));
-            neighbours.Add(_map.GetPassableMapItemAt(item.x - 1, item.y - 1));
-            neighbours.Add(_map.GetPassableMapItemAt(item.x + 1, item.y - 1));
-            neighbours.Add(_map.GetPassableMapItemAt(item.x - 1, item.y + 1));
-            neighbours.Add(_map.GetPassableMapItemAt(item.x + 1, item.y + 1));
+            PathFinderMapItem left = _map.GetPassableMapItemAt(item.x - 1, item.y);
+            PathFinderMapItem top = _map.GetPassableMapItemAt(item.x, item.y + 1);
+            PathFinderMapItem right = _map.GetPassableMapItemAt(item.x + 1, item.y);
+            PathFinderMapItem bottom = _map.GetPassableMapItemAt(item.x, item.y - 1);
+            PathFinderMapItem topLeft = top != null && left != null ? _map.GetPassableMapItemAt(item.x - 1, item.y + 1) : null;
+            PathFinderMapItem topRight = top != null && right != null ? _map.GetPassableMapItemAt(item.x + 1, item.y + 1) : null;
+            PathFinderMapItem bottomleft = bottom != null && left != null ? _map.GetPassableMapItemAt(item.x - 1, item.y - 1) : null;
+            PathFinderMapItem bottomRight = bottom != null && right != null ? _map.GetPassableMapItemAt(item.x + 1, item.y - 1) : null;
+            neighbours.Add(left);
+            neighbours.Add(top);
+            neighbours.Add(right);
+            neighbours.Add(bottom);
+            neighbours.Add(topLeft);
+            neighbours.Add(topRight);
+            neighbours.Add(bottomleft);
+            neighbours.Add(bottomRight);
             // Remove out of bounds (null) tiles, and items that have already been assigned a lower
             neighbours = (List<PathFinderMapItem>)neighbours.Filter(neighbour => { return neighbour != null && !(neighbour.distance != null && neighbour.distance <= item.distance); });
             neighbours.ForEach(neighbour => { neighbour.distance = item.distance + 1; });

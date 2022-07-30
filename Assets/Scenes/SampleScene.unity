@@ -216,10 +216,12 @@ MonoBehaviour:
   CharacterPathLine: {fileID: 8217750135311177496, guid: cb638f4bdcfc9b94f9d5f8b302e53dbd, type: 3}
   ItemObject: {fileID: 9175849334378074136, guid: 7dbf387d7945fcb439ab6f0faccfad5e, type: 3}
   ContextWindow: {fileID: 9045927156703606938, guid: c055d567dde0a7a4b8ecf1da0098318e, type: 3}
+  ItemList: {fileID: 3950618509756104263, guid: 92cad9a1cfaef014285eacba1d824c5b, type: 3}
   LayerCollider: {fileID: 2919357594930836622, guid: f29456b2636e3b14785de59cdc888b5a, type: 3}
   BuildSiteObject: {fileID: 7100766024207940398, guid: 376ae8a9d9a664b4391363b4a804d34b, type: 3}
   OrderSelectionPrefab: {fileID: 4782722188414989856, guid: 61297c39b20faf248ae03fb4f53439d7, type: 3}
   BuildingAssetController: {fileID: 4649490261548486794, guid: d4cd166f806427248920d6967e20c57b, type: 3}
+  ItemAssetController: {fileID: -4515043457546939891, guid: 609aae676c46bd443b6d280e1f8f8f55, type: 3}
   ItemObjectLayer: {fileID: 746842677}
 --- !u!114 &156683541
 MonoBehaviour:
@@ -3549,6 +3551,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1439481947824551643, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 7259936068930498400, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
       propertyPath: m_Name
       value: GUI

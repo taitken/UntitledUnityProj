@@ -52,15 +52,16 @@ namespace UnitAction
 
         public void TryPerformAction(IUnitAction action)
         {
-            try
-            {
                 action.PerformAction();
-            }
-            catch (System.Exception)
-            {
-                action.CancelAction();
-                throw new Exception();
-            }
+            // try
+            // {
+            //     action.PerformAction();
+            // }
+            // catch (System.Exception)
+            // {
+            //     action.CancelAction();
+            //     throw new Exception();
+            // }
         }
 
         public ActionSequence Then(IUnitAction nextAction)

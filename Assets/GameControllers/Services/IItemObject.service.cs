@@ -20,6 +20,7 @@ namespace GameControllers.Services
         ItemObjectModel FindClosestItem(eItemType _itemType, Vector3Int _startingPos);
         public bool IsItemAvailable(eItemType _itemType);
         public ItemObject GetItemObject(long id);
+        public Sprite GetItemSprite(eItemType itemType);
     }
 }
 

@@ -63,7 +63,7 @@ namespace Environment
                             draggedCells.Add(new Vector3Int(dragInitiationLocation.x + (x * xSign), dragInitiationLocation.y + (y * ySign)));
                         }
                     }
-                    this.DestroyAllSelections();
+                    this.orderSelectionObjects.DestroyAll();
                     draggedCells.ForEach(cell =>
                     {
                         this.orderSelectionObjects.Add(this.orderSelectionFactory.Create(cell, this.environmentService.CellToLocal(cell)));
@@ -76,16 +76,7 @@ namespace Environment
         public override void OnDragEnd(DragEventModel dragEvent)
         {
             this.lastEnteredCell = default(Vector3Int);
-            this.DestroyAllSelections();
-        }
-
-        private void DestroyAllSelections()
-        {
-            for (int i = this.orderSelectionObjects.Count - 1; i >= 0; i--)
-            {
-                this.orderSelectionObjects[i].Destroy();
-                this.orderSelectionObjects.RemoveAt(i);
-            }
+            this.orderSelectionObjects.DestroyAll();
         }
 
         private void RecalculateOrders(IList<UnitOrderModel> _newOrderList)

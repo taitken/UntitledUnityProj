@@ -113,6 +113,15 @@ namespace System.Collections.Generic
             }
         }
 
+        public static void DestroyAll<t1>(this IList<t1> list) where t1 : MonoBehaviour2
+        {
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                list[i].Destroy();
+                list.RemoveAt(i);
+            }
+        }
+
         public static Vector3Int ConvertToVector3Int(this Vector3 vec3)
         {
             return new Vector3Int((int)vec3.x, (int)vec3.y, (int)vec3.z);
