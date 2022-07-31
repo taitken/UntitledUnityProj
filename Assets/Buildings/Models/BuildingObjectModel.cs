@@ -5,13 +5,31 @@ using UnityEngine;
 namespace Building.Models
 {
     public class BuildingObjectModel : BasePhysicalObjectModel
-    {        
+    {
         public eBuildingType buildingType { get; set; }
         public IList<BuildingSupply> requiredItems { get; set; }
-        public BuildingObjectModel(Vector3Int _position, eBuildingType _buildingType) : base(_position, 0)
+        public Vector2 size { get; set; }
+
+        public IList<Vector3Int> positions
+        {
+            get
+            {
+                IList<Vector3Int> positions = new List<Vector3Int>();
+                for (int x = 0; x < this.size.x; x++)
+                {
+                    for (int y = 0; y < this.size.y; y++)
+                    {
+                        positions.Add(new Vector3Int(this.position.x + x, this.position.y + y));
+                    }
+                }
+                return positions;
+            }
+        }
+        public BuildingObjectModel(Vector3Int _position, Vector2 _size, eBuildingType _buildingType, IList<BuildingSupply> _requiredItems) : base(_position, 0)
         {
             this.buildingType = _buildingType;
-            this.requiredItems = new List<BuildingSupply>();
+            this.requiredItems = _requiredItems;
+            this.size = _size;
         }
     }
 }

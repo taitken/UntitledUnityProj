@@ -47,8 +47,8 @@ namespace Environment
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Cancel)
             {
                 
-                Vector3Int dragInitiationLocation = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + 0.08f, dragEvent.initialDragLocation.y  + 0.08f, 0));
-                Vector3Int currentMouseCell = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x  + 0.08f, dragEvent.currentDragLocation.y  + 0.08f, 0));
+                Vector3Int dragInitiationLocation = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS /2, dragEvent.initialDragLocation.y  + IEnvironmentService.TILE_WIDTH_PIXELS /2, 0));
+                Vector3Int currentMouseCell = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x  + IEnvironmentService.TILE_WIDTH_PIXELS /2, dragEvent.currentDragLocation.y  + IEnvironmentService.TILE_WIDTH_PIXELS /2, 0));
                 if (currentMouseCell != this.lastEnteredCell)
                 {
                     List<Vector3Int> draggedCells = new List<Vector3Int>();

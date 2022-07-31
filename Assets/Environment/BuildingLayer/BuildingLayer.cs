@@ -9,6 +9,7 @@ using GameControllers.Models;
 using UI.Services;
 using Item.Models;
 using UtilityClasses;
+using System;
 
 namespace Environment
 {
@@ -58,18 +59,12 @@ namespace Environment
 
         void Start()
         {
-            this.orderService.mouseAction.Subscribe(_mouseAction =>
+            this.subscriptions.Add(this.orderService.mouseAction.Subscribe(_mouseAction =>
             {
                 this.mouseAction = _mouseAction;
-            });
-            this.buildingService.buildingObseravable.Subscribe(buildings =>
-            {
-                this.RefreshBuildings(buildings);
-            });
-            this.buildingService.buildingSiteObseravable.Subscribe(buildSites =>
-            {
-                this.RefreshBuildSites(buildSites);
-            });
+            }));
+            this.subscriptions.Add(this.buildingService.buildingObseravable.Subscribe(this.RefreshBuildings));
+            this.subscriptions.Add(this.buildingService.buildingSiteObseravable.Subscribe(this.RefreshBuildSites));
         }
         // Update is called once per frame
         void Update()
@@ -158,6 +153,7 @@ namespace Environment
 
         private void ShowBuildGhost(eBuildingType _buildingType)
         {
+            BuildingStatsModel buildStats = BuildingTypeStats.GetBuildingStats(_buildingType);
             if (this.ghostBuilding == null)
             {
                 this.ghostBuilding = Instantiate(this.buildingService.GetBuildingPrefab(_buildingType).gameObject, this.GetLocalPositionOfCellAtMouse(), new Quaternion());
@@ -168,7 +164,8 @@ namespace Environment
             }
             else
             {
-                this.ghostBuilding.GetComponent<Transform>().position = this.GetLocalPositionOfCellAtMouse();
+                this.ghostBuilding.GetComponent<Transform>().position = this.GetLocalPositionOfCellAtMouse()
+                    - new Vector3(IEnvironmentService.TILE_WIDTH_PIXELS * (buildStats.size.x - 1), 0);
             }
         }
 

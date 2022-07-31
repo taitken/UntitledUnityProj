@@ -7,9 +7,11 @@ namespace Building.Models
 {
     public class StorageBuildingModel : BuildingObjectModel
     {
-        public StorageBuildingModel(Vector3Int _position, eBuildingType _buildingType) : base(_position, _buildingType)
+        public StorageBuildingModel(Vector3Int _position, Vector2 _size, eBuildingType _buildingType, IList<BuildingSupply> _requiredItems, decimal _storageMax)
+            : base(_position, _size, _buildingType, _requiredItems)
         {
             this.storedItems = new List<ItemObjectModel>();
+            this.storageMax = _storageMax;
         }
 
         public decimal storageMax { get; set; }
@@ -30,7 +32,7 @@ namespace Building.Models
 
         public void RemoveItem(long itemObjID)
         {
-            this.storedItems = this.storedItems.Filter(item =>{return item.ID != itemObjID;});
+            this.storedItems = this.storedItems.Filter(item => { return item.ID != itemObjID; });
         }
     }
 }

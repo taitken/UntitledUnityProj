@@ -9,6 +9,8 @@ namespace GameControllers.Services
 {
     public interface IEnvironmentService : IBaseService
     {
+        
+        public static float TILE_WIDTH_PIXELS = 0.16f;
         Obseravable<IList<MineableObjectModel>> mineableObjects { get; set; }
         Obseravable<IList<GroundTileModel>> groundTiles { get; set; }
         Tilemap tileMapRef { get; set; }

@@ -20,8 +20,11 @@ namespace Building
                                         BuildingObjectModel _buildingObjectModel,
                                         IEnvironmentService _environmentService)
         {
+            SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
             this.buildingObjectModel = _buildingObjectModel;
-            this.transform.position = _environmentService.CellToLocal(_buildingObjectModel.position);
+            this.transform.position = _environmentService.CellToLocal(_buildingObjectModel.position)
+                + new Vector3(IEnvironmentService.TILE_WIDTH_PIXELS / sr.bounds.size.x * sr.bounds.size.x,
+                IEnvironmentService.TILE_WIDTH_PIXELS / sr.bounds.size.y * sr.bounds.size.y);
             this.contextService = _contextService;
         }
 

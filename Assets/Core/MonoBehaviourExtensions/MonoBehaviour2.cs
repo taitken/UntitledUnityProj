@@ -13,7 +13,7 @@ namespace UnityEngine
         private IList<Action> onDeathCallbacks = new List<Action>();
         protected IList<Subscription> subscriptions = new List<Subscription>();
 
- 
+
         public virtual void OnClickedByUser()
         {
 
@@ -52,6 +52,35 @@ namespace UnityEngine
         protected virtual void BeforeDeath()
         {
 
+        }
+
+        protected void UpdateBoxColliderToFitChildren()
+        {
+            BoxCollider2D boxCollider2D = this.GetComponent<BoxCollider2D>();
+            if (boxCollider2D != null)
+            {
+                bool hasBounds = false;
+                Bounds bounds = new Bounds(Vector3.zero, Vector3.zero);
+
+                foreach (Transform child in this.transform)
+                {
+                    Renderer childRenderer = child.gameObject.GetComponent<Renderer>();
+                    if (childRenderer != null)
+                    {
+                        if (hasBounds)
+                        {
+                            bounds.Encapsulate(childRenderer.bounds);
+                        }
+                        else
+                        {
+                            bounds = childRenderer.bounds;
+                            hasBounds = true;
+                        }
+                    }
+                }
+                boxCollider2D.offset = bounds.center - this.transform.position;
+                boxCollider2D.size = bounds.size;
+            }
         }
 
         public void Destroy()
