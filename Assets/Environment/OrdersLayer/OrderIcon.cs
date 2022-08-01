@@ -14,6 +14,7 @@ namespace Environment
     {
         private IUnitOrderService orderService;
         private IBuildingService buildingService;
+        private IEnvironmentService envService;
         private MouseActionModel mouseAction;
         private SpriteRenderer spriteRenderer;
         public UnitOrderModel unitOrder;
@@ -25,6 +26,7 @@ namespace Environment
                                 IBuildingService _buildingService)
         {
             this.transform.position = _envService.CellToLocal(_order.coordinates);
+            this.envService = _envService;
             this.orderService = _orderService;
             this.buildingService = _buildingService;
             this.unitOrder = _order;
@@ -42,6 +44,7 @@ namespace Environment
             {
                 SupplyOrderModel buildOrder = this.unitOrder as SupplyOrderModel;
                 this.UpdateBuildingSprite(buildOrder.buildingType);
+                this.SetMultiTilePosition(this.envService.CellToLocal(this.unitOrder.coordinates));
             }
             else
             {

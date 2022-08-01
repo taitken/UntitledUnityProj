@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using GameControllers.Models;
+using GameControllers.Services;
 using UnityEngine;
 using UtilityClasses;
 using Zenject;
@@ -52,6 +53,13 @@ namespace UnityEngine
         protected virtual void BeforeDeath()
         {
 
+        }
+
+        public void SetMultiTilePosition(Vector3 localPosition)
+        {
+            SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
+            this.transform.position = localPosition + new Vector3(sr.bounds.size.x / 2, sr.bounds.size.y / 2)
+            - new Vector3(IEnvironmentService.TILE_WIDTH_PIXELS / 2, IEnvironmentService.TILE_WIDTH_PIXELS / 2);
         }
 
         protected void UpdateBoxColliderToFitChildren()

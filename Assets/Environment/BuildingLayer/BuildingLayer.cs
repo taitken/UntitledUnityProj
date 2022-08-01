@@ -164,8 +164,9 @@ namespace Environment
             }
             else
             {
-                this.ghostBuilding.GetComponent<Transform>().position = this.GetLocalPositionOfCellAtMouse()
-                    - new Vector3(IEnvironmentService.TILE_WIDTH_PIXELS * (buildStats.size.x - 1), 0);
+                SpriteRenderer sr = this.ghostBuilding.GetComponent<SpriteRenderer>();
+                this.ghostBuilding.transform.position = this.GetLocalPositionOfCellAtMouse() + new Vector3(sr.bounds.size.x / 2, sr.bounds.size.y / 2)
+                - new Vector3(IEnvironmentService.TILE_WIDTH_PIXELS / 2, IEnvironmentService.TILE_WIDTH_PIXELS / 2);
             }
         }
 

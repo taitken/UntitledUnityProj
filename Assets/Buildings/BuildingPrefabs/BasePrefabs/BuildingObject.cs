@@ -20,11 +20,11 @@ namespace Building
                                         BuildingObjectModel _buildingObjectModel,
                                         IEnvironmentService _environmentService)
         {
-            SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
             this.buildingObjectModel = _buildingObjectModel;
-            this.transform.position = _environmentService.CellToLocal(_buildingObjectModel.position)
-                + new Vector3(IEnvironmentService.TILE_WIDTH_PIXELS / sr.bounds.size.x * sr.bounds.size.x,
-                IEnvironmentService.TILE_WIDTH_PIXELS / sr.bounds.size.y * sr.bounds.size.y);
+            this.SetMultiTilePosition(_environmentService.CellToLocal(_buildingObjectModel.position));
+            this.UpdateBuildingBounds();
+
+
             this.contextService = _contextService;
         }
 
@@ -42,6 +42,17 @@ namespace Building
         protected string GenerateContextWindowTitle()
         {
             return this.buildingObjectModel.buildingType.ToString().FirstCharToUpper();
+        }
+
+        protected void UpdateBuildingBounds()
+        {
+            SpriteRenderer sr = this.GetComponent<SpriteRenderer>();
+            BoxCollider2D bc = this.GetComponent<BoxCollider2D>();
+            Bounds bounds = new Bounds(new Vector3(this.buildingObjectModel.size.x * (float)IEnvironmentService.TILE_WIDTH_PIXELS / 2, this.buildingObjectModel.size.y * (float)IEnvironmentService.TILE_WIDTH_PIXELS / 2),
+                                        new Vector3(this.buildingObjectModel.size.x * IEnvironmentService.TILE_WIDTH_PIXELS, this.buildingObjectModel.size.y * IEnvironmentService.TILE_WIDTH_PIXELS));
+            bc.offset = new Vector3(((sr.bounds.size.x / IEnvironmentService.TILE_WIDTH_PIXELS) - this.buildingObjectModel.size.x) * -IEnvironmentService.TILE_WIDTH_PIXELS / 2,
+                                    ((sr.bounds.size.y / IEnvironmentService.TILE_WIDTH_PIXELS) - this.buildingObjectModel.size.y) * -IEnvironmentService.TILE_WIDTH_PIXELS / 2);
+            bc.size = bounds.size;
         }
 
         protected virtual List<string> GenerateContextWindowBody()
