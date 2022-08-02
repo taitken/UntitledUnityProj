@@ -22,13 +22,13 @@ namespace Building
             switch (_buildingType)
             {
                 case eBuildingType.Chest:
-                    newBuilding = new StorageBuildingModel(_position, buildStats.size, _buildingType, buildStats.buildSupply, 10000.00M);
+                    newBuilding = new StorageBuildingModel(_position, _buildingType, buildStats);
                     break;
                 case eBuildingType.FloorTile:
-                    newBuilding = new FloorTileModel(_position, buildStats.size, _buildingType, buildStats.buildSupply);
+                    newBuilding = new FloorTileModel(_position, _buildingType, buildStats);
                     break;
                 case eBuildingType.Smelter:
-                    newBuilding = new ProductionBuildingModel(_position, buildStats.size ,_buildingType, buildStats.buildSupply);
+                    newBuilding = new ProductionBuildingModel(_position, _buildingType, buildStats);
                     break;
                 default:
                     newBuilding = null;

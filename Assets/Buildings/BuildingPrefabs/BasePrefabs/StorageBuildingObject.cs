@@ -11,10 +11,12 @@ namespace Building
     public class StorageBuildingObject : BuildingObject
     {
         public StorageBuildingModel storageBuildingModel;
-        public override void Initialise(IContextWindowService _contextService, BuildingObjectModel _buildingObjectModel,
-                                        IEnvironmentService _environmentService)
+        public override void Initialise(IContextWindowService _contextService, 
+                                        BuildingObjectModel _buildingObjectModel,
+                                        IEnvironmentService _environmentService,
+                                        IUnitOrderService _orderService)
         {
-            base.Initialise(_contextService, _buildingObjectModel, _environmentService);
+            base.Initialise(_contextService, _buildingObjectModel, _environmentService, _orderService);
             this.storageBuildingModel = _buildingObjectModel as StorageBuildingModel;
         }
 

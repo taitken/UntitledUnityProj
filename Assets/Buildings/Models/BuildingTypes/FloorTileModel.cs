@@ -7,7 +7,7 @@ namespace Building.Models
 {
     public class FloorTileModel : BuildingObjectModel
     {
-        public FloorTileModel(Vector3Int _position, Vector2 _size, eBuildingType _buildingType, IList<BuildingSupply> _requiredItems) : base(_position, _size, _buildingType, _requiredItems)
+        public FloorTileModel(Vector3Int _position, eBuildingType _buildingType, BuildingStatsModel _buildStats) : base(_position, _buildingType, _buildStats)
         {
 
         }

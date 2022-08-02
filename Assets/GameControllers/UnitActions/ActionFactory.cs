@@ -47,18 +47,18 @@ namespace UnitAction
                         .Then(new BuildAction(_unit, this.buildingService));
                     break;
                 case eOrderTypes.Supply:
-                    SupplyOrderModel supplyOrder = _unit.currentOrder as SupplyOrderModel;
+                    BuildSupplyOrderModel supplyOrder = _unit.currentOrder as BuildSupplyOrderModel;
                     ItemObjectModel itemToSupply = this.itemService.FindClosestItem(supplyOrder.itemType, this.environmentService.tileMapRef.LocalToCell(_unit.position));
                     if (itemToSupply == null)
                     {
                         this.orderService.RemoveOrder(supplyOrder.ID);
                         break;
                     }
-                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new SplitSupplyAction(_unit, this.orderService, new List<ItemObjectModel> { itemToSupply }))
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new SplitBuildSupplyAction(_unit, this.orderService, new List<ItemObjectModel> { itemToSupply }))
                         .Then(new MoveAction(_unit, itemToSupply.position, this.pathFinderService, this.environmentService, false))
                         .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, itemToSupply, supplyOrder.itemMass))
                         .Then(new MoveAction(_unit, supplyOrder.coordinates, this.pathFinderService, this.environmentService, true))
-                        .Then(new SupplyAction(_unit, this.buildingService, this.itemService, this.orderService));
+                        .Then(new BuildSupplyAction(_unit, this.buildingService, this.itemService, this.orderService));
                     break;
                 case eOrderTypes.Store:
                     StoreOrderModel storeOrder = _unit.currentOrder as StoreOrderModel;

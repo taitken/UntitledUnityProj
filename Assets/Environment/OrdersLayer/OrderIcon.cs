@@ -40,9 +40,9 @@ namespace Environment
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
             if(!this.unitOrder.displayIcon) this.spriteRenderer.enabled = false;
-            if (this.unitOrder is SupplyOrderModel)
+            if (this.unitOrder is BuildSupplyOrderModel)
             {
-                SupplyOrderModel buildOrder = this.unitOrder as SupplyOrderModel;
+                BuildSupplyOrderModel buildOrder = this.unitOrder as BuildSupplyOrderModel;
                 this.UpdateBuildingSprite(buildOrder.buildingType);
                 this.SetMultiTilePosition(this.envService.CellToLocal(this.unitOrder.coordinates));
             }

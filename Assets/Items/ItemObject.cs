@@ -13,6 +13,7 @@ namespace Item
 {
     public class ItemObject : MonoBehaviour2
     {
+        public List<Sprite> itemSprites;
         public ItemObjectModel itemObjectModel;
         public IItemObjectService itemService;
         public IUnitOrderService orderService;
@@ -29,6 +30,7 @@ namespace Item
             this.contextService = _contextWindowService;
             this.orderService = _orderService;
             this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
+            this.GetComponent<SpriteRenderer>().sprite = this.itemSprites[(int)this.itemObjectModel.itemType];
         }
 
         public override void OnMouseEnter()

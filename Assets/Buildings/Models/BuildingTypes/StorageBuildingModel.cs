@@ -7,11 +7,11 @@ namespace Building.Models
 {
     public class StorageBuildingModel : BuildingObjectModel
     {
-        public StorageBuildingModel(Vector3Int _position, Vector2 _size, eBuildingType _buildingType, IList<BuildingSupply> _requiredItems, decimal _storageMax)
-            : base(_position, _size, _buildingType, _requiredItems)
+        public StorageBuildingModel(Vector3Int _position, eBuildingType _buildingType, BuildingStatsModel _buildStats)
+            : base(_position, _buildingType, _buildStats)
         {
             this.storedItems = new List<ItemObjectModel>();
-            this.storageMax = _storageMax;
+            this.storageMax = _buildStats.storageMax;
         }
 
         public decimal storageMax { get; set; }

@@ -17,7 +17,12 @@ namespace Building.Models
     {
         public string buildingName { get; set; }
         public Vector2 size { get; set; }
+        public decimal storageMax { get; set; }
         public IList<BuildingSupply> buildSupply { get; set; }
+        public IList<BuildingSupply> productionSupply { get; set; }
+        public int productionPointsMax { get; set; }
+        public IList<BuildingSupply> inputs { get; set; }
+        public IList<BuildingSupply> outputs { get; set; }
     }
 
     public static class BuildingTypeStats
@@ -32,7 +37,8 @@ namespace Building.Models
                     {
                         buildingName = "Chest",
                         size = new Vector2(1, 1),
-                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 400) }
+                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 400) },
+                        storageMax = 10000
                     };
                     break;
                 case eBuildingType.FloorTile:
@@ -48,11 +54,15 @@ namespace Building.Models
                     {
                         buildingName = "Smelter",
                         size = new Vector2(2, 2),
-                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) }
+                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) },
+                        productionSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 2000) },
+                        productionPointsMax = 1000,
+                        inputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) },
+                        outputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Iron, 200) }
                     };
                     break;
             }
             return buildingStats;
         }
-}
+    }
 }

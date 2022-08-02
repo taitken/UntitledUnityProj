@@ -14,17 +14,18 @@ namespace Building
     public class BuildingObject : MonoBehaviour2
     {
         public BuildingObjectModel buildingObjectModel { get; set; }
+        protected IUnitOrderService unitOrderService { get; set; }
         protected IContextWindowService contextService { get; set; }
 
         public virtual void Initialise(IContextWindowService _contextService,
                                         BuildingObjectModel _buildingObjectModel,
-                                        IEnvironmentService _environmentService)
+                                        IEnvironmentService _environmentService,
+                                        IUnitOrderService _orderService)
         {
             this.buildingObjectModel = _buildingObjectModel;
+            this.unitOrderService = _orderService;
             this.SetMultiTilePosition(_environmentService.CellToLocal(_buildingObjectModel.position));
             this.UpdateBuildingBounds();
-
-
             this.contextService = _contextService;
         }
 

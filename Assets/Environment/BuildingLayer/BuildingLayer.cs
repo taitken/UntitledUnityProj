@@ -114,7 +114,7 @@ namespace Environment
         private BuildingObject CreateBuilding(BuildingObjectModel buildingObj)
         {
             BuildingObject building = Instantiate<BuildingObject>(this.buildingService.buildingAssetController.GetBuildingPrefab(buildingObj.buildingType));
-            building.Initialise(this.contextService, buildingObj, this.environmentService);
+            building.Initialise(this.contextService, buildingObj, this.environmentService, this.orderService);
             return building;
         }
 
@@ -145,7 +145,7 @@ namespace Environment
                 {
                     this.buildingModelFactory.CreateBuildingModel(this.GetCellCoorAtMouse(), this.mouseAction.buildingType).requiredItems.ForEach(requiredItem =>
                     {
-                        this.orderService.AddOrder(new SupplyOrderModel(this.GetCellCoorAtMouse(), requiredItem.itemType, requiredItem.mass, this.mouseAction.buildingType));
+                        this.orderService.AddOrder(new BuildSupplyOrderModel(this.GetCellCoorAtMouse(), requiredItem.itemType, requiredItem.mass, this.mouseAction.buildingType));
                     });
                 }
             }

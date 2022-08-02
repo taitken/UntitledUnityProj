@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace UnitAction
 {
-    public class SupplyAction : IUnitAction
+    public class BuildSupplyAction : IUnitAction
     {
         private UnitModel unit;
         private IBuildingService buildingService;
@@ -20,7 +20,7 @@ namespace UnitAction
         private IUnitOrderService unitOrderService;
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
-        public SupplyAction(UnitModel _unit,
+        public BuildSupplyAction(UnitModel _unit,
                           IBuildingService _buildingService,
                           IItemObjectService _itemObjectService,
                           IUnitOrderService _unitOrderService)
@@ -50,7 +50,7 @@ namespace UnitAction
             }
             else
             {
-                SupplyOrderModel supplyOrder = this.unit.currentOrder as SupplyOrderModel;
+                BuildSupplyOrderModel supplyOrder = this.unit.currentOrder as BuildSupplyOrderModel;
                 ItemObjectModel itemModel = this.unit.carriedItem;
                 BuildSiteModel buildSiteModel = this.buildingService.buildingSiteObseravable.Get().Find(site => { return site.position == supplyOrder.coordinates; });
                 // Create build sit where non-existant

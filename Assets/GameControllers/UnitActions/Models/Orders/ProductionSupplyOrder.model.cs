@@ -8,19 +8,19 @@ using GameControllers.Services;
 
 namespace GameControllers.Models
 {
-    public class SupplyOrderModel : UnitOrderModel
+    public class ProductionSupplyOrderModel : UnitOrderModel
     {
         public eItemType itemType;
         public eBuildingType buildingType;
         public decimal itemMass;
-        public SupplyOrderModel(Vector3Int _coordinates, eItemType _itemType, decimal _itemMass, eBuildingType _buildingType, bool _showBuildGhost = true) : base(_coordinates, eOrderTypes.Supply, _showBuildGhost)
+        public ProductionSupplyOrderModel(Vector3Int _coordinates, eItemType _itemType, decimal _itemMass, bool _showOrderIcon = false) 
+            : base(_coordinates, eOrderTypes.Supply, _showOrderIcon)
         {
             this.itemType = _itemType;
             this.itemMass = _itemMass;
-            this.buildingType = _buildingType;
         }
 
-        public SupplyOrderModel SplitOrder(decimal massToKeep)
+        public ProductionSupplyOrderModel SplitOrder(decimal massToKeep)
         {
             decimal newMass = this.itemMass - massToKeep;
             if (newMass <= 0)
@@ -30,7 +30,7 @@ namespace GameControllers.Models
             else
             {
                 this.itemMass = massToKeep;
-                return new SupplyOrderModel(this.coordinates, this.itemType, newMass, this.buildingType, false);
+                return new ProductionSupplyOrderModel(this.coordinates, this.itemType, newMass, false);
             }
         }
 

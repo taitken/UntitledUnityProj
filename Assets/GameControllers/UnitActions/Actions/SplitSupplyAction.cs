@@ -11,7 +11,7 @@ using Unit.Models;
 
 namespace UnitAction
 {
-    public class SplitSupplyAction : IUnitAction
+    public class SplitBuildSupplyAction : IUnitAction
     {
         private IUnitOrderService orderService;
         private UnitModel unit;
@@ -19,14 +19,14 @@ namespace UnitAction
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         private decimal maxMassInTrip { get; set; }
-        private SupplyOrderModel originalSupplyOrder { get; set; }
-        public SplitSupplyAction(UnitModel _unit,
+        private BuildSupplyOrderModel originalSupplyOrder { get; set; }
+        public SplitBuildSupplyAction(UnitModel _unit,
                           IUnitOrderService _orderService,
                           IList<ItemObjectModel> _itemsToCollect)
         {
             this.orderService = _orderService;
             this.unit = _unit;
-            this.originalSupplyOrder = _unit.currentOrder as SupplyOrderModel;
+            this.originalSupplyOrder = _unit.currentOrder as BuildSupplyOrderModel;
             this.itemsToCollect = _itemsToCollect;
             decimal availableMass = 0;
             this.itemsToCollect.ForEach(item => { availableMass += (item.mass - item.claimedMass); });
@@ -44,7 +44,7 @@ namespace UnitAction
         }
         public bool PerformAction()
         {
-            if (this.unit.currentOrder is SupplyOrderModel)
+            if (this.unit.currentOrder is BuildSupplyOrderModel)
             {
 
                 if (this.maxMassInTrip < originalSupplyOrder.itemMass)

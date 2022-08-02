@@ -25,11 +25,11 @@ namespace Building.Models
                 return positions;
             }
         }
-        public BuildingObjectModel(Vector3Int _position, Vector2 _size, eBuildingType _buildingType, IList<BuildingSupply> _requiredItems) : base(_position, 0)
+        public BuildingObjectModel(Vector3Int _position, eBuildingType _buildingType, BuildingStatsModel _buildStats) : base(_position, 0)
         {
             this.buildingType = _buildingType;
-            this.requiredItems = _requiredItems;
-            this.size = _size;
+            this.requiredItems = _buildStats.buildSupply;
+            this.size = _buildStats.size;
         }
     }
 }
