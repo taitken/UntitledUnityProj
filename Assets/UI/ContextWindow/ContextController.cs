@@ -20,11 +20,11 @@ namespace UI
         {
             this.windowFactory = _windowFactory;
             this.contextWindowService = _contextService;
-            this.subscriptions.Add(this.contextWindowService.contextObseravable.Subscribe(_newContext =>
+            this.contextWindowService.contextObseravable.Subscribe(this, _newContext =>
             {
                 this.contextModels = _newContext;
                 this.GenerateWindows(this.contextModels);
-            }));
+            });
         }
         // Start is called before the first frame update
         void Start()

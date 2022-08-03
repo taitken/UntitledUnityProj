@@ -34,10 +34,7 @@ namespace Environment
             this.orderSelectionObjects = new List<OrderSelection>();
             this.orderService = _orderService;
             this.environmentService = _environmentService;
-            this.subscriptions.Add(this.orderService.orders.Subscribe(orders =>
-            {
-                this.RecalculateOrders(orders);
-            }));
+            this.orderService.orders.Subscribe(this, orders => { this.RecalculateOrders(orders); });
         }
 
         public override void OnDrag(DragEventModel dragEvent)

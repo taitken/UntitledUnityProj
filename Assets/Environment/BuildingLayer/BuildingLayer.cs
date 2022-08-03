@@ -19,6 +19,7 @@ namespace Environment
         private IUnitOrderService orderService;
         private IBuildingService buildingService;
         private IEnvironmentService environmentService;
+        private IItemObjectService itemService;
         private MouseActionModel mouseAction;
         private BuildingObjectFactory buildingModelFactory;
         private BuildSiteObject.Factory buildSiteFactory;
@@ -45,6 +46,7 @@ namespace Environment
                               IEnvironmentService _environmentService,
                               IBuildingService _buildingService,
                               IContextWindowService _contextService,
+                              IItemObjectService _itemService,
                               LayerCollider.Factory _layerColliderFactory,
                               BuildSiteObject.Factory _buildSiteFactory)
         {
@@ -54,17 +56,15 @@ namespace Environment
             this.buildingService = _buildingService;
             this.contextService = _contextService;
             this.buildSiteFactory = _buildSiteFactory;
+            this.itemService = _itemService;
             this.buildingModelFactory = new BuildingObjectFactory();
         }
 
         void Start()
         {
-            this.subscriptions.Add(this.orderService.mouseAction.Subscribe(_mouseAction =>
-            {
-                this.mouseAction = _mouseAction;
-            }));
-            this.subscriptions.Add(this.buildingService.buildingObseravable.Subscribe(this.RefreshBuildings));
-            this.subscriptions.Add(this.buildingService.buildingSiteObseravable.Subscribe(this.RefreshBuildSites));
+            this.orderService.mouseAction.Subscribe(this, _mouseAction => { this.mouseAction = _mouseAction; });
+            this.buildingService.buildingObseravable.Subscribe(this, this.RefreshBuildings);
+            this.buildingService.buildingSiteObseravable.Subscribe(this, this.RefreshBuildSites);
         }
         // Update is called once per frame
         void Update()
@@ -114,7 +114,7 @@ namespace Environment
         private BuildingObject CreateBuilding(BuildingObjectModel buildingObj)
         {
             BuildingObject building = Instantiate<BuildingObject>(this.buildingService.buildingAssetController.GetBuildingPrefab(buildingObj.buildingType));
-            building.Initialise(this.contextService, buildingObj, this.environmentService, this.orderService);
+            building.Initialise(this.contextService, buildingObj, this.environmentService, this.itemService, this.orderService);
             return building;
         }
 
@@ -143,7 +143,7 @@ namespace Environment
                 && !this.orderService.IsExistingOrderAtLocation(this.GetCellCoorAtMouse())
                 && (this.mouseAction.buildingType != eBuildingType.FloorTile || this.buildingService.IsFloorSpaceAvailable(this.GetCellCoorAtMouse())))
                 {
-                    this.buildingModelFactory.CreateBuildingModel(this.GetCellCoorAtMouse(), this.mouseAction.buildingType).requiredItems.ForEach(requiredItem =>
+                    BuildingTypeStats.GetBuildingStats(this.mouseAction.buildingType).buildSupply.ForEach(requiredItem =>
                     {
                         this.orderService.AddOrder(new BuildSupplyOrderModel(this.GetCellCoorAtMouse(), requiredItem.itemType, requiredItem.mass, this.mouseAction.buildingType));
                     });
@@ -156,11 +156,7 @@ namespace Environment
             BuildingStatsModel buildStats = BuildingTypeStats.GetBuildingStats(_buildingType);
             if (this.ghostBuilding == null)
             {
-                this.ghostBuilding = Instantiate(this.buildingService.GetBuildingPrefab(_buildingType).gameObject, this.GetLocalPositionOfCellAtMouse(), new Quaternion());
-                SpriteRenderer sr = this.ghostBuilding.GetComponent<SpriteRenderer>();
-                sr.sortingOrder = 500;
-                sr.color = GameColors.AddTransparency(sr.color, 0.6f);
-                this.ghostBuilding.layer = 0;
+                this.ghostBuilding = this.buildingService.GetBuildingGhostPrefab(_buildingType);
             }
             else
             {

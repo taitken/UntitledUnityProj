@@ -25,10 +25,7 @@ namespace Environment
             this.tilemap = this.GetComponent<Tilemap>();
             this.tilemapRenderer = this.GetComponent<TilemapRenderer>();
             this.environmentService = _environmentService;
-            this.environmentService.groundTiles.Subscribe(groundTiles =>
-            {
-                this.RefreshTiles(groundTiles);
-            });
+            this.environmentService.groundTiles.Subscribe(this, groundTiles => { this.RefreshTiles(groundTiles); });
         }
         // Start is called before the first frame update
         void Start()

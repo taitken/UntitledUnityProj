@@ -6,6 +6,7 @@ namespace GameControllers.Models
         Dig,
         Build,
         Store,
-        Supply
+        BuildSupply,
+        ProductionSupply
     }
 }

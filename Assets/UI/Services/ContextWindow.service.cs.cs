@@ -12,7 +12,7 @@ namespace UI.Services
         {
 
         }
-        public Obseravable<IList<ContextWindowModel>> contextObseravable { get; set; } = new Obseravable<IList<ContextWindowModel>>(new List<ContextWindowModel>());
+        public MonoObseravable<IList<ContextWindowModel>> contextObseravable { get; set; } = new MonoObseravable<IList<ContextWindowModel>>(new List<ContextWindowModel>());
 
         public void AddContext(ContextWindowModel context)
         {

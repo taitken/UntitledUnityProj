@@ -46,19 +46,33 @@ namespace UnitAction
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
                         .Then(new BuildAction(_unit, this.buildingService));
                     break;
-                case eOrderTypes.Supply:
-                    BuildSupplyOrderModel supplyOrder = _unit.currentOrder as BuildSupplyOrderModel;
-                    ItemObjectModel itemToSupply = this.itemService.FindClosestItem(supplyOrder.itemType, this.environmentService.tileMapRef.LocalToCell(_unit.position));
+                case eOrderTypes.BuildSupply:
+                    BuildSupplyOrderModel buildSupplyOrder = _unit.currentOrder as BuildSupplyOrderModel;
+                    ItemObjectModel itemToSupply = this.itemService.FindClosestItem(buildSupplyOrder.itemType, this.environmentService.tileMapRef.LocalToCell(_unit.position));
                     if (itemToSupply == null)
                     {
-                        this.orderService.RemoveOrder(supplyOrder.ID);
+                        this.orderService.RemoveOrder(buildSupplyOrder.ID);
                         break;
                     }
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new SplitBuildSupplyAction(_unit, this.orderService, new List<ItemObjectModel> { itemToSupply }))
                         .Then(new MoveAction(_unit, itemToSupply.position, this.pathFinderService, this.environmentService, false))
-                        .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, itemToSupply, supplyOrder.itemMass))
-                        .Then(new MoveAction(_unit, supplyOrder.coordinates, this.pathFinderService, this.environmentService, true))
+                        .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, itemToSupply, buildSupplyOrder.itemMass))
+                        .Then(new MoveAction(_unit, buildSupplyOrder.coordinates, this.pathFinderService, this.environmentService, true))
                         .Then(new BuildSupplyAction(_unit, this.buildingService, this.itemService, this.orderService));
+                    break;
+                case eOrderTypes.ProductionSupply:
+                    ProductionSupplyOrderModel productionSupplyOrder = _unit.currentOrder as ProductionSupplyOrderModel;
+                    ItemObjectModel itemToSupplyProduction = this.itemService.FindClosestItem(productionSupplyOrder.itemType, this.environmentService.tileMapRef.LocalToCell(_unit.position));
+                    if (itemToSupplyProduction == null)
+                    {
+                        this.orderService.RemoveOrder(productionSupplyOrder.ID);
+                        break;
+                    }
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, 
+                              new MoveAction(_unit, itemToSupplyProduction.position, this.pathFinderService, this.environmentService, false))
+                        .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, itemToSupplyProduction, productionSupplyOrder.itemMass))
+                        .Then(new MoveAction(_unit, productionSupplyOrder.coordinates, this.pathFinderService, this.environmentService, true))
+                        .Then(new ProductionSupplyAction(_unit, this.buildingService, this.itemService, this.orderService));
                     break;
                 case eOrderTypes.Store:
                     StoreOrderModel storeOrder = _unit.currentOrder as StoreOrderModel;

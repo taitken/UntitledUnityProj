@@ -32,36 +32,9 @@ namespace Environment
             this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "ItemLayer");
             this.itemObjectFactory = _itemObjectFactory;
             this.itemService = _itemService;
-
-            this.itemService.itemObseravable.Subscribe(items =>
-            {
-                IList<ItemObjectModel> newItems = items.GetNewModels(this.itemObjectModels);
-                newItems.ForEach(item =>
-                {
-                    if (item.itemState == ItemObjectModel.eItemState.OnGround || item.itemState == ItemObjectModel.eItemState.OnCharacter)
-                    {
-                        this.itemObjects.Add(this.CreateItemObject(item));
-                    }
-                });
-                IList<ItemObjectModel> itemsToRemove = items.GetRemovedModels(this.itemObjectModels);
-                itemsToRemove.ForEach(itemToRemove =>
-                {
-                    this.DeleteItemObject(itemToRemove.ID);
-                    this.itemObjects = this.itemObjects.Filter(itemObj => { return itemObj.itemObjectModel.ID != itemToRemove.ID; });
-                });
-            });
-            this.subscriptions.Add(this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(item =>
-            {
-                if (item != null) this.DeleteItemObject(item.ID);
-            }));
-            this.subscriptions.Add(this.itemService.onItemPickupOrDropTrigger.SubscribeQuietly(item =>
-            {
-                if (item != null && this.itemObjects.Find(obj => { return obj.itemObjectModel.ID == item.ID; }) == null)
-                {
-                    this.itemObjects.Add(this.CreateItemObject(item));
-                }
-            }));
-
+            this.itemService.itemObseravable.Subscribe(this, this.HandleItemUpdates);
+            this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.HandleItemStoreOrSupplyTrigger);
+            this.itemService.onItemPickupOrDropTrigger.SubscribeQuietly(this, this.HandleItemPickupOrDropTrigger);
         }
 
         // Start is called before the first frame update
@@ -74,6 +47,37 @@ namespace Environment
         void Update()
         {
 
+        }
+
+        public void HandleItemUpdates(IList<ItemObjectModel> items)
+        {
+            IList<ItemObjectModel> newItems = items.GetNewModels(this.itemObjectModels);
+            newItems.ForEach(item =>
+            {
+                if (item.itemState == ItemObjectModel.eItemState.OnGround || item.itemState == ItemObjectModel.eItemState.OnCharacter)
+                {
+                    this.itemObjects.Add(this.CreateItemObject(item));
+                }
+            });
+            IList<ItemObjectModel> itemsToRemove = items.GetRemovedModels(this.itemObjectModels);
+            itemsToRemove.ForEach(itemToRemove =>
+            {
+                this.DeleteItemObject(itemToRemove.ID);
+                this.itemObjects = this.itemObjects.Filter(itemObj => { return itemObj.itemObjectModel.ID != itemToRemove.ID; });
+            });
+        }
+
+        public void HandleItemStoreOrSupplyTrigger(ItemObjectModel item)
+        {
+            if (item != null) this.DeleteItemObject(item.ID);
+        }
+
+        public void HandleItemPickupOrDropTrigger(ItemObjectModel item)
+        {
+            if (item != null && this.itemObjects.Find(obj => { return obj.itemObjectModel.ID == item.ID; }) == null)
+            {
+                this.itemObjects.Add(this.CreateItemObject(item));
+            }
         }
 
         public IList<ItemObject> GetItemObjects()

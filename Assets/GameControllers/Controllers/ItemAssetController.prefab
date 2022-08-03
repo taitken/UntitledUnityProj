@@ -46,3 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemSprites:
   - {fileID: 1469512341, guid: 0720cbab5a509964ba2063518497d4d8, type: 3}
+  - {fileID: -403898891, guid: f0941becac4a72a4da130e3b5ef17130, type: 3}

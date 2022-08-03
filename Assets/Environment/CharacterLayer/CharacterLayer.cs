@@ -40,7 +40,7 @@ namespace Environment
 
         void Start()
         {
-            this.subscriptions.Add(this.unitService.unitObseravable.Subscribe(this.HandleUnitModels));
+            this.unitService.unitObseravable.Subscribe(this, this.HandleUnitModels);
             this.unitService.AddUnit(new UnitModel(.75f, new Vector3(1.729f, 0.966f, 0)));
             this.unitService.AddUnit(new UnitModel(.75f, new Vector3(1.529f, 0.966f, 0)));
         }

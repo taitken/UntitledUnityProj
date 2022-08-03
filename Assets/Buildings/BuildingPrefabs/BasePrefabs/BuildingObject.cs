@@ -11,23 +11,32 @@ using Item.Models;
 
 namespace Building
 {
-    public class BuildingObject : MonoBehaviour2
+    public abstract class BuildingObject : MonoBehaviour2
     {
         public BuildingObjectModel buildingObjectModel { get; set; }
         protected IUnitOrderService unitOrderService { get; set; }
+        protected IItemObjectService itemService {get;set;}
         protected IContextWindowService contextService { get; set; }
 
-        public virtual void Initialise(IContextWindowService _contextService,
+        public void Initialise(IContextWindowService _contextService,
                                         BuildingObjectModel _buildingObjectModel,
                                         IEnvironmentService _environmentService,
+                                        IItemObjectService _itemObjectService,
                                         IUnitOrderService _orderService)
         {
             this.buildingObjectModel = _buildingObjectModel;
             this.unitOrderService = _orderService;
+            this.itemService = _itemObjectService;
             this.SetMultiTilePosition(_environmentService.CellToLocal(_buildingObjectModel.position));
             this.UpdateBuildingBounds();
             this.contextService = _contextService;
+
+
+            this.OnCreation();
         }
+
+        protected abstract void OnCreation();
+        
 
         public override void OnMouseEnter()
         {

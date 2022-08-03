@@ -12,7 +12,7 @@ namespace GameControllers.Services
         {
             
         }
-        public Obseravable<IList<UnitModel>> unitObseravable { get; set; } = new Obseravable<IList<UnitModel>>(new List<UnitModel>());
+        public MonoObseravable<IList<UnitModel>> unitObseravable { get; set; } = new MonoObseravable<IList<UnitModel>>(new List<UnitModel>());
 
         public void AddUnit(UnitModel unit)
         {

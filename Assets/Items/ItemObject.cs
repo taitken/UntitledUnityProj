@@ -29,8 +29,8 @@ namespace Item
             this.itemService = _itemService;
             this.contextService = _contextWindowService;
             this.orderService = _orderService;
-            this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
-            this.GetComponent<SpriteRenderer>().sprite = this.itemSprites[(int)this.itemObjectModel.itemType];
+            this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
+            this.GetComponent<SpriteRenderer>().sprite = this.itemService.GetItemSprite(this.itemObjectModel.itemType);
         }
 
         public override void OnMouseEnter()
@@ -38,7 +38,7 @@ namespace Item
             List<string> newContext = new List<string>();
             newContext.Add(this.itemObjectModel.mass.ToString() + " " + LocalisationDict.mass);
             newContext.Add("Item");
-            this.contextService.AddContext(new ContextWindowModel(this.itemObjectModel.ID, "Stone", newContext));
+            this.contextService.AddContext(new ContextWindowModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString(), newContext));
         }
 
         public override void OnMouseExit()

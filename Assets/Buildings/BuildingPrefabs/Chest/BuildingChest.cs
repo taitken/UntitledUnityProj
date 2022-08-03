@@ -8,11 +8,12 @@ namespace Building
     public class BuildingChest : StorageBuildingObject
     {
         public StorageBuildingModel chestBuildingModel;
-        public override void Initialise(IContextWindowService _contextService, BuildingObjectModel _buildingObjectModel, IEnvironmentService _environmentService,
-                                        IUnitOrderService _orderService)
+
+        protected override void OnCreation()
         {
-            base.Initialise(_contextService, _buildingObjectModel, _environmentService, _orderService);
-            this.chestBuildingModel = _buildingObjectModel as StorageBuildingModel;
+            base.OnCreation();
+            this.chestBuildingModel = this.buildingObjectModel as StorageBuildingModel;
         }
+
     }
 }

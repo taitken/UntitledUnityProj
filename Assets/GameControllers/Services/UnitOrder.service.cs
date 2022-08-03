@@ -9,9 +9,9 @@ namespace GameControllers.Services
 {
     public class UnitOrderService : BaseService, IUnitOrderService
     {
-        public Obseravable<MouseActionModel> mouseAction { get; set; } = new Obseravable<MouseActionModel>(new MouseActionModel(eMouseAction.None));
-        public Obseravable<UnitOrderModel> hideOrderIconTrigger { get; set; } = new Obseravable<UnitOrderModel>(null);
-        public Obseravable<IList<UnitOrderModel>> orders { get; set; } = new Obseravable<IList<UnitOrderModel>>(new List<UnitOrderModel>());
+        public MonoObseravable<MouseActionModel> mouseAction { get; set; } = new MonoObseravable<MouseActionModel>(new MouseActionModel(eMouseAction.None));
+        public MonoObseravable<UnitOrderModel> hideOrderIconTrigger { get; set; } = new MonoObseravable<UnitOrderModel>(null);
+        public MonoObseravable<IList<UnitOrderModel>> orders { get; set; } = new MonoObseravable<IList<UnitOrderModel>>(new List<UnitOrderModel>());
 
         public void AddOrder(UnitOrderModel order)
         {

@@ -46,21 +46,11 @@ namespace Characters
             this.pathLineFactory = _pathLineFactory;
             this.unitModel = _unitModel;
 
-            this.subscriptions.Add(this.orderService.orders.Subscribe(orders =>
-            {
-                if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null)
-                {
-                    this.CancelMoving();
-                    this.DetachItemFromUnit();
-                }
-            }));
-            this.pathFinderService.pathFinderMap.Subscribe(map =>
-            {
-                this.pathFindMap = map;
-            });
-            this.subscriptions.Add(this.itemService.onItemPickupOrDropTrigger.Subscribe(this.OnItemPickupOrDrop));
-            this.subscriptions.Add(this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this.OnItemStoreOrSupply));
-
+            this.orderService.orders.Subscribe(this, this.HandleOrderUpdates);
+            this.pathFinderService.pathFinderMap.Subscribe(this, map =>{ this.pathFindMap = map; });
+            this.itemService.onItemPickupOrDropTrigger.Subscribe(this, this.OnItemPickupOrDrop);
+            this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.OnItemStoreOrSupply);
+            
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             sr = GetComponent<SpriteRenderer>();
@@ -74,6 +64,15 @@ namespace Characters
         void Update()
         {
             this.unitModel.position = new Vector3(this.gameObject.transform.position.x + 0.08f, this.gameObject.transform.position.y + 0.08f);
+        }
+
+        private void HandleOrderUpdates(IList<UnitOrderModel> orders)
+        {
+                if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null)
+                {
+                    this.CancelMoving();
+                    this.DetachItemFromUnit();
+                }
         }
 
         protected void FixedUpdate()

@@ -8,11 +8,9 @@ namespace Building
     public class FloorTile : BuildingObject
     {
         public FloorTileModel floorTileModel;
-        public override void Initialise(IContextWindowService _contextService, BuildingObjectModel _buildingObjectModel, IEnvironmentService _environmentService,
-                                        IUnitOrderService _orderService)
+        protected override void OnCreation()
         {
-            base.Initialise(_contextService, _buildingObjectModel, _environmentService, _orderService);
-            this.floorTileModel = _buildingObjectModel as FloorTileModel;
+            this.floorTileModel = this.buildingObjectModel as FloorTileModel;
         }
     }
 }

@@ -24,10 +24,7 @@ namespace GameControllers
         {
             this.orderService = _orderService;
             this.environmentService = _environmentService;
-            this.orderService.mouseAction.Subscribe(action =>
-            {
-                this.currentMouseAction = action;
-            });
+            this.orderService.mouseAction.Subscribe(this, action => { this.currentMouseAction = action; });
             this.leftClickDownDuration = 0;
 
         }

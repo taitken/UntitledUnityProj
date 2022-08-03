@@ -20,11 +20,10 @@ namespace UI
         {
             this.orderService = _orderService;
             this.buildingService = _buildingService;
-            this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action =>
+            this.orderService.mouseAction.Subscribe(this, action =>
             {
                 this.setMouseIcon(action.mouseType);
-            })
-            );
+            });
         }
         // Start is called before the first frame update
         void Start()

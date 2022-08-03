@@ -12,7 +12,7 @@ namespace UnityEngine
     {
 
         private IList<Action> onDeathCallbacks = new List<Action>();
-        protected IList<Subscription> subscriptions = new List<Subscription>();
+        private IList<Subscription> subscriptions = new List<Subscription>();
 
 
         public virtual void OnClickedByUser()
@@ -89,6 +89,11 @@ namespace UnityEngine
                 boxCollider2D.offset = bounds.center - this.transform.position;
                 boxCollider2D.size = bounds.size;
             }
+        }
+
+        public void AddSubscription(Subscription sub)
+        {
+            this.subscriptions.Add(sub);
         }
 
         public void Destroy()

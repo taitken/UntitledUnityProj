@@ -13,9 +13,9 @@ namespace GameControllers.Services
     public class ItemObjectService : BaseService, IItemObjectService
     {
         private Func<IList<ItemObject>> ItemObjectHook;
-        public Obseravable<IList<ItemObjectModel>> itemObseravable { get; set; } = new Obseravable<IList<ItemObjectModel>>(new List<ItemObjectModel>());
-        public Obseravable<ItemObjectModel> onItemStoreOrSupplyTrigger { get; set; } = new Obseravable<ItemObjectModel>(null);
-        public Obseravable<ItemObjectModel> onItemPickupOrDropTrigger { get; set; } = new Obseravable<ItemObjectModel>(null);
+        public MonoObseravable<IList<ItemObjectModel>> itemObseravable { get; set; } = new MonoObseravable<IList<ItemObjectModel>>(new List<ItemObjectModel>());
+        public MonoObseravable<ItemObjectModel> onItemStoreOrSupplyTrigger { get; set; } = new MonoObseravable<ItemObjectModel>(null);
+        public MonoObseravable<ItemObjectModel> onItemPickupOrDropTrigger { get; set; } = new MonoObseravable<ItemObjectModel>(null);
         private ItemAssetController itemAssetController;
 
         public void SetItemObjectHook(Func<IList<ItemObject>> _itemObjectHook)

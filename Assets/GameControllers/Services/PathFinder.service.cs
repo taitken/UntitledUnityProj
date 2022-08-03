@@ -8,7 +8,7 @@ namespace GameControllers.Services
 {
     public class PathFinderService : BaseService, IPathFinderService
     {
-        public Obseravable<PathFinderMap> pathFinderMap { get; set; } = new Obseravable<PathFinderMap>(new PathFinderMap(new List<IList<PathFinderMapItem>>()));
+        public MonoObseravable<PathFinderMap> pathFinderMap { get; set; } = new MonoObseravable<PathFinderMap>(new PathFinderMap(new List<IList<PathFinderMapItem>>()));
 
         public bool CanPathTo(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _pathFinderMap, bool adjacentToEndPos)
         {

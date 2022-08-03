@@ -32,7 +32,7 @@ namespace Environment
             this.orderService = _orderService;
             this.itemService = _itemService;
             this.contextService = _contextService;
-            this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
+            this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
         }
         private void Awake()
         {

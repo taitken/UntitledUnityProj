@@ -5,6 +5,7 @@ using Building;
 using Building.Models;
 using Zenject;
 using Environment.Models;
+using UtilityClasses;
 
 namespace GameControllers
 {
@@ -12,11 +13,21 @@ namespace GameControllers
     {
 
         public List<BuildingObject> buildingPrefabs;
+        public GameObject buildGhostPrefab;
 
         [Inject]
         public void Construct()
         {
 
+        }
+
+        public GameObject GetBuildingGhostPrefab(eBuildingType buildingType)
+        {
+            GameObject ghostBuilding = Instantiate(this.buildGhostPrefab.gameObject, default(Vector3), new Quaternion());
+            SpriteRenderer sr = ghostBuilding.GetComponent<SpriteRenderer>();
+            sr.sprite = this.GetBuildingSprite(buildingType).sprite;
+            sr.color = GameColors.AddTransparency(sr.color, 0.6f);
+            return ghostBuilding;
         }
 
         public BuildingObject GetBuildingPrefab(eBuildingType buildingType)
@@ -47,7 +58,7 @@ namespace GameControllers
 
         private void ThrowMissingPrefabError(eBuildingType buildingType)
         {
-                Debug.LogException(new System.Exception("Chosen building prefab has not been added to the Building Asset Controller. Attemped type: " + buildingType.ToString()));
+            Debug.LogException(new System.Exception("Chosen building prefab has not been added to the Building Asset Controller. Attemped type: " + buildingType.ToString()));
         }
     }
 }

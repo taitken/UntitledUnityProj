@@ -15,7 +15,6 @@ namespace UnitAction
         private UnitModel unit;
         private IBuildingService buildingService;
         private IItemObjectService itemObjectService;
-        private BuildOrderModel buildOrder;
         private BuildingObjectFactory buildingFactory;
         private IUnitOrderService unitOrderService;
         public bool completed { get; set; } = false;
@@ -27,7 +26,6 @@ namespace UnitAction
         {
             this.unit = _unit;
             this.buildingService = _buildingService;
-            this.buildOrder = _unit.currentOrder as BuildOrderModel;
             this.itemObjectService = _itemObjectService;
             this.unitOrderService = _unitOrderService;
             this.buildingFactory = new BuildingObjectFactory();

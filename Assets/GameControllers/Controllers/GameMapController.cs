@@ -53,16 +53,16 @@ namespace GameControllers
         {
             this.ConfigureGroundTiles();
             this.ConfigureMineableTiles();
-            this.subscriptions.Add(this.environmentService.groundTiles.Subscribe(groundLayer =>
+            this.environmentService.groundTiles.Subscribe(this, groundLayer =>
             {
                 this.groundTiles = groundLayer;
                 this.ConfigurePathfinderMap();
-            }));
-            this.subscriptions.Add(this.environmentService.mineableObjects.Subscribe(_mineableObjects =>
+            });
+            this.environmentService.mineableObjects.Subscribe(this, _mineableObjects =>
             {
                 this.mineableObjects = _mineableObjects;
                 this.ConfigurePathfinderMap();
-            }));
+            });
         }
 
         // Update is called once per frame

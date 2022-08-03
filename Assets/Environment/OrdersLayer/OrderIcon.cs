@@ -30,11 +30,10 @@ namespace Environment
             this.orderService = _orderService;
             this.buildingService = _buildingService;
             this.unitOrder = _order;
-            this.subscriptions.Add(this.orderService.mouseAction.Subscribe(action => { this.mouseAction = action; }));
-            
-            this.subscriptions.Add(this.orderService.hideOrderIconTrigger.SubscribeQuietly((order =>{
+            this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
+            this.orderService.hideOrderIconTrigger.SubscribeQuietly(this, order =>{
                 if(this.unitOrder.ID == order.ID) this.GetComponent<SpriteRenderer>().enabled = false;
-            })));
+            });
         }
         void Awake()
         {

@@ -14,7 +14,7 @@ namespace GameControllers.Models
         public eBuildingType buildingType;
         public decimal itemMass;
         public ProductionSupplyOrderModel(Vector3Int _coordinates, eItemType _itemType, decimal _itemMass, bool _showOrderIcon = false) 
-            : base(_coordinates, eOrderTypes.Supply, _showOrderIcon)
+            : base(_coordinates, eOrderTypes.ProductionSupply, _showOrderIcon)
         {
             this.itemType = _itemType;
             this.itemMass = _itemMass;

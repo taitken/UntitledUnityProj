@@ -11,8 +11,8 @@ namespace GameControllers.Services
     public class BuildingService : BaseService, IBuildingService
     {
         public BuildingAssetController buildingAssetController { get; set; }
-        public Obseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; } = new Obseravable<IList<BuildingObjectModel>>(new List<BuildingObjectModel>());
-        public Obseravable<IList<BuildSiteModel>> buildingSiteObseravable { get; set; } = new Obseravable<IList<BuildSiteModel>>(new List<BuildSiteModel>());
+        public MonoObseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; } = new MonoObseravable<IList<BuildingObjectModel>>(new List<BuildingObjectModel>());
+        public MonoObseravable<IList<BuildSiteModel>> buildingSiteObseravable { get; set; } = new MonoObseravable<IList<BuildSiteModel>>(new List<BuildSiteModel>());
         private IList<StorageBuildingModel> storageBuilding { get { return this.buildingObseravable.Get().Filter(building => { return building is StorageBuildingModel; }).Map(storageBuilding => { return storageBuilding as StorageBuildingModel; }); } }
 
         public void SetBuildingAssetController(BuildingAssetController _buildingAssetController)
@@ -20,6 +20,11 @@ namespace GameControllers.Services
             this.buildingAssetController = _buildingAssetController;
         }
 
+        public GameObject GetBuildingGhostPrefab(eBuildingType buildingType)
+        {
+
+            return this.buildingAssetController.GetBuildingGhostPrefab(buildingType);
+        }
 
         public BuildingObject GetBuildingPrefab(eBuildingType buildingType)
         {

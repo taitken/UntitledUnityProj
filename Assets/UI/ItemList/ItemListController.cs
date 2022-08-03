@@ -22,7 +22,7 @@ namespace UI
             this.itemLists = new List<ItemList>();
             this.itemListFactory = _itemListFactory;
             this.itemService = _itemService;
-            this.subscriptions.Add(this.itemService.itemObseravable.Subscribe(this.HandleItemList));
+            this.itemService.itemObseravable.Subscribe(this, this.HandleItemList);
         }
 
 

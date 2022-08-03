@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using GameControllers.Services;
@@ -7,56 +8,109 @@ using UtilityClasses;
 using UI.Models;
 using GameControllers.Models;
 using Item.Models;
+using UnityEngine;
 
 namespace Building
 {
     public struct ProductionSupplyOrder
     {
-        public eItemType itemType;
-        public BuildSupplyOrderModel currentBuildSupplyModel;
+        public ProductionSupplyOrder(eItemType _itemType, ProductionSupplyOrderModel _buildSupply)
+        {
+            itemType = _itemType;
+            currentBuildSupplyModel = _buildSupply;
+        }
+        public eItemType itemType { get; set; }
+        public ProductionSupplyOrderModel currentBuildSupplyModel { get; set; }
     }
     public class ProductionBuildingObject : BuildingObject
     {
         public ProductionBuildingModel productionBuildingModel;
-        public IList<ProductionSupplyOrder> currentBuildSupplyModels;
-        public override void Initialise(IContextWindowService _contextService,
-                                        BuildingObjectModel _buildingObjectModel,
-                                        IEnvironmentService _environmentService,
-                                        IUnitOrderService _orderService)
+        public IList<ProductionSupplyOrder> currentProductionSupplyModels;
+        protected override void OnCreation()
         {
-            base.Initialise(_contextService, _buildingObjectModel, _environmentService, _orderService);
-            this.productionBuildingModel = _buildingObjectModel as ProductionBuildingModel;
-            this.subscriptions.Add(this.unitOrderService.orders.Subscribe(this.CheckIfOrderRemoved));
-            this.currentBuildSupplyModels = new List<ProductionSupplyOrder>();
+            this.productionBuildingModel = this.buildingObjectModel as ProductionBuildingModel;
+            this.currentProductionSupplyModels = new List<ProductionSupplyOrder>();
             this.productionBuildingModel.productionSupplyMax.ForEach(supplyItem =>
             {
-                this.currentBuildSupplyModels.Add(new ProductionSupplyOrder() { itemType = supplyItem.itemType, currentBuildSupplyModel = null });
+                this.currentProductionSupplyModels.Add(new ProductionSupplyOrder() { itemType = supplyItem.itemType, currentBuildSupplyModel = null });
             });
+            this.unitOrderService.orders.Subscribe(this, this.CheckIfOrderRemoved);
         }
 
         public void Update()
         {
-            this.currentBuildSupplyModels.ForEach(supplyOrder =>
+            this.CheckAndRequestSupply();
+        }
+
+        public void FixedUpdate()
+        {
+            this.Produce();
+        }
+
+        private void Produce()
+        {
+            if (this.productionBuildingModel.isFullySupplied)
             {
-                if (supplyOrder.currentBuildSupplyModel == null)
+                this.productionBuildingModel.productionPointsCurrent += Time.fixedDeltaTime;
+                if (this.productionBuildingModel.productionPointsCurrent >= this.productionBuildingModel.productionPointsMax)
                 {
-                    BuildingSupply maxBuildSupply = this.productionBuildingModel.productionSupplyMax.Find(supply => { return supply.itemType == supplyOrder.itemType; });
-                    ItemObjectModel currentSupply = this.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == supplyOrder.itemType; });
-                    if (currentSupply.mass < maxBuildSupply.mass / 2)
+                    this.produceItem();
+                    this.productionBuildingModel.productionPointsCurrent = this.productionBuildingModel.isFullySupplied ?
+                                                                            this.productionBuildingModel.productionPointsCurrent - this.productionBuildingModel.productionPointsMax :
+                                                                            0;
+                }
+            }
+        }
+
+        private void produceItem()
+        {
+            this.productionBuildingModel.productionSupplyCurrent.ForEach(item =>
+            {
+                BuildingSupply inputRequirement = this.productionBuildingModel.inputs.Find(input => { return input.itemType == item.itemType; });
+
+                // Throw error if somehow an input was added where it shouldnt have been
+                if (inputRequirement.Equals(default(BuildingSupply)))
+                    throw (new Exception("Building attempting to produce output with invalid input item. Building type: "
+                        + this.buildingObjectModel.buildingType.ToString() + ". " + "Invalid input type: " + item.itemType.ToString()));
+
+                item.mass -= inputRequirement.mass;
+                if (item.mass <= 0)
+                {
+                    this.itemService.RemoveItem(item.ID);
+                }
+            });
+            this.productionBuildingModel.productionSupplyCurrent = this.productionBuildingModel.productionSupplyCurrent.Filter(supply => { return supply.mass > 0; });
+            this.productionBuildingModel.outputs.ForEach(output =>
+            {
+                this.itemService.AddItem(new ItemObjectModel(this.productionBuildingModel.position, output.mass, output.itemType, ItemObjectModel.eItemState.OnGround));
+            });
+        }
+
+        private void CheckAndRequestSupply()
+        {
+            this.currentProductionSupplyModels.ForEach((supplyModel, index) =>
+            {
+                if (supplyModel.currentBuildSupplyModel == null)
+                {
+                    BuildingSupply maxBuildSupply = this.productionBuildingModel.productionSupplyMax.Find(supply => { return supply.itemType == supplyModel.itemType; });
+                    ItemObjectModel currentSupply = this.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == supplyModel.itemType; });
+                    if (currentSupply == null || currentSupply.mass < maxBuildSupply.mass / 2)
                     {
-                        this.unitOrderService.AddOrder(new ProductionSupplyOrderModel(this.buildingObjectModel.position, maxBuildSupply.itemType, maxBuildSupply.mass - currentSupply.mass));
+                        ProductionSupplyOrderModel newOrder = new ProductionSupplyOrderModel(this.buildingObjectModel.position, maxBuildSupply.itemType, maxBuildSupply.mass - (currentSupply == null ? 0 : currentSupply.mass));
+                        this.currentProductionSupplyModels[index] = new ProductionSupplyOrder(supplyModel.itemType, newOrder);
+                        this.unitOrderService.AddOrder(newOrder);
                     }
                 }
             });
         }
 
-        public void CheckIfOrderRemoved(IList<UnitOrderModel> unitOrders)
+        private void CheckIfOrderRemoved(IList<UnitOrderModel> unitOrders)
         {
-            this.currentBuildSupplyModels.ForEach(supplyOrder =>
+            this.currentProductionSupplyModels.ForEach((supplyOrder, index) =>
             {
                 if (supplyOrder.currentBuildSupplyModel != null && !unitOrders.Any(order => { return order.ID == supplyOrder.currentBuildSupplyModel.ID; }))
                 {
-                    supplyOrder.currentBuildSupplyModel = null;
+                    this.currentProductionSupplyModels[index] = new ProductionSupplyOrder(supplyOrder.itemType, null);
                 }
             });
         }
@@ -65,7 +119,14 @@ namespace Building
         {
             List<string> newContext = base.GenerateContextWindowBody();
             newContext.Add("Produces other items");
-            newContext.Add(((int)this.productionBuildingModel.productionSupplyMax[0].mass).ToString() + " " + LocalisationDict.mass);
+            this.productionBuildingModel.productionSupplyMax.ForEach(productionMax =>
+            {
+                ItemObjectModel supplyCurrent = this.productionBuildingModel.productionSupplyCurrent.Find(item => { return item.itemType == productionMax.itemType; });
+                newContext.Add(BuildingTypeStats.GetBuildingStats(this.buildingObjectModel.buildingType).buildingName + ": " +
+                    (supplyCurrent != null ? supplyCurrent.mass : 0).ToString() + "/" +
+                    ((int)productionMax.mass).ToString() + " " + LocalisationDict.mass);
+            });
+
             return newContext;
         }
     }

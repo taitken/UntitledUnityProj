@@ -8,7 +8,7 @@ namespace GameControllers.Services
 {
     public interface IPathFinderService : IBaseService
     {
-        public Obseravable<PathFinderMap> pathFinderMap {get; set;}
+        public MonoObseravable<PathFinderMap> pathFinderMap {get; set;}
 
         IList<Vector3Int> FindPath(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _pathFinderMap, bool adjacentToEndPos);
 

@@ -6,6 +6,7 @@ using GameControllers.Services;
 using Item.Models;
 using Unit.Models;
 using UnityEngine;
+using UtilityClasses;
 
 namespace UnitAction
 {
@@ -16,6 +17,7 @@ namespace UnitAction
         private IItemObjectService itemObjectService;
         private IBuildingService buildingService;
         private ItemObjectModel itemObjModel;
+        private Subscription subscription;
         private decimal massToPickup;
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
@@ -30,19 +32,20 @@ namespace UnitAction
             this.buildingService = _buildingService;
             this.itemObjModel = _itemObjModel;
             this.cancel = this.itemObjModel == null;
-            this.massToPickup = Math.Min(_massToPickup, _itemObjModel.mass - _itemObjModel.claimedMass);;
+            this.massToPickup = Math.Min(_massToPickup, _itemObjModel.mass - _itemObjModel.claimedMass); ;
             this.itemObjModel.claimedMass += this.massToPickup;
-            this.itemObjectService.itemObseravable.SubscribeQuietly(items =>
+            this.subscription = this.itemObjectService.itemObseravable.SubscribeQuietly(null, items =>
             {
-                if(!items.Any(item => { return item.ID == this.itemObjModel.ID; })) this.CancelAction();
+                if (!items.Any(item => { return item.ID == this.itemObjModel.ID; })) this.CancelAction();
             });
         }
 
         public bool CheckCompleted()
         {
-            if(this.completed)
+            if (this.completed)
             {
                 this.unclaimMass();
+                this.subscription.unsubscribe();
                 return true;
             }
             return false;
@@ -51,6 +54,7 @@ namespace UnitAction
         public void CancelAction()
         {
             this.unclaimMass();
+            this.subscription.unsubscribe();
             this.cancel = true;
         }
 

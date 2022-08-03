@@ -35,16 +35,8 @@ public class ActionController : MonoBehaviour2
     {
         this.services = new List<IBaseService>() { _orderService, _unitService, _environmentService, _pathFinderService, _buildingService, _itemService };
         this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService, _itemService);
-        this.subscriptions.Add(_orderService.orders.Subscribe(updatedOrders =>
-        {
-            IList<UnitOrderModel> removedOrders = updatedOrders.GetRemovedModels(this.currentOrders);
-            this.UnassignOrders(removedOrders);
-            this.currentOrders = updatedOrders;
-        }));
-        this.subscriptions.Add(_unitService.unitObseravable.Subscribe(updatedUnits =>
-        {
-            this.currentUnits = updatedUnits;
-        }));
+        _orderService.orders.Subscribe(this, this.HandleOrderUpdates);
+        _unitService.unitObseravable.Subscribe(this, updatedUnits => { this.currentUnits = updatedUnits; });
         InvokeRepeating("CheckAndAssignOrder", 1f, 1f);
     }
 
@@ -63,6 +55,13 @@ public class ActionController : MonoBehaviour2
     void BeforeDestroy()
     {
 
+    }
+
+    private void HandleOrderUpdates(IList<UnitOrderModel> updatedOrders)
+    {
+        IList<UnitOrderModel> removedOrders = updatedOrders.GetRemovedModels(this.currentOrders);
+        this.UnassignOrders(removedOrders);
+        this.currentOrders = updatedOrders;
     }
 
     private void CheckAndAssignOrder()

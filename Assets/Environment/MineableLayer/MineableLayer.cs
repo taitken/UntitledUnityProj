@@ -51,10 +51,7 @@ namespace Environment
         void Start()
         {
             this.tilemap = GetComponent<Tilemap>();
-            this.subscriptions.Add(this.environmentService.mineableObjects.Subscribe(mineableObj =>
-            {
-                this.refreshMinables(mineableObj);
-            }));
+            this.environmentService.mineableObjects.Subscribe(this, mineableObj => { this.refreshMinables(mineableObj); });
         }
 
         // Update is called once per frame

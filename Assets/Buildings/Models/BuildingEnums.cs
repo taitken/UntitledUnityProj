@@ -56,7 +56,7 @@ namespace Building.Models
                         size = new Vector2(2, 2),
                         buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) },
                         productionSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 2000) },
-                        productionPointsMax = 1000,
+                        productionPointsMax = 10,
                         inputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) },
                         outputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Iron, 200) }
                     };
