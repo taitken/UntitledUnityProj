@@ -33,7 +33,20 @@ namespace GameControllers.Services
             IList<ItemObjectModel> _items = this.itemObseravable.Get();
             if (item != null && _items.Find(existingitem => { return item.ID == existingitem.ID; }) == null)
             {
-                _items.Add(item);
+                ItemObjectModel existingItem = _items.Find(existingitem =>
+                {
+                    return item.itemState == eItemState.OnGround &&
+                            item.itemType == existingitem.itemType &&
+                            item.position == existingitem.position;
+                });
+                if (existingItem == null)
+                {
+                    _items.Add(item);
+                }
+                else
+                {
+                    existingItem.MergeItemModel(item.mass);
+                }
                 this.itemObseravable.Set(_items);
             }
         }

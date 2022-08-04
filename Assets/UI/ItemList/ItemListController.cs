@@ -37,6 +37,19 @@ namespace UI
                 newItemList.GetComponent<RectTransform>().anchoredPosition = Vector3.zero;
                 itemLists.Add(newItemList);
             }
+            itemLists.ForEach((item, index) =>
+            {
+                if (index == 0)
+                {
+                   item.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, 0, 0);
+                }
+                else
+                {
+                    RectTransform previousRectT = itemLists[index - 1].GetComponent<RectTransform>();
+                    previousRectT.anchoredPosition = new Vector3(0, previousRectT.anchoredPosition.y - previousRectT.rect.height - 1, 0);
+                }
+
+            });
         }
 
         // Update is called once per frame
