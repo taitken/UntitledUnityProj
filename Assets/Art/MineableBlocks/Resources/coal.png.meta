@@ -120,7 +120,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 176
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -141,7 +141,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 176
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -162,7 +162,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 176
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -183,7 +183,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 176
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -204,7 +204,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 176
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -225,7 +225,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 176
+        y: 96
         width: 16
         height: 16
       alignment: 0
@@ -246,7 +246,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 160
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -267,7 +267,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 160
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -288,7 +288,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 160
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -309,7 +309,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 160
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -330,7 +330,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 160
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -351,7 +351,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 160
+        y: 80
         width: 16
         height: 16
       alignment: 0
@@ -372,7 +372,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 144
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -393,7 +393,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 144
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -414,7 +414,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 144
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -435,7 +435,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 144
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -456,7 +456,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 144
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -477,7 +477,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 144
+        y: 64
         width: 16
         height: 16
       alignment: 0
@@ -498,7 +498,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -519,7 +519,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 128
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -540,7 +540,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 128
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -561,7 +561,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 128
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -582,7 +582,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 112
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -603,7 +603,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 112
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -624,7 +624,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 112
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -645,7 +645,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 112
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -666,7 +666,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 112
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -687,7 +687,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 112
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -708,7 +708,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 96
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -729,7 +729,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 96
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -750,7 +750,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 96
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -771,7 +771,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 96
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -792,7 +792,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 96
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -813,7 +813,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 96
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -834,7 +834,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 80
+        y: 0
         width: 16
         height: 16
       alignment: 0
@@ -855,7 +855,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 16
-        y: 80
+        y: 0
         width: 16
         height: 16
       alignment: 0
@@ -876,7 +876,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 32
-        y: 80
+        y: 0
         width: 16
         height: 16
       alignment: 0
@@ -897,7 +897,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 48
-        y: 80
+        y: 0
         width: 16
         height: 16
       alignment: 0
@@ -918,7 +918,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 64
-        y: 80
+        y: 0
         width: 16
         height: 16
       alignment: 0
@@ -939,7 +939,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 80
-        y: 80
+        y: 0
         width: 16
         height: 16
       alignment: 0
@@ -951,468 +951,6 @@ TextureImporter:
       bones: []
       spriteID: a70f3d68622992c4099251456df3f4a3
       internalID: -514761902
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_40
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 64
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: e3a4e80db4df1ff4687ef6c753a52c91
-      internalID: -70752522
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_41
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 64
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fabd4bf6f5897af4d94c3674ec3450f7
-      internalID: 1892413459
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_42
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 64
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: dcc490bbe4ae18349a4c24d498d333e8
-      internalID: 190727587
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_43
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 64
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9438d9c2a3ddf484f89dc8f5ef2197a9
-      internalID: -422339678
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_44
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 67ffd17e387d1874abb59f9c55ad7820
-      internalID: -249184302
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_45
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9320f5d7c30e0cc4987d1e72bb0ed88a
-      internalID: -1003896665
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_46
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 61f2922fbef69af4ca26019fd43a2a9e
-      internalID: -1318428556
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_47
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 8953559a39b9c0241877455d85e05332
-      internalID: 1730225934
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_48
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3433627eb3033d14d80082a316fdabec
-      internalID: 628594636
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_49
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4788764f45b889d478d2d0b4929fe58a
-      internalID: 1869502626
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_50
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5a9c37a80325c564d999a150eface2de
-      internalID: -816152706
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_51
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 046802e242bbeb54aba08def6dcd5ded
-      internalID: -1883577344
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_52
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 5b5c305764ff06f4492004396f8103c6
-      internalID: -1338752667
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_53
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 047f00efa7d93bb49b9084dcd7286807
-      internalID: -413705422
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_54
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a65a8b925d237eb4b870c5969e50f683
-      internalID: -1631890007
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_55
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 75c46e6c6d3263940a6f3d10babec395
-      internalID: 1870658254
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_56
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3ce4e191dba5cfa488158635889ae814
-      internalID: -1450382758
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_57
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 45088da6ffa73c146996e26f8be7fa52
-      internalID: 1052691565
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_58
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 2bb16e450d52c1c448cff549e3b438e5
-      internalID: -1841295456
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_59
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 95c8f7359beb78e41bdbdc01ec44e2dc
-      internalID: -107788201
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_60
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7771e886a579b8241ba53775cea47e4f
-      internalID: -1258283440
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: coal_61
-      rect:
-        serializedVersion: 2
-        x: 80
-        y: 16
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 612ae4f5b40dcaf4c9243b696db7202d
-      internalID: -2096739393
       vertices: []
       indices: 
       edges: []
@@ -1429,67 +967,45 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       coal_7: 105555851
-      coal_45: -1003896665
-      coal_55: 1870658254
       coal_3: 1035560039
+      coal_30: 1064461345
+      coal_29: 1302434610
       coal_17: 247040097
       coal_16: -1428388337
       coal_22: -304371191
+      coal_27: -1485685011
       coal_1: 1146699627
       coal_36: -918959284
       coal_33: 851828628
       coal_11: -714669650
       coal_13: 345588291
+      coal_15: -534446306
+      coal_21: 117228929
       coal_38: -85689736
-      coal_39: -514761902
-      coal_50: -816152706
-      coal_41: 1892413459
+      coal_23: 2101116646
+      coal_26: 1464712974
+      coal_0: 1676586074
+      coal_4: -1042931675
       coal_28: -2098017354
       coal_34: -952998342
-      coal_43: -422339678
+      coal_39: -514761902
+      coal_9: -996698374
+      coal_10: 491244857
       coal_32: -1712342370
-      coal_60: -1258283440
       coal_19: -1043027083
       coal_2: 1285348037
       coal_24: 2088320468
-      coal_53: -413705422
       coal_37: 197116956
       coal_8: -358623189
       coal_14: 1561788846
-      coal_40: -70752522
-      coal_48: 628594636
-      coal_52: -1338752667
+      coal_25: -1497281037
+      coal_20: 158773675
       coal_18: -895588733
-      coal_57: 1052691565
       coal_12: 105144280
       coal_35: 2123417741
       coal_5: -1052299562
       coal_31: 501504629
       coal_6: -115955215
-      coal_30: 1064461345
-      coal_29: 1302434610
-      coal_27: -1485685011
-      coal_47: 1730225934
-      coal_49: 1869502626
-      coal_23: 2101116646
-      coal_15: -534446306
-      coal_21: 117228929
-      coal_26: 1464712974
-      coal_0: 1676586074
-      coal_4: -1042931675
-      coal_44: -249184302
-      coal_9: -996698374
-      coal_10: 491244857
-      coal_51: -1883577344
-      coal_59: -107788201
-      coal_61: -2096739393
-      coal_25: -1497281037
-      coal_20: 158773675
-      coal_54: -1631890007
-      coal_56: -1450382758
-      coal_42: 190727587
-      coal_46: -1318428556
-      coal_58: -1841295456
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

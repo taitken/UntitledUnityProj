@@ -18,6 +18,7 @@ namespace GameControllers.Services
         public void SetMineableBlockAssetController(MineableBlockAssetController _mineableBlockAssetController)
         {
             this.mineableBlockAssetController = _mineableBlockAssetController;
+            this.mineableBlockAssetController.Initialise();
         }
 
         public Sprite[] GetMineableBlockSprites(eMineableBlockType blockType)

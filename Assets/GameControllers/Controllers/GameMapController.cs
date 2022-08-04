@@ -94,7 +94,14 @@ namespace GameControllers
                 {
                     if (!(x >= 9 && x <= 13 && y >= 5 && y <= 7))
                     {
-                        newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0), eMineableBlockType.Stone, Random.Range(200, 400)));
+                        if (x >= 15 && x <= 17 && y >= 5 && y <= 7)
+                        {
+                            newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0), eMineableBlockType.Coal, Random.Range(800, 1200), MineableBlockTypeStats.GetMineableBlockStats(eMineableBlockType.Coal)));
+                        }
+                        else
+                        {
+                            newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0), eMineableBlockType.Stone, Random.Range(200, 400), MineableBlockTypeStats.GetMineableBlockStats(eMineableBlockType.Stone)));
+                        }
                     }
                 }
             }

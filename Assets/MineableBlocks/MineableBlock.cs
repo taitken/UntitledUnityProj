@@ -58,7 +58,7 @@ namespace Environment
             List<string> newContext = new List<string>();
             newContext.Add(this.mineableObjectModel.mass.ToString() + " " + LocalisationDict.mass);
             newContext.Add("Mineable");
-            this.contextService.AddContext(new ContextWindowModel(this.mineableObjectModel.ID, "Dirt Block", newContext));
+            this.contextService.AddContext(new ContextWindowModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, newContext));
         }
 
         public override void OnMouseExit()
@@ -69,7 +69,7 @@ namespace Environment
         protected override void BeforeDeath()
         {
             this.contextService.RemoveContext(this.mineableObjectModel.ID);
-            this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position, mineableObjectModel.mass, eItemType.Stone, ItemObjectModel.eItemState.OnGround));
+            this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position, mineableObjectModel.mass, this.mineableObjectModel.itemDrop, ItemObjectModel.eItemState.OnGround));
         }
 
         public override void OnClickedByUser()

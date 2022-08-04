@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ac8a14d10362e44a44de52eb4ea001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MineableHunkPrefab: {fileID: 6699492878389840883, guid: f054ddb65914b7a4094b29206a877736, type: 3}
+  MineableBlockPrefab: {fileID: 6699492878389840883, guid: f054ddb65914b7a4094b29206a877736, type: 3}
   WorldCharacter: {fileID: 8595354740322722416, guid: 6f166ee70dd83d646b6163e501f6c03c, type: 3}
   OrderIconPrefab: {fileID: 8917811264261866009, guid: 4c0921b22f31935429d14ea61fa48ed0, type: 3}
   CharacterPathLine: {fileID: 8217750135311177496, guid: cb638f4bdcfc9b94f9d5f8b302e53dbd, type: 3}
@@ -220,6 +220,7 @@ MonoBehaviour:
   LayerCollider: {fileID: 2919357594930836622, guid: f29456b2636e3b14785de59cdc888b5a, type: 3}
   BuildSiteObject: {fileID: 7100766024207940398, guid: 376ae8a9d9a664b4391363b4a804d34b, type: 3}
   OrderSelectionPrefab: {fileID: 4782722188414989856, guid: 61297c39b20faf248ae03fb4f53439d7, type: 3}
+  mineableBlockAssetController: {fileID: 2378697867644745971, guid: 72afc2cd4846ea642ab6d2c4e05ecc2a, type: 3}
   BuildingAssetController: {fileID: 4649490261548486794, guid: d4cd166f806427248920d6967e20c57b, type: 3}
   ItemAssetController: {fileID: -4515043457546939891, guid: 609aae676c46bd443b6d280e1f8f8f55, type: 3}
   ItemObjectLayer: {fileID: 746842677}
@@ -3552,8 +3553,36 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1439481947824551643, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
-      propertyPath: m_RootOrder
-      value: 7
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1439481947824551643, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1439481947824551643, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1439481947824551643, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1439481947824551643, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1439481947824551643, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1439481947824551643, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1439481947824551643, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -100
       objectReference: {fileID: 0}
     - target: {fileID: 7259936068930498400, guid: ea809d952b1c26f49aef2e50fa6391c4, type: 3}
       propertyPath: m_Name

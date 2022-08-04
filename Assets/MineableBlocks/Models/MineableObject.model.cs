@@ -1,4 +1,5 @@
 using System;
+using Item.Models;
 using MineableBlocks.Models;
 using UnityEngine;
 
@@ -7,9 +8,13 @@ namespace Environment.Models
     public class MineableObjectModel : TileObjectModel
     {
         public eMineableBlockType mineableBlockType;
-        public MineableObjectModel(Vector3Int _position, eMineableBlockType _blockType, decimal _weight) : base(_position, _weight)
+        public eItemType itemDrop;
+        public string blockName;
+        public MineableObjectModel(Vector3Int _position, eMineableBlockType _blockType, decimal _weight, MineableBlockStatsModel _blockStats) : base(_position, _weight)
         {
             this.mineableBlockType = _blockType;
+            this.itemDrop = _blockStats.dropType;
+            this.blockName = _blockStats.name;
         }
     }
 }

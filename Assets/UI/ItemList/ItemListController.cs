@@ -46,7 +46,7 @@ namespace UI
                 else
                 {
                     RectTransform previousRectT = itemLists[index - 1].GetComponent<RectTransform>();
-                    previousRectT.anchoredPosition = new Vector3(0, previousRectT.anchoredPosition.y - previousRectT.rect.height - 1, 0);
+                    item.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, previousRectT.anchoredPosition.y - previousRectT.rect.height - 1, 0);
                 }
 
             });

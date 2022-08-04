@@ -10,8 +10,7 @@ namespace GameControllers
 
         public Texture2D[] blockSpriteSheets;
         public Sprite[][] blockSprites;
-
-        public void Start()
+        public void Initialise()
         {
             this.blockSprites = new Sprite[blockSpriteSheets.Length][];
             this.blockSpriteSheets.ForEach((sheet, index) =>{
