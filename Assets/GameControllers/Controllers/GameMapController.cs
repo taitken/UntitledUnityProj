@@ -10,6 +10,7 @@ using Unit.Models;
 using Item;
 using Characters;
 using Environment;
+using MineableBlocks.Models;
 
 namespace GameControllers
 {
@@ -93,7 +94,7 @@ namespace GameControllers
                 {
                     if (!(x >= 9 && x <= 13 && y >= 5 && y <= 7))
                     {
-                        newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0), Random.Range(200, 400)));
+                        newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0), eMineableBlockType.Stone, Random.Range(200, 400)));
                     }
                 }
             }

@@ -13,21 +13,21 @@ namespace Environment
     {
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
-        private MineableHunk.Factory hunkFactory;
-        private IList<MineableHunk> mineableHunks = new List<MineableHunk>();
+        private MineableBlock.Factory hunkFactory;
+        private IList<MineableBlock> MineableBlocks = new List<MineableBlock>();
         private IList<MineableObjectModel> mineableObjectModels
         {
             get
             {
-                return this.mineableHunks.Map(hunk => { return hunk.mineableObjectModel; });
+                return this.MineableBlocks.Map(hunk => { return hunk.mineableObjectModel; });
             }
         }
-        private MineableHunk[,] hunkMap
+        private MineableBlock[,] hunkMap
         {
             get
             {
-                MineableHunk[,] hunkMap = new MineableHunk[MAP_WIDTH, MAP_HEIGHT];
-                this.mineableHunks.ForEach(hunk =>
+                MineableBlock[,] hunkMap = new MineableBlock[MAP_WIDTH, MAP_HEIGHT];
+                this.MineableBlocks.ForEach(hunk =>
                 {
                     hunkMap[hunk.mineableObjectModel.position.x, hunk.mineableObjectModel.position.y] = hunk;
                 });
@@ -37,7 +37,7 @@ namespace Environment
 
         [Inject]
         public void Construct(IUnitOrderService _orderService,
-                              MineableHunk.Factory _hunkFactory,
+                              MineableBlock.Factory _hunkFactory,
                               IEnvironmentService _environmentService,
                               LayerCollider.Factory _layerColliderFactory)
         {
@@ -73,31 +73,31 @@ namespace Environment
                 IList<MineableObjectModel> objsToRemove = mineableObjs.GetRemovedModels(this.mineableObjectModels);
                 objsToAdd.ForEach(mineableObj =>
                 {
-                    this.mineableHunks.Add(this.CreateMineableObject(mineableObj));
+                    this.MineableBlocks.Add(this.CreateMineableObject(mineableObj));
                 });
                 objsToRemove.ForEach(hunkModel =>
                 {
-                    MineableHunk hunk = this.mineableHunks.Find(hunk => { return hunk.mineableObjectModel.ID == hunkModel.ID; });
-                    this.mineableHunks.Remove(hunk);
+                    MineableBlock hunk = this.MineableBlocks.Find(hunk => { return hunk.mineableObjectModel.ID == hunkModel.ID; });
+                    this.MineableBlocks.Remove(hunk);
                     hunk.Destroy();
                 });
                 this.UpdateTileMap();
             }
         }
 
-        private MineableHunk CreateMineableObject(MineableObjectModel mineableObj)
+        private MineableBlock CreateMineableObject(MineableObjectModel mineableObj)
         {
-            MineableHunk newHunk = this.hunkFactory.Create(mineableObj);
+            MineableBlock newHunk = this.hunkFactory.Create(mineableObj);
             newHunk.transform.position = this.tilemap.CellToLocal(mineableObj.position);
             return newHunk;
         }
 
         private void ReMapSpries()
         {
-            MineableHunk[,] hunkMapArray = this.hunkMap;
+            MineableBlock[,] hunkMapArray = this.hunkMap;
             // Very inefficient implementation
             // -- To redo
-            foreach (MineableHunk hunk in this.mineableHunks)
+            foreach (MineableBlock hunk in this.MineableBlocks)
             {
                 Vector3Int cellPos = this.tilemap.LocalToCell(hunk.gameObject.transform.localPosition);
                 bool x0y0 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y + 1, hunkMapArray);
@@ -112,7 +112,7 @@ namespace Environment
             }
         }
 
-        private bool HunkExistsInPosition(int xPos, int yPos, MineableHunk[,] hunkMapArray)
+        private bool HunkExistsInPosition(int xPos, int yPos, MineableBlock[,] hunkMapArray)
         {
             if (xPos < 0 || xPos >= hunkMapArray.GetLength(0)) return false;
             if (yPos < 0 || yPos >= hunkMapArray.GetLength(1)) return false;

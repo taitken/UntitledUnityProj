@@ -4,16 +4,19 @@ using UnityEngine;
 using UtilityClasses;
 using Environment.Models;
 using UnityEngine.Tilemaps;
+using MineableBlocks.Models;
 
 namespace GameControllers.Services
 {
     public interface IEnvironmentService : IBaseService
     {
-        
+
         public static float TILE_WIDTH_PIXELS = 0.16f;
         MonoObseravable<IList<MineableObjectModel>> mineableObjects { get; set; }
         MonoObseravable<IList<GroundTileModel>> groundTiles { get; set; }
         Tilemap tileMapRef { get; set; }
+        void SetMineableBlockAssetController(MineableBlockAssetController _mineableBlockAssetController);
+        Sprite[] GetMineableBlockSprites(eMineableBlockType blockType);
         void AddMineableObject(MineableObjectModel mineableObject);
         void RemoveMineableObject(long id);
         Vector3Int LocalToCell(Vector3 localPosition);

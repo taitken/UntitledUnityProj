@@ -12,11 +12,12 @@ using UI.Models;
 
 namespace Environment
 {
-    public class MineableHunk : MonoBehaviour2
+    public class MineableBlock : MonoBehaviour2
     {
         private IUnitOrderService orderService;
         private IItemObjectService itemService;
         private IContextWindowService contextService;
+        private IEnvironmentService environmentService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
         private MouseActionModel mouseAction;
@@ -26,13 +27,16 @@ namespace Environment
         public void Construct(IUnitOrderService _orderService,
                                 IItemObjectService _itemService,
                                 IContextWindowService _contextService,
+                                IEnvironmentService _environmentService,
                                 MineableObjectModel _mineableObjectModel)
         {
+            this.environmentService = _environmentService;
             this.mineableObjectModel = _mineableObjectModel;
             this.orderService = _orderService;
             this.itemService = _itemService;
             this.contextService = _contextService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
+            this.spriteList = this.environmentService.GetMineableBlockSprites(this.mineableObjectModel.mineableBlockType);
         }
         private void Awake()
         {
@@ -81,7 +85,7 @@ namespace Environment
             this.spriteRenderer.sprite = this.spriteList[spriteID];
         }
 
-        public class Factory : PlaceholderFactory<MineableObjectModel, MineableHunk>
+        public class Factory : PlaceholderFactory<MineableObjectModel, MineableBlock>
         {
         }
     }

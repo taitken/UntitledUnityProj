@@ -22,7 +22,6 @@ namespace GameControllers.Services
 
         public GameObject GetBuildingGhostPrefab(eBuildingType buildingType)
         {
-
             return this.buildingAssetController.GetBuildingGhostPrefab(buildingType);
         }
 

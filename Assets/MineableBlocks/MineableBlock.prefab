@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2583389982170914256}
   - component: {fileID: -451128634398348558}
   m_Layer: 8
-  m_Name: MineableHunk
+  m_Name: MineableBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

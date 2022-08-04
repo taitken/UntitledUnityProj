@@ -20,7 +20,7 @@ using Unit.Models;
 
 public class GameInstaller : MonoInstaller
 {
-    public GameObject MineableHunkPrefab;
+    public GameObject MineableBlockPrefab;
     public GameObject WorldCharacter;
     public GameObject OrderIconPrefab;
     public GameObject CharacterPathLine;
@@ -30,6 +30,7 @@ public class GameInstaller : MonoInstaller
     public GameObject LayerCollider;
     public GameObject BuildSiteObject;
     public GameObject OrderSelectionPrefab;
+    public MineableBlockAssetController mineableBlockAssetController;
     public BuildingAssetController BuildingAssetController;
     public ItemAssetController ItemAssetController;
     public ItemObjectLayer ItemObjectLayer;
@@ -38,9 +39,9 @@ public class GameInstaller : MonoInstaller
         // Services
         Container.Bind<IUnitOrderService>().To<UnitOrderService>().AsSingle();
         Container.Bind<IUnitService>().To<UnitService>().AsSingle();
-        Container.Bind<IEnvironmentService>().To<EnvironmentService>().AsSingle();
         Container.Bind<IPathFinderService>().To<PathFinderService>().AsSingle();
         Container.Bind<IContextWindowService>().To<ContextWindowService>().AsSingle();
+        Container.Bind<IEnvironmentService>().To<EnvironmentService>().AsSingle().OnInstantiated<EnvironmentService>((ctx, service) => { service.SetMineableBlockAssetController(mineableBlockAssetController); });
         Container.Bind<IBuildingService>().To<BuildingService>().AsSingle().OnInstantiated<BuildingService>((ctx, service) => { service.SetBuildingAssetController(BuildingAssetController); });
         Container.Bind<IItemObjectService>().To<ItemObjectService>().AsSingle().OnInstantiated<ItemObjectService>((ctx, service) =>
         {
@@ -50,7 +51,7 @@ public class GameInstaller : MonoInstaller
 
         // World Objects
         Container.BindFactory<UnitModel, WorldCharacter, WorldCharacter.Factory>().FromComponentInNewPrefab(WorldCharacter);
-        Container.BindFactory<MineableObjectModel, MineableHunk, MineableHunk.Factory>().FromComponentInNewPrefab(MineableHunkPrefab);
+        Container.BindFactory<MineableObjectModel, MineableBlock, MineableBlock.Factory>().FromComponentInNewPrefab(MineableBlockPrefab);
         Container.BindFactory<UnitOrderModel, OrderIcon, OrderIcon.Factory>().FromComponentInNewPrefab(OrderIconPrefab);
         Container.BindFactory<ItemObjectModel, ItemObject, ItemObject.Factory>().FromComponentInNewPrefab(ItemObject);
         Container.BindFactory<IList<Vector3>, CharacterPathLine, CharacterPathLine.Factory>().FromComponentInNewPrefab(CharacterPathLine);

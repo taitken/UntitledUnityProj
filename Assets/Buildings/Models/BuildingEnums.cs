@@ -57,8 +57,8 @@ namespace Building.Models
                         buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) },
                         productionSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 2000) },
                         productionPointsMax = 10,
-                        inputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) },
-                        outputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Iron, 200) }
+                        inputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 200) },
+                        outputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Iron, 25) }
                     };
                     break;
             }

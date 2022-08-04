@@ -28,7 +28,7 @@ namespace Building
             this.unitOrderService = _orderService;
             this.itemService = _itemObjectService;
             this.SetMultiTilePosition(_environmentService.CellToLocal(_buildingObjectModel.position));
-            this.UpdateBuildingBounds();
+            if(this.buildingObjectModel.buildingType != eBuildingType.FloorTile) this.UpdateBuildingBounds();
             this.contextService = _contextService;
 
 

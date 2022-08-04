@@ -4,6 +4,7 @@ using UnityEngine;
 using UtilityClasses;
 using UnityEngine.Tilemaps;
 using Environment.Models;
+using MineableBlocks.Models;
 
 namespace GameControllers.Services
 {
@@ -11,7 +12,18 @@ namespace GameControllers.Services
     {
         public MonoObseravable<IList<MineableObjectModel>> mineableObjects { get; set; } = new MonoObseravable<IList<MineableObjectModel>>(new List<MineableObjectModel>());
         public MonoObseravable<IList<GroundTileModel>> groundTiles { get; set; } = new MonoObseravable<IList<GroundTileModel>>(new List<GroundTileModel>());
+        private MineableBlockAssetController mineableBlockAssetController {get;set;}
         public Tilemap tileMapRef { get; set; }
+
+        public void SetMineableBlockAssetController(MineableBlockAssetController _mineableBlockAssetController)
+        {
+            this.mineableBlockAssetController = _mineableBlockAssetController;
+        }
+
+        public Sprite[] GetMineableBlockSprites(eMineableBlockType blockType)
+        {
+            return this.mineableBlockAssetController.GetBlockSpriteSet(blockType);
+        }
         public void AddMineableObject(MineableObjectModel mineableObject)
         {
             IList<MineableObjectModel> _mineableObjects = this.mineableObjects.Get();
@@ -28,7 +40,7 @@ namespace GameControllers.Services
 
         public Vector3Int LocalToCell(Vector3 localPosition)
         {
-            if(this.tileMapRef != null)
+            if (this.tileMapRef != null)
             {
                 return this.tileMapRef.LocalToCell(localPosition);
             }
@@ -36,7 +48,7 @@ namespace GameControllers.Services
         }
         public Vector3 CellToLocal(Vector3Int localPosition)
         {
-            if(this.tileMapRef != null)
+            if (this.tileMapRef != null)
             {
                 return this.tileMapRef.CellToLocal(localPosition);
             }
