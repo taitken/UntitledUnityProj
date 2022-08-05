@@ -10,7 +10,8 @@ namespace Environment.Models
         public eMineableBlockType mineableBlockType;
         public eItemType itemDrop;
         public string blockName;
-        public MineableObjectModel(Vector3Int _position, eMineableBlockType _blockType, decimal _weight, MineableBlockStatsModel _blockStats) : base(_position, _weight)
+        public MineableObjectModel(Vector3Int _position, eMineableBlockType _blockType, MineableBlockStatsModel _blockStats)
+            : base(_position, UnityEngine.Random.Range(_blockStats.minMass, _blockStats.maxMass))
         {
             this.mineableBlockType = _blockType;
             this.itemDrop = _blockStats.dropType;

@@ -10,12 +10,12 @@ namespace UI
 {
     public class ContextController : MonoBehaviour2
     {
-        private ContextWindow.Factory windowFactory;
+        private ObjectContextWindow.Factory windowFactory;
         private IContextWindowService contextWindowService;
         private IList<ContextWindowModel> contextModels = new List<ContextWindowModel>();
         private IList<ContextWindow> windows = new List<ContextWindow>();
         [Inject]
-        public void Construct(ContextWindow.Factory _windowFactory,
+        public void Construct(ObjectContextWindow.Factory _windowFactory,
                                 IContextWindowService _contextService)
         {
             this.windowFactory = _windowFactory;
@@ -37,7 +37,7 @@ namespace UI
             Vector2 mousePosition = Mouse.current.position.ReadValue();
             this.windows.ForEach((window, index) =>
             {
-                window.transform.position = CalcWindowPosition(Mouse.current.position.ReadValue(), window.rectTransform.rect.height, index);
+                this.CalcWindowPosition(window.GetComponent<RectTransform>(), index != 0 ? windows[index - 1].GetComponent<RectTransform>() : null);
             });
         }
 
@@ -48,18 +48,23 @@ namespace UI
             context.ForEach((contextModel, index) =>
             {
                 ContextWindow newWindow = this.windowFactory.Create(contextModel);
-                newWindow.rectTransform.SetParent(this.GetComponent<RectTransform>().transform);
-                newWindow.rectTransform.sizeDelta = new Vector2(50, -20);
-                newWindow.transform.position = CalcWindowPosition(Mouse.current.position.ReadValue(), newWindow.rectTransform.rect.height, index);
+                newWindow.GetComponent<RectTransform>().SetParent(this.GetComponent<RectTransform>().transform);
+                newWindow.GetComponent<RectTransform>().sizeDelta = new Vector2(50, -20);
+                this.CalcWindowPosition(newWindow.GetComponent<RectTransform>(), index != 0 ? windows[index - 1].GetComponent<RectTransform>() : null);
                 this.windows.Add(newWindow);
             });
         }
 
-        private Vector3 CalcWindowPosition(Vector2 mousePos, float windowHeight, int windowIndex)
+        private void CalcWindowPosition(RectTransform newWindow, RectTransform previousRectT)
         {
-            return new Vector3(Mouse.current.position.ReadValue().x + 100,
-                                (Mouse.current.position.ReadValue().y - 80) - ((windowHeight + 5) * windowIndex),
-                                 1);
+            if (previousRectT == null)
+            {
+                newWindow.position = new Vector3(Mouse.current.position.ReadValue().x + 100, Mouse.current.position.ReadValue().y - 60, 0);
+            }
+            else
+            {
+                newWindow.GetComponent<RectTransform>().position = new Vector3(previousRectT.position.x, previousRectT.position.y - previousRectT.rect.height - 5, 0);
+            }
         }
     }
 }

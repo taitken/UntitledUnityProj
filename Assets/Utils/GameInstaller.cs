@@ -25,7 +25,7 @@ public class GameInstaller : MonoInstaller
     public GameObject OrderIconPrefab;
     public GameObject CharacterPathLine;
     public GameObject ItemObject;
-    public GameObject ContextWindow;
+    public GameObject ObjectContextWindow;
     public GameObject ItemList;
     public GameObject LayerCollider;
     public GameObject BuildSiteObject;
@@ -62,7 +62,7 @@ public class GameInstaller : MonoInstaller
         // Building Objects
 
         // UI
-        Container.BindFactory<ContextWindowModel, ContextWindow, ContextWindow.Factory>().FromComponentInNewPrefab(ContextWindow);
+        Container.BindFactory<ContextWindowModel, ObjectContextWindow, ObjectContextWindow.Factory>().FromComponentInNewPrefab(ObjectContextWindow);
         Container.BindFactory<ItemListModel, ItemList, ItemList.Factory>().FromComponentInNewPrefab(ItemList);
     }
 }

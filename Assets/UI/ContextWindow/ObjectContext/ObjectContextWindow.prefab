@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 7369925015844734381}
   - component: {fileID: 3440468294543881898}
   - component: {fileID: 2454061511233746864}
-  - component: {fileID: 8573983122667392987}
+  - component: {fileID: -4684711627627027213}
   m_Layer: 5
-  m_Name: ContextWindow
+  m_Name: ObjectContextWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,8 +38,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -457.00894, y: 232.77557}
-  m_SizeDelta: {x: -914.0179, y: -465.5511}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3440468294543881898
 CanvasRenderer:
@@ -79,7 +79,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8573983122667392987
+--- !u!114 &-4684711627627027213
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,11 +88,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 9045927156703606938}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27e75616c2f54d243adb310a5f195c6b, type: 3}
+  m_Script: {fileID: 11500000, guid: 619506e8d5271da4a9659ce3a8fe6c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cwContext: {fileID: -4483166581847008997, guid: 4d36818e8546ff2499808f6e1f74ad8e, type: 3}
-  cwTitle: {fileID: -1273648205643447312, guid: 40e05311d549a884d9ac958d5acbbd14, type: 3}
   rectTransform: {fileID: 0}
 --- !u!1001 &1458073283891188328
 PrefabInstance:
@@ -203,6 +201,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7369925015844734381}
     m_Modifications:
+    - target: {fileID: 28977764601373257, guid: 40e05311d549a884d9ac958d5acbbd14, type: 3}
+      propertyPath: m_text
+      value: sdsd CHUNK
+      objectReference: {fileID: 0}
     - target: {fileID: 28977764601373257, guid: 40e05311d549a884d9ac958d5acbbd14, type: 3}
       propertyPath: m_margin.y
       value: 0.8789215

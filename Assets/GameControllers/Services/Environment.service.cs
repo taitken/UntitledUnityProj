@@ -10,9 +10,9 @@ namespace GameControllers.Services
 {
     public class EnvironmentService : BaseService, IEnvironmentService
     {
-        public MonoObseravable<IList<MineableObjectModel>> mineableObjects { get; set; } = new MonoObseravable<IList<MineableObjectModel>>(new List<MineableObjectModel>());
+        public MonoObseravable<MineableObjectModel[,]> mineableObjects { get; set; } = new MonoObseravable<MineableObjectModel[,]>(null);
         public MonoObseravable<IList<GroundTileModel>> groundTiles { get; set; } = new MonoObseravable<IList<GroundTileModel>>(new List<GroundTileModel>());
-        private MineableBlockAssetController mineableBlockAssetController {get;set;}
+        private MineableBlockAssetController mineableBlockAssetController { get; set; }
         public Tilemap tileMapRef { get; set; }
 
         public void SetMineableBlockAssetController(MineableBlockAssetController _mineableBlockAssetController)
@@ -27,16 +27,18 @@ namespace GameControllers.Services
         }
         public void AddMineableObject(MineableObjectModel mineableObject)
         {
-            IList<MineableObjectModel> _mineableObjects = this.mineableObjects.Get();
-            if (mineableObject != null && _mineableObjects.Find(existingMineableObject => { return mineableObject.position == existingMineableObject.position; }) == null)
+            MineableObjectModel[,] _mineableObjects = this.mineableObjects.Get();
+            if (mineableObject != null && _mineableObjects[mineableObject.position.x, mineableObject.position.y] == null)
             {
-                _mineableObjects.Add(mineableObject);
+                _mineableObjects[mineableObject.position.x, mineableObject.position.y] = mineableObject;
                 this.mineableObjects.Set(_mineableObjects);
             }
         }
-        public void RemoveMineableObject(long id)
+        public void RemoveMineableObject(Vector3Int _position)
         {
-            this.mineableObjects.Set(this.mineableObjects.Get().Filter(mineableObject => { return mineableObject.ID != id; }));
+            MineableObjectModel[,] _mineableObjects = this.mineableObjects.Get();
+            _mineableObjects[_position.x, _position.y] = null;
+            this.mineableObjects.Set(_mineableObjects);
         }
 
         public Vector3Int LocalToCell(Vector3 localPosition)

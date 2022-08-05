@@ -14,26 +14,7 @@ namespace Environment
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private MineableBlock.Factory hunkFactory;
-        private IList<MineableBlock> MineableBlocks = new List<MineableBlock>();
-        private IList<MineableObjectModel> mineableObjectModels
-        {
-            get
-            {
-                return this.MineableBlocks.Map(hunk => { return hunk.mineableObjectModel; });
-            }
-        }
-        private MineableBlock[,] hunkMap
-        {
-            get
-            {
-                MineableBlock[,] hunkMap = new MineableBlock[MAP_WIDTH, MAP_HEIGHT];
-                this.MineableBlocks.ForEach(hunk =>
-                {
-                    hunkMap[hunk.mineableObjectModel.position.x, hunk.mineableObjectModel.position.y] = hunk;
-                });
-                return hunkMap;
-            }
-        }
+        private MineableBlock[,] mineableBlocks;
 
         [Inject]
         public void Construct(IUnitOrderService _orderService,
@@ -51,7 +32,17 @@ namespace Environment
         void Start()
         {
             this.tilemap = GetComponent<Tilemap>();
-            this.environmentService.mineableObjects.Subscribe(this, mineableObj => { this.refreshMinables(mineableObj); });
+            this.environmentService.mineableObjects.Subscribe(this, mineableObjs =>
+            {
+                if (mineableObjs != null)
+                {
+                    if(this.mineableBlocks == null)
+                    {
+                        this.mineableBlocks = new MineableBlock[mineableObjs.GetLength(0), mineableObjs.GetLength(1)];
+                    }
+                    this.RefreshMinables(mineableObjs);
+                }
+            });
         }
 
         // Update is called once per frame
@@ -65,20 +56,34 @@ namespace Environment
             this.ReMapSpries();
         }
 
-        private void refreshMinables(IList<MineableObjectModel> mineableObjs)
+        private void RefreshMinables(MineableObjectModel[,] mineableObjs)
         {
             if (this.tilemap != null)
             {
-                IList<MineableObjectModel> objsToAdd = mineableObjs.GetNewModels(this.mineableObjectModels);
-                IList<MineableObjectModel> objsToRemove = mineableObjs.GetRemovedModels(this.mineableObjectModels);
+                IList<MineableObjectModel> objsToAdd = new List<MineableObjectModel>();
+                IList<MineableObjectModel> objsToRemove = new List<MineableObjectModel>();
+                for (int x = 0; x < mineableObjs.GetLength(0); x++)
+                {
+                    for (int y = 0; y < mineableObjs.GetLength(1); y++)
+                    {
+                        if (this.mineableBlocks[x, y] == null && mineableObjs[x, y] != null)
+                        {
+                            objsToAdd.Add(mineableObjs[x, y]);
+                        }
+                        if (this.mineableBlocks[x, y] != null && mineableObjs[x, y] == null)
+                        {
+                            objsToRemove.Add(mineableBlocks[x, y].mineableObjectModel);
+                        }
+                    }
+                }
                 objsToAdd.ForEach(mineableObj =>
                 {
-                    this.MineableBlocks.Add(this.CreateMineableObject(mineableObj));
+                    this.mineableBlocks[mineableObj.position.x, mineableObj.position.y] = this.CreateMineableObject(mineableObj);
                 });
-                objsToRemove.ForEach(hunkModel =>
+                objsToRemove.ForEach(mineableObj =>
                 {
-                    MineableBlock hunk = this.MineableBlocks.Find(hunk => { return hunk.mineableObjectModel.ID == hunkModel.ID; });
-                    this.MineableBlocks.Remove(hunk);
+                    MineableBlock hunk = this.mineableBlocks[mineableObj.position.x, mineableObj.position.y];
+                    this.mineableBlocks[mineableObj.position.x, mineableObj.position.y] = null;
                     hunk.Destroy();
                 });
                 this.UpdateTileMap();
@@ -94,29 +99,30 @@ namespace Environment
 
         private void ReMapSpries()
         {
-            MineableBlock[,] hunkMapArray = this.hunkMap;
+            MineableBlock[,] hunkMapArray = this.mineableBlocks;
             // Very inefficient implementation
             // -- To redo
-            foreach (MineableBlock hunk in this.MineableBlocks)
+            foreach (MineableBlock hunk in this.mineableBlocks)
             {
-                Vector3Int cellPos = this.tilemap.LocalToCell(hunk.gameObject.transform.localPosition);
-                bool x0y0 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y + 1, hunkMapArray);
-                bool x1y0 = this.HunkExistsInPosition(cellPos.x, cellPos.y + 1, hunkMapArray);
-                bool x2y0 = this.HunkExistsInPosition(cellPos.x + 1, cellPos.y + 1, hunkMapArray);
-                bool x0y1 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y, hunkMapArray);
-                bool x2y1 = this.HunkExistsInPosition(cellPos.x + 1, cellPos.y, hunkMapArray);
-                bool x0y2 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y - 1, hunkMapArray);
-                bool x1y2 = this.HunkExistsInPosition(cellPos.x, cellPos.y - 1, hunkMapArray);
-                bool x2y2 = this.HunkExistsInPosition(cellPos.x + 1, cellPos.y - 1, hunkMapArray);
-                hunk.updateSprite(SpriteTileMapping.getMapping(x0y0, x1y0, x2y0, x0y1, x2y1, x0y2, x1y2, x2y2));
+                if (hunk != null)
+                {
+                    Vector3Int cellPos = this.tilemap.LocalToCell(hunk.gameObject.transform.localPosition);
+                    bool x0y0 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y + 1, hunkMapArray);
+                    bool x1y0 = this.HunkExistsInPosition(cellPos.x, cellPos.y + 1, hunkMapArray);
+                    bool x2y0 = this.HunkExistsInPosition(cellPos.x + 1, cellPos.y + 1, hunkMapArray);
+                    bool x0y1 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y, hunkMapArray);
+                    bool x2y1 = this.HunkExistsInPosition(cellPos.x + 1, cellPos.y, hunkMapArray);
+                    bool x0y2 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y - 1, hunkMapArray);
+                    bool x1y2 = this.HunkExistsInPosition(cellPos.x, cellPos.y - 1, hunkMapArray);
+                    bool x2y2 = this.HunkExistsInPosition(cellPos.x + 1, cellPos.y - 1, hunkMapArray);
+                    hunk.updateSprite(SpriteTileMapping.getMapping(x0y0, x1y0, x2y0, x0y1, x2y1, x0y2, x1y2, x2y2));
+                }
             }
         }
 
         private bool HunkExistsInPosition(int xPos, int yPos, MineableBlock[,] hunkMapArray)
         {
-            if (xPos < 0 || xPos >= hunkMapArray.GetLength(0)) return false;
-            if (yPos < 0 || yPos >= hunkMapArray.GetLength(1)) return false;
-            return hunkMapArray[xPos, yPos] != null;
+            return hunkMapArray.ValidIndex(xPos, yPos) && hunkMapArray[xPos, yPos] != null;
         }
     }
 }

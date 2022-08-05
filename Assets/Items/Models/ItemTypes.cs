@@ -7,8 +7,8 @@ namespace Item.Models
     {
         Stone,
         Iron,
-        Coal
-
+        Coal,
+        CopperOre
     }
 }
 

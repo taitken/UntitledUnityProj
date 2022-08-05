@@ -27,7 +27,7 @@ namespace UnitAction
 
         public bool CheckCompleted()
         {
-            return this.environmentService.mineableObjects.Get().Find(obj => { return obj.position == this.unit.currentOrder.coordinates; }) == null;
+            return this.environmentService.mineableObjects.Get()[this.unit.currentOrder.coordinates.x, this.unit.currentOrder.coordinates.y] == null;
         }
 
         public void CancelAction()
@@ -37,8 +37,8 @@ namespace UnitAction
         public bool PerformAction()
         {
 
-            MineableObjectModel mineableObj = this.environmentService.mineableObjects.Get().Find(obj => { return obj.position == this.unit.currentOrder.coordinates; });
-            this.environmentService.RemoveMineableObject(mineableObj.ID);
+            MineableObjectModel mineableObj = this.environmentService.mineableObjects.Get()[this.unit.currentOrder.coordinates.x, this.unit.currentOrder.coordinates.y];
+            if (mineableObj != null) this.environmentService.RemoveMineableObject(mineableObj.position);
             return true;
         }
     }

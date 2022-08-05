@@ -12,13 +12,13 @@ namespace GameControllers.Services
     {
 
         public static float TILE_WIDTH_PIXELS = 0.16f;
-        MonoObseravable<IList<MineableObjectModel>> mineableObjects { get; set; }
+        MonoObseravable<MineableObjectModel[,]> mineableObjects { get; set; }
         MonoObseravable<IList<GroundTileModel>> groundTiles { get; set; }
         Tilemap tileMapRef { get; set; }
         void SetMineableBlockAssetController(MineableBlockAssetController _mineableBlockAssetController);
         Sprite[] GetMineableBlockSprites(eMineableBlockType blockType);
         void AddMineableObject(MineableObjectModel mineableObject);
-        void RemoveMineableObject(long id);
+        void RemoveMineableObject(Vector3Int _position);
         Vector3Int LocalToCell(Vector3 localPosition);
         Vector3 CellToLocal(Vector3Int localPosition);
     }

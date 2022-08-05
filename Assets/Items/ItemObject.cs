@@ -13,7 +13,6 @@ namespace Item
 {
     public class ItemObject : MonoBehaviour2
     {
-        public List<Sprite> itemSprites;
         public ItemObjectModel itemObjectModel;
         public IItemObjectService itemService;
         public IUnitOrderService orderService;

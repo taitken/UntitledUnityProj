@@ -6,6 +6,8 @@ namespace MineableBlocks.Models
     {
         public string name { get; set; }
         public eItemType dropType { get; set; }
+        public int minMass { get; set; }
+        public int maxMass { get; set; }
     }
 
     public static class MineableBlockTypeStats
@@ -19,14 +21,27 @@ namespace MineableBlocks.Models
                     mineableBlockStats = new MineableBlockStatsModel
                     {
                         name = "Stone Block",
-                        dropType = eItemType.Stone
+                        dropType = eItemType.Stone,
+                        minMass = 200,
+                        maxMass = 400
                     };
                     break;
                 case eMineableBlockType.Coal:
                     mineableBlockStats = new MineableBlockStatsModel
                     {
                         name = "Coal Block",
-                        dropType = eItemType.Coal
+                        dropType = eItemType.Coal,
+                        minMass = 400,
+                        maxMass = 800
+                    };
+                    break;
+                case eMineableBlockType.Copper:
+                    mineableBlockStats = new MineableBlockStatsModel
+                    {
+                        name = "Copper Block",
+                        dropType = eItemType.CopperOre,
+                        minMass = 800,
+                        maxMass = 1200
                     };
                     break;
             }

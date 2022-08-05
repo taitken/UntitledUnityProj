@@ -27,7 +27,6 @@ namespace GameControllers
         private IPathFinderService pathFinderService;
         private IItemObjectService itemObjectService;
         private IList<GroundTileModel> groundTiles;
-        private IList<MineableObjectModel> mineableObjects;
         private Grid grid;
 
         [Inject]
@@ -61,7 +60,6 @@ namespace GameControllers
             });
             this.environmentService.mineableObjects.Subscribe(this, _mineableObjects =>
             {
-                this.mineableObjects = _mineableObjects;
                 this.ConfigurePathfinderMap();
             });
         }
@@ -72,7 +70,7 @@ namespace GameControllers
 
         }
 
-        void ConfigureGroundTiles()
+        private void ConfigureGroundTiles()
         {
             IList<GroundTileModel> newGroundTiles = new List<GroundTileModel>();
             for (int x = 0; x < MonoBehaviourLayer.MAP_WIDTH; x++)
@@ -85,33 +83,66 @@ namespace GameControllers
             this.environmentService.groundTiles.Set(newGroundTiles);
         }
 
-        void ConfigureMineableTiles()
+        private void ConfigureMineableTiles()
         {
-            IList<MineableObjectModel> newMinableTiles = new List<MineableObjectModel>();
-            for (int x = 0; x < MonoBehaviourLayer.MAP_WIDTH; x++)
+            MineableObjectModel[,] newmineableTiles = new MineableObjectModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
+            this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Coal, 7, 11, 70, 20);
+            this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Copper, 7, 8, 60, 35);
+            this.FillMapGapsWithStoneBlocks(newmineableTiles);
+            this.CompleteMap(newmineableTiles);
+        }
+
+        private void SetBlockDeposit(MineableObjectModel[,] newMineableTiles, eMineableBlockType blockType, int depositMin, int depositMax, int spreadChance, int spreadDecrement)
+        {
+            int depositCount = Random.Range(depositMin, depositMax);
+            for (int i = 0; i < depositCount; i++)
             {
-                for (int y = 0; y < MonoBehaviourLayer.MAP_HEIGHT; y++)
+                Vector3Int position = new Vector3Int(Random.Range(0, newMineableTiles.GetLength(0) - 1), Random.Range(0, newMineableTiles.GetLength(1) - 1));
+                this.ExpandBlockDeposit(newMineableTiles, position, blockType, spreadChance, spreadDecrement);
+            }
+        }
+
+        private void FillMapGapsWithStoneBlocks(MineableObjectModel[,] newMineableTiles)
+        {
+            for (int x = 0; x < newMineableTiles.GetLength(0); x++)
+            {
+                for (int y = 0; y < newMineableTiles.GetLength(1); y++)
                 {
-                    if (!(x >= 9 && x <= 13 && y >= 5 && y <= 7))
+                    if (!this.IsStartingZone(x, y) && newMineableTiles[x, y] == null)
                     {
-                        if (x >= 15 && x <= 17 && y >= 5 && y <= 7)
-                        {
-                            newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0), eMineableBlockType.Coal, Random.Range(800, 1200), MineableBlockTypeStats.GetMineableBlockStats(eMineableBlockType.Coal)));
-                        }
-                        else
-                        {
-                            newMinableTiles.Add(new MineableObjectModel(new Vector3Int(x, y, 0), eMineableBlockType.Stone, Random.Range(200, 400), MineableBlockTypeStats.GetMineableBlockStats(eMineableBlockType.Stone)));
-                        }
+                        newMineableTiles[x, y] = new MineableObjectModel(new Vector3Int(x, y, 0), eMineableBlockType.Stone, MineableBlockTypeStats.GetMineableBlockStats(eMineableBlockType.Stone));
                     }
                 }
             }
+        }
+
+        private void ExpandBlockDeposit(MineableObjectModel[,] minaebleTiles, Vector3Int location, eMineableBlockType type, int percentageChance, int chanceDecrement)
+        {
+            if (minaebleTiles.ValidIndex(location.x, location.y) && minaebleTiles[location.x, location.y] == null && !this.IsStartingZone(location.x, location.y))
+            {
+                minaebleTiles[location.x, location.y] = new MineableObjectModel(new Vector3Int(location.x, location.y, 0), type, MineableBlockTypeStats.GetMineableBlockStats(type));
+                if (Random.Range(1, 100) <= percentageChance) this.ExpandBlockDeposit(minaebleTiles, location + new Vector3Int(0, 1), type, percentageChance - chanceDecrement, chanceDecrement);
+                if (Random.Range(1, 100) <= percentageChance) this.ExpandBlockDeposit(minaebleTiles, location + new Vector3Int(1, 0), type, percentageChance - chanceDecrement, chanceDecrement);
+                if (Random.Range(1, 100) <= percentageChance) this.ExpandBlockDeposit(minaebleTiles, location + new Vector3Int(0, -1), type, percentageChance - chanceDecrement, chanceDecrement);
+                if (Random.Range(1, 100) <= percentageChance) this.ExpandBlockDeposit(minaebleTiles, location + new Vector3Int(-1, 0), type, percentageChance - chanceDecrement, chanceDecrement);
+            }
+
+        }
+
+        private bool IsStartingZone(int x, int y)
+        {
+            return (x >= 9 && x <= 13 && y >= 5 && y <= 7);
+        }
+
+        private void CompleteMap(MineableObjectModel[,] newMinableTiles)
+        {
             this.environmentService.mineableObjects.Set(newMinableTiles);
         }
 
-
-        void ConfigurePathfinderMap()
+        private void ConfigurePathfinderMap()
         {
-            if (this.mineableObjects != null && this.groundLayer != null)
+            var _mineableObjects = this.environmentService.mineableObjects.Get();
+            if (_mineableObjects != null && this.groundLayer != null)
             {
                 IList<IList<PathFinderMapItem>> newMap = new List<IList<PathFinderMapItem>>();
                 for (int x = 0; x < MonoBehaviourLayer.MAP_WIDTH; x++)
@@ -119,7 +150,7 @@ namespace GameControllers
                     IList<PathFinderMapItem> column = new List<PathFinderMapItem>();
                     for (int y = 0; y < MonoBehaviourLayer.MAP_HEIGHT; y++)
                     {
-                        column.Add(new PathFinderMapItem(x, y, this.mineableObjects.Find(obj => { return obj.position.x == x && obj.position.y == y; }) != null));
+                        column.Add(new PathFinderMapItem(x, y, _mineableObjects[x, y] != null));
                     }
                     newMap.Add(column);
                 }
