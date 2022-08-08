@@ -3,17 +3,30 @@ using System.Collections.Generic;
 using UtilityClasses;
 using UI.Models;
 using UI.Services;
+using UnityEngine;
 
 namespace UI.Services
 {
     public class ContextWindowService : IContextWindowService
     {
+        public ContextAssetFactory contextAssetFactory { get; set; }
         public ContextWindowService()
         {
 
         }
         public MonoObseravable<IList<ContextWindowModel>> contextObseravable { get; set; } = new MonoObseravable<IList<ContextWindowModel>>(new List<ContextWindowModel>());
 
+        public void SetAssetFactory(ContextAssetFactory assetFactory)
+        {
+            if (this.contextAssetFactory == null)
+            {
+                this.contextAssetFactory = assetFactory;
+            }
+            else
+            {
+                Debug.LogException(new System.Exception("Error setting a new asset factory in the UI service. Only one context window service may be set"));
+            }
+        }
         public void AddContext(ContextWindowModel context)
         {
             IList<ContextWindowModel> _contexts = this.contextObseravable.Get();

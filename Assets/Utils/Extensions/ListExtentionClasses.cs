@@ -105,6 +105,14 @@ namespace System.Collections.Generic
             }
         }
 
+        public static void AddRange<T>(this IList<T> collection, IList<T> enumerable)
+        {
+            foreach (var cur in enumerable)
+            {
+                collection.Add(cur);
+            }
+        }
+
         public static void ForEach<t1>(this IList<t1> list, Action<t1, int> callback)
         {
             for (int i = 0; i < list.Count; i++)

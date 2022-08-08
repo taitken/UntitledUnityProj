@@ -47,6 +47,11 @@ namespace Building
             this.Produce();
         }
 
+        public override void OnMouseEnter()
+        {
+            this.contextService.AddContext(new ProductionBuildingContextWindowModel(this.buildingObjectModel.ID, this.GenerateContextWindowTitle(), this.productionBuildingModel));
+        }
+
         private void Produce()
         {
             if (this.productionBuildingModel.isFullySupplied)

@@ -7,8 +7,8 @@ using TMPro;
 
 namespace UI
 {
-    public class ContextWindow : MonoBehaviour2
+    public abstract class ContextWindow : MonoBehaviour2
     {
-
+        public abstract void Construct(ContextWindowModel windowModel);
     }
 }

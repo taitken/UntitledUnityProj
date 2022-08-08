@@ -6,17 +6,19 @@ using UI.Models;
 
 namespace UI
 {
-    public class ProductionBuildingContextWindow : ContextWindow
+    public class ObjectContextWindow : ContextWindow
     {
         private CWContent cwContext;
         private CWTitle cwTitle;
-        public ProductionBuildingContextWindowModel contextWindowModel;
-        [Inject]
-        public void Construct(ContextWindowModel _contextWindowModel)
+        public ObjectContextWindowModel contextWindowModel;
+
+        public override void Construct(ContextWindowModel _contextWindowModel)
         {
-            this.contextWindowModel = _contextWindowModel as ProductionBuildingContextWindowModel;
+            this.contextWindowModel = _contextWindowModel as ObjectContextWindowModel;
             this.cwTitle = this.GetComponentInChildren<CWTitle>();
             this.cwTitle.setText(this.contextWindowModel.title);
+            this.cwContext = this.GetComponentInChildren<CWContent>();
+            this.cwContext.setText(this.contextWindowModel.context);
         }
         // Start is called before the first frame update
         void Start()
@@ -27,10 +29,6 @@ namespace UI
         void Update()
         {
 
-        }
-
-        public class Factory : PlaceholderFactory<ContextWindowModel, ObjectContextWindow>
-        {
         }
     }
 }

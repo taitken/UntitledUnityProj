@@ -32,6 +32,7 @@ public class GameInstaller : MonoInstaller
     public GameObject OrderSelectionPrefab;
     public MineableBlockAssetController mineableBlockAssetController;
     public BuildingAssetController BuildingAssetController;
+    public ContextAssetFactory ContextAssetFactory;
     public ItemAssetController ItemAssetController;
     public ItemObjectLayer ItemObjectLayer;
     public override void InstallBindings()
@@ -40,7 +41,6 @@ public class GameInstaller : MonoInstaller
         Container.Bind<IUnitOrderService>().To<UnitOrderService>().AsSingle();
         Container.Bind<IUnitService>().To<UnitService>().AsSingle();
         Container.Bind<IPathFinderService>().To<PathFinderService>().AsSingle();
-        Container.Bind<IContextWindowService>().To<ContextWindowService>().AsSingle();
         Container.Bind<IEnvironmentService>().To<EnvironmentService>().AsSingle().OnInstantiated<EnvironmentService>((ctx, service) => { service.SetMineableBlockAssetController(mineableBlockAssetController); });
         Container.Bind<IBuildingService>().To<BuildingService>().AsSingle().OnInstantiated<BuildingService>((ctx, service) => { service.SetBuildingAssetController(BuildingAssetController); });
         Container.Bind<IItemObjectService>().To<ItemObjectService>().AsSingle().OnInstantiated<ItemObjectService>((ctx, service) =>
@@ -58,11 +58,12 @@ public class GameInstaller : MonoInstaller
         Container.BindFactory<Vector2, string, IList<Action>, IList<Action<DragEventModel>>, LayerCollider, LayerCollider.Factory>().FromComponentInNewPrefab(LayerCollider);
         Container.BindFactory<BuildSiteModel, BuildSiteObject, BuildSiteObject.Factory>().FromComponentInNewPrefab(BuildSiteObject);
         Container.BindFactory<Vector3Int, Vector3, OrderSelection, OrderSelection.Factory>().FromComponentInNewPrefab(OrderSelectionPrefab);
+        Container.BindFactory<ItemListModel, ItemList, ItemList.Factory>().FromComponentInNewPrefab(ItemList);
+
 
         // Building Objects
 
         // UI
-        Container.BindFactory<ContextWindowModel, ObjectContextWindow, ObjectContextWindow.Factory>().FromComponentInNewPrefab(ObjectContextWindow);
-        Container.BindFactory<ItemListModel, ItemList, ItemList.Factory>().FromComponentInNewPrefab(ItemList);
+        Container.Bind<IContextWindowService>().To<ContextWindowService>().AsSingle().OnInstantiated<ContextWindowService>((ctx, service) => { service.SetAssetFactory(ContextAssetFactory); });;
     }
 }

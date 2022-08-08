@@ -6,8 +6,9 @@ namespace UI.Models
 {
     public class ContextWindowModel : BaseModel
     {
-        public long objectID {get;set;}
+        public long objectID { get; set; }
         public string title { get; set; }
+        public eContextTypes contextType { get; set; }
         public ContextWindowModel(long _objectID, string _title) : base()
         {
             this.objectID = _objectID;

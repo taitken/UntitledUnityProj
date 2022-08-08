@@ -5,21 +5,21 @@ using UnityEngine;
 using Zenject;
 using UI.Models;
 using UI.Services;
+using GameControllers.Services;
 
 namespace UI
 {
     public class ContextController : MonoBehaviour2
     {
-        private ObjectContextWindow.Factory windowFactory;
         private IContextWindowService contextWindowService;
         private IList<ContextWindowModel> contextModels = new List<ContextWindowModel>();
         private IList<ContextWindow> windows = new List<ContextWindow>();
+        private IItemObjectService itemService;
         [Inject]
-        public void Construct(ObjectContextWindow.Factory _windowFactory,
-                                IContextWindowService _contextService)
+        public void Construct(IContextWindowService _contextService, IItemObjectService _itemService)
         {
-            this.windowFactory = _windowFactory;
             this.contextWindowService = _contextService;
+            this.itemService = _itemService;
             this.contextWindowService.contextObseravable.Subscribe(this, _newContext =>
             {
                 this.contextModels = _newContext;
@@ -47,9 +47,7 @@ namespace UI
             this.windows = new List<ContextWindow>();
             context.ForEach((contextModel, index) =>
             {
-                ContextWindow newWindow = this.windowFactory.Create(contextModel);
-                newWindow.GetComponent<RectTransform>().SetParent(this.GetComponent<RectTransform>().transform);
-                newWindow.GetComponent<RectTransform>().sizeDelta = new Vector2(50, -20);
+                ContextWindow newWindow = this.contextWindowService.contextAssetFactory.CreateContextWindow(this.GetComponent<RectTransform>(), contextModel, this.itemService);
                 this.CalcWindowPosition(newWindow.GetComponent<RectTransform>(), index != 0 ? windows[index - 1].GetComponent<RectTransform>() : null);
                 this.windows.Add(newWindow);
             });
@@ -59,7 +57,7 @@ namespace UI
         {
             if (previousRectT == null)
             {
-                newWindow.position = new Vector3(Mouse.current.position.ReadValue().x + 100, Mouse.current.position.ReadValue().y - 60, 0);
+                newWindow.position = new Vector3(Mouse.current.position.ReadValue().x + 120, Mouse.current.position.ReadValue().y - 60, 0);
             }
             else
             {

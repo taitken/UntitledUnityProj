@@ -10,6 +10,7 @@ namespace UI.Models
         public ProductionBuildingModel productionBuildingModel { get; set; }
         public ProductionBuildingContextWindowModel(long _objectID, string _title, ProductionBuildingModel _productionBuildingModel) : base(_objectID, _title)
         {
+            this.contextType = eContextTypes.ProductionBuilding;
             this.productionBuildingModel = _productionBuildingModel;
         }
     }

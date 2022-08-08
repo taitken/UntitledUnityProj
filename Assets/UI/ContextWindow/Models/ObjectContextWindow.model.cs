@@ -10,6 +10,7 @@ namespace UI.Models
         public ObjectContextWindowModel(long _objectID, string _title, IList<string> _context) : base(_objectID, _title)
         {
             this.context = _context;
+            this.contextType = eContextTypes.Object;
         }
     }
 }
