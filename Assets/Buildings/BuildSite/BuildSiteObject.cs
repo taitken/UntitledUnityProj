@@ -64,7 +64,7 @@ namespace Building
 
         public override void OnMouseEnter()
         {
-            this.contextService.AddContext(new ContextWindowModel(this.buildSiteModel.ID, this.GenerateContextWindowTitle(), this.GenerateContextWindowBody()));
+            this.contextService.AddContext(new ObjectContextWindowModel(this.buildSiteModel.ID, this.GenerateContextWindowTitle(), this.GenerateContextWindowBody()));
         }
 
         public override void OnMouseExit()

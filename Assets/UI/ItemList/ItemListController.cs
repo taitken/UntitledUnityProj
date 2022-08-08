@@ -48,7 +48,6 @@ namespace UI
                     RectTransform previousRectT = itemLists[index - 1].GetComponent<RectTransform>();
                     item.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, previousRectT.anchoredPosition.y - previousRectT.rect.height - 1, 0);
                 }
-
             });
         }
 

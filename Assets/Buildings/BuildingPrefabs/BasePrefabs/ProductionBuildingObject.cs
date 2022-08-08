@@ -122,7 +122,7 @@ namespace Building
             this.productionBuildingModel.productionSupplyMax.ForEach(productionMax =>
             {
                 ItemObjectModel supplyCurrent = this.productionBuildingModel.productionSupplyCurrent.Find(item => { return item.itemType == productionMax.itemType; });
-                newContext.Add(BuildingTypeStats.GetBuildingStats(this.buildingObjectModel.buildingType).buildingName + ": " +
+                newContext.Add(productionMax.itemType.ToString() + ": " +
                     (supplyCurrent != null ? supplyCurrent.mass : 0).ToString() + "/" +
                     ((int)productionMax.mass).ToString() + " " + LocalisationDict.mass);
             });

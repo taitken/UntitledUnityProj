@@ -47,18 +47,12 @@ namespace Environment
         {
         }
 
-        // Update is called once per frame
-        private void Update()
-        {
-
-        }
-
         public override void OnMouseEnter()
         {
             List<string> newContext = new List<string>();
             newContext.Add(this.mineableObjectModel.mass.ToString() + " " + LocalisationDict.mass);
             newContext.Add("Mineable");
-            this.contextService.AddContext(new ContextWindowModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, newContext));
+            this.contextService.AddContext(new ObjectContextWindowModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, newContext));
         }
 
         public override void OnMouseExit()

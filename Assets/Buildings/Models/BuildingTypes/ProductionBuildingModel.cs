@@ -7,7 +7,18 @@ namespace Building.Models
 {
     public class ProductionBuildingModel : BuildingObjectModel
     {
-        public IList<BuildingSupply> productionSupplyMax { get; set; }
+        public IList<BuildingSupply> productionSupplyMax
+        {
+            get
+            {
+                IList<BuildingSupply> productionSupplyMax = new List<BuildingSupply>();
+                this.inputs.ForEach(input =>
+                {
+                    productionSupplyMax.Add(new BuildingSupply(input.itemType, input.mass * 10));
+                });
+                return productionSupplyMax;
+            }
+        }
         public IList<ItemObjectModel> productionSupplyCurrent { get; set; }
         public float productionPointsMax { get; set; }
         public float productionPointsCurrent { get; set; }
@@ -32,7 +43,6 @@ namespace Building.Models
             : base(_position, _buildingType, _buildStats)
         {
             this.productionSupplyCurrent = new List<ItemObjectModel>();
-            this.productionSupplyMax = _buildStats.productionSupply;
             this.productionPointsMax = _buildStats.productionPointsMax;
             this.productionPointsCurrent = 0;
             this.inputs = _buildStats.inputs;

@@ -86,8 +86,8 @@ namespace GameControllers
         private void ConfigureMineableTiles()
         {
             MineableObjectModel[,] newmineableTiles = new MineableObjectModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
-            this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Coal, 7, 11, 70, 20);
-            this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Copper, 7, 8, 60, 35);
+            this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Coal, 25, 35, 70, 20);
+            this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Copper, 21, 25, 60, 35);
             this.FillMapGapsWithStoneBlocks(newmineableTiles);
             this.CompleteMap(newmineableTiles);
         }
@@ -131,7 +131,7 @@ namespace GameControllers
 
         private bool IsStartingZone(int x, int y)
         {
-            return (x >= 9 && x <= 13 && y >= 5 && y <= 7);
+            return (x >= 48 && x <= 53 && y >= 48 && y <= 51);
         }
 
         private void CompleteMap(MineableObjectModel[,] newMinableTiles)

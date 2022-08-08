@@ -36,7 +36,7 @@ namespace GameControllers.Services
                 neighbours.RemoveAt(0);
             }
             IList<Vector3Int> returnMap = pathFound ? PathBack(startingPos, _map) : null;
-            if(adjacentToEndPos) returnMap = this.AdjustPathToBeAdjacent(returnMap, _map);
+            if (adjacentToEndPos) returnMap = this.AdjustPathToBeAdjacent(returnMap, _map);
             this.pathFinderMap.Get().Refresh();
             return returnMap;
         }
@@ -61,7 +61,8 @@ namespace GameControllers.Services
             neighbours.Add(bottomleft);
             neighbours.Add(bottomRight);
             // Remove out of bounds (null) tiles, and items that have already been assigned a lower
-            neighbours = (List<PathFinderMapItem>)neighbours.Filter(neighbour => { return neighbour != null && !(neighbour.distance != null && neighbour.distance <= item.distance); });
+            neighbours = (List<PathFinderMapItem>)neighbours.Filter(neighbour => { return neighbour != null; });
+            neighbours = (List<PathFinderMapItem>)neighbours.Filter(neighbour => { return neighbour.distance == null || neighbour.distance > item.distance + 1; });
             neighbours.ForEach(neighbour => { neighbour.distance = item.distance + 1; });
             return neighbours;
         }
@@ -125,11 +126,12 @@ namespace GameControllers.Services
                 // Diagonal condition
                 PathFinderMapItem newTile = _map.GetPassableMapItemAt(path[path.Count - 2].x + (path[path.Count - 1].x - path[path.Count - 2].x), path[path.Count - 2].y)
                     ?? _map.GetPassableMapItemAt(path[path.Count - 2].x, path[path.Count - 2].y + (path[path.Count - 1].y - path[path.Count - 2].y));
-                if (newTile != null) {
+                if (newTile != null)
+                {
                     path[path.Count - 1] = new Vector3Int(newTile.x, newTile.y);
-                    if(path.Count >= 3 && (Math.Abs(path[path.Count - 1].x - path[path.Count - 3].x) + Math.Abs(path[path.Count - 1].y - path[path.Count - 3].y)) == 2)
+                    if (path.Count >= 3 && (Math.Abs(path[path.Count - 1].x - path[path.Count - 3].x) + Math.Abs(path[path.Count - 1].y - path[path.Count - 3].y)) == 2)
                     {
-                        path.RemoveAt(path.Count-2);
+                        path.RemoveAt(path.Count - 2);
                     }
                 }
             }

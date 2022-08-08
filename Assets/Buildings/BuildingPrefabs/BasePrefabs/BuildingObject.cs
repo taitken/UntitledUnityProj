@@ -41,7 +41,7 @@ namespace Building
         public override void OnMouseEnter()
         {
 
-            this.contextService.AddContext(new ContextWindowModel(this.buildingObjectModel.ID, this.GenerateContextWindowTitle(), this.GenerateContextWindowBody()));
+            this.contextService.AddContext(new ObjectContextWindowModel(this.buildingObjectModel.ID, this.GenerateContextWindowTitle(), this.GenerateContextWindowBody()));
         }
 
         public override void OnMouseExit()
@@ -68,7 +68,6 @@ namespace Building
         protected virtual List<string> GenerateContextWindowBody()
         {
             List<string> newContext = new List<string>();
-            newContext.Add("Is a building");
             return newContext;
         }
 

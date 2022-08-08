@@ -19,7 +19,6 @@ namespace Building.Models
         public Vector2 size { get; set; }
         public decimal storageMax { get; set; }
         public IList<BuildingSupply> buildSupply { get; set; }
-        public IList<BuildingSupply> productionSupply { get; set; }
         public int productionPointsMax { get; set; }
         public IList<BuildingSupply> inputs { get; set; }
         public IList<BuildingSupply> outputs { get; set; }
@@ -55,9 +54,8 @@ namespace Building.Models
                         buildingName = "Smelter",
                         size = new Vector2(2, 2),
                         buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) },
-                        productionSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 2000) },
                         productionPointsMax = 10,
-                        inputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 200) },
+                        inputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 200), new BuildingSupply(eItemType.Coal, 25) },
                         outputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Iron, 25) }
                     };
                     break;

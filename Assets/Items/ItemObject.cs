@@ -37,7 +37,7 @@ namespace Item
             List<string> newContext = new List<string>();
             newContext.Add(this.itemObjectModel.mass.ToString() + " " + LocalisationDict.mass);
             newContext.Add("Item");
-            this.contextService.AddContext(new ContextWindowModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString(), newContext));
+            this.contextService.AddContext(new ObjectContextWindowModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString(), newContext));
         }
 
         public override void OnMouseExit()

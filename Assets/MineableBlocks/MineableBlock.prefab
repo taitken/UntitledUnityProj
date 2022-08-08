@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: -7688506269184180517}
   - component: {fileID: -4114545003735848475}
   - component: {fileID: 2583389982170914256}
-  - component: {fileID: -451128634398348558}
   m_Layer: 8
   m_Name: MineableBlock
   m_TagString: Untagged
@@ -166,33 +165,3 @@ MonoBehaviour:
   - {fileID: -162902802, guid: 6248306972889944fa8915f298c144ee, type: 3}
   - {fileID: -1296084724, guid: 6248306972889944fa8915f298c144ee, type: 3}
   - {fileID: 735201668, guid: 6248306972889944fa8915f298c144ee, type: 3}
---- !u!114 &-451128634398348558
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6699492878389840883}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: abbebf398ccd70545a31ed04f9a8d3e4, type: 3}
-  m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
