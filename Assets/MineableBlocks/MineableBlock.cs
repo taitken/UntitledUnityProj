@@ -16,7 +16,7 @@ namespace Environment
     {
         private IUnitOrderService orderService;
         private IItemObjectService itemService;
-        private IContextWindowService contextService;
+        private IUiPanelService contextService;
         private IEnvironmentService environmentService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
@@ -26,7 +26,7 @@ namespace Environment
         [Inject]
         public void Construct(IUnitOrderService _orderService,
                                 IItemObjectService _itemService,
-                                IContextWindowService _contextService,
+                                IUiPanelService _contextService,
                                 IEnvironmentService _environmentService,
                                 MineableObjectModel _mineableObjectModel)
         {

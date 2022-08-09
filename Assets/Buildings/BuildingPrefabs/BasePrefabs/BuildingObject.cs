@@ -16,9 +16,9 @@ namespace Building
         public BuildingObjectModel buildingObjectModel { get; set; }
         protected IUnitOrderService unitOrderService { get; set; }
         protected IItemObjectService itemService {get;set;}
-        protected IContextWindowService contextService { get; set; }
+        protected IUiPanelService contextService { get; set; }
 
-        public void Initialise(IContextWindowService _contextService,
+        public void Initialise(IUiPanelService _contextService,
                                         BuildingObjectModel _buildingObjectModel,
                                         IEnvironmentService _environmentService,
                                         IItemObjectService _itemObjectService,

@@ -21,10 +21,10 @@ namespace Building
         private IList<GameObject> spriteObjects { get; set; } = new List<GameObject>();
         public BuildSiteModel buildSiteModel { get; set; }
         private bool cancelled { get; set; }
-        protected IContextWindowService contextService { get; set; }
+        protected IUiPanelService contextService { get; set; }
 
         [Inject]
-        public void Construct(IContextWindowService _contextService,
+        public void Construct(IUiPanelService _contextService,
                                 BuildSiteModel _buildSiteModel,
                                 IEnvironmentService _environmentService,
                                 IBuildingService _buildingService,

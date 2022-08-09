@@ -7,7 +7,7 @@ using UI.Models;
 
 namespace UI.Services
 {
-    public interface IContextWindowService
+    public interface IUiPanelService
     {
         public ContextAssetFactory contextAssetFactory { get; set; }
         public MonoObseravable<IList<ContextWindowModel>> contextObseravable { get; set; }

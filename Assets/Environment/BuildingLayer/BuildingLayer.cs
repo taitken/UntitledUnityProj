@@ -23,7 +23,7 @@ namespace Environment
         private MouseActionModel mouseAction;
         private BuildingObjectFactory buildingModelFactory;
         private BuildSiteObject.Factory buildSiteFactory;
-        private IContextWindowService contextService;
+        private IUiPanelService contextService;
         private IList<BuildingObject> buildingPrefabs = new List<BuildingObject>();
         private IList<BuildingObjectModel> buildingObjectModels
         {
@@ -45,7 +45,7 @@ namespace Environment
         public void Construct(IUnitOrderService _orderService,
                               IEnvironmentService _environmentService,
                               IBuildingService _buildingService,
-                              IContextWindowService _contextService,
+                              IUiPanelService _contextService,
                               IItemObjectService _itemService,
                               LayerCollider.Factory _layerColliderFactory,
                               BuildSiteObject.Factory _buildSiteFactory)

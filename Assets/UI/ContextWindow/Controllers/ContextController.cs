@@ -11,12 +11,12 @@ namespace UI
 {
     public class ContextController : MonoBehaviour2
     {
-        private IContextWindowService contextWindowService;
+        private IUiPanelService contextWindowService;
         private IList<ContextWindowModel> contextModels = new List<ContextWindowModel>();
         private IList<ContextWindow> windows = new List<ContextWindow>();
         private IItemObjectService itemService;
         [Inject]
-        public void Construct(IContextWindowService _contextService, IItemObjectService _itemService)
+        public void Construct(IUiPanelService _contextService, IItemObjectService _itemService)
         {
             this.contextWindowService = _contextService;
             this.itemService = _itemService;

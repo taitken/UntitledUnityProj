@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace UI.Services
 {
-    public class ContextWindowService : IContextWindowService
+    public class UiPanelService : IUiPanelService
     {
         public ContextAssetFactory contextAssetFactory { get; set; }
-        public ContextWindowService()
+        public UiPanelService()
         {
 
         }

@@ -64,6 +64,6 @@ public class GameInstaller : MonoInstaller
         // Building Objects
 
         // UI
-        Container.Bind<IContextWindowService>().To<ContextWindowService>().AsSingle().OnInstantiated<ContextWindowService>((ctx, service) => { service.SetAssetFactory(ContextAssetFactory); });;
+        Container.Bind<IUiPanelService>().To<UiPanelService>().AsSingle().OnInstantiated<UiPanelService>((ctx, service) => { service.SetAssetFactory(ContextAssetFactory); });;
     }
 }

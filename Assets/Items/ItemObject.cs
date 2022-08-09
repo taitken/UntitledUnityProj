@@ -16,11 +16,11 @@ namespace Item
         public ItemObjectModel itemObjectModel;
         public IItemObjectService itemService;
         public IUnitOrderService orderService;
-        private IContextWindowService contextService;
+        private IUiPanelService contextService;
         private MouseActionModel mouseAction;
         [Inject]
         public void Construct(ItemObjectModel _itemObjectModel,
-                                IContextWindowService _contextWindowService,
+                                IUiPanelService _contextWindowService,
                                 IUnitOrderService _orderService,
                                 IItemObjectService _itemService)
         {

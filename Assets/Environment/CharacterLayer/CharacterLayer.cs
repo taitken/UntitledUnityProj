@@ -16,7 +16,6 @@ namespace Environment
         private IUnitService unitService;
         private MouseActionModel mouseAction;
         private PlayerController.Factory characterFactory;
-        private IContextWindowService contextService;
         public IList<WorldCharacter> worldCharacters = new List<WorldCharacter>();
         private IList<UnitModel> unitModels
         {

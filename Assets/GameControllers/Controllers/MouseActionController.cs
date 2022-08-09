@@ -70,6 +70,9 @@ namespace GameControllers
         {
             switch (this.currentMouseAction.mouseType)
             {
+                case eMouseAction.None:
+                    this.SelectClick();
+                    break;
                 case eMouseAction.Build:
                     this.CommandClick(false, "BuildingLayer");
                     break;
@@ -180,7 +183,7 @@ namespace GameControllers
             Vector2 origin = new Vector2(xOrigin, yOrigin);
             Vector2 size = new Vector2(xWidth, yWidth);
 
-            Physics2D.BoxCast(new Vector2(origin.x + size.x/2, origin.y + size.y/2), size, 0, new Vector2(0, 0), contactFilter, hitResults, 0);
+            Physics2D.BoxCast(new Vector2(origin.x + size.x / 2, origin.y + size.y / 2), size, 0, new Vector2(0, 0), contactFilter, hitResults, 0);
             return hitResults;
         }
 
@@ -239,6 +242,23 @@ namespace GameControllers
             {
                 this.ClickObjects(this.RayCastOnMouse(filter));
             }
+        }
+
+        private void SelectClick()
+        {
+            ContactFilter2D filter = new ContactFilter2D();
+            IList<RaycastHit2D> hitObjects = this.RayCastOnMouse(filter);
+            foreach (RaycastHit2D hitObject in hitObjects)
+            {
+                if (hitObject.collider != null)
+                {
+                    if (hitObject.collider.gameObject.GetComponent<MonoBehaviour2>())
+                    {
+                        hitObject.collider.gameObject.GetComponent<MonoBehaviour2>().OnSelect();
+                        break;
+                    };
+                }
+            };
         }
     }
 }
