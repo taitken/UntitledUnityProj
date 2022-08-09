@@ -12,11 +12,11 @@ using UI.Models;
 
 namespace Environment
 {
-    public class MineableBlock : MonoBehaviour2
+    public class MineableBlock : MonoBasePhysicalObject
     {
         private IUnitOrderService orderService;
         private IItemObjectService itemService;
-        private IUiPanelService contextService;
+        private IUiPanelService uiPanelService;
         private IEnvironmentService environmentService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
@@ -26,7 +26,7 @@ namespace Environment
         [Inject]
         public void Construct(IUnitOrderService _orderService,
                                 IItemObjectService _itemService,
-                                IUiPanelService _contextService,
+                                IUiPanelService _uiPanelService,
                                 IEnvironmentService _environmentService,
                                 MineableObjectModel _mineableObjectModel)
         {
@@ -34,7 +34,7 @@ namespace Environment
             this.mineableObjectModel = _mineableObjectModel;
             this.orderService = _orderService;
             this.itemService = _itemService;
-            this.contextService = _contextService;
+            this.uiPanelService = _uiPanelService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
             this.spriteList = this.environmentService.GetMineableBlockSprites(this.mineableObjectModel.mineableBlockType);
         }
@@ -47,22 +47,27 @@ namespace Environment
         {
         }
 
+        public override void OnSelect()
+        {
+            this.uiPanelService.selectedObject.Set(new PanelModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, ePanelTypes.ObjectInfo));
+        }
+
         public override void OnMouseEnter()
         {
             List<string> newContext = new List<string>();
             newContext.Add(this.mineableObjectModel.mass.ToString() + " " + LocalisationDict.mass);
             newContext.Add("Mineable");
-            this.contextService.AddContext(new ObjectContextWindowModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, newContext));
+            this.uiPanelService.AddContext(new ObjectContextWindowModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, newContext));
         }
 
         public override void OnMouseExit()
         {
-            this.contextService.RemoveContext(this.mineableObjectModel.ID);
+            this.uiPanelService.RemoveContext(this.mineableObjectModel.ID);
         }
 
         protected override void BeforeDeath()
         {
-            this.contextService.RemoveContext(this.mineableObjectModel.ID);
+            this.uiPanelService.RemoveContext(this.mineableObjectModel.ID);
             this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position, mineableObjectModel.mass, this.mineableObjectModel.itemDrop, ItemObjectModel.eItemState.OnGround));
         }
 

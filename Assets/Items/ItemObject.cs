@@ -11,12 +11,12 @@ using UtilityClasses;
 
 namespace Item
 {
-    public class ItemObject : MonoBehaviour2
+    public class ItemObject : MonoBasePhysicalObject
     {
         public ItemObjectModel itemObjectModel;
         public IItemObjectService itemService;
         public IUnitOrderService orderService;
-        private IUiPanelService contextService;
+        private IUiPanelService uiPanelService;
         private MouseActionModel mouseAction;
         [Inject]
         public void Construct(ItemObjectModel _itemObjectModel,
@@ -26,10 +26,15 @@ namespace Item
         {
             this.itemObjectModel = _itemObjectModel;
             this.itemService = _itemService;
-            this.contextService = _contextWindowService;
+            this.uiPanelService = _contextWindowService;
             this.orderService = _orderService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
             this.GetComponent<SpriteRenderer>().sprite = this.itemService.GetItemSprite(this.itemObjectModel.itemType);
+        }
+
+        public override void OnSelect()
+        {
+            this.uiPanelService.selectedObject.Set(new PanelModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString(), ePanelTypes.ObjectInfo));
         }
 
         public override void OnMouseEnter()
@@ -37,12 +42,12 @@ namespace Item
             List<string> newContext = new List<string>();
             newContext.Add(this.itemObjectModel.mass.ToString() + " " + LocalisationDict.mass);
             newContext.Add("Item");
-            this.contextService.AddContext(new ObjectContextWindowModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString(), newContext));
+            this.uiPanelService.AddContext(new ObjectContextWindowModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString(), newContext));
         }
 
         public override void OnMouseExit()
         {
-            this.contextService.RemoveContext(this.itemObjectModel.ID);
+            this.uiPanelService.RemoveContext(this.itemObjectModel.ID);
         }
 
         public override void OnClickedByUser()
@@ -55,7 +60,7 @@ namespace Item
 
         protected override void BeforeDeath()
         {
-            this.contextService.RemoveContext(this.itemObjectModel.ID);
+            this.uiPanelService.RemoveContext(this.itemObjectModel.ID);
         }
 
 

@@ -2,23 +2,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using Building.Models;
 using Extensions;
-using UnityEngine.Tilemaps;
 using UI.Services;
-using UtilityClasses;
 using UI.Models;
 using GameControllers.Services;
-using Item.Models;
 
 namespace Building
 {
-    public abstract class BuildingObject : MonoBehaviour2
+    public abstract class BuildingObject : MonoBasePhysicalObject
     {
         public BuildingObjectModel buildingObjectModel { get; set; }
         protected IUnitOrderService unitOrderService { get; set; }
-        protected IItemObjectService itemService {get;set;}
-        protected IUiPanelService contextService { get; set; }
+        protected IItemObjectService itemService { get; set; }
+        protected IUiPanelService uiPanelService { get; set; }
 
-        public void Initialise(IUiPanelService _contextService,
+        public void Initialise(IUiPanelService _uiPanelService,
                                         BuildingObjectModel _buildingObjectModel,
                                         IEnvironmentService _environmentService,
                                         IItemObjectService _itemObjectService,
@@ -28,25 +25,30 @@ namespace Building
             this.unitOrderService = _orderService;
             this.itemService = _itemObjectService;
             this.SetMultiTilePosition(_environmentService.CellToLocal(_buildingObjectModel.position));
-            if(this.buildingObjectModel.buildingType != eBuildingType.FloorTile) this.UpdateBuildingBounds();
-            this.contextService = _contextService;
+            if (this.buildingObjectModel.buildingType != eBuildingType.FloorTile) this.UpdateBuildingBounds();
+            this.uiPanelService = _uiPanelService;
 
 
             this.OnCreation();
         }
 
+        public override void OnSelect()
+        {
+            this.uiPanelService.selectedObject.Set(new PanelModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString(), ePanelTypes.ObjectInfo));
+        }
+
         protected abstract void OnCreation();
-        
+
 
         public override void OnMouseEnter()
         {
 
-            this.contextService.AddContext(new ObjectContextWindowModel(this.buildingObjectModel.ID, this.GenerateContextWindowTitle(), this.GenerateContextWindowBody()));
+            this.uiPanelService.AddContext(new ObjectContextWindowModel(this.buildingObjectModel.ID, this.GenerateContextWindowTitle(), this.GenerateContextWindowBody()));
         }
 
         public override void OnMouseExit()
         {
-            this.contextService.RemoveContext(this.buildingObjectModel.ID);
+            this.uiPanelService.RemoveContext(this.buildingObjectModel.ID);
         }
 
         protected string GenerateContextWindowTitle()

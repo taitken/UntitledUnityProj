@@ -6,6 +6,8 @@ using GameControllers.Services;
 using GameControllers.Models;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UI.Services;
+
 namespace GameControllers
 {
     public class MouseActionController : MonoBehaviour2
@@ -13,6 +15,7 @@ namespace GameControllers
         MouseActionModel currentMouseAction;
         IUnitOrderService orderService;
         IEnvironmentService environmentService;
+        IUiPanelService uiPanelService;
         private const float DRAG_TIME_LENGTH = 0.2f;
         private float leftClickDownDuration;
         private Vector3 dragClickStart;
@@ -20,10 +23,12 @@ namespace GameControllers
         IList<RaycastHit2D> oldMouseOverHits = new List<RaycastHit2D>();
         [Inject]
         public void Construct(IUnitOrderService _orderService,
-                                IEnvironmentService _environmentService)
+                                IEnvironmentService _environmentService,
+                                IUiPanelService _uiPanelService)
         {
             this.orderService = _orderService;
             this.environmentService = _environmentService;
+            this.uiPanelService = _uiPanelService;
             this.orderService.mouseAction.Subscribe(this, action => { this.currentMouseAction = action; });
             this.leftClickDownDuration = 0;
 
@@ -248,17 +253,20 @@ namespace GameControllers
         {
             ContactFilter2D filter = new ContactFilter2D();
             IList<RaycastHit2D> hitObjects = this.RayCastOnMouse(filter);
+            bool hitFound = false;
             foreach (RaycastHit2D hitObject in hitObjects)
             {
                 if (hitObject.collider != null)
                 {
-                    if (hitObject.collider.gameObject.GetComponent<MonoBehaviour2>())
+                    if (hitObject.collider.gameObject.GetComponent<MonoBasePhysicalObject>())
                     {
-                        hitObject.collider.gameObject.GetComponent<MonoBehaviour2>().OnSelect();
+                        hitObject.collider.gameObject.GetComponent<MonoBasePhysicalObject>().OnSelect();
+                        hitFound = true;
                         break;
                     };
                 }
             };
+            if(!hitFound) this.uiPanelService.selectedObject.Set(null);
         }
     }
 }

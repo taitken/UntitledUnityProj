@@ -35,11 +35,6 @@ namespace UnityEngine
 
         }
 
-        public virtual void OnSelect()
-        {
-            
-        }
-
         public virtual void OnDrag(DragEventModel dragEvent)
         {
 

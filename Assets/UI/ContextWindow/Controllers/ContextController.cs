@@ -43,8 +43,7 @@ namespace UI
 
         void GenerateWindows(IList<ContextWindowModel> context)
         {
-            this.windows.ForEach(window => { window.Destroy(); });
-            this.windows = new List<ContextWindow>();
+            this.windows.DestroyAll();
             context.ForEach((contextModel, index) =>
             {
                 ContextWindow newWindow = this.contextWindowService.contextAssetFactory.CreateContextWindow(this.GetComponent<RectTransform>(), contextModel, this.itemService);

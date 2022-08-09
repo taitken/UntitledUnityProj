@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using GameControllers.Services;
 using Building.Models;
-using UI.Services;
 using UtilityClasses;
 using UI.Models;
 using GameControllers.Models;
@@ -49,7 +46,7 @@ namespace Building
 
         public override void OnMouseEnter()
         {
-            this.contextService.AddContext(new ProductionBuildingContextWindowModel(this.buildingObjectModel.ID, this.GenerateContextWindowTitle(), this.productionBuildingModel));
+            this.uiPanelService.AddContext(new ProductionBuildingContextWindowModel(this.buildingObjectModel.ID, this.GenerateContextWindowTitle(), this.productionBuildingModel));
         }
 
         private void Produce()
