@@ -49,7 +49,9 @@ namespace Environment
 
         public override void OnSelect()
         {
-            this.uiPanelService.selectedObject.Set(new PanelModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, ePanelTypes.ObjectInfo));
+            IList<BasePanelModel> panels = new List<BasePanelModel>();
+            panels.Add(new ObjectPanelModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName));
+            this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
         public override void OnMouseEnter()

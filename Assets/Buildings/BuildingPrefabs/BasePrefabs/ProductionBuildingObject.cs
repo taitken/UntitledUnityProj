@@ -44,6 +44,14 @@ namespace Building
             this.Produce();
         }
 
+        public override void OnSelect()
+        {
+            IList<BasePanelModel> panels = new List<BasePanelModel>();
+            panels.Add(new ObjectPanelModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString()));
+            panels.Add(new RecipePanelModel(this.buildingObjectModel.ID, "Production Options"));
+            this.uiPanelService.selectedObjectPanels.Set(panels);
+        }
+
         public override void OnMouseEnter()
         {
             this.uiPanelService.AddContext(new ProductionBuildingContextWindowModel(this.buildingObjectModel.ID, this.GenerateContextWindowTitle(), this.productionBuildingModel));

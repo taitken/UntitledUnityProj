@@ -269,7 +269,7 @@ namespace GameControllers
                     };
                 }
             };
-            if (!hitFound) this.uiPanelService.selectedObject.Set(null);
+            if (!hitFound) this.uiPanelService.selectedObjectPanels.Set(null);
         }
     }
 }

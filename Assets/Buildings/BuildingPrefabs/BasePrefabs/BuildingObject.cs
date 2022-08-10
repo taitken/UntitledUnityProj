@@ -34,7 +34,9 @@ namespace Building
 
         public override void OnSelect()
         {
-            this.uiPanelService.selectedObject.Set(new PanelModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString(), ePanelTypes.ObjectInfo));
+            IList<BasePanelModel> panels = new List<BasePanelModel>();
+            panels.Add(new ObjectPanelModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString()));
+            this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
         protected abstract void OnCreation();

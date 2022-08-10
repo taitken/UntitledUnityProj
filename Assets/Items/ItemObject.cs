@@ -34,7 +34,9 @@ namespace Item
 
         public override void OnSelect()
         {
-            this.uiPanelService.selectedObject.Set(new PanelModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString(), ePanelTypes.ObjectInfo));
+            IList<BasePanelModel> panels = new List<BasePanelModel>();
+            panels.Add(new ObjectPanelModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString()));
+            this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
         public override void OnMouseEnter()

@@ -13,15 +13,14 @@ namespace UI
     public class ObjectPanelController : MonoBehaviour2
     {
         private IUiPanelService uiPanelService;
-        private IList<ObjectPanel> panels = new List<ObjectPanel>();
+        private IList<BasePanel> panels = new List<BasePanel>();
         private IItemObjectService itemService;
         [Inject]
         public void Construct(IUiPanelService _contextService, IItemObjectService _itemService)
         {
             this.uiPanelService = _contextService;
             this.itemService = _itemService;
-            this.uiPanelService.selectedObject.SubscribeQuietly(this, this.OnObjectSelected);
-
+            this.uiPanelService.selectedObjectPanels.SubscribeQuietly(this, this.OnObjectSelected);
         }
         // Start is called before the first frame update
         void Start()
@@ -29,13 +28,17 @@ namespace UI
 
         }
 
-        private void OnObjectSelected(PanelModel selectedObject)
+        private void OnObjectSelected(IList<BasePanelModel> panels)
         {
             this.panels.DestroyAll();
-            if (selectedObject != null)
+            if (panels != null)
             {
-                ObjectPanel newPanel = this.uiPanelService.panelAssetFactory.CreatePanelWindow(this.GetComponent<RectTransform>(), selectedObject, this.itemService);
-                this.panels.Add(newPanel);
+                panels.ForEach(panel =>
+                {
+                    BasePanel newPanel = this.uiPanelService.GetPanelAssetFactory().CreatePanelWindow(this.GetComponent<RectTransform>(), panel, this.itemService);
+                    this.panels.Add(newPanel);
+                });
+
             }
         }
     }

@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursorTexures:
   - {fileID: 0}
+  - {fileID: 2800000, guid: f072f7f8c544c874eb1d4e6b50ae482b, type: 3}
   - {fileID: 2800000, guid: 0138ff996cf7410479c3dfffa5472ee1, type: 3}
   - {fileID: 2800000, guid: 7dfd68325eeac354d866d207e4d2744c, type: 3}
   - {fileID: 2800000, guid: 819c8f6309b30fd4899429d080d15b50, type: 3}

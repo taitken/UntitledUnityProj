@@ -10,22 +10,25 @@ namespace UI
 {
     public class ObjectPanelAssetFactory : MonoBehaviour2
     {
-        public List<ObjectPanel> panelPrefabs;
+        public List<BasePanel> panelPrefabs;
 
-        public ObjectPanel CreatePanelWindow(RectTransform parentTransform, PanelModel panelWindowModel, IItemObjectService itemService)
+        public BasePanel CreatePanelWindow(RectTransform parentTransform, BasePanelModel panelWindowModel, IItemObjectService itemService)
         {
             if (this.panelPrefabs.Count > (int)panelWindowModel.panelType)
             {
-                ObjectPanel newPanel = Instantiate(this.panelPrefabs[(int)panelWindowModel.panelType]);
+                BasePanel newPanel = Instantiate(this.panelPrefabs[(int)panelWindowModel.panelType]);
                 newPanel.Construct(panelWindowModel);
                 newPanel.GetComponent<RectTransform>().SetParent(parentTransform);
                 switch (panelWindowModel.panelType)
                 {
                     case ePanelTypes.ObjectInfo:
-                        newPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(-150, 230);
+                        newPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(-190, 270);
+                        break;
+                    case ePanelTypes.RecipeSelector:
+                        newPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(-413, 270);
                         break;
                 }
-                return newPanel as ObjectPanel;
+                return newPanel;
             }
             else
             {

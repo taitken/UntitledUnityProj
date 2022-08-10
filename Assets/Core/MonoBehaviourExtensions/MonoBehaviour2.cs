@@ -106,6 +106,7 @@ namespace UnityEngine
             {
                 callback();
             }
+            this.OnMouseExit();
             this.BeforeDeath();
             Destroy(gameObject);
         }
