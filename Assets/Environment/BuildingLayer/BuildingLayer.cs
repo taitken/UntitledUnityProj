@@ -139,15 +139,31 @@ namespace Environment
         {
             if (this.mouseAction.mouseType == eMouseAction.Build)
             {
-                if ((this.buildingService.IsBuildingSpaceAvailable(this.GetCellCoorAtMouse()) || this.mouseAction.buildingType == eBuildingType.FloorTile)
-                && !this.orderService.IsExistingOrderAtLocation(this.GetCellCoorAtMouse())
-                && (this.mouseAction.buildingType != eBuildingType.FloorTile || this.buildingService.IsFloorSpaceAvailable(this.GetCellCoorAtMouse())))
+                this.PlaceBuildingBlueprint(this.GetCellCoorAtMouse());
+            }
+        }
+
+        public override void OnDragEnd(DragEventModel dragEvent)
+        {
+            if (this.mouseAction.mouseType == eMouseAction.Build && this.mouseAction.buildingType == eBuildingType.FloorTile)
+            {
+                Vector3Int startPos = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS /2, dragEvent.initialDragLocation.y  + IEnvironmentService.TILE_WIDTH_PIXELS /2, 0));
+                Vector3Int endPos = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x  + IEnvironmentService.TILE_WIDTH_PIXELS /2, dragEvent.currentDragLocation.y  + IEnvironmentService.TILE_WIDTH_PIXELS /2, 0));
+                IList<Vector3Int> draggedCells = this.environmentService.GetCellsInArea(startPos, endPos);
+                draggedCells.ForEach(cell => { this.PlaceBuildingBlueprint(cell); });
+            }
+        }
+
+        public void PlaceBuildingBlueprint(Vector3Int coordinates)
+        {
+            if ((this.buildingService.IsBuildingSpaceAvailable(coordinates) || this.mouseAction.buildingType == eBuildingType.FloorTile)
+            && !this.orderService.IsExistingOrderAtLocation(coordinates)
+            && (this.mouseAction.buildingType != eBuildingType.FloorTile || this.buildingService.IsFloorSpaceAvailable(coordinates)))
+            {
+                BuildingTypeStats.GetBuildingStats(this.mouseAction.buildingType).buildSupply.ForEach(requiredItem =>
                 {
-                    BuildingTypeStats.GetBuildingStats(this.mouseAction.buildingType).buildSupply.ForEach(requiredItem =>
-                    {
-                        this.orderService.AddOrder(new BuildSupplyOrderModel(this.GetCellCoorAtMouse(), requiredItem.itemType, requiredItem.mass, this.mouseAction.buildingType));
-                    });
-                }
+                    this.orderService.AddOrder(new BuildSupplyOrderModel(coordinates, requiredItem.itemType, requiredItem.mass, this.mouseAction.buildingType));
+                });
             }
         }
 

@@ -112,6 +112,9 @@ namespace GameControllers
             this.dragEvent.draggedObjects.ForEach(obj => { obj.GetComponent<MonoBehaviour2>().OnDragEnd(this.dragEvent); });
             switch (this.currentMouseAction.mouseType)
             {
+                case eMouseAction.Build:
+                    this.DragClick(this.dragEvent, "BuildingLayer");
+                    break;
                 case eMouseAction.Dig:
                     this.DragClick(this.dragEvent, "MineableLayer");
                     break;
@@ -266,7 +269,7 @@ namespace GameControllers
                     };
                 }
             };
-            if(!hitFound) this.uiPanelService.selectedObject.Set(null);
+            if (!hitFound) this.uiPanelService.selectedObject.Set(null);
         }
     }
 }

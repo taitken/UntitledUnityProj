@@ -41,6 +41,28 @@ namespace GameControllers.Services
             this.mineableObjects.Set(_mineableObjects);
         }
 
+        public IList<Vector3Int> GetCellsInArea(Vector3 startPos, Vector3 endPos)
+        {
+            return GetCellsInArea(this.LocalToCell(startPos), this.LocalToCell(endPos));
+        }
+
+        public IList<Vector3Int> GetCellsInArea(Vector3Int startPos, Vector3Int endPos)
+        {
+            List<Vector3Int> draggedCells = new List<Vector3Int>();
+            int xDistance = endPos.x - startPos.x;
+            int yDistance = endPos.y - startPos.y;
+            int xSign = Math.Sign(xDistance);
+            int ySign = Math.Sign(yDistance);
+            for (int x = 0; x <= Math.Abs(xDistance); x++)
+            {
+                for (int y = 0; y <= Math.Abs(yDistance); y++)
+                {
+                    draggedCells.Add(new Vector3Int(startPos.x + (x * xSign), startPos.y + (y * ySign)));
+                }
+            }
+            return draggedCells;
+        }
+
         public Vector3Int LocalToCell(Vector3 localPosition)
         {
             if (this.tileMapRef != null)

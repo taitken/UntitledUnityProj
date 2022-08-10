@@ -39,7 +39,8 @@ namespace Environment
 
         public override void OnDrag(DragEventModel dragEvent)
         {
-            if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Dig ||
+            if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Build && this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.FloorTile  ||
+                this.orderService.mouseAction.Get().mouseType == eMouseAction.Dig ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Store ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Cancel)
             {
@@ -48,18 +49,7 @@ namespace Environment
                 Vector3Int currentMouseCell = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x  + IEnvironmentService.TILE_WIDTH_PIXELS /2, dragEvent.currentDragLocation.y  + IEnvironmentService.TILE_WIDTH_PIXELS /2, 0));
                 if (currentMouseCell != this.lastEnteredCell)
                 {
-                    List<Vector3Int> draggedCells = new List<Vector3Int>();
-                    int xDistance = currentMouseCell.x - dragInitiationLocation.x;
-                    int yDistance = currentMouseCell.y - dragInitiationLocation.y;
-                    int xSign = Math.Sign(xDistance);
-                    int ySign = Math.Sign(yDistance);
-                    for (int x = 0; x <= Math.Abs(xDistance); x++)
-                    {
-                        for (int y = 0; y <= Math.Abs(yDistance); y++)
-                        {
-                            draggedCells.Add(new Vector3Int(dragInitiationLocation.x + (x * xSign), dragInitiationLocation.y + (y * ySign)));
-                        }
-                    }
+                    IList<Vector3Int> draggedCells = this.environmentService.GetCellsInArea(dragInitiationLocation, currentMouseCell);
                     this.orderSelectionObjects.DestroyAll();
                     draggedCells.ForEach(cell =>
                     {
