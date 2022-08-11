@@ -37,23 +37,29 @@ namespace UI
         // Update is called once per frame
         void Update()
         {
-            this.progressBar.UpdatePercentage(100 *
-                (this.contextWindowModel.productionBuildingModel.productionPointsCurrent / this.contextWindowModel.productionBuildingModel.productionPointsMax));
+            if (this.contextWindowModel.productionBuildingModel.selectedItemRecipe != null)
+            {
+                this.progressBar.UpdatePercentage(100 *
+                    (this.contextWindowModel.productionBuildingModel.selectedItemRecipe.productionPointsCurrent / this.contextWindowModel.productionBuildingModel.selectedItemRecipe.productionPointsMax));
+            }
         }
 
         private void ConfigureItemSlots()
         {
             ItemSlot[] itemSlots = this.GetComponentsInChildren<ItemSlot>();
-            this.contextWindowModel.productionBuildingModel.inputs.ForEach((input, index) =>
+            if (this.contextWindowModel.productionBuildingModel.selectedItemRecipe != null)
             {
-                ItemObjectModel itemObj = this.contextWindowModel.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == input.itemType; });
-                this.SetupNewItem(input, index, itemSlots[0], input.mass.ToString() + "kg",
-                    itemObj != null ? itemObj.mass.ToString() + "kg" : "0kg");
-            });
-            this.contextWindowModel.productionBuildingModel.outputs.ForEach((input, index) =>
-            {
-                this.SetupNewItem(input, index, itemSlots[1], input.mass.ToString() + "kg", "");
-            });
+                this.contextWindowModel.productionBuildingModel.selectedItemRecipe.inputs.ForEach((input, index) =>
+                {
+                    ItemObjectModel itemObj = this.contextWindowModel.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == input.itemType; });
+                    this.SetupNewItem(input, index, itemSlots[0], input.mass.ToString() + "kg",
+                        itemObj != null ? itemObj.mass.ToString() + "kg" : "0kg");
+                });
+                this.contextWindowModel.productionBuildingModel.selectedItemRecipe.outputs.ForEach((input, index) =>
+                {
+                    this.SetupNewItem(input, index, itemSlots[1], input.mass.ToString() + "kg", "");
+                });
+            }
         }
 
         private void SetupNewItem(BuildingSupply input, int index, ItemSlot baseSlot, string requiredNumber, string currentNumber)

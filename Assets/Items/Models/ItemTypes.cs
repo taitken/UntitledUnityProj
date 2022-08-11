@@ -8,7 +8,8 @@ namespace Item.Models
         Stone,
         Iron,
         Coal,
-        CopperOre
+        CopperOre,
+        Copper
     }
 }
 

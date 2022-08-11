@@ -103,7 +103,7 @@ namespace GameControllers
             this.dragEvent.currentDragLocation = mousePos;
             this.dragEvent.draggedObjects.ForEach(obj =>
             {
-                obj.GetComponent<MonoBehaviour2>().OnDrag(this.dragEvent);
+                if(obj != null) obj.GetComponent<MonoBehaviour2>().OnDrag(this.dragEvent);
             });
         }
 

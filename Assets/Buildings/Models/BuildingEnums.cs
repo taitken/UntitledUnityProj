@@ -19,9 +19,7 @@ namespace Building.Models
         public Vector2 size { get; set; }
         public decimal storageMax { get; set; }
         public IList<BuildingSupply> buildSupply { get; set; }
-        public int productionPointsMax { get; set; }
-        public IList<BuildingSupply> inputs { get; set; }
-        public IList<BuildingSupply> outputs { get; set; }
+        public IList<ItemRecipeModel> itemRecipes { get; set; }
     }
 
     public static class BuildingTypeStats
@@ -54,9 +52,18 @@ namespace Building.Models
                         buildingName = "Smelter",
                         size = new Vector2(2, 2),
                         buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) },
-                        productionPointsMax = 10,
-                        inputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 200), new BuildingSupply(eItemType.Coal, 25) },
-                        outputs = new List<BuildingSupply>() { new BuildingSupply(eItemType.Iron, 25) }
+                        itemRecipes = new List<ItemRecipeModel>()
+                            {
+                                new ItemRecipeModel("Iron",
+                                new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 200), new BuildingSupply(eItemType.Coal, 25) },
+                                new List<BuildingSupply>() { new BuildingSupply(eItemType.Iron, 25) },
+                                10 ),
+                                new ItemRecipeModel("Copper",
+                                new List<BuildingSupply>() { new BuildingSupply(eItemType.CopperOre, 200), new BuildingSupply(eItemType.Coal, 25) },
+                                new List<BuildingSupply>() { new BuildingSupply(eItemType.Copper, 100) },
+                                10 )
+                            }
+
                     };
                     break;
             }

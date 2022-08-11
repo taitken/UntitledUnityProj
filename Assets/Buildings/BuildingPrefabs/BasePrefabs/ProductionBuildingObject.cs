@@ -9,16 +9,6 @@ using UnityEngine;
 
 namespace Building
 {
-    public struct ProductionSupplyOrder
-    {
-        public ProductionSupplyOrder(eItemType _itemType, ProductionSupplyOrderModel _buildSupply)
-        {
-            itemType = _itemType;
-            currentBuildSupplyModel = _buildSupply;
-        }
-        public eItemType itemType { get; set; }
-        public ProductionSupplyOrderModel currentBuildSupplyModel { get; set; }
-    }
     public class ProductionBuildingObject : BuildingObject
     {
         public ProductionBuildingModel productionBuildingModel;
@@ -27,15 +17,14 @@ namespace Building
         {
             this.productionBuildingModel = this.buildingObjectModel as ProductionBuildingModel;
             this.currentProductionSupplyModels = new List<ProductionSupplyOrder>();
-            this.productionBuildingModel.productionSupplyMax.ForEach(supplyItem =>
-            {
-                this.currentProductionSupplyModels.Add(new ProductionSupplyOrder() { itemType = supplyItem.itemType, currentBuildSupplyModel = null });
-            });
             this.unitOrderService.orders.Subscribe(this, this.CheckIfOrderRemoved);
         }
 
         public void Update()
         {
+            // Very Heavy. Need rework at some point to reduce cpu load. Move out of update.
+            this.CheckCurrentRecipe();
+            this.RefreshProductionSupplyModels();
             this.CheckAndRequestSupply();
         }
 
@@ -48,7 +37,7 @@ namespace Building
         {
             IList<BasePanelModel> panels = new List<BasePanelModel>();
             panels.Add(new ObjectPanelModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString()));
-            panels.Add(new RecipePanelModel(this.buildingObjectModel.ID, "Production Options"));
+            panels.Add(new RecipePanelModel(this.buildingObjectModel.ID, "Production Options", this.productionBuildingModel));
             this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
@@ -61,39 +50,34 @@ namespace Building
         {
             if (this.productionBuildingModel.isFullySupplied)
             {
-                this.productionBuildingModel.productionPointsCurrent += Time.fixedDeltaTime;
-                if (this.productionBuildingModel.productionPointsCurrent >= this.productionBuildingModel.productionPointsMax)
+                this.productionBuildingModel.selectedItemRecipe.productionPointsCurrent += Time.fixedDeltaTime;
+                if (this.productionBuildingModel.selectedItemRecipe.productionPointsCurrent >= this.productionBuildingModel.selectedItemRecipe.productionPointsMax)
                 {
-                    this.produceItem();
-                    this.productionBuildingModel.productionPointsCurrent = this.productionBuildingModel.isFullySupplied ?
-                                                                            this.productionBuildingModel.productionPointsCurrent - this.productionBuildingModel.productionPointsMax :
-                                                                            0;
+                    this.ProduceItem();
                 }
             }
         }
 
-        private void produceItem()
+        private void ProduceItem()
         {
-            this.productionBuildingModel.productionSupplyCurrent.ForEach(item =>
+            this.productionBuildingModel.selectedItemRecipe.inputs.ForEach(input =>
             {
-                BuildingSupply inputRequirement = this.productionBuildingModel.inputs.Find(input => { return input.itemType == item.itemType; });
-
-                // Throw error if somehow an input was added where it shouldnt have been
-                if (inputRequirement.Equals(default(BuildingSupply)))
-                    throw (new Exception("Building attempting to produce output with invalid input item. Building type: "
-                        + this.buildingObjectModel.buildingType.ToString() + ". " + "Invalid input type: " + item.itemType.ToString()));
-
-                item.mass -= inputRequirement.mass;
-                if (item.mass <= 0)
+                ItemObjectModel itemObject = this.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == input.itemType; });
+                itemObject.mass -= input.mass;
+                if (itemObject.mass <= 0)
                 {
-                    this.itemService.RemoveItem(item.ID);
+                    this.itemService.RemoveItem(itemObject.ID);
                 }
             });
             this.productionBuildingModel.productionSupplyCurrent = this.productionBuildingModel.productionSupplyCurrent.Filter(supply => { return supply.mass > 0; });
-            this.productionBuildingModel.outputs.ForEach(output =>
+            this.productionBuildingModel.selectedItemRecipe.outputs.ForEach(output =>
             {
                 this.itemService.AddItem(new ItemObjectModel(this.productionBuildingModel.position, output.mass, output.itemType, ItemObjectModel.eItemState.OnGround));
             });
+            AllocatedItemRecipe allocatedItem = this.productionBuildingModel.itemRecipes.Find(recipe => { return recipe.recipe == this.productionBuildingModel.selectedItemRecipe; });
+            allocatedItem.counter--;
+            this.productionBuildingModel.selectedItemRecipe.productionPointsCurrent = 0;
+            this.productionBuildingModel.selectedItemRecipe = null;
         }
 
         private void CheckAndRequestSupply()
@@ -102,16 +86,76 @@ namespace Building
             {
                 if (supplyModel.currentBuildSupplyModel == null)
                 {
-                    BuildingSupply maxBuildSupply = this.productionBuildingModel.productionSupplyMax.Find(supply => { return supply.itemType == supplyModel.itemType; });
-                    ItemObjectModel currentSupply = this.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == supplyModel.itemType; });
-                    if (currentSupply == null || currentSupply.mass < maxBuildSupply.mass / 2)
+                    // Hard to interpet. 
+                    BuildingSupply input = this.productionBuildingModel.itemRecipes.Find(recipe =>
                     {
-                        ProductionSupplyOrderModel newOrder = new ProductionSupplyOrderModel(this.buildingObjectModel.position, maxBuildSupply.itemType, maxBuildSupply.mass - (currentSupply == null ? 0 : currentSupply.mass));
-                        this.currentProductionSupplyModels[index] = new ProductionSupplyOrder(supplyModel.itemType, newOrder);
+                        return recipe.counter > 0 && recipe.recipe.inputs.Any(input =>
+                        {
+                            return input.itemType == supplyModel.input.itemType;
+                        });
+                    }).recipe.inputs.Find(input => { return input.itemType == supplyModel.input.itemType; });
+                    ItemObjectModel currentSupply = this.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == supplyModel.input.itemType; });
+                    if (currentSupply == null || currentSupply.mass < (input.mass * ProductionBuildingModel.MAX_STORAGE_MULT) / 2)
+                    {
+                        ProductionSupplyOrderModel newOrder = new ProductionSupplyOrderModel(this.buildingObjectModel.position, input.itemType, (input.mass * ProductionBuildingModel.MAX_STORAGE_MULT) - (currentSupply == null ? 0 : currentSupply.mass));
+                        this.currentProductionSupplyModels[index] = new ProductionSupplyOrder(newOrder, supplyModel.input);
                         this.unitOrderService.AddOrder(newOrder);
                     }
                 }
             });
+        }
+
+        private void RefreshProductionSupplyModels()
+        {
+            IList<BuildingSupply> requiredItems = new List<BuildingSupply>();
+            this.productionBuildingModel.itemRecipes.ForEach(recipe =>
+            {
+                if (recipe.counter > 0)
+                {
+                    requiredItems.AddRange(recipe.recipe.inputs);
+                }
+                else
+                {
+                    if (this.productionBuildingModel.selectedItemRecipe == recipe.recipe)
+                    {
+                        this.CancelCurrentRecipe();
+                    }
+                }
+            });
+            IList<BuildingSupply> newItemsToRequest = requiredItems.Filter(input => { return !this.currentProductionSupplyModels.Any(model => { return model.input.itemType == input.itemType; }); });
+            IList<ProductionSupplyOrder> ordersToRemove = this.currentProductionSupplyModels.Filter(order => { return !requiredItems.Any(input => { return input.itemType == order.input.itemType; }); });
+            newItemsToRequest.ForEach(input => { this.currentProductionSupplyModels.Add(new ProductionSupplyOrder(null, input)); });
+            this.currentProductionSupplyModels = this.currentProductionSupplyModels.Filter(order =>
+            {
+                return ordersToRemove == null || !ordersToRemove.Any(removeOrder => { return removeOrder.currentBuildSupplyModel == order.currentBuildSupplyModel; });
+            });
+
+        }
+
+        private void CheckCurrentRecipe()
+        {
+            if (this.productionBuildingModel.selectedItemRecipe == null)
+            {
+                this.productionBuildingModel.selectedItemRecipe = this.GetNextRecipe(this.productionBuildingModel);
+            }
+        }
+
+        private ItemRecipeModel GetNextRecipe(ProductionBuildingModel buildModel)
+        {
+            foreach (AllocatedItemRecipe recipe in buildModel.itemRecipes)
+            {
+                if (recipe.counter > 0)
+                {
+                    return recipe.recipe;
+                }
+            };
+            return null;
+        }
+
+        private void CancelCurrentRecipe()
+        {
+            this.productionBuildingModel.selectedItemRecipe.productionPointsCurrent = 0;
+            this.productionBuildingModel.selectedItemRecipe = null;
         }
 
         private void CheckIfOrderRemoved(IList<UnitOrderModel> unitOrders)
@@ -120,7 +164,7 @@ namespace Building
             {
                 if (supplyOrder.currentBuildSupplyModel != null && !unitOrders.Any(order => { return order.ID == supplyOrder.currentBuildSupplyModel.ID; }))
                 {
-                    this.currentProductionSupplyModels[index] = new ProductionSupplyOrder(supplyOrder.itemType, null);
+                    this.currentProductionSupplyModels[index] = new ProductionSupplyOrder(null, supplyOrder.input);
                 }
             });
         }
@@ -129,14 +173,13 @@ namespace Building
         {
             List<string> newContext = base.GenerateContextWindowBody();
             newContext.Add("Produces other items");
-            this.productionBuildingModel.productionSupplyMax.ForEach(productionMax =>
+            this.productionBuildingModel.selectedItemRecipe.inputs.ForEach(input =>
             {
-                ItemObjectModel supplyCurrent = this.productionBuildingModel.productionSupplyCurrent.Find(item => { return item.itemType == productionMax.itemType; });
-                newContext.Add(productionMax.itemType.ToString() + ": " +
+                ItemObjectModel supplyCurrent = this.productionBuildingModel.productionSupplyCurrent.Find(item => { return item.itemType == input.itemType; });
+                newContext.Add(input.itemType.ToString() + ": " +
                     (supplyCurrent != null ? supplyCurrent.mass : 0).ToString() + "/" +
-                    ((int)productionMax.mass).ToString() + " " + LocalisationDict.mass);
+                    ((int)input.mass).ToString() + " " + LocalisationDict.mass);
             });
-
             return newContext;
         }
     }

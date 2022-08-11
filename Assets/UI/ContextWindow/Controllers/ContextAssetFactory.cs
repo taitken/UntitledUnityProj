@@ -27,8 +27,12 @@ namespace UI
                     case eContextTypes.ProductionBuilding:
                         ProductionBuildingContextWindow productBuildingCW = newWindow as ProductionBuildingContextWindow;
                         ProductionBuildingContextWindowModel productCWModel = contextWindowModel as ProductionBuildingContextWindowModel;
-                        IList<(eItemType, Sprite)> spriteList = productCWModel.productionBuildingModel.inputs.Map(input => { return (input.itemType, itemService.GetItemSprite(input.itemType)); });
-                        spriteList.AddRange(productCWModel.productionBuildingModel.outputs.Map(output => { return (output.itemType, itemService.GetItemSprite(output.itemType)); }));
+                        IList<(eItemType, Sprite)> spriteList = new List<(eItemType, Sprite)>();
+                        productCWModel.productionBuildingModel.itemRecipes.ForEach(item =>
+                        {
+                            spriteList.AddRange(item.recipe.inputs.Map(input => { return (input.itemType, itemService.GetItemSprite(input.itemType)); }));
+                            spriteList.AddRange(item.recipe.outputs.Map(input => { return (input.itemType, itemService.GetItemSprite(input.itemType)); }));
+                        });
                         productBuildingCW.SetItemSprites(spriteList.Distinct().ToList());
                         break;
                 }

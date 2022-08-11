@@ -62,6 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverCursorTexure: {fileID: 2800000, guid: f072f7f8c544c874eb1d4e6b50ae482b, type: 3}
+  triangleImage: {fileID: 8049170367450535239}
 --- !u!114 &579139056231262385
 MonoBehaviour:
   m_ObjectHideFlags: 0
