@@ -36,11 +36,16 @@ namespace Environment
             {
                 if (mineableObjs != null)
                 {
-                    if(this.mineableBlocks == null)
+                    if (this.mineableBlocks == null)
                     {
                         this.mineableBlocks = new MineableBlock[mineableObjs.GetLength(0), mineableObjs.GetLength(1)];
+                        this.RefreshMinables(mineableObjs);
+                        this.ReMapSprites(this.mineableBlocks);
                     }
-                    this.RefreshMinables(mineableObjs);
+                    else
+                    {
+                        this.RefreshMinables(mineableObjs);
+                    }
                 }
             });
         }
@@ -49,11 +54,6 @@ namespace Environment
         void Update()
         {
 
-        }
-
-        private void UpdateTileMap()
-        {
-            this.ReMapSpries();
         }
 
         private void RefreshMinables(MineableObjectModel[,] mineableObjs)
@@ -85,9 +85,29 @@ namespace Environment
                     MineableBlock hunk = this.mineableBlocks[mineableObj.position.x, mineableObj.position.y];
                     this.mineableBlocks[mineableObj.position.x, mineableObj.position.y] = null;
                     hunk.Destroy();
+                    this.ReMapBlocksAround(mineableObj.position);
                 });
-                this.UpdateTileMap();
             }
+        }
+
+        private void ReMapAllSprites()
+        {
+            this.ReMapSprites(this.mineableBlocks);
+        }
+
+        private void ReMapBlocksAround(Vector3Int centerPoint)
+        {
+            MineableBlock[,] hunksToRefresh = new MineableBlock[3, 3];
+            hunksToRefresh[0, 0] = this.mineableBlocks.ValidIndex(centerPoint.x - 1, centerPoint.y - 1) ? this.mineableBlocks[centerPoint.x - 1, centerPoint.y - 1] : null;
+            hunksToRefresh[0, 1] = this.mineableBlocks.ValidIndex(centerPoint.x - 1, centerPoint.y) ? this.mineableBlocks[centerPoint.x - 1, centerPoint.y] : null;
+            hunksToRefresh[0, 2] = this.mineableBlocks.ValidIndex(centerPoint.x - 1, centerPoint.y + 1) ? this.mineableBlocks[centerPoint.x - 1, centerPoint.y + 1] : null;
+            hunksToRefresh[1, 0] = this.mineableBlocks.ValidIndex(centerPoint.x, centerPoint.y - 1) ? this.mineableBlocks[centerPoint.x, centerPoint.y - 1] : null;
+            hunksToRefresh[1, 1] = this.mineableBlocks.ValidIndex(centerPoint.x, centerPoint.y) ? this.mineableBlocks[centerPoint.x, centerPoint.y] : null;
+            hunksToRefresh[1, 2] = this.mineableBlocks.ValidIndex(centerPoint.x, centerPoint.y + 1) ? this.mineableBlocks[centerPoint.x, centerPoint.y + 1] : null;
+            hunksToRefresh[2, 0] = this.mineableBlocks.ValidIndex(centerPoint.x + 1, centerPoint.y - 1) ? this.mineableBlocks[centerPoint.x + 1, centerPoint.y - 1] : null;
+            hunksToRefresh[2, 1] = this.mineableBlocks.ValidIndex(centerPoint.x + 1, centerPoint.y) ? this.mineableBlocks[centerPoint.x + 1, centerPoint.y] : null;
+            hunksToRefresh[2, 2] = this.mineableBlocks.ValidIndex(centerPoint.x + 1, centerPoint.y + 1) ? this.mineableBlocks[centerPoint.x + 1, centerPoint.y + 1] : null;
+            this.ReMapSprites(hunksToRefresh);
         }
 
         private MineableBlock CreateMineableObject(MineableObjectModel mineableObj)
@@ -97,12 +117,12 @@ namespace Environment
             return newHunk;
         }
 
-        private void ReMapSpries()
+        private void ReMapSprites(MineableBlock[,] hunksToRefresh)
         {
             MineableBlock[,] hunkMapArray = this.mineableBlocks;
             // Very inefficient implementation
             // -- To redo
-            foreach (MineableBlock hunk in this.mineableBlocks)
+            foreach (MineableBlock hunk in hunksToRefresh)
             {
                 if (hunk != null)
                 {

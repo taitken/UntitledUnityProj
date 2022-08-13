@@ -9,21 +9,15 @@ namespace UnitAction
 {
     public class ActionSequence
     {
-        private IList<IUnitAction> actions = new List<IUnitAction>();
+        private IList<Func<IUnitAction>> actionCallbacks = new List<Func<IUnitAction>>();
         private IUnitAction currentAction;
         private IUnitOrderService unitOrderService;
+        private int completedActions;
         public UnitOrderModel unitOrder;
-        public bool completed
-        {
-            get
-            {
-                return this.actions.Find(action => { return action.CheckCompleted() == false; }) == null;
-            }
-        }
-        public int size { get { return this.actions.Count; } }
+        public int size { get { return this.actionCallbacks.Count; } }
         public ActionSequence(IUnitOrderService _orderService, UnitOrderModel unitOrder, IUnitAction firstAction)
         {
-            this.actions.Add(firstAction);
+            this.completedActions = 0;
             this.currentAction = firstAction;
             this.unitOrder = unitOrder;
             this.unitOrderService = _orderService;
@@ -34,25 +28,30 @@ namespace UnitAction
             if (this.currentAction != null && this.currentAction.CheckCompleted())
             {
                 this.currentAction = this.GetNextAction();
+                this.completedActions++;
                 if (this.currentAction != null)
                 {
                     this.TryPerformAction(this.currentAction);
                 }
+                else
+                {
+                    this.CompleteOrder();
+                }
             }
-            if (this.completed || this.actions.Any(action =>{return action.cancel;}))
+            if (this.currentAction != null && this.currentAction.cancel)
             {
-                this.unitOrderService.RemoveOrder(this.unitOrder.ID);
+                this.CompleteOrder();
             }
         }
 
         public void Begin()
         {
-            this.TryPerformAction(this.actions[0]);
+            this.TryPerformAction(this.currentAction);
         }
 
         public void TryPerformAction(IUnitAction action)
         {
-                action.PerformAction();
+            action.PerformAction();
             // try
             // {
             //     action.PerformAction();
@@ -64,15 +63,24 @@ namespace UnitAction
             // }
         }
 
-        public ActionSequence Then(IUnitAction nextAction)
+        private void CompleteOrder()
         {
-            this.actions.Add(nextAction);
+            this.unitOrderService.RemoveOrder(this.unitOrder.ID);
+        }
+
+        public ActionSequence Then(Func<IUnitAction> nextAction)
+        {
+            this.actionCallbacks.Add(nextAction);
             return this;
         }
 
         private IUnitAction GetNextAction()
         {
-            return this.actions.Find(action => { return !action.CheckCompleted(); });
+            if (this.completedActions  < this.actionCallbacks.Count)
+            {
+                return this.actionCallbacks[this.completedActions]();
+            }
+            return null;
         }
     }
 }

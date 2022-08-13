@@ -40,11 +40,11 @@ namespace UnitAction
             {
                 case eOrderTypes.Dig:
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
-                        .Then(new DigAction(_unit, this.pathFinderService, this.environmentService));
+                        .Then(() => { return new DigAction(_unit, this.pathFinderService, this.environmentService); });
                     break;
                 case eOrderTypes.Build:
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
-                        .Then(new BuildAction(_unit, this.buildingService));
+                        .Then(() => { return new BuildAction(_unit, this.buildingService); });
                     break;
                 case eOrderTypes.BuildSupply:
                     BuildSupplyOrderModel buildSupplyOrder = _unit.currentOrder as BuildSupplyOrderModel;
@@ -55,10 +55,10 @@ namespace UnitAction
                         break;
                     }
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new SplitBuildSupplyAction(_unit, this.orderService, new List<ItemObjectModel> { itemToSupply }))
-                        .Then(new MoveAction(_unit, itemToSupply.position, this.pathFinderService, this.environmentService, false))
-                        .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, itemToSupply, buildSupplyOrder.itemMass))
-                        .Then(new MoveAction(_unit, buildSupplyOrder.coordinates, this.pathFinderService, this.environmentService, true))
-                        .Then(new BuildSupplyAction(_unit, this.buildingService, this.itemService, this.orderService));
+                        .Then(() => { return new MoveAction(_unit, itemToSupply.position, this.pathFinderService, this.environmentService, false); })
+                        .Then(() => { return new PickupItemAction(_unit, this.itemService, this.buildingService, itemToSupply, buildSupplyOrder.itemMass); })
+                        .Then(() => { return new MoveAction(_unit, buildSupplyOrder.coordinates, this.pathFinderService, this.environmentService, true); })
+                        .Then(() => { return new BuildSupplyAction(_unit, this.buildingService, this.itemService, this.orderService); });
                     break;
                 case eOrderTypes.ProductionSupply:
                     ProductionSupplyOrderModel productionSupplyOrder = _unit.currentOrder as ProductionSupplyOrderModel;
@@ -68,11 +68,11 @@ namespace UnitAction
                         this.orderService.RemoveOrder(productionSupplyOrder.ID);
                         break;
                     }
-                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, 
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder,
                               new MoveAction(_unit, itemToSupplyProduction.position, this.pathFinderService, this.environmentService, false))
-                        .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, itemToSupplyProduction, productionSupplyOrder.itemMass))
-                        .Then(new MoveAction(_unit, productionSupplyOrder.coordinates, this.pathFinderService, this.environmentService, true))
-                        .Then(new ProductionSupplyAction(_unit, this.buildingService, this.itemService, this.orderService));
+                        .Then(() => { return new PickupItemAction(_unit, this.itemService, this.buildingService, itemToSupplyProduction, productionSupplyOrder.itemMass);})
+                        .Then(() => { return new MoveAction(_unit, productionSupplyOrder.coordinates, this.pathFinderService, this.environmentService, true);})
+                        .Then(() => { return new ProductionSupplyAction(_unit, this.buildingService, this.itemService, this.orderService);});
                     break;
                 case eOrderTypes.Store:
                     StoreOrderModel storeOrder = _unit.currentOrder as StoreOrderModel;
@@ -83,11 +83,11 @@ namespace UnitAction
                         break;
                     }
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, false))
-                        .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, storeOrder.itemModel, _unit.maxCarryWeight))
-                        .Then(new DeleteOrderIconAction(_unit, this.orderService))
-                        .Then(new CreateNewStoreOrderAction(coordinates, this.orderService, this.itemService))
-                        .Then(new MoveAction(_unit, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position)).position, this.pathFinderService, this.environmentService, true))
-                        .Then(new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position))));
+                        .Then(() => { return new PickupItemAction(_unit, this.itemService, this.buildingService, storeOrder.itemModel, _unit.maxCarryWeight);})
+                        .Then(() => { return new DeleteOrderIconAction(_unit, this.orderService);})
+                        .Then(() => { return new CreateNewStoreOrderAction(coordinates, this.orderService, this.itemService);})
+                        .Then(() => { return new MoveAction(_unit, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position)).position, this.pathFinderService, this.environmentService, true);})
+                        .Then(() => { return new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position)));});
                     break;
             }
             return newSequence;
