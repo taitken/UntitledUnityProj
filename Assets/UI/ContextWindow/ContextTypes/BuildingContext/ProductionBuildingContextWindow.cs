@@ -51,7 +51,7 @@ namespace UI
             {
                 this.contextWindowModel.productionBuildingModel.selectedItemRecipe.inputs.ForEach((input, index) =>
                 {
-                    ItemObjectModel itemObj = this.contextWindowModel.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == input.itemType; });
+                    ItemObjectModel itemObj = this.contextWindowModel.productionBuildingModel.buildingStorage.GetItem(input.itemType);
                     this.SetupNewItem(input, index, itemSlots[0], input.mass.ToString() + "kg",
                         itemObj != null ? itemObj.mass.ToString() + "kg" : "0kg");
                 });

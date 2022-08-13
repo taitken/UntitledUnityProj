@@ -35,14 +35,14 @@ namespace Item
         public override void OnSelect()
         {
             IList<BasePanelModel> panels = new List<BasePanelModel>();
-            panels.Add(new ObjectPanelModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString()));
+            panels.Add(new ObjectPanelModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString(), this.itemObjectModel));
             this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
         public override void OnMouseEnter()
         {
             List<string> newContext = new List<string>();
-            newContext.Add(this.itemObjectModel.mass.ToString() + " " + LocalisationDict.mass);
+            newContext.Add(LocalisationDict.GetMassString(this.itemObjectModel.mass));
             newContext.Add("Item");
             this.uiPanelService.AddContext(new ObjectContextWindowModel(this.itemObjectModel.ID, this.itemObjectModel.itemType.ToString(), newContext));
         }

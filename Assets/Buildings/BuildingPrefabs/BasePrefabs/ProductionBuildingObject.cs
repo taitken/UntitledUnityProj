@@ -36,7 +36,7 @@ namespace Building
         public override void OnSelect()
         {
             IList<BasePanelModel> panels = new List<BasePanelModel>();
-            panels.Add(new ObjectPanelModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString()));
+            panels.Add(new ObjectPanelModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString(), this.productionBuildingModel));
             panels.Add(new RecipePanelModel(this.buildingObjectModel.ID, "Production Options", this.productionBuildingModel));
             this.uiPanelService.selectedObjectPanels.Set(panels);
         }
@@ -62,14 +62,14 @@ namespace Building
         {
             this.productionBuildingModel.selectedItemRecipe.inputs.ForEach(input =>
             {
-                ItemObjectModel itemObject = this.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == input.itemType; });
+                ItemObjectModel itemObject = this.productionBuildingModel.buildingStorage.GetItem(input.itemType);
                 itemObject.mass -= input.mass;
                 if (itemObject.mass <= 0)
                 {
                     this.itemService.RemoveItem(itemObject.ID);
                 }
             });
-            this.productionBuildingModel.productionSupplyCurrent = this.productionBuildingModel.productionSupplyCurrent.Filter(supply => { return supply.mass > 0; });
+            this.productionBuildingModel.buildingStorage.RemoveItem(this.productionBuildingModel.buildingStorage.GetItems().Filter(supply => { return supply.mass > 0; }));
             this.productionBuildingModel.selectedItemRecipe.outputs.ForEach(output =>
             {
                 this.itemService.AddItem(new ItemObjectModel(this.productionBuildingModel.position, output.mass, output.itemType, ItemObjectModel.eItemState.OnGround));
@@ -94,7 +94,7 @@ namespace Building
                             return input.itemType == supplyModel.input.itemType;
                         });
                     }).recipe.inputs.Find(input => { return input.itemType == supplyModel.input.itemType; });
-                    ItemObjectModel currentSupply = this.productionBuildingModel.productionSupplyCurrent.Find(supply => { return supply.itemType == supplyModel.input.itemType; });
+                    ItemObjectModel currentSupply = this.productionBuildingModel.buildingStorage.GetItem(supplyModel.input.itemType);
                     if (currentSupply == null || currentSupply.mass < (input.mass * ProductionBuildingModel.MAX_STORAGE_MULT) / 2)
                     {
                         ProductionSupplyOrderModel newOrder = new ProductionSupplyOrderModel(this.buildingObjectModel.position, input.itemType, (input.mass * ProductionBuildingModel.MAX_STORAGE_MULT) - (currentSupply == null ? 0 : currentSupply.mass));
@@ -175,10 +175,10 @@ namespace Building
             newContext.Add("Produces other items");
             this.productionBuildingModel.selectedItemRecipe.inputs.ForEach(input =>
             {
-                ItemObjectModel supplyCurrent = this.productionBuildingModel.productionSupplyCurrent.Find(item => { return item.itemType == input.itemType; });
+                ItemObjectModel supplyCurrent = this.productionBuildingModel.buildingStorage.GetItem(input.itemType);
                 newContext.Add(input.itemType.ToString() + ": " +
                     (supplyCurrent != null ? supplyCurrent.mass : 0).ToString() + "/" +
-                    ((int)input.mass).ToString() + " " + LocalisationDict.mass);
+                    LocalisationDict.GetMassString(input.mass));
             });
             return newContext;
         }

@@ -84,7 +84,7 @@ namespace UnitAction
                     this.buildingService.buildingObseravable.Get()
                         .Map(building => { return building as StorageBuildingModel; })
                         .Find(building => { return building.position == this.itemObjModel.position; })
-                        .RemoveItem(itemToAttach.ID);
+                        .RemoveItem(itemToAttach);
                     this.unit.carriedItem = itemToAttach;
                     this.itemObjectService.AddItem(itemToAttach);
                 }

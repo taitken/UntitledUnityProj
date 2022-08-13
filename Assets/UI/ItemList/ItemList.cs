@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Zenject;
+using UtilityClasses;
 
 namespace UI
 {
@@ -27,7 +28,7 @@ namespace UI
         {
             this.itemListModel = _itemListModel;
             this.itemNameText.SetText(this.itemListModel.itemType.ToString());
-            this.itemMassText.SetText(this.itemListModel.mass.ToString() + "kg");
+            this.itemMassText.SetText(LocalisationDict.GetMassString(this.itemListModel.mass));
             this.itemThumbnail.SetImage(this.itemListModel.sprite);
         }
         // Start is called before the first frame update
@@ -44,7 +45,7 @@ namespace UI
 
         public class Factory : PlaceholderFactory<ItemListModel, ItemList>
         {
-            
+
         }
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Building.Models
 {
-    public class BuildSiteModel : BasePhysicalObjectModel
+    public class BuildSiteModel : BaseObjectModel
     {
         public eBuildingType buildingType;
         public BuildingObjectModel buildingModel;

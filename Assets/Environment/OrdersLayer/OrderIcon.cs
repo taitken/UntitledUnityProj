@@ -31,14 +31,15 @@ namespace Environment
             this.buildingService = _buildingService;
             this.unitOrder = _order;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
-            this.orderService.hideOrderIconTrigger.SubscribeQuietly(this, order =>{
-                if(this.unitOrder.ID == order.ID) this.GetComponent<SpriteRenderer>().enabled = false;
+            this.orderService.OnOrderIconHideTrigger(this, order =>
+            {
+                if (this.unitOrder.ID == order.ID) this.GetComponent<SpriteRenderer>().enabled = false;
             });
         }
         void Awake()
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
-            if(!this.unitOrder.displayIcon) this.spriteRenderer.enabled = false;
+            if (!this.unitOrder.displayIcon) this.spriteRenderer.enabled = false;
             if (this.unitOrder is BuildSupplyOrderModel)
             {
                 BuildSupplyOrderModel buildOrder = this.unitOrder as BuildSupplyOrderModel;
@@ -69,7 +70,7 @@ namespace Environment
         public void UpdateBuildingSprite(eBuildingType buildType)
         {
             this.spriteRenderer.sprite = this.buildingService.GetBuildingSprite(buildType).sprite;
-            this.spriteRenderer.color =  GameColors.AddTransparency(this.spriteRenderer.color, 0.6f);
+            this.spriteRenderer.color = GameColors.AddTransparency(this.spriteRenderer.color, 0.6f);
         }
 
         public override void OnClickedByUser()

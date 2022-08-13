@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameControllers.Models;
 using UnityEngine;
 using UnityEngine.UI;
 using UtilityClasses;
@@ -9,14 +10,13 @@ namespace UI.GenericComponents
 {
     public class TriangleButton : MonoBehaviour2
     {
-        public Texture2D hoverCursorTexure;
         public Image triangleImage;
         public EventEmitter onClickEmitter = new EventEmitter();
         public Color originalColour;
 
         public override void OnMouseEnter()
         {
-            Cursor.SetCursor(this.hoverCursorTexure, new Vector2(12, 0), CursorMode.Auto);
+            MouseIconService.SetCursorTexure(eMouseAction.Pointer);
             this.originalColour = triangleImage.color;
             this.triangleImage.color = GameColors.Lighten(triangleImage.color, 1.15f);
         }

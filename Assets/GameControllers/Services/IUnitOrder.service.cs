@@ -11,7 +11,10 @@ namespace GameControllers.Services
     {
         MonoObseravable<MouseActionModel> mouseAction { get; set; }
         public MonoObseravable<IList<UnitOrderModel>> orders { get; set; }
-        MonoObseravable<UnitOrderModel> hideOrderIconTrigger { get; set; }
+        void OnOrderIconDeleteTrigger(MonoBehaviour2 behaviour, Action<UnitOrderModel> trigger);
+        void HideOrderIcon(UnitOrderModel unitOrder);
+        void OnOrderIconHideTrigger(MonoBehaviour2 behaviour, Action<UnitOrderModel> trigger);
+        void DeleteOrderIcon(UnitOrderModel unitOrder);
         void AddOrder(UnitOrderModel order);
         void RemoveOrder(long id);
         bool IsExistingOrderAtLocation(Vector3Int _location);

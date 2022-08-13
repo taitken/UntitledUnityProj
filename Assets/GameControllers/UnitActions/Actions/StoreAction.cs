@@ -50,7 +50,7 @@ namespace UnitAction
                 itemModel.itemState = ItemObjectModel.eItemState.InStorage;
                 itemModel.position = this.buildingModel.position;
                 // Supply build site
-                ItemObjectModel existingStoredItem = this.buildingModel.storedItems.Find(item => { return item.itemType == itemModel.itemType; });
+                ItemObjectModel existingStoredItem = this.buildingModel.buildingStorage.GetItem(itemModel.itemType);
                 if (existingStoredItem != null)
                 {
                     existingStoredItem.MergeItemModel(itemModel.mass);

@@ -76,6 +76,7 @@ namespace UnitAction
                     break;
                 case eOrderTypes.Store:
                     StoreOrderModel storeOrder = _unit.currentOrder as StoreOrderModel;
+                    Vector3Int coordinates = _unit.currentOrder.coordinates;
                     if (storeOrder.itemModel == null)
                     {
                         this.orderService.RemoveOrder(storeOrder.ID);
@@ -83,7 +84,8 @@ namespace UnitAction
                     }
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, false))
                         .Then(new PickupItemAction(_unit, this.itemService, this.buildingService, storeOrder.itemModel, _unit.maxCarryWeight))
-                        .Then(new HideOrderIconAction(_unit, this.orderService))
+                        .Then(new DeleteOrderIconAction(_unit, this.orderService))
+                        .Then(new CreateNewStoreOrderAction(coordinates, this.orderService, this.itemService))
                         .Then(new MoveAction(_unit, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position)).position, this.pathFinderService, this.environmentService, true))
                         .Then(new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position))));
                     break;

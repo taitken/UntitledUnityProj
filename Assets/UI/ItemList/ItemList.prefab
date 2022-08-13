@@ -307,6 +307,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ItemMassText
       objectReference: {fileID: 0}
+    - target: {fileID: 3900425874050403526, guid: 198019c615987a748b18696b7e65091c, type: 3}
+      propertyPath: m_fontStyle
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 4712748693457898102, guid: 198019c615987a748b18696b7e65091c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

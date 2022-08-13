@@ -204,5 +204,25 @@ namespace System.Collections.Generic
             if (yIndex < 0 || yIndex >= array.GetLength(1)) return false;
             return true;
         }
+
+        public static string ConcatStrings(this IList<string> strings, string delimiter)
+        {
+            if (strings.Count > 0)
+            {
+                string newString = strings[0];
+                if (strings.Count > 1)
+                {
+                    for (int i = 1; i < strings.Count; i++)
+                    {
+                        newString = newString + delimiter + strings[i];
+                    }
+                }
+                return newString;
+            }
+            else
+            {
+                return "";
+            }
+        }
     }
 }

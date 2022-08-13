@@ -14,7 +14,6 @@ namespace Building
         protected IUnitOrderService unitOrderService { get; set; }
         protected IItemObjectService itemService { get; set; }
         protected IUiPanelService uiPanelService { get; set; }
-
         public void Initialise(IUiPanelService _uiPanelService,
                                         BuildingObjectModel _buildingObjectModel,
                                         IEnvironmentService _environmentService,
@@ -27,15 +26,13 @@ namespace Building
             this.SetMultiTilePosition(_environmentService.CellToLocal(_buildingObjectModel.position));
             if (this.buildingObjectModel.buildingType != eBuildingType.FloorTile) this.UpdateBuildingBounds();
             this.uiPanelService = _uiPanelService;
-
-
             this.OnCreation();
         }
 
         public override void OnSelect()
         {
             IList<BasePanelModel> panels = new List<BasePanelModel>();
-            panels.Add(new ObjectPanelModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString()));
+            panels.Add(new ObjectPanelModel(this.buildingObjectModel.ID, this.buildingObjectModel.buildingType.ToString(), this.buildingObjectModel));
             this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 

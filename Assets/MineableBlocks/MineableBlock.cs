@@ -50,14 +50,14 @@ namespace Environment
         public override void OnSelect()
         {
             IList<BasePanelModel> panels = new List<BasePanelModel>();
-            panels.Add(new ObjectPanelModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName));
+            panels.Add(new ObjectPanelModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, this.mineableObjectModel));
             this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
         public override void OnMouseEnter()
         {
             List<string> newContext = new List<string>();
-            newContext.Add(this.mineableObjectModel.mass.ToString() + " " + LocalisationDict.mass);
+            newContext.Add(LocalisationDict.GetMassString(this.mineableObjectModel.mass));
             newContext.Add("Mineable");
             this.uiPanelService.AddContext(new ObjectContextWindowModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, newContext));
         }

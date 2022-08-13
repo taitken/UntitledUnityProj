@@ -13,11 +13,13 @@ namespace GameControllers.Models
             this.coordinates = _coordinates;
             this.orderType = _orderType;
             this.displayIcon = _displayIcon;
+            this.iconDeletedFromWorld = false;
         }
         public eOrderTypes orderType { get; set; }
         public Vector3Int coordinates { get; set; }
         public float prioritySetting { get; set; }
         public bool displayIcon { get; set; }
+        public bool iconDeletedFromWorld { get; set; }
         public virtual bool PathAdjacentToCoors { get { return true; } }
 
         public virtual bool IsUniqueCheck(IList<UnitOrderModel> orderList)

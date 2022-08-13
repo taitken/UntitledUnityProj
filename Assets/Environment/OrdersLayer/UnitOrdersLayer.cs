@@ -12,7 +12,7 @@ namespace Environment
     {
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
-        private IList<UnitOrderModel> unitOrders;
+        private IList<UnitOrderModel> unitOrders { get { return this.orderIcons.Map(icon => { return icon.unitOrder; }); } }
         private IList<OrderIcon> orderIcons;
         private IList<OrderSelection> orderSelectionObjects;
         private OrderIcon.Factory orderIconFactory;
@@ -30,23 +30,23 @@ namespace Environment
             this.orderIconFactory = _orderIconFactory;
             this.orderSelectionFactory = _orderSelectionFactory;
             this.orderIcons = new List<OrderIcon>();
-            this.unitOrders = new List<UnitOrderModel>();
             this.orderSelectionObjects = new List<OrderSelection>();
             this.orderService = _orderService;
             this.environmentService = _environmentService;
             this.orderService.orders.Subscribe(this, orders => { this.RecalculateOrders(orders); });
+            this.orderService.OnOrderIconDeleteTrigger(this, order => { this.DeleteOrderIcon(order); });
         }
 
         public override void OnDrag(DragEventModel dragEvent)
         {
-            if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Build && this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.FloorTile  ||
+            if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Build && this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.FloorTile ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Dig ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Store ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Cancel)
             {
-                
-                Vector3Int dragInitiationLocation = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS /2, dragEvent.initialDragLocation.y  + IEnvironmentService.TILE_WIDTH_PIXELS /2, 0));
-                Vector3Int currentMouseCell = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x  + IEnvironmentService.TILE_WIDTH_PIXELS /2, dragEvent.currentDragLocation.y  + IEnvironmentService.TILE_WIDTH_PIXELS /2, 0));
+
+                Vector3Int dragInitiationLocation = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.initialDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
+                Vector3Int currentMouseCell = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.currentDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
                 if (currentMouseCell != this.lastEnteredCell)
                 {
                     IList<Vector3Int> draggedCells = this.environmentService.GetCellsInArea(dragInitiationLocation, currentMouseCell);
@@ -68,7 +68,7 @@ namespace Environment
 
         private void RecalculateOrders(IList<UnitOrderModel> _newOrderList)
         {
-            IList<UnitOrderModel> newOrders = _newOrderList.Filter(newOrder => { return this.unitOrders.Find(existingOrder => { return existingOrder.ID == newOrder.ID; }) == null; });
+            IList<UnitOrderModel> newOrders = _newOrderList.Filter(newOrder => { return this.unitOrders.Find(existingOrder => { return newOrder.iconDeletedFromWorld == false && existingOrder.ID == newOrder.ID; }) == null; });
             IList<UnitOrderModel> removedOrders = this.unitOrders.Filter(existingOrder => { return _newOrderList.Find(newOrder => { return existingOrder.ID == newOrder.ID; }) == null; });
 
             newOrders.ForEach(order =>
@@ -79,11 +79,17 @@ namespace Environment
 
             removedOrders.ForEach(order =>
             {
-                this.unitOrders = this.unitOrders.Filter(oldOrder => { return oldOrder.ID != order.ID; });
                 OrderIcon iconToRemove = this.orderIcons.Find(icon => { return icon.unitOrder.ID == order.ID; });
                 this.orderIcons.Remove(iconToRemove);
                 iconToRemove.Destroy();
             });
+        }
+
+        private void DeleteOrderIcon(UnitOrderModel _orderModel)
+        {
+            OrderIcon icon = this.orderIcons.Find(icon => { return icon.unitOrder == _orderModel; });
+            this.orderIcons.Remove(icon);
+            icon.Destroy();
         }
 
     }

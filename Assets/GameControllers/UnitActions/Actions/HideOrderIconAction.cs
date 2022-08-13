@@ -34,7 +34,7 @@ namespace UnitAction
         }
         public bool PerformAction()
         {
-            this.orderService.hideOrderIconTrigger.Set(this.unit.currentOrder);
+            this.orderService.HideOrderIcon(this.unit.currentOrder);
             this.completed = true;
             return true;
         }

@@ -17,7 +17,7 @@ namespace Building
         {
             List<string> newContext = base.GenerateContextWindowBody();
             newContext.Add("Can store other items");
-            newContext.Add(((int)this.storageBuildingModel.storageCurrent).ToString() + " " + LocalisationDict.mass);
+            newContext.Add(LocalisationDict.GetMassString(this.storageBuildingModel.storageCurrent));
             return newContext;
         }
     }

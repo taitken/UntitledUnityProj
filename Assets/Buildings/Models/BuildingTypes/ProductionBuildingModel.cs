@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Item.Models;
+using ObjectComponents;
 using UnityEngine;
 
 namespace Building.Models
@@ -8,9 +9,9 @@ namespace Building.Models
     public class ProductionBuildingModel : BuildingObjectModel
     {
         public const int MAX_STORAGE_MULT = 10;
-        public IList<ItemObjectModel> productionSupplyCurrent { get; set; }
         public IList<AllocatedItemRecipe> itemRecipes { get; set; }
         public ItemRecipeModel selectedItemRecipe { get; set; }
+        public BuildingStorageComponent buildingStorage { get; set; }
         public bool isFullySupplied
         {
             get
@@ -20,7 +21,7 @@ namespace Building.Models
                 {
                     this.selectedItemRecipe.inputs.ForEach(requiredInput =>
                     {
-                        if (this.productionSupplyCurrent.Filter(item => { return item.itemType == requiredInput.itemType; }).Sum(item => { return item.mass; }) < requiredInput.mass)
+                        if (this.buildingStorage.GetItems().Filter(item => { return item.itemType == requiredInput.itemType; }).Sum(item => { return item.mass; }) < requiredInput.mass)
                         {
                             suppliedItems = false;
                         }
@@ -37,14 +38,15 @@ namespace Building.Models
             : base(_position, _buildingType, _buildStats)
         {
             this.itemRecipes = new List<AllocatedItemRecipe>();
-            this.productionSupplyCurrent = new List<ItemObjectModel>();
             _buildStats.itemRecipes.ForEach(recipe => { this.itemRecipes.Add(new AllocatedItemRecipe(0, recipe)); });
+            this.buildingStorage = new BuildingStorageComponent();
+            this.objectComponents.Add(this.buildingStorage);
         }
 
         // Returns true if item is merged with existing item. Returns false if item is not merged.
         public bool SupplyItem(ItemObjectModel itemObject)
         {
-            ItemObjectModel existingItem = this.productionSupplyCurrent.Find(supply => { return supply.itemType == itemObject.itemType; });
+            ItemObjectModel existingItem = this.buildingStorage.GetItems().Find(supply => { return supply.itemType == itemObject.itemType; });
             if (existingItem != null)
             {
                 existingItem.MergeItemModel(itemObject.mass);
@@ -52,7 +54,7 @@ namespace Building.Models
             }
             else
             {
-                this.productionSupplyCurrent.Add(itemObject);
+                this.buildingStorage.AddItem(itemObject);
                 itemObject.itemState = ItemObjectModel.eItemState.InSupply;
                 return false;
             }

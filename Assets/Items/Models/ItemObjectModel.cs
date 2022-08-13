@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Item.Models
 {
-    public class ItemObjectModel : BasePhysicalObjectModel
+    public class ItemObjectModel : BaseObjectModel
     {
 
         public eItemType itemType { get; set; }

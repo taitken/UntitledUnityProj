@@ -43,6 +43,9 @@ namespace Environment
             this.unitService.AddUnit(new UnitModel(.75f, new Vector3(8f, 8f, 0)));
             this.unitService.AddUnit(new UnitModel(.75f, new Vector3(8.05f, 8f, 0)));
             this.unitService.AddUnit(new UnitModel(.75f, new Vector3(8.1f, 8f, 0)));
+            this.unitService.AddUnit(new UnitModel(.75f, new Vector3(8.2f, 8f, 0)));
+            this.unitService.AddUnit(new UnitModel(.75f, new Vector3(8.3f, 8f, 0)));
+            this.unitService.AddUnit(new UnitModel(.75f, new Vector3(8.4f, 8f, 0)));
         }
         // Update is called once per frame
         void Update()

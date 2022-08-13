@@ -10,7 +10,8 @@ namespace GameControllers.Services
     public class UnitOrderService : BaseService, IUnitOrderService
     {
         public MonoObseravable<MouseActionModel> mouseAction { get; set; } = new MonoObseravable<MouseActionModel>(new MouseActionModel(eMouseAction.None));
-        public MonoObseravable<UnitOrderModel> hideOrderIconTrigger { get; set; } = new MonoObseravable<UnitOrderModel>(null);
+        private MonoObseravable<UnitOrderModel> hideOrderIconTrigger { get; set; } = new MonoObseravable<UnitOrderModel>(null);
+        private MonoObseravable<UnitOrderModel> deleteOrderIconTrigger { get; set; } = new MonoObseravable<UnitOrderModel>(null);
         public MonoObseravable<IList<UnitOrderModel>> orders { get; set; } = new MonoObseravable<IList<UnitOrderModel>>(new List<UnitOrderModel>());
 
         public void AddOrder(UnitOrderModel order)
@@ -28,9 +29,31 @@ namespace GameControllers.Services
             this.orders.Set(this.orders.Get().Filter(order => { return order.ID != id; }));
         }
 
+        public void OnOrderIconHideTrigger(MonoBehaviour2 behaviour, Action<UnitOrderModel> trigger)
+        {
+            this.hideOrderIconTrigger.SubscribeQuietly(behaviour, trigger);
+        }
+
+        public void HideOrderIcon(UnitOrderModel unitOrder)
+        {
+            this.hideOrderIconTrigger.Set(unitOrder);
+        }
+
+        public void OnOrderIconDeleteTrigger(MonoBehaviour2 behaviour, Action<UnitOrderModel> trigger)
+        {
+            this.deleteOrderIconTrigger.SubscribeQuietly(behaviour, trigger);
+        }
+
+        public void DeleteOrderIcon(UnitOrderModel unitOrder)
+        {
+            unitOrder.iconDeletedFromWorld = true;
+            unitOrder.coordinates = default(Vector3Int);
+            this.deleteOrderIconTrigger.Set(unitOrder);
+        }
+
         public bool IsExistingOrderAtLocation(Vector3Int _location)
         {
-            return this.orders.Get().Map(order =>{return order.coordinates;}).Any(orderPos =>{return orderPos == _location;});
+            return this.orders.Get().Map(order => { return order.coordinates; }).Any(orderPos => { return orderPos == _location; });
         }
     }
 }

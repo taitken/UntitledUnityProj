@@ -17,6 +17,7 @@ using UI;
 using UI.Services;
 using UI.Models;
 using Unit.Models;
+using UtilityClasses;
 
 public class GameInstaller : MonoInstaller
 {
@@ -36,8 +37,12 @@ public class GameInstaller : MonoInstaller
     public ObjectPanelAssetFactory ObjectPanelAssetFactory;
     public ItemAssetController ItemAssetController;
     public ItemObjectLayer ItemObjectLayer;
+    public MouseIconController mouseIconController;
     public override void InstallBindings()
     {
+        // Singleton Setup
+        MouseIconService.mouseTextures = mouseIconController.cursorTexures;
+
         // Services
         Container.Bind<IUnitOrderService>().To<UnitOrderService>().AsSingle();
         Container.Bind<IUnitService>().To<UnitService>().AsSingle();

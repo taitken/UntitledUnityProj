@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Building.Models
 {
-    public class BuildingObjectModel : BasePhysicalObjectModel
+    public class BuildingObjectModel : BaseObjectModel
     {
         public eBuildingType buildingType { get; set; }
         public IList<BuildingSupply> requiredItems { get; set; }
