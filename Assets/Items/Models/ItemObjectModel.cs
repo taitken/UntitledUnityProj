@@ -8,7 +8,8 @@ namespace Item.Models
 
         public eItemType itemType { get; set; }
         public eItemState itemState { get; set; }
-        public decimal claimedMass { get {return this.claimedMass_;} set {this.claimedMass_ = Math.Max(0, value);}}
+        public decimal availableMass { get { return this.mass - this.claimedMass; } }
+        public decimal claimedMass { get { return this.claimedMass_; } set { this.claimedMass_ = Math.Max(0, value); } }
         private decimal claimedMass_;
         public ItemObjectModel(Vector3Int _position, decimal _weight, eItemType _itemType, eItemState _itemState) : base(_position, _weight)
         {

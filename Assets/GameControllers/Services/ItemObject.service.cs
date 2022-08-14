@@ -61,6 +61,16 @@ namespace GameControllers.Services
             return this.GetAvailableItems(_itemType).Count > 0;
         }
 
+        public decimal DetermineMassToPickup(UnitModel unit, ItemObjectModel item)
+        {
+            return Math.Min(item.availableMass, unit.maxCarryWeight);
+        }
+
+        public decimal DetermineMassToPickup(UnitModel unit, ItemObjectModel item, decimal massRequested)
+        {
+            return Math.Min(Math.Min(massRequested, item.availableMass), unit.maxCarryWeight);
+        }
+
         public ItemObjectModel FindClosestItem(eItemType _itemType, Vector3Int _startingPos)
         {
             IList<ItemObjectModel> itemObjs = this.GetAvailableItems(_itemType);

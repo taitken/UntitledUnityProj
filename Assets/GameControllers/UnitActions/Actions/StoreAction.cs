@@ -43,6 +43,7 @@ namespace UnitAction
             if (this.unit.carriedItem == null)
             {
                 this.cancel = true;
+                Debug.LogException(new System.Exception("Store action failed. Unit not carrying item."));
             }
             else
             {

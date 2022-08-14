@@ -69,7 +69,7 @@ namespace Building
                     this.itemService.RemoveItem(itemObject.ID);
                 }
             });
-            this.productionBuildingModel.buildingStorage.RemoveItem(this.productionBuildingModel.buildingStorage.GetItems().Filter(supply => { return supply.mass > 0; }));
+            this.productionBuildingModel.buildingStorage.RemoveItem(this.productionBuildingModel.buildingStorage.GetItems().Filter(supply => { return supply.mass <= 0; }));
             this.productionBuildingModel.selectedItemRecipe.outputs.ForEach(output =>
             {
                 this.itemService.AddItem(new ItemObjectModel(this.productionBuildingModel.position, output.mass, output.itemType, ItemObjectModel.eItemState.OnGround));

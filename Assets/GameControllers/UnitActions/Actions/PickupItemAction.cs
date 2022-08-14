@@ -32,8 +32,7 @@ namespace UnitAction
             this.buildingService = _buildingService;
             this.itemObjModel = _itemObjModel;
             this.cancel = this.itemObjModel == null;
-            this.massToPickup = Math.Min(_massToPickup, _itemObjModel.mass - _itemObjModel.claimedMass); ;
-            this.itemObjModel.claimedMass += this.massToPickup;
+            this.massToPickup = _massToPickup; 
             this.subscription = this.itemObjectService.itemObseravable.SubscribeQuietly(null, items =>
             {
                 if (!items.Any(item => { return item.ID == this.itemObjModel.ID; })) this.CancelAction();
@@ -44,7 +43,6 @@ namespace UnitAction
         {
             if (this.completed)
             {
-                this.unclaimMass();
                 this.subscription.unsubscribe();
                 return true;
             }
@@ -53,14 +51,8 @@ namespace UnitAction
 
         public void CancelAction()
         {
-            this.unclaimMass();
             this.subscription.unsubscribe();
             this.cancel = true;
-        }
-
-        private void unclaimMass()
-        {
-            this.itemObjModel.claimedMass -= this.massToPickup;
         }
         public bool PerformAction()
         {

@@ -47,3 +47,9 @@ TagManager:
   - name: New Layer 1
     uniqueID: 3258675235
     locked: 0
+  - name: TallObject
+    uniqueID: 2846721781
+    locked: 0
+  - name: OrderLayer
+    uniqueID: 2589551925
+    locked: 0

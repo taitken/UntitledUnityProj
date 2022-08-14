@@ -44,6 +44,7 @@ namespace UnitAction
             if (this.unit.carriedItem == null)
             {
                 this.cancel = true;
+                Debug.LogException(new System.Exception("Production supply action failed. Unit not carrying item."));
             }
             else
             {

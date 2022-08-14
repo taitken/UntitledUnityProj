@@ -18,6 +18,8 @@ namespace GameControllers.Services
         void AddItem(ItemObjectModel item);
         void RemoveItem(long id);
         ItemObjectModel FindClosestItem(eItemType _itemType, Vector3Int _startingPos);
+        decimal DetermineMassToPickup(UnitModel unit, ItemObjectModel item);
+        decimal DetermineMassToPickup(UnitModel unit, ItemObjectModel item, decimal massRequested);
         public bool IsItemAvailable(eItemType _itemType);
         public ItemObject GetItemObject(long id);
         public Sprite GetItemSprite(eItemType itemType);

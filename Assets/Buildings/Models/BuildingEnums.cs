@@ -10,7 +10,8 @@ namespace Building.Models
         none,
         Chest,
         FloorTile,
-        Smelter
+        Smelter,
+        Torch
     }
 
     public class BuildingStatsModel
@@ -64,6 +65,14 @@ namespace Building.Models
                                 10 )
                             }
 
+                    };
+                    break;
+                case eBuildingType.Torch:
+                    buildingStats = new BuildingStatsModel
+                    {
+                        buildingName = "Torch",
+                        size = new Vector2(1, 1),
+                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 50) }
                     };
                     break;
             }

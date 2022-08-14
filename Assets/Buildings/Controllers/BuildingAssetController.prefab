@@ -49,4 +49,5 @@ MonoBehaviour:
   - {fileID: -3685052082735022648, guid: 3557eed492ed3ba4d975208108850495, type: 3}
   - {fileID: -9176131918080639047, guid: 50ccb67a64ff22542af91650dd08f188, type: 3}
   - {fileID: -5526388672013679580, guid: c5580864710d23241b8db847bd8125cd, type: 3}
+  - {fileID: -6412042486152799529, guid: 2c2cbe4b5d07c0047ab110d89fff97a0, type: 3}
   buildGhostPrefab: {fileID: 9138618262794428890, guid: b5ea765ade9165c4586305b332c8d95b, type: 3}

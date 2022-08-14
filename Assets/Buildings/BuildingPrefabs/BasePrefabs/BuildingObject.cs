@@ -36,7 +36,10 @@ namespace Building
             this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
-        protected abstract void OnCreation();
+        protected virtual void OnCreation()
+        {
+            
+        }
 
 
         public override void OnMouseEnter()

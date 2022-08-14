@@ -18,19 +18,18 @@ namespace UnitAction
         private IList<ItemObjectModel> itemsToCollect;
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
-        private decimal maxMassInTrip { get; set; }
+        private decimal massToPickup { get; set; }
         private BuildSupplyOrderModel originalSupplyOrder { get; set; }
         public SplitBuildSupplyAction(UnitModel _unit,
                           IUnitOrderService _orderService,
-                          IList<ItemObjectModel> _itemsToCollect)
+                          IList<ItemObjectModel> _itemsToCollect,
+                          decimal _massToPickup)
         {
-            this.orderService = _orderService;
-            this.unit = _unit;
             this.originalSupplyOrder = _unit.currentOrder as BuildSupplyOrderModel;
             this.itemsToCollect = _itemsToCollect;
-            decimal availableMass = 0;
-            this.itemsToCollect.ForEach(item => { availableMass += (item.mass - item.claimedMass); });
-            this.maxMassInTrip = Math.Min(Math.Min(originalSupplyOrder.itemMass, availableMass), this.unit.maxCarryWeight);
+            this.orderService = _orderService;
+            this.unit = _unit;
+            this.massToPickup = _massToPickup;
         }
 
         public bool CheckCompleted()
@@ -47,9 +46,9 @@ namespace UnitAction
             if (this.unit.currentOrder is BuildSupplyOrderModel)
             {
 
-                if (this.maxMassInTrip < originalSupplyOrder.itemMass)
+                if (this.massToPickup < originalSupplyOrder.itemMass)
                 {
-                    this.orderService.AddOrder(originalSupplyOrder.SplitOrder(this.maxMassInTrip));
+                    this.orderService.AddOrder(originalSupplyOrder.SplitOrder(this.massToPickup));
                 }
                 this.completed = true;
             }

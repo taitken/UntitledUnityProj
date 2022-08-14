@@ -71,6 +71,7 @@ namespace Environment
         {
             this.spriteRenderer.sprite = this.buildingService.GetBuildingSprite(buildType).sprite;
             this.spriteRenderer.color = GameColors.AddTransparency(this.spriteRenderer.color, 0.6f);
+            this.spriteRenderer.transform.localScale = this.buildingService.GetBuildingSprite(buildType).transform.localScale;
         }
 
         public override void OnClickedByUser()

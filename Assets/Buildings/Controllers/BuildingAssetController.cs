@@ -27,6 +27,7 @@ namespace GameControllers
             SpriteRenderer sr = ghostBuilding.GetComponent<SpriteRenderer>();
             sr.sprite = this.GetBuildingSprite(buildingType).sprite;
             sr.color = GameColors.AddTransparency(sr.color, 0.6f);
+            sr.transform.localScale = this.GetBuildingSprite(buildingType).transform.localScale;
             return ghostBuilding;
         }
 

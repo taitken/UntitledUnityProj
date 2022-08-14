@@ -87,7 +87,7 @@ namespace GameControllers
         {
             MineableObjectModel[,] newmineableTiles = new MineableObjectModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
             this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Coal, 25, 35, 70, 20);
-            this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Copper, 21, 25, 60, 35);
+            this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Copper, 30, 35, 60, 35);
             this.FillMapGapsWithStoneBlocks(newmineableTiles);
             this.CompleteMap(newmineableTiles);
         }

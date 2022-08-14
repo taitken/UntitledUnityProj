@@ -39,12 +39,14 @@ namespace UnitAction
         public void CancelAction()
         {
             this.cancel = true;
+
         }
         public bool PerformAction()
         {
             if (this.unit.carriedItem == null)
             {
                 this.cancel = true;
+                Debug.LogException(new System.Exception("Build supply action failed. Unit not carrying item."));
             }
             else
             {

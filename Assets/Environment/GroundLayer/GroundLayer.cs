@@ -15,8 +15,6 @@ namespace Environment
         private IEnvironmentService environmentService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;
-
-
         [Inject]
         public void Construct(IEnvironmentService _environmentService,
                               LayerCollider.Factory _layerColliderFactory)

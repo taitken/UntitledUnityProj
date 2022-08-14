@@ -30,6 +30,9 @@ namespace Building
                 case eBuildingType.Smelter:
                     newBuilding = new ProductionBuildingModel(_position, _buildingType, buildStats);
                     break;
+                case eBuildingType.Torch:
+                    newBuilding = new DecorBuildingModel(_position, _buildingType, buildStats);
+                    break;
                 default:
                     newBuilding = null;
                     Debug.LogException(new System.Exception("Building Model Factory failed to build model as no legitmate building type was supplied"));
