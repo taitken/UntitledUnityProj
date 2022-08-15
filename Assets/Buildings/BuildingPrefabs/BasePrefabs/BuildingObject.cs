@@ -14,15 +14,18 @@ namespace Building
         protected IUnitOrderService unitOrderService { get; set; }
         protected IItemObjectService itemService { get; set; }
         protected IUiPanelService uiPanelService { get; set; }
+        protected IBuildingService buildingService { get; set; }
         public void Initialise(IUiPanelService _uiPanelService,
                                         BuildingObjectModel _buildingObjectModel,
                                         IEnvironmentService _environmentService,
                                         IItemObjectService _itemObjectService,
+                                        IBuildingService _buildingService,
                                         IUnitOrderService _orderService)
         {
             this.buildingObjectModel = _buildingObjectModel;
             this.unitOrderService = _orderService;
             this.itemService = _itemObjectService;
+            this.buildingService = _buildingService;
             this.SetMultiTilePosition(_environmentService.CellToLocal(_buildingObjectModel.position));
             if (this.buildingObjectModel.buildingType != eBuildingType.FloorTile) this.UpdateBuildingBounds();
             this.uiPanelService = _uiPanelService;
@@ -38,7 +41,7 @@ namespace Building
 
         protected virtual void OnCreation()
         {
-            
+
         }
 
 

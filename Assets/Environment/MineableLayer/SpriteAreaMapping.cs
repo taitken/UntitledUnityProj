@@ -1,5 +1,7 @@
 
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Tilemaps;
 
 namespace Environment
 {
@@ -41,13 +43,13 @@ namespace Environment
         new TileSpriteMap(36, 0, 2, 0, 2, 0, 0, 0, 0),
         new TileSpriteMap(37, 1, 2, 0, 0, 2, 1, 2, 0),
         new TileSpriteMap(39, 0, 2, 0, 2, 2, 1, 0, 1)
-    };
+        };
 
         public static int getMapping(bool _x0y0, bool _x1y0, bool _x2y0,
                                              bool _x0y1, bool _x2y1,
                                              bool _x0y2, bool _x1y2, bool _x2y2)
         {
-            return SpriteTileMapping.spriteMap.Find( map =>
+            return SpriteTileMapping.spriteMap.Find(map =>
             {
                 return (map.x0y0 == 1 || map.x0y0 == (_x0y0 ? 2 : 0)) &&
                         (map.x0y1 == 1 || map.x0y1 == (_x0y1 ? 2 : 0)) &&
@@ -56,8 +58,12 @@ namespace Environment
                         (map.x1y2 == 1 || map.x1y2 == (_x1y2 ? 2 : 0)) &&
                         (map.x2y0 == 1 || map.x2y0 == (_x2y0 ? 2 : 0)) &&
                         (map.x2y1 == 1 || map.x2y1 == (_x2y1 ? 2 : 0)) &&
-                        (map.x2y2 == 1 || map.x2y2 == (_x2y2 ? 2 : 0)) ;
+                        (map.x2y2 == 1 || map.x2y2 == (_x2y2 ? 2 : 0));
             }).spriteRef;
+        }
+        public static bool HunkExistsInPosition<Type>(int xPos, int yPos, Type[,] hunkMapArray)
+        {
+            return hunkMapArray.ValidIndex(xPos, yPos) && hunkMapArray[xPos, yPos] != null;
         }
     }
 

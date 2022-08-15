@@ -9,13 +9,14 @@ namespace GameControllers.Services
 {
     public interface IBuildingService : IBaseService
     {
-        public BuildingAssetController buildingAssetController { get; set; }
+        BuildingAssetController buildingAssetController { get; set; }
         MonoObseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; }
         MonoObseravable<IList<BuildSiteModel>> buildingSiteObseravable { get; set; }
-        public void SetBuildingAssetController(BuildingAssetController _buildingAssetController);
-        public GameObject GetBuildingGhostPrefab(eBuildingType buildingType);
-        public BuildingObject GetBuildingPrefab(eBuildingType buildingType);
-        public SpriteRenderer GetBuildingSprite(eBuildingType buildingType);
+        void SetBuildingAssetController(BuildingAssetController _buildingAssetController);
+        GameObject GetBuildingGhostPrefab(eBuildingType buildingType);
+        BuildingObject GetBuildingPrefab(eBuildingType buildingType);
+        SpriteRenderer GetBuildingSprite(eBuildingType buildingType);
+        Sprite[] GetWallSprites(eWallTypes wallType);
         void AddBuilding(BuildingObjectModel building);
         void RemoveBuilding(long id);
         void AddBuildSite(BuildSiteModel buildSite);

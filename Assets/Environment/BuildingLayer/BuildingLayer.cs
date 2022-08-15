@@ -25,21 +25,10 @@ namespace Environment
         private BuildSiteObject.Factory buildSiteFactory;
         private IUiPanelService contextService;
         private IList<BuildingObject> buildingPrefabs = new List<BuildingObject>();
-        private IList<BuildingObjectModel> buildingObjectModels
-        {
-            get
-            {
-                return this.buildingPrefabs.Map(building => { return building.buildingObjectModel; });
-            }
-        }
+        private IList<WallBuildingObject> wallBuildingObjects { get { return this.buildingPrefabs.Filter(building => { return building.buildingObjectModel.buildingType == eBuildingType.Wall; }).Map(wall => { return wall as WallBuildingObject; }); } }
+        private IList<BuildingObjectModel> buildingObjectModels { get { return this.buildingPrefabs.Map(building => { return building.buildingObjectModel; }); } }
         private IList<BuildSiteObject> buildingSiteObjects = new List<BuildSiteObject>();
-        private IList<BuildSiteModel> buildSiteModels
-        {
-            get
-            {
-                return this.buildingSiteObjects.Map(buildSite => { return buildSite.buildSiteModel; });
-            }
-        }
+        private IList<BuildSiteModel> buildSiteModels { get { return this.buildingSiteObjects.Map(buildSite => { return buildSite.buildSiteModel; }); } }
 
         [Inject]
         public void Construct(IUnitOrderService _orderService,
@@ -86,12 +75,14 @@ namespace Environment
             objsToAdd.ForEach(buildingObj =>
             {
                 this.buildingPrefabs.Add(this.CreateBuilding(buildingObj));
+                if(buildingObj is WallBuildingModel) this.ReMapBlocksAround(buildingObj.position);
             });
             objsToRemove.ForEach(buildingObj =>
             {
                 BuildingObject building = this.buildingPrefabs.Find(building => { return building.buildingObjectModel.ID == buildingObj.ID; });
                 this.buildingPrefabs.Remove(building);
                 building.Destroy();
+                if(buildingObj is WallBuildingModel) this.ReMapBlocksAround(buildingObj.position);
             });
         }
 
@@ -114,7 +105,7 @@ namespace Environment
         private BuildingObject CreateBuilding(BuildingObjectModel buildingObj)
         {
             BuildingObject building = Instantiate<BuildingObject>(this.buildingService.buildingAssetController.GetBuildingPrefab(buildingObj.buildingType));
-            building.Initialise(this.contextService, buildingObj, this.environmentService, this.itemService, this.orderService);
+            building.Initialise(this.contextService, buildingObj, this.environmentService, this.itemService, this.buildingService, this.orderService);
             return building;
         }
 
@@ -147,8 +138,8 @@ namespace Environment
         {
             if (this.mouseAction.mouseType == eMouseAction.Build && this.mouseAction.buildingType == eBuildingType.FloorTile)
             {
-                Vector3Int startPos = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS /2, dragEvent.initialDragLocation.y  + IEnvironmentService.TILE_WIDTH_PIXELS /2, 0));
-                Vector3Int endPos = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x  + IEnvironmentService.TILE_WIDTH_PIXELS /2, dragEvent.currentDragLocation.y  + IEnvironmentService.TILE_WIDTH_PIXELS /2, 0));
+                Vector3Int startPos = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.initialDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
+                Vector3Int endPos = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.currentDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
                 IList<Vector3Int> draggedCells = this.environmentService.GetCellsInArea(startPos, endPos);
                 draggedCells.ForEach(cell => { this.PlaceBuildingBlueprint(cell); });
             }
@@ -181,6 +172,54 @@ namespace Environment
                 - new Vector3(IEnvironmentService.TILE_WIDTH_PIXELS / 2, IEnvironmentService.TILE_WIDTH_PIXELS / 2);
             }
         }
+
+        private void ReMapBlocksAround(Vector3Int centerPoint)
+        {
+            WallBuildingObject[,] buildingMap = new WallBuildingObject[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
+            this.wallBuildingObjects.ForEach(wall =>
+            {
+                buildingMap[wall.wallBuildingModel.position.x, wall.wallBuildingModel.position.y] = wall;
+            });
+            WallBuildingObject[,] hunksToRefresh = new WallBuildingObject[3, 3];
+            hunksToRefresh[0, 0] = buildingMap.ValidIndex(centerPoint.x - 1, centerPoint.y - 1) ? buildingMap[centerPoint.x - 1, centerPoint.y - 1] : null;
+            hunksToRefresh[0, 1] = buildingMap.ValidIndex(centerPoint.x - 1, centerPoint.y) ? buildingMap[centerPoint.x - 1, centerPoint.y] : null;
+            hunksToRefresh[0, 2] = buildingMap.ValidIndex(centerPoint.x - 1, centerPoint.y + 1) ? buildingMap[centerPoint.x - 1, centerPoint.y + 1] : null;
+            hunksToRefresh[1, 0] = buildingMap.ValidIndex(centerPoint.x, centerPoint.y - 1) ? buildingMap[centerPoint.x, centerPoint.y - 1] : null;
+            hunksToRefresh[1, 1] = buildingMap.ValidIndex(centerPoint.x, centerPoint.y) ? buildingMap[centerPoint.x, centerPoint.y] : null;
+            hunksToRefresh[1, 2] = buildingMap.ValidIndex(centerPoint.x, centerPoint.y + 1) ? buildingMap[centerPoint.x, centerPoint.y + 1] : null;
+            hunksToRefresh[2, 0] = buildingMap.ValidIndex(centerPoint.x + 1, centerPoint.y - 1) ? buildingMap[centerPoint.x + 1, centerPoint.y - 1] : null;
+            hunksToRefresh[2, 1] = buildingMap.ValidIndex(centerPoint.x + 1, centerPoint.y) ? buildingMap[centerPoint.x + 1, centerPoint.y] : null;
+            hunksToRefresh[2, 2] = buildingMap.ValidIndex(centerPoint.x + 1, centerPoint.y + 1) ? buildingMap[centerPoint.x + 1, centerPoint.y + 1] : null;
+            this.ReMapSprites(hunksToRefresh);
+        }
+
+        private void ReMapSprites(WallBuildingObject[,] wallsToRefresh)
+        {
+            WallBuildingObject[,] buildingMap = new WallBuildingObject[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
+            this.wallBuildingObjects.ForEach(wall =>
+            {
+                buildingMap[wall.wallBuildingModel.position.x, wall.wallBuildingModel.position.y] = wall;
+            });
+            // Very inefficient implementation
+            // -- To redo
+            foreach (WallBuildingObject wall in wallsToRefresh)
+            {
+                if (wall != null)
+                {
+                    Vector3Int cellPos = this.tilemap.LocalToCell(wall.gameObject.transform.localPosition);
+                    bool x0y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y + 1, buildingMap);
+                    bool x1y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y + 1, buildingMap);
+                    bool x2y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y + 1, buildingMap);
+                    bool x0y1 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y, buildingMap);
+                    bool x2y1 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y, buildingMap);
+                    bool x0y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y - 1, buildingMap);
+                    bool x1y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y - 1, buildingMap);
+                    bool x2y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y - 1, buildingMap);
+                    wall.UpdateSprite(SpriteTileMapping.getMapping(x0y0, x1y0, x2y0, x0y1, x2y1, x0y2, x1y2, x2y2));
+                }
+            }
+        }
+
 
     }
 }

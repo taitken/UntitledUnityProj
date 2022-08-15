@@ -33,6 +33,9 @@ namespace Building
                 case eBuildingType.Torch:
                     newBuilding = new DecorBuildingModel(_position, _buildingType, buildStats);
                     break;
+                case eBuildingType.Wall:
+                    newBuilding = new WallBuildingModel(_position, _buildingType, buildStats);
+                    break;
                 default:
                     newBuilding = null;
                     Debug.LogException(new System.Exception("Building Model Factory failed to build model as no legitmate building type was supplied"));

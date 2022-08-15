@@ -127,22 +127,17 @@ namespace Environment
                 if (hunk != null)
                 {
                     Vector3Int cellPos = this.tilemap.LocalToCell(hunk.gameObject.transform.localPosition);
-                    bool x0y0 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y + 1, hunkMapArray);
-                    bool x1y0 = this.HunkExistsInPosition(cellPos.x, cellPos.y + 1, hunkMapArray);
-                    bool x2y0 = this.HunkExistsInPosition(cellPos.x + 1, cellPos.y + 1, hunkMapArray);
-                    bool x0y1 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y, hunkMapArray);
-                    bool x2y1 = this.HunkExistsInPosition(cellPos.x + 1, cellPos.y, hunkMapArray);
-                    bool x0y2 = this.HunkExistsInPosition(cellPos.x - 1, cellPos.y - 1, hunkMapArray);
-                    bool x1y2 = this.HunkExistsInPosition(cellPos.x, cellPos.y - 1, hunkMapArray);
-                    bool x2y2 = this.HunkExistsInPosition(cellPos.x + 1, cellPos.y - 1, hunkMapArray);
-                    hunk.updateSprite(SpriteTileMapping.getMapping(x0y0, x1y0, x2y0, x0y1, x2y1, x0y2, x1y2, x2y2));
+                    bool x0y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y + 1, hunkMapArray);
+                    bool x1y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y + 1, hunkMapArray);
+                    bool x2y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y + 1, hunkMapArray);
+                    bool x0y1 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y, hunkMapArray);
+                    bool x2y1 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y, hunkMapArray);
+                    bool x0y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y - 1, hunkMapArray);
+                    bool x1y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y - 1, hunkMapArray);
+                    bool x2y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y - 1, hunkMapArray);
+                    hunk.UpdateSprite(SpriteTileMapping.getMapping(x0y0, x1y0, x2y0, x0y1, x2y1, x0y2, x1y2, x2y2));
                 }
             }
-        }
-
-        private bool HunkExistsInPosition(int xPos, int yPos, MineableBlock[,] hunkMapArray)
-        {
-            return hunkMapArray.ValidIndex(xPos, yPos) && hunkMapArray[xPos, yPos] != null;
         }
     }
 }

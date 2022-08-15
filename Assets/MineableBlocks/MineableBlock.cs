@@ -81,7 +81,7 @@ namespace Environment
             }
         }
 
-        public void updateSprite(int spriteID)
+        public void UpdateSprite(int spriteID)
         {
             this.spriteRenderer.sprite = this.spriteList[spriteID];
         }

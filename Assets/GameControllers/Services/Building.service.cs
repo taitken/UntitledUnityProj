@@ -18,6 +18,7 @@ namespace GameControllers.Services
         public void SetBuildingAssetController(BuildingAssetController _buildingAssetController)
         {
             this.buildingAssetController = _buildingAssetController;
+            this.buildingAssetController.Initialise();
         }
 
         public GameObject GetBuildingGhostPrefab(eBuildingType buildingType)
@@ -33,6 +34,10 @@ namespace GameControllers.Services
         public SpriteRenderer GetBuildingSprite(eBuildingType buildingType)
         {
             return this.buildingAssetController.GetBuildingSprite(buildingType);
+        }
+        public Sprite[] GetWallSprites(eWallTypes wallType)
+        {
+            return this.buildingAssetController.GetWallSpriteSet(wallType);
         }
         public void AddBuilding(BuildingObjectModel building)
         {

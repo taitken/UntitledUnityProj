@@ -11,7 +11,8 @@ namespace Building.Models
         Chest,
         FloorTile,
         Smelter,
-        Torch
+        Torch,
+        Wall
     }
 
     public class BuildingStatsModel
@@ -19,6 +20,7 @@ namespace Building.Models
         public string buildingName { get; set; }
         public Vector2 size { get; set; }
         public decimal storageMax { get; set; }
+        public eWallTypes wallType { get; set; }
         public IList<BuildingSupply> buildSupply { get; set; }
         public IList<ItemRecipeModel> itemRecipes { get; set; }
     }
@@ -44,7 +46,7 @@ namespace Building.Models
                     {
                         buildingName = "Floor Tile",
                         size = new Vector2(1, 1),
-                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 50) }
+                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 25) }
                     };
                     break;
                 case eBuildingType.Smelter:
@@ -73,6 +75,15 @@ namespace Building.Models
                         buildingName = "Torch",
                         size = new Vector2(1, 1),
                         buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 50) }
+                    };
+                    break;
+                case eBuildingType.Wall:
+                    buildingStats = new BuildingStatsModel
+                    {
+                        buildingName = "Wall",
+                        size = new Vector2(1, 1),
+                        wallType = eWallTypes.Stone,
+                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 25) }
                     };
                     break;
             }

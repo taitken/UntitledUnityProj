@@ -11,14 +11,18 @@ namespace GameControllers
 {
     public class BuildingAssetController : MonoBehaviour2
     {
-
+        public Texture2D[] wallSpriteSheets;
+        public Sprite[][] wallSprites;
         public List<BuildingObject> buildingPrefabs;
         public GameObject buildGhostPrefab;
 
-        [Inject]
-        public void Construct()
+        public void Initialise()
         {
-
+            this.wallSprites = new Sprite[wallSpriteSheets.Length][];
+            this.wallSpriteSheets.ForEach((sheet, index) =>
+            {
+                this.wallSprites[index] = Resources.LoadAll<Sprite>(sheet.name);
+            });
         }
 
         public GameObject GetBuildingGhostPrefab(eBuildingType buildingType)
@@ -55,6 +59,24 @@ namespace GameControllers
                 this.ThrowMissingPrefabError(buildingType);
                 return null;
             }
+        }
+
+        public Sprite[] GetWallSpriteSet(eWallTypes wallType)
+        {
+            if (this.wallSprites.Length > (int)wallType)
+            {
+                return this.wallSprites[(int)wallType];
+            }
+            else
+            {
+                this.ThrowMissingSpriteError(wallType);
+                return null;
+            }
+        }
+
+        private void ThrowMissingSpriteError(eWallTypes wallType)
+        {
+            Debug.LogException(new System.Exception("Chosen wall type sprite set has not been added to the Wall Asset Controller. Attemped type: " + wallType.ToString()));
         }
 
         private void ThrowMissingPrefabError(eBuildingType buildingType)
