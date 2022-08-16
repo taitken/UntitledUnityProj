@@ -23,10 +23,12 @@ namespace GameControllers.Services
             if (endPosItem == null) return null;
             endPosItem.distance = 0;
             List<PathFinderMapItem> neighbours = new List<PathFinderMapItem> { endPosItem };
+            List<PathFinderMapItem> dirtyItems = new List<PathFinderMapItem> { endPosItem };
 
             while (neighbours.Count > 0)
             {
                 List<PathFinderMapItem> newNeighbours = IncrementNeigbours(neighbours[0], _map);
+                dirtyItems.AddRange(newNeighbours);
                 if (newNeighbours.Find(item => { return item.x == startingPos.x && item.y == startingPos.y; }) != null)
                 {
                     pathFound = true;
@@ -37,7 +39,7 @@ namespace GameControllers.Services
             }
             IList<Vector3Int> returnMap = pathFound ? PathBack(startingPos, _map) : null;
             if (adjacentToEndPos) returnMap = this.AdjustPathToBeAdjacent(returnMap, _map);
-            this.pathFinderMap.Get().Refresh();
+            dirtyItems.ForEach(item => { if(item != null) item.distance = null; });
             return returnMap;
         }
 
