@@ -32,7 +32,7 @@ namespace GameControllers.Models
             IPathFinderService pathingService = this.GetService<IPathFinderService>(_services);
             IEnvironmentService environmentService = this.GetService<IEnvironmentService>(_services);
             if (pathingService == null || environmentService == null) return false;
-            return pathingService.CanPathTo(environmentService.LocalToCell(_unitModel.position), this.coordinates, pathingService.pathFinderMap.Get(), this.PathAdjacentToCoors);
+            return pathingService.CanPathTo(environmentService.LocalToCell(_unitModel.position), this.coordinates, pathingService.GetPathFinderMap(), this.PathAdjacentToCoors);
         }
 
         protected T GetService<T>(IList<IBaseService> _services) where T : IBaseService

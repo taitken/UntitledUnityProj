@@ -48,7 +48,7 @@ namespace UnitAction
         {
             unit.currentPath = this.pathFinderService.FindPath(this.environmentService.LocalToCell(unit.position),
                                                                 this.destination,
-                                                                this.pathFinderService.pathFinderMap.Get(),
+                                                                this.pathFinderService.GetPathFinderMap(),
                                                                 this.MoveAdjacentToDest);
             if (unit.currentPath != null)
             {

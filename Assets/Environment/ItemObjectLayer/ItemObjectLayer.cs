@@ -8,6 +8,7 @@ using Item;
 using Item.Models;
 using Extensions;
 using Zenject;
+using Building.Models;
 
 namespace Environment
 {
@@ -15,6 +16,8 @@ namespace Environment
     {
         private ItemObject.Factory itemObjectFactory;
         private IItemObjectService itemService;
+        private IBuildingService buildingService;
+        private IEnvironmentService envService;
         public IList<ItemObject> itemObjects = new List<ItemObject>();
         private IList<ItemObjectModel> itemObjectModels
         {
@@ -26,15 +29,20 @@ namespace Environment
 
         [Inject]
         public void Construct(IItemObjectService _itemService,
-                                ItemObject.Factory _itemObjectFactory,
-                              LayerCollider.Factory _layerColliderFactory)
+                              ItemObject.Factory _itemObjectFactory,
+                              LayerCollider.Factory _layerColliderFactory,
+                              IEnvironmentService _envService,
+                              IBuildingService _buildingService)
         {
             this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "ItemLayer");
             this.itemObjectFactory = _itemObjectFactory;
             this.itemService = _itemService;
+            this.buildingService = _buildingService;
+            this.envService = _envService;
             this.itemService.itemObseravable.Subscribe(this, this.HandleItemUpdates);
             this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.HandleItemStoreOrSupplyTrigger);
             this.itemService.onItemPickupOrDropTrigger.SubscribeQuietly(this, this.HandleItemPickupOrDropTrigger);
+            _buildingService.SubscribeToNewBuildingTrigger(this, (newBuilding) => { if (newBuilding is WallBuildingModel) this.MoveItemToOffPosition(newBuilding.position); });
         }
 
         // Start is called before the first frame update
@@ -102,5 +110,35 @@ namespace Environment
             }
         }
 
+        private void MoveItemToOffPosition(Vector3Int positionToMoveOff)
+        {
+            IList<ItemObject> items = this.itemObjects.Filter(itemObj => { return itemObj.itemObjectModel.position == positionToMoveOff; });
+            BuildingObjectModel[,] _walls = new BuildingObjectModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
+            MineableObjectModel[,] _mineableBlocks = this.envService.mineableObjects.Get();
+            this.buildingService.buildingObseravable.Get().Filter(building => { return building is WallBuildingModel; }).ForEach(wall => { _walls[wall.position.x, wall.position.y] = wall; });
+
+            items.ForEach(item =>
+            {
+                if (this.CheckIfSpotFree(positionToMoveOff.x - 1, positionToMoveOff.y, _walls, _mineableBlocks))
+                    this.SetItemPosition(item, new Vector3Int(positionToMoveOff.x - 1, positionToMoveOff.y));
+                if (this.CheckIfSpotFree(positionToMoveOff.x + 1, positionToMoveOff.y, _walls, _mineableBlocks))
+                    this.SetItemPosition(item, new Vector3Int(positionToMoveOff.x + 1, positionToMoveOff.y));
+                if (this.CheckIfSpotFree(positionToMoveOff.x, positionToMoveOff.y - 1, _walls, _mineableBlocks))
+                    this.SetItemPosition(item, new Vector3Int(positionToMoveOff.x, positionToMoveOff.y - 1));
+                if (this.CheckIfSpotFree(positionToMoveOff.x, positionToMoveOff.y + 1, _walls, _mineableBlocks))
+                    this.SetItemPosition(item, new Vector3Int(positionToMoveOff.x, positionToMoveOff.y + 1));
+            });
+        }
+
+        private bool CheckIfSpotFree(int x, int y, BuildingObjectModel[,] _walls, MineableObjectModel[,] _mineableBlocks)
+        {
+            return _walls[x, y] == null && _mineableBlocks[x,y] == null;
+        }
+
+        private void SetItemPosition(ItemObject _item, Vector3Int pos)
+        {
+            _item.transform.position = this.tilemap.CellToLocal(pos);
+            _item.itemObjectModel.position = pos;
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace GameControllers.Services
         Sprite[] GetWallSprites(eWallTypes wallType);
         void AddBuilding(BuildingObjectModel building);
         void RemoveBuilding(long id);
+        void SubscribeToNewBuildingTrigger(MonoBehaviour2 monobehaviour, Action<BuildingObjectModel> _newBuilding);
         void AddBuildSite(BuildSiteModel buildSite);
         void RemoveBuildSite(long id);
         BuildingObjectModel GetClosestStorage(Vector3Int startPos);

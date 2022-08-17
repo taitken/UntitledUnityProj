@@ -18,7 +18,6 @@ namespace Characters
         protected IPathFinderService pathFinderService;
         protected IEnvironmentService environmentService;
         protected IItemObjectService itemService;
-        protected PathFinderMap pathFindMap;
         protected CharacterPathLine.Factory pathLineFactory;
         protected CharacterPathLine pathingLine;
         protected Rigidbody2D rb;
@@ -47,7 +46,6 @@ namespace Characters
             this.unitModel = _unitModel;
 
             this.orderService.orders.Subscribe(this, this.HandleOrderUpdates);
-            this.pathFinderService.pathFinderMap.Subscribe(this, map =>{ this.pathFindMap = map; });
             this.itemService.onItemPickupOrDropTrigger.Subscribe(this, this.OnItemPickupOrDrop);
             this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.OnItemStoreOrSupply);
             

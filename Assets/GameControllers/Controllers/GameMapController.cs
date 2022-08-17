@@ -11,6 +11,7 @@ using Item;
 using Characters;
 using Environment;
 using MineableBlocks.Models;
+using Building.Models;
 
 namespace GameControllers
 {
@@ -26,6 +27,7 @@ namespace GameControllers
         private IEnvironmentService environmentService;
         private IPathFinderService pathFinderService;
         private IItemObjectService itemObjectService;
+        private IBuildingService buildingService;
         private IList<GroundTileModel> groundTiles;
         private Grid grid;
 
@@ -33,12 +35,14 @@ namespace GameControllers
         public void Construct(IUnitOrderService _orderService,
                               IEnvironmentService _environmentService,
                               IPathFinderService _pathFinderService,
-                              IItemObjectService _itemObjectService)
+                              IItemObjectService _itemObjectService,
+                              IBuildingService _buildingService)
         {
             this.orderService = _orderService;
             this.environmentService = _environmentService;
             this.pathFinderService = _pathFinderService;
             this.itemObjectService = _itemObjectService;
+            this.buildingService = _buildingService;
             this.grid = this.GetComponent<Grid>();
             this.groundLayer = this.GetComponentInChildren<GroundLayer>();
             this.mineableLayer = this.GetComponentInChildren<MineableLayer>();
@@ -56,12 +60,9 @@ namespace GameControllers
             this.environmentService.groundTiles.Subscribe(this, groundLayer =>
             {
                 this.groundTiles = groundLayer;
-                this.ConfigurePathfinderMap();
             });
-            this.environmentService.mineableObjects.Subscribe(this, _mineableObjects =>
-            {
-                this.ConfigurePathfinderMap();
-            });
+            this.environmentService.mineableObjects.Subscribe(this, _mineableObjects => { this.ConfigurePathfinderMap(); });
+            this.buildingService.buildingObseravable.Subscribe(this, _buildings => { this.ConfigurePathfinderMap(); });
         }
 
         // Update is called once per frame
@@ -142,6 +143,11 @@ namespace GameControllers
         private void ConfigurePathfinderMap()
         {
             var _mineableObjects = this.environmentService.mineableObjects.Get();
+            BuildingObjectModel[,] _walls = new BuildingObjectModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
+            this.buildingService.buildingObseravable.Get().Filter(building => { return building is WallBuildingModel; }).ForEach(wall =>
+            {
+                _walls[wall.position.x, wall.position.y] = wall;
+            });
             if (_mineableObjects != null && this.groundLayer != null)
             {
                 IList<IList<PathFinderMapItem>> newMap = new List<IList<PathFinderMapItem>>();
@@ -150,11 +156,11 @@ namespace GameControllers
                     IList<PathFinderMapItem> column = new List<PathFinderMapItem>();
                     for (int y = 0; y < MonoBehaviourLayer.MAP_HEIGHT; y++)
                     {
-                        column.Add(new PathFinderMapItem(x, y, _mineableObjects[x, y] != null));
+                        column.Add(new PathFinderMapItem(x, y, _mineableObjects[x, y] != null || _walls[x, y] != null));
                     }
                     newMap.Add(column);
                 }
-                this.pathFinderService.pathFinderMap.Set(new PathFinderMap(newMap));
+                this.pathFinderService.SetPathFinderMap(new PathFinderMap(newMap));
             }
         }
 

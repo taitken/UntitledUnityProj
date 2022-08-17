@@ -8,7 +8,17 @@ namespace GameControllers.Services
 {
     public class PathFinderService : BaseService, IPathFinderService
     {
-        public MonoObseravable<PathFinderMap> pathFinderMap { get; set; } = new MonoObseravable<PathFinderMap>(new PathFinderMap(new List<IList<PathFinderMapItem>>()));
+        private MonoObseravable<PathFinderMap> pathFinderMap { get; set; } = new MonoObseravable<PathFinderMap>(new PathFinderMap(new List<IList<PathFinderMapItem>>()));
+
+        public PathFinderMap GetPathFinderMap()
+        {
+            return this.pathFinderMap.Get();
+        }
+
+        public void SetPathFinderMap(PathFinderMap newMap)
+        {
+            this.pathFinderMap.Set(newMap);
+        }
 
         public bool CanPathTo(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _pathFinderMap, bool adjacentToEndPos)
         {
@@ -39,7 +49,7 @@ namespace GameControllers.Services
             }
             IList<Vector3Int> returnMap = pathFound ? PathBack(startingPos, _map) : null;
             if (adjacentToEndPos) returnMap = this.AdjustPathToBeAdjacent(returnMap, _map);
-            dirtyItems.ForEach(item => { if(item != null) item.distance = null; });
+            dirtyItems.ForEach(item => { if (item != null) item.distance = null; });
             return returnMap;
         }
 
