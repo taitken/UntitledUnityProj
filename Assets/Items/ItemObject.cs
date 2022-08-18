@@ -8,10 +8,11 @@ using Zenject;
 using UI.Services;
 using UI.Models;
 using UtilityClasses;
+using System;
 
 namespace Item
 {
-    public class ItemObject : MonoBasePhysicalObject
+    public class ItemObject : MonoBaseObject
     {
         public ItemObjectModel itemObjectModel;
         public IItemObjectService itemService;
@@ -58,6 +59,11 @@ namespace Item
             {
                 this.orderService.AddOrder(new StoreOrderModel(this.itemObjectModel.position, this.itemObjectModel));
             }
+        }
+
+        public override BaseObjectModel GetBaseObjectModel()
+        {
+            return this.itemObjectModel;
         }
 
         protected override void BeforeDeath()

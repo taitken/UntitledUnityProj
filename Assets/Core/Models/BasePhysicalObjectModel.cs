@@ -8,6 +8,7 @@ namespace System
     {
         protected IList<ObjectComponent> objectComponents { get; set; }
         public Vector3Int position { get; set; }
+        public float spriteOffset {get;set;} = 0;
         public decimal mass { get; set; }
         public BaseObjectModel(Vector3Int _position, decimal _mass) : base()
         {

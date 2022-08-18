@@ -9,15 +9,19 @@ using Zenject;
 using Item;
 using Unit.Models;
 using Item.Models;
+using UtilityClasses;
+using UI.Services;
+using UI.Models;
 
 namespace Characters
 {
-    public class WorldCharacter : MonoBehaviour2
+    public class WorldCharacter : MonoBaseObject
     {
         protected IUnitOrderService orderService;
         protected IPathFinderService pathFinderService;
         protected IEnvironmentService environmentService;
         protected IItemObjectService itemService;
+        protected IUiPanelService contextWindowService;
         protected CharacterPathLine.Factory pathLineFactory;
         protected CharacterPathLine pathingLine;
         protected Rigidbody2D rb;
@@ -33,6 +37,7 @@ namespace Characters
                               IPathFinderService _pathFinderService,
                               IEnvironmentService _environmentService,
                               IItemObjectService _itemService,
+                              IUiPanelService _contextWindowService,
                               CharacterPathLine.Factory _pathLineFactory,
                               UnitModel _unitModel
         )
@@ -41,6 +46,7 @@ namespace Characters
             this.orderService = _orderService;
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
+            this.contextWindowService = _contextWindowService;
             this.itemService = _itemService;
             this.pathLineFactory = _pathLineFactory;
             this.unitModel = _unitModel;
@@ -48,7 +54,7 @@ namespace Characters
             this.orderService.orders.Subscribe(this, this.HandleOrderUpdates);
             this.itemService.onItemPickupOrDropTrigger.Subscribe(this, this.OnItemPickupOrDrop);
             this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.OnItemStoreOrSupply);
-            
+
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
             sr = GetComponent<SpriteRenderer>();
@@ -61,16 +67,17 @@ namespace Characters
 
         void Update()
         {
-            this.unitModel.position = new Vector3(this.gameObject.transform.position.x + 0.08f, this.gameObject.transform.position.y + 0.08f);
+            this.unitModel.localPosition = new Vector3(this.gameObject.transform.position.x + this.unitModel.spriteOffset, this.gameObject.transform.position.y + this.unitModel.spriteOffset);
+            this.unitModel.position = this.environmentService.LocalToCell(this.unitModel.localPosition);
         }
 
         private void HandleOrderUpdates(IList<UnitOrderModel> orders)
         {
-                if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null)
-                {
-                    this.CancelMoving();
-                    this.DetachItemFromUnit();
-                }
+            if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null)
+            {
+                this.CancelMoving();
+                this.DetachItemFromUnit();
+            }
         }
 
         protected void FixedUpdate()
@@ -104,6 +111,11 @@ namespace Characters
         {
             this.unitModel.currentPath = null;
             if (this.pathingLine != null) this.pathingLine.Destroy();
+        }
+
+        public override BaseObjectModel GetBaseObjectModel()
+        {
+            return this.unitModel;
         }
 
         private CharacterPathLine createMovePath(IList<Vector3> path)
@@ -166,6 +178,19 @@ namespace Characters
             this.carriedObj = null;
             ItemObject foundItem = this.GetComponentInChildren<ItemObject>();
             if (foundItem) foundItem.transform.SetParent(null);
+        }
+
+        public override void OnMouseEnter()
+        {
+            List<string> newContext = new List<string>();
+            newContext.Add("Position: " + this.unitModel.position.ToString());
+            newContext.Add("LocalPosition: " + this.unitModel.localPosition.ToString());
+            this.contextWindowService.AddContext(new ObjectContextWindowModel(this.unitModel.ID, "Drone", newContext));
+        }
+
+        public override void OnMouseExit()
+        {
+            this.contextWindowService.RemoveContext(this.unitModel.ID);
         }
 
         public class Factory : PlaceholderFactory<UnitModel, WorldCharacter>

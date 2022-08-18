@@ -92,6 +92,10 @@ public class ActionController : MonoBehaviour2
         ActionSequence actionSequence = this.actionFactory.CreateSequence(unitModel);
         if (actionSequence != null)
         {
+            actionSequence.onCancel.OnEmit(() =>
+            {
+                this.UnassignOrders(new List<UnitOrderModel> { unitModel.currentOrder });
+            });
             actionSequence.Begin();
             this.actionSequences.Add(actionSequence);
         }

@@ -4,6 +4,7 @@ using GameControllers.Models;
 using GameControllers.Services;
 using System.Collections.Generic;
 using UnityEngine;
+using UtilityClasses;
 
 namespace UnitAction
 {
@@ -14,6 +15,7 @@ namespace UnitAction
         private IUnitOrderService unitOrderService;
         private int completedActions;
         public UnitOrderModel unitOrder;
+        public EventEmitter onCancel;
         public int size { get { return this.actionCallbacks.Count; } }
         public ActionSequence(IUnitOrderService _orderService, UnitOrderModel unitOrder, IUnitAction firstAction)
         {
@@ -21,10 +23,15 @@ namespace UnitAction
             this.currentAction = firstAction;
             this.unitOrder = unitOrder;
             this.unitOrderService = _orderService;
+            this.onCancel = new EventEmitter();
         }
 
         public void Update()
         {
+            if (this.currentAction != null && this.currentAction.cancel)
+            {
+                this.onCancel.Emit();
+            }
             if (this.currentAction != null && this.currentAction.CheckCompleted())
             {
                 this.currentAction = this.GetNextAction();
@@ -38,10 +45,7 @@ namespace UnitAction
                     this.CompleteOrder();
                 }
             }
-            if (this.currentAction != null && this.currentAction.cancel)
-            {
-                this.CompleteOrder();
-            }
+
         }
 
         public void Begin()
@@ -76,7 +80,7 @@ namespace UnitAction
 
         private IUnitAction GetNextAction()
         {
-            if (this.completedActions  < this.actionCallbacks.Count)
+            if (this.completedActions < this.actionCallbacks.Count)
             {
                 return this.actionCallbacks[this.completedActions]();
             }

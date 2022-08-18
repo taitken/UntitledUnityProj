@@ -8,7 +8,7 @@ using GameControllers.Services;
 
 namespace Building
 {
-    public abstract class BuildingObject : MonoBasePhysicalObject
+    public abstract class BuildingObject : MonoBaseObject
     {
         public BuildingObjectModel buildingObjectModel { get; set; }
         protected IUnitOrderService unitOrderService { get; set; }

@@ -20,6 +20,11 @@ namespace GameControllers.Services
             this.pathFinderMap.Set(newMap);
         }
 
+        public Subscription OnPathFinderMapUpdate(MonoBehaviour2 subscribingObj, Action<PathFinderMap> action)
+        {
+            return this.pathFinderMap.SubscribeQuietly(subscribingObj, action);
+        }
+
         public bool CanPathTo(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _pathFinderMap, bool adjacentToEndPos)
         {
             return this.FindPath(startingPos, endPos, _pathFinderMap, adjacentToEndPos) != null ? true : false;

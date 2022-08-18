@@ -75,14 +75,14 @@ namespace Environment
             objsToAdd.ForEach(buildingObj =>
             {
                 this.buildingPrefabs.Add(this.CreateBuilding(buildingObj));
-                if(buildingObj is WallBuildingModel) this.ReMapBlocksAround(buildingObj.position);
+                if (buildingObj is WallBuildingModel) this.ReMapBlocksAround(buildingObj.position);
             });
             objsToRemove.ForEach(buildingObj =>
             {
                 BuildingObject building = this.buildingPrefabs.Find(building => { return building.buildingObjectModel.ID == buildingObj.ID; });
                 this.buildingPrefabs.Remove(building);
                 building.Destroy();
-                if(buildingObj is WallBuildingModel) this.ReMapBlocksAround(buildingObj.position);
+                if (buildingObj is WallBuildingModel) this.ReMapBlocksAround(buildingObj.position);
             });
         }
 
@@ -138,11 +138,36 @@ namespace Environment
         {
             if (this.mouseAction.mouseType == eMouseAction.Build && this.mouseAction.buildingType == eBuildingType.FloorTile)
             {
-                Vector3Int startPos = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.initialDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
-                Vector3Int endPos = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.currentDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
-                IList<Vector3Int> draggedCells = this.environmentService.GetCellsInArea(startPos, endPos);
-                draggedCells.ForEach(cell => { this.PlaceBuildingBlueprint(cell); });
+                this.HandleFloorDragEnd(dragEvent);
             }
+            if (this.mouseAction.mouseType == eMouseAction.Build && this.mouseAction.buildingType == eBuildingType.Wall)
+            {
+                this.HandleWallDragEnd(dragEvent);
+            }
+        }
+
+        private void HandleFloorDragEnd(DragEventModel dragEvent)
+        {
+            Vector3Int startPos = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.initialDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
+            Vector3Int endPos = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.currentDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
+            IList<Vector3Int> draggedCells = this.environmentService.GetCellsInArea(startPos, endPos);
+            draggedCells.ForEach(cell => { this.PlaceBuildingBlueprint(cell); });
+        }
+
+        private void HandleWallDragEnd(DragEventModel dragEvent)
+        {
+            Vector3Int startPos = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.initialDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
+            Vector3Int endPos = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.currentDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
+            IList<Vector3Int> draggedCells = this.environmentService.GetCellsInArea(startPos, endPos);
+            draggedCells.ForEach(cell =>
+            {
+                if (startPos.x == cell.x || startPos.y == cell.y
+                    || endPos.x == cell.x || endPos.y == cell.y)
+                {
+                    this.PlaceBuildingBlueprint(cell);
+                }
+            });
+
         }
 
         public void PlaceBuildingBlueprint(Vector3Int coordinates)

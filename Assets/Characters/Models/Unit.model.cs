@@ -6,20 +6,21 @@ using GameControllers.Models;
 
 namespace Unit.Models
 {
-    public class UnitModel : BaseModel
+    public class UnitModel : BaseObjectModel
     {
-        public UnitModel(float _movespeed, Vector3 _position) : base()
+        public UnitModel(float _movespeed, Vector3 _localPosition, Vector3Int _position) : base(_position, 400)
         {
             this.moveSpeed = _movespeed;
-            this.position = _position;
+            this.localPosition = _localPosition;
             this.maxCarryWeight = 400;
+            this.spriteOffset = 0.08f;
         }
         public string currentHealth { get; set; }
         public IList<Vector3Int> currentPath { get; set; }
         public string maxHealth { get; set; }
         public int maxCarryWeight { get; set; }
         public float moveSpeed { get; set; }
-        public Vector3 position { get; set; }
+        public Vector3 localPosition { get; set; }
         public UnitOrderModel currentOrder { get; set; }
         public ItemObjectModel carriedItem
         {

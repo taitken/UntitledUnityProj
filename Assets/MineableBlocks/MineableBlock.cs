@@ -9,10 +9,11 @@ using UtilityClasses;
 using Item.Models;
 using UI.Services;
 using UI.Models;
+using System;
 
 namespace Environment
 {
-    public class MineableBlock : MonoBasePhysicalObject
+    public class MineableBlock : MonoBaseObject
     {
         private IUnitOrderService orderService;
         private IItemObjectService itemService;
@@ -58,7 +59,7 @@ namespace Environment
         {
             List<string> newContext = new List<string>();
             newContext.Add(LocalisationDict.GetMassString(this.mineableObjectModel.mass));
-            newContext.Add("Mineable");
+            newContext.Add("Position: " + this.mineableObjectModel.position.ToString());
             this.uiPanelService.AddContext(new ObjectContextWindowModel(this.mineableObjectModel.ID, this.mineableObjectModel.blockName, newContext));
         }
 
@@ -79,6 +80,11 @@ namespace Environment
             {
                 this.orderService.AddOrder(new DigOrderModel(this.mineableObjectModel.position));
             }
+        }
+
+        public override BaseObjectModel GetBaseObjectModel()
+        {
+            return this.mineableObjectModel;
         }
 
         public void UpdateSprite(int spriteID)

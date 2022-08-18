@@ -138,7 +138,7 @@ namespace GameControllers
             if (!isMouseOverUI())
             {
                 ContactFilter2D filter = new ContactFilter2D();
-                filter.SetLayerMask(LayerMask.GetMask("MineableLayer", "BuildingLayer", "ItemLayer"));
+                filter.SetLayerMask(LayerMask.GetMask("MineableLayer", "BuildingLayer", "ItemLayer", "CharacterLayer"));
                 IList<RaycastHit2D> newHits = this.RayCastOnMouse(filter);
                 newHits.ForEach(hit =>
                 {
@@ -261,9 +261,9 @@ namespace GameControllers
             {
                 if (hitObject.collider != null)
                 {
-                    if (hitObject.collider.gameObject.GetComponent<MonoBasePhysicalObject>())
+                    if (hitObject.collider.gameObject.GetComponent<MonoBaseObject>())
                     {
-                        hitObject.collider.gameObject.GetComponent<MonoBasePhysicalObject>().OnSelect();
+                        hitObject.collider.gameObject.GetComponent<MonoBaseObject>().OnSelect();
                         hitFound = true;
                         break;
                     };

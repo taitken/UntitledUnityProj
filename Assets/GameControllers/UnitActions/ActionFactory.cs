@@ -50,7 +50,7 @@ namespace UnitAction
 
                 case eOrderTypes.BuildSupply:
                     BuildSupplyOrderModel buildSupplyOrder = _unit.currentOrder as BuildSupplyOrderModel;
-                    ItemObjectModel bsItem = this.itemService.FindClosestItem(buildSupplyOrder.itemType, this.environmentService.tileMapRef.LocalToCell(_unit.position));
+                    ItemObjectModel bsItem = this.itemService.FindClosestItem(buildSupplyOrder.itemType, _unit.position);
                     if (NullItemCheck(bsItem, buildSupplyOrder)) break;
                     decimal bsMassToClaim = this.itemService.DetermineMassToPickup(_unit, bsItem, buildSupplyOrder.itemMass);
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new ClaimItemAction(bsItem, this.itemService, bsMassToClaim))
@@ -63,7 +63,7 @@ namespace UnitAction
 
                 case eOrderTypes.ProductionSupply:
                     ProductionSupplyOrderModel productionSupplyOrder = _unit.currentOrder as ProductionSupplyOrderModel;
-                    ItemObjectModel psItem = this.itemService.FindClosestItem(productionSupplyOrder.itemType, this.environmentService.tileMapRef.LocalToCell(_unit.position));
+                    ItemObjectModel psItem = this.itemService.FindClosestItem(productionSupplyOrder.itemType, _unit.position);
                     if (NullItemCheck(psItem, productionSupplyOrder)) break;
                     decimal psMassToClaim = this.itemService.DetermineMassToPickup(_unit, psItem, productionSupplyOrder.itemMass);
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new ClaimItemAction(psItem, this.itemService, psMassToClaim))
@@ -83,7 +83,7 @@ namespace UnitAction
                         .Then(() => { return new PickupItemAction(_unit, this.itemService, this.buildingService, storeOrder.itemModel, sMassToClaim); })
                         .Then(() => { return new DeleteOrderIconAction(_unit, this.orderService); })
                         .Then(() => { return new CreateNewStoreOrderAction(coordinates, this.orderService, this.itemService); })
-                        .Then(() => { return new MoveAction(_unit, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position)).position, this.pathFinderService, this.environmentService, true); })
+                        .Then(() => { return new MoveAction(_unit, this.buildingService.GetClosestStorage(_unit.position).position, this.pathFinderService, this.environmentService, true); })
                         .Then(() => { return new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position))); });
                     break;
             }

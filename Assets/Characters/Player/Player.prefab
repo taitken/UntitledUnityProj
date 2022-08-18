@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 596019024082903679}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Area Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 5004719275211450062}
   - component: {fileID: 4856754570084349675}
   - component: {fileID: 9024381783022518336}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -276,7 +276,7 @@ MonoBehaviour:
   - {x: 0.051497083, y: -0.017069422, z: 0}
   m_ShapePathHash: -1386649498
   m_Mesh: {fileID: 0}
-  m_InstanceId: 45682
+  m_InstanceId: 45888
 --- !u!1 &8842499245097278948
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +288,7 @@ GameObject:
   - component: {fileID: 4604988744459500969}
   - component: {fileID: 2351974727921464117}
   - component: {fileID: 8480867238418000429}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: SwordHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}

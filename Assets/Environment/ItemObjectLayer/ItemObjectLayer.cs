@@ -9,6 +9,7 @@ using Item.Models;
 using Extensions;
 using Zenject;
 using Building.Models;
+using System.Linq;
 
 namespace Environment
 {
@@ -42,7 +43,7 @@ namespace Environment
             this.itemService.itemObseravable.Subscribe(this, this.HandleItemUpdates);
             this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.HandleItemStoreOrSupplyTrigger);
             this.itemService.onItemPickupOrDropTrigger.SubscribeQuietly(this, this.HandleItemPickupOrDropTrigger);
-            _buildingService.SubscribeToNewBuildingTrigger(this, (newBuilding) => { if (newBuilding is WallBuildingModel) this.MoveItemToOffPosition(newBuilding.position); });
+            this.buildingService.SubscribeToNewBuildingTrigger(this, this.HandleNewBuilding);
         }
 
         // Start is called before the first frame update
@@ -88,6 +89,17 @@ namespace Environment
             }
         }
 
+        private void HandleNewBuilding(BuildingObjectModel newBuilding)
+        {
+            if (newBuilding is WallBuildingModel)
+            {
+                MineableObjectModel[,] _mineableBlocks = this.envService.mineableObjects.Get();
+                BuildingObjectModel[,] _walls = new BuildingObjectModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
+                this.buildingService.buildingObseravable.Get().Filter(building => { return building is WallBuildingModel; }).ForEach(wall => { _walls[wall.position.x, wall.position.y] = wall; });
+                this.MoveObjectOffInvalidPosition(this.itemObjects.Cast<MonoBaseObject>().ToList(), newBuilding.position, _walls, _mineableBlocks);
+            }
+        }
+
         public IList<ItemObject> GetItemObjects()
         {
             return this.itemObjects;
@@ -110,35 +122,5 @@ namespace Environment
             }
         }
 
-        private void MoveItemToOffPosition(Vector3Int positionToMoveOff)
-        {
-            IList<ItemObject> items = this.itemObjects.Filter(itemObj => { return itemObj.itemObjectModel.position == positionToMoveOff; });
-            BuildingObjectModel[,] _walls = new BuildingObjectModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
-            MineableObjectModel[,] _mineableBlocks = this.envService.mineableObjects.Get();
-            this.buildingService.buildingObseravable.Get().Filter(building => { return building is WallBuildingModel; }).ForEach(wall => { _walls[wall.position.x, wall.position.y] = wall; });
-
-            items.ForEach(item =>
-            {
-                if (this.CheckIfSpotFree(positionToMoveOff.x - 1, positionToMoveOff.y, _walls, _mineableBlocks))
-                    this.SetItemPosition(item, new Vector3Int(positionToMoveOff.x - 1, positionToMoveOff.y));
-                if (this.CheckIfSpotFree(positionToMoveOff.x + 1, positionToMoveOff.y, _walls, _mineableBlocks))
-                    this.SetItemPosition(item, new Vector3Int(positionToMoveOff.x + 1, positionToMoveOff.y));
-                if (this.CheckIfSpotFree(positionToMoveOff.x, positionToMoveOff.y - 1, _walls, _mineableBlocks))
-                    this.SetItemPosition(item, new Vector3Int(positionToMoveOff.x, positionToMoveOff.y - 1));
-                if (this.CheckIfSpotFree(positionToMoveOff.x, positionToMoveOff.y + 1, _walls, _mineableBlocks))
-                    this.SetItemPosition(item, new Vector3Int(positionToMoveOff.x, positionToMoveOff.y + 1));
-            });
-        }
-
-        private bool CheckIfSpotFree(int x, int y, BuildingObjectModel[,] _walls, MineableObjectModel[,] _mineableBlocks)
-        {
-            return _walls[x, y] == null && _mineableBlocks[x,y] == null;
-        }
-
-        private void SetItemPosition(ItemObject _item, Vector3Int pos)
-        {
-            _item.transform.position = this.tilemap.CellToLocal(pos);
-            _item.itemObjectModel.position = pos;
-        }
     }
 }

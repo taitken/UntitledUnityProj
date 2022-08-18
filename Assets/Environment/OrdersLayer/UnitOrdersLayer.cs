@@ -58,6 +58,32 @@ namespace Environment
                     this.lastEnteredCell = currentMouseCell;
                 }
             }
+            if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Build
+                && this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.Wall)
+            {
+                this.OnWallBuildDrag(dragEvent);
+            }
+        }
+
+        private void OnWallBuildDrag(DragEventModel dragEvent)
+        {
+
+            Vector3Int dragInitiationLocation = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.initialDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
+            Vector3Int currentMouseCell = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.currentDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
+            if (currentMouseCell != this.lastEnteredCell)
+            {
+                IList<Vector3Int> draggedCells = this.environmentService.GetCellsInArea(dragInitiationLocation, currentMouseCell);
+                this.orderSelectionObjects.DestroyAll();
+                draggedCells.ForEach(cell =>
+                {
+                    if (dragInitiationLocation.x == cell.x || dragInitiationLocation.y == cell.y
+                        || currentMouseCell.x == cell.x || currentMouseCell.y == cell.y)
+                    {
+                        this.orderSelectionObjects.Add(this.orderSelectionFactory.Create(cell, this.environmentService.CellToLocal(cell)));
+                    }
+                });
+                this.lastEnteredCell = currentMouseCell;
+            }
         }
 
         public override void OnDragEnd(DragEventModel dragEvent)
