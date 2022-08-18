@@ -73,7 +73,7 @@ namespace UnitAction
             {
                 unit.currentPath.RemoveAt(0);
             }
-            else
+            else if (unit.position != this.destination)
             {
                 this.CancelAction();
             }

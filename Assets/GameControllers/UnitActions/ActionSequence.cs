@@ -30,6 +30,7 @@ namespace UnitAction
         {
             if (this.currentAction != null && this.currentAction.cancel)
             {
+                Debug.Log("Cancelled");
                 this.onCancel.Emit();
             }
             if (this.currentAction != null && this.currentAction.CheckCompleted())
