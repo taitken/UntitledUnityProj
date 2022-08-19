@@ -86,7 +86,7 @@ namespace UnitAction
             bool obstructed = false;
             this.unit.currentPath.ForEach(pathStep =>
             {
-                if (this.MoveAdjacentToDest == false && newMap.mapitems[pathStep.x][pathStep.y].impassable)
+                if (newMap.mapitems[pathStep.x, pathStep.y].impassable)
                 {
                     obstructed = true;
                 }

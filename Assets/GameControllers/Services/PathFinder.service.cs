@@ -8,7 +8,7 @@ namespace GameControllers.Services
 {
     public class PathFinderService : BaseService, IPathFinderService
     {
-        private MonoObseravable<PathFinderMap> pathFinderMap { get; set; } = new MonoObseravable<PathFinderMap>(new PathFinderMap(new List<IList<PathFinderMapItem>>()));
+        private MonoObseravable<PathFinderMap> pathFinderMap { get; set; } = new MonoObseravable<PathFinderMap>(new PathFinderMap(new PathFinderMapItem[1,1]));
 
         public PathFinderMap GetPathFinderMap()
         {
@@ -28,6 +28,11 @@ namespace GameControllers.Services
         public bool CanPathTo(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _pathFinderMap, bool adjacentToEndPos)
         {
             return this.FindPath(startingPos, endPos, _pathFinderMap, adjacentToEndPos) != null ? true : false;
+        }
+
+        public bool CheckIfImpassable(Vector3Int pos)
+        {
+            return this.pathFinderMap.Get().mapitems[pos.x, pos.y].impassable;
         }
 
         public IList<Vector3Int> FindPath(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _map, bool adjacentToEndPos)

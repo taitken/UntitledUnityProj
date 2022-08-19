@@ -9,6 +9,7 @@ namespace GameControllers.Services
     public interface IPathFinderService : IBaseService
     {
         void SetPathFinderMap(PathFinderMap newMap);
+        bool CheckIfImpassable(Vector3Int pos);
         Subscription OnPathFinderMapUpdate(MonoBehaviour2 subscribingObj, Action<PathFinderMap> action);
         PathFinderMap GetPathFinderMap();
 

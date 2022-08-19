@@ -1,3 +1,4 @@
+using System.Globalization;
 using System;
 using UnityEngine;
 using System.Collections.Generic;
@@ -6,56 +7,48 @@ namespace GameControllers.Models
 {
     public class PathFinderMap : BaseModel
     {
-        private IList<IList<PathFinderMapItem>> _mapitems;
-        public IList<IList<PathFinderMapItem>> mapitems
-        {
-            get { return _mapitems; }
-            set
-            {
-                if (value.Find(yVals => { return yVals.Count != value[0].Count; }) != null)
-                {
-                    throw new Exception(
-                        $"{nameof(value)} must have all inner lists of equal length.");
-                }
-                _mapitems = value;
-                height = mapitems.Count > 0 ? mapitems[0].Count : 0;
-                width = mapitems.Count;
-            }
-        }
+        public PathFinderMapItem[,] mapitems;
 
-        public PathFinderMap(IList<IList<PathFinderMapItem>> newMap)
+        public PathFinderMap(PathFinderMapItem[,] newMap)
         {
             this.mapitems = newMap;
         }
 
         public static PathFinderMap Copy(PathFinderMap itemToCopy)
         {
-            PathFinderMap newMap = new PathFinderMap(itemToCopy.mapitems.Map(column => { return column.Map(item => { return PathFinderMapItem.Copy(item); }); }));
-            return newMap;
+            PathFinderMapItem[,] newMap = new PathFinderMapItem[itemToCopy.mapitems.GetLength(0), itemToCopy.mapitems.GetLength(1)];
+            for (int x = 0; x < itemToCopy.mapitems.GetLength(0); x++)
+            {
+                for (int y = 0; y < itemToCopy.mapitems.GetLength(1); y++)
+                {
+                    newMap[x, y] = PathFinderMapItem.Copy(itemToCopy.mapitems[x, y]);
+                }
+            }
+            return new PathFinderMap(newMap);
         }
         public int height { get; private set; }
         public int width { get; private set; }
 
         public PathFinderMapItem GetMapItemAt(int x, int y)
         {
-            return (x < mapitems.Count && x >= 0 && y >= 0 && y < mapitems[0].Count) ? mapitems[x][y] : null;
+            return (x < mapitems.GetLength(0) && x >= 0 && y >= 0 && y < mapitems.GetLength(1)) ? mapitems[x, y] : null;
         }
 
         public PathFinderMapItem GetPassableMapItemAt(int x, int y)
         {
-            PathFinderMapItem item = this.GetMapItemAt(x,y);
+            PathFinderMapItem item = this.GetMapItemAt(x, y);
             return item == null || item.impassable ? null : item;
         }
 
         public void Refresh()
         {
-            this.mapitems.ForEach(column =>
+            for (int x = 0; x < this.mapitems.GetLength(0); x++)
             {
-                column.ForEach(item =>
+                for (int y = 0; y < this.mapitems.GetLength(1); y++)
                 {
-                    item.distance = null;
-                });
-            });
+                    this.mapitems[x, y].distance = null;
+                }
+            }
         }
     }
 }

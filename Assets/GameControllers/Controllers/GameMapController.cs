@@ -150,15 +150,13 @@ namespace GameControllers
             });
             if (_mineableObjects != null && this.groundLayer != null)
             {
-                IList<IList<PathFinderMapItem>> newMap = new List<IList<PathFinderMapItem>>();
-                for (int x = 0; x < MonoBehaviourLayer.MAP_WIDTH; x++)
+                PathFinderMapItem[,] newMap = new PathFinderMapItem[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
+                for (int x = 0; x < newMap.GetLength(0); x++)
                 {
-                    IList<PathFinderMapItem> column = new List<PathFinderMapItem>();
-                    for (int y = 0; y < MonoBehaviourLayer.MAP_HEIGHT; y++)
+                    for (int y = 0; y < newMap.GetLength(1); y++)
                     {
-                        column.Add(new PathFinderMapItem(x, y, _mineableObjects[x, y] != null || _walls[x, y] != null));
+                        newMap[x,y] = new PathFinderMapItem(x, y, _mineableObjects[x, y] != null || _walls[x, y] != null);
                     }
-                    newMap.Add(column);
                 }
                 this.pathFinderService.SetPathFinderMap(new PathFinderMap(newMap));
             }

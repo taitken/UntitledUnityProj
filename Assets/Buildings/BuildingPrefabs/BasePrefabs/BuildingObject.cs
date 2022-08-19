@@ -75,6 +75,7 @@ namespace Building
         protected virtual List<string> GenerateContextWindowBody()
         {
             List<string> newContext = new List<string>();
+            newContext.Add("Position: " + this.buildingObjectModel.position.ToString());
             return newContext;
         }
 
