@@ -41,7 +41,7 @@ public class GameInstaller : MonoInstaller
     public override void InstallBindings()
     {
         // Singleton Setup
-        MouseIconService.mouseTextures = mouseIconController.cursorTexures;
+        MouseIconSingleton.mouseTextures = mouseIconController.cursorTexures;
 
         // Services
         Container.Bind<IUnitOrderService>().To<UnitOrderService>().AsSingle();

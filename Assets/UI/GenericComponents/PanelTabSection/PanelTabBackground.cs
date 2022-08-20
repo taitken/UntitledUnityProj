@@ -11,7 +11,7 @@ public class PanelTabBackground : MonoBehaviour2
     private Color originalColour;
     public override void OnMouseEnter()
     {
-        MouseIconService.SetCursorTexure(eMouseAction.Pointer);
+        MouseIconSingleton.SetCursorTexure(eMouseAction.Pointer);
         this.originalColour = this.GetComponent<Image>().color;
         this.GetComponent<Image>().color = GameColors.Lighten(GetComponent<Image>().color, 1.55f);
     }

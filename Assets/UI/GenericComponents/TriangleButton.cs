@@ -16,7 +16,7 @@ namespace UI.GenericComponents
 
         public override void OnMouseEnter()
         {
-            MouseIconService.SetCursorTexure(eMouseAction.Pointer);
+            MouseIconSingleton.SetCursorTexure(eMouseAction.Pointer);
             this.originalColour = triangleImage.color;
             this.triangleImage.color = GameColors.Lighten(triangleImage.color, 1.15f);
         }

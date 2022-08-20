@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace UtilityClasses
 {
-    public static class MouseIconService
+    public static class MouseIconSingleton
     {
         public static Texture2D[] mouseTextures
         {
@@ -41,7 +41,7 @@ namespace UtilityClasses
                     Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                     break;
                 case eMouseAction.Pointer:
-                    Cursor.SetCursor(MouseIconService.GetMouseIcon(eMouseAction.Pointer), new Vector2(12, 0), CursorMode.Auto);
+                    Cursor.SetCursor(MouseIconSingleton.GetMouseIcon(eMouseAction.Pointer), new Vector2(12, 0), CursorMode.Auto);
                     break;
                 default:
                     Cursor.SetCursor(GetMouseIcon(mouseType), Vector2.zero, CursorMode.Auto);
