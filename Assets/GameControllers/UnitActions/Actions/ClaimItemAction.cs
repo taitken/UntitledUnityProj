@@ -12,18 +12,20 @@ namespace UnitAction
 {
     public class ClaimItemAction : IUnitAction
     {
-        private UnitModel unit;
         private ItemObjectModel itemObjModel;
         private Subscription subscription;
         private IItemObjectService itemObjectService;
         private decimal requestedMass;
+        public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
-        public ClaimItemAction(ItemObjectModel _itemObjModel,
+        public ClaimItemAction(UnitModel _unit,
+                                ItemObjectModel _itemObjModel,
                                 IItemObjectService _itemObjectService,
                                 decimal _requestedMass)
         {
             this.itemObjModel = _itemObjModel;
+            this.unit = _unit;
             this.cancel = this.itemObjModel == null;
             this.requestedMass = _requestedMass;
             this.itemObjectService = _itemObjectService;

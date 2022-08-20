@@ -39,36 +39,41 @@ namespace UnityEngine
         }
 
 
-        protected void MoveObjectOffInvalidPosition(IList<MonoBaseObject> objectsToMove, Vector3Int positionToMoveOff, BuildingObjectModel[,] _walls, MineableObjectModel[,] _mineableBlocks)
+        protected Vector3Int MoveObjectOffInvalidPosition(IList<MonoBaseObject> objectsToMove, Vector3Int positionToMoveOff, PathFinderMap pfMap)
         {
             IList<MonoBaseObject> objects = objectsToMove.Filter(itemObj => { return itemObj.GetBaseObjectModel().position == positionToMoveOff; });
-            objects.ForEach(objectToMove =>
+            Vector3Int newPosition = default(Vector3Int);
+            if (newPosition == default(Vector3Int)) { newPosition = this.CheckAndGetPosition(positionToMoveOff.x - 1, positionToMoveOff.y, pfMap); }
+            if (newPosition == default(Vector3Int)) { newPosition = this.CheckAndGetPosition(positionToMoveOff.x + 1, positionToMoveOff.y, pfMap); }
+            if (newPosition == default(Vector3Int)) { newPosition = this.CheckAndGetPosition(positionToMoveOff.x, positionToMoveOff.y - 1, pfMap); }
+            if (newPosition == default(Vector3Int)) { newPosition = this.CheckAndGetPosition(positionToMoveOff.x, positionToMoveOff.y + 1, pfMap); }
+            if (newPosition == default(Vector3Int)) { newPosition = this.CheckAndGetPosition(positionToMoveOff.x - 1, positionToMoveOff.y - 1, pfMap); }
+            if (newPosition == default(Vector3Int)) { newPosition = this.CheckAndGetPosition(positionToMoveOff.x + 1, positionToMoveOff.y + 1, pfMap); }
+            if (newPosition == default(Vector3Int)) { newPosition = this.CheckAndGetPosition(positionToMoveOff.x + 1, positionToMoveOff.y - 1, pfMap); }
+            if (newPosition == default(Vector3Int)) { newPosition = this.CheckAndGetPosition(positionToMoveOff.x - 1, positionToMoveOff.y + 1, pfMap); }
+            if (newPosition != default(Vector3Int))
             {
-                bool itemMoved = false;
-                if (!itemMoved) { itemMoved = this.CheckAndMoveItem(positionToMoveOff.x - 1, positionToMoveOff.y, objectToMove, _walls, _mineableBlocks); }
-                if (!itemMoved) { itemMoved = this.CheckAndMoveItem(positionToMoveOff.x + 1, positionToMoveOff.y, objectToMove, _walls, _mineableBlocks); }
-                if (!itemMoved) { itemMoved = this.CheckAndMoveItem(positionToMoveOff.x, positionToMoveOff.y - 1, objectToMove, _walls, _mineableBlocks); }
-                if (!itemMoved) { itemMoved = this.CheckAndMoveItem(positionToMoveOff.x, positionToMoveOff.y + 1, objectToMove, _walls, _mineableBlocks); }
-                if (!itemMoved) { itemMoved = this.CheckAndMoveItem(positionToMoveOff.x - 1, positionToMoveOff.y - 1, objectToMove, _walls, _mineableBlocks); }
-                if (!itemMoved) { itemMoved = this.CheckAndMoveItem(positionToMoveOff.x + 1, positionToMoveOff.y + 1, objectToMove, _walls, _mineableBlocks); }
-                if (!itemMoved) { itemMoved = this.CheckAndMoveItem(positionToMoveOff.x + 1, positionToMoveOff.y - 1, objectToMove, _walls, _mineableBlocks); }
-                if (!itemMoved) { itemMoved = this.CheckAndMoveItem(positionToMoveOff.x - 1, positionToMoveOff.y + 1, objectToMove, _walls, _mineableBlocks); }
-            });
-        }
-
-        private bool CheckAndMoveItem(int x, int y, MonoBaseObject baseObject, BuildingObjectModel[,] _walls, MineableObjectModel[,] _mineableBlocks)
-        {
-            if (this.CheckIfSpotFree(x, y, _walls, _mineableBlocks))
-            {
-                this.SetItemPosition(baseObject, new Vector3Int(x, y));
-                return true;
+                objects.ForEach(objectToMove =>
+                {
+                    this.SetItemPosition(objectToMove, newPosition);
+                });
+                return newPosition;
             }
-            return false;
+            return default(Vector3Int);
         }
 
-        private bool CheckIfSpotFree(int x, int y, BuildingObjectModel[,] _walls, MineableObjectModel[,] _mineableBlocks)
+        private Vector3Int CheckAndGetPosition(int x, int y, PathFinderMap pfMap)
         {
-            return _walls[x, y] == null && _mineableBlocks[x, y] == null;
+            if (this.CheckIfSpotFree(x, y, pfMap))
+            {
+                return new Vector3Int(x, y);
+            }
+            return default(Vector3Int);
+        }
+
+        private bool CheckIfSpotFree(int x, int y, PathFinderMap pfMap)
+        {
+            return !pfMap.mapitems[x, y].impassable;
         }
 
         private void SetItemPosition(MonoBaseObject baseObject, Vector3Int pos)

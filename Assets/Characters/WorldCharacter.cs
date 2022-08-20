@@ -54,6 +54,7 @@ namespace Characters
             this.orderService.orders.Subscribe(this, this.HandleOrderUpdates);
             this.itemService.onItemPickupOrDropTrigger.Subscribe(this, this.OnItemPickupOrDrop);
             this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.OnItemStoreOrSupply);
+            this.pathFinderService.OnPathFinderMapUpdate(this, this.CheckIfPathObstructed);
 
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();
@@ -69,15 +70,6 @@ namespace Characters
         {
             this.unitModel.localPosition = new Vector3(this.gameObject.transform.position.x + this.unitModel.spriteOffset, this.gameObject.transform.position.y + this.unitModel.spriteOffset);
             this.unitModel.position = this.environmentService.LocalToCell(this.unitModel.localPosition);
-        }
-
-        private void HandleOrderUpdates(IList<UnitOrderModel> orders)
-        {
-            if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null)
-            {
-                this.CancelMoving();
-                this.DetachItemFromUnit();
-            }
         }
 
         protected void FixedUpdate()
@@ -107,12 +99,14 @@ namespace Characters
             }
         }
 
-        protected void CancelMoving()
+        private void HandleOrderUpdates(IList<UnitOrderModel> orders)
         {
-            this.unitModel.currentPath = null;
-            if (this.pathingLine != null) this.pathingLine.Destroy();
+            if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null)
+            {
+                this.CancelMoving();
+                this.DetachItemFromUnit();
+            }
         }
-
         public override BaseObjectModel GetBaseObjectModel()
         {
             return this.unitModel;
@@ -132,6 +126,27 @@ namespace Characters
                 rb.MovePosition(rb.position + new Vector2(horizontalCollison ? 0 : movement.x, verticalCollison ? 0 : movement.y) * this.unitModel.moveSpeed * Time.fixedDeltaTime);
             }
             this.animator.SetBool("isMoving", movement != Vector2.zero);
+        }
+        private void CheckIfPathObstructed(PathFinderMap newMap)
+        {
+            if (this.unitModel.currentPath != null)
+            {
+                bool obstructed = false;
+                this.unitModel.currentPath.ForEach(pathStep =>
+                {
+                    if (newMap.mapitems[pathStep.x, pathStep.y].impassable)
+                    {
+                        obstructed = true;
+                    }
+                });
+                if (obstructed) this.CancelMoving();
+            }
+        }
+
+        protected void CancelMoving()
+        {
+            this.unitModel.currentPath = null;
+            if (this.pathingLine != null) this.pathingLine.Destroy();
         }
 
         protected bool CollisionCheck(Vector2 movement)

@@ -4,17 +4,15 @@ using GameControllers.Models;
 using GameControllers.Services;
 using Unit.Models;
 using System.Collections.Generic;
-using UtilityClasses;
 
 namespace UnitAction
 {
     public class MoveAction : IUnitAction
     {
-        private UnitModel unit;
         private IPathFinderService pathFinderService;
         private IEnvironmentService environmentService;
         private Vector3Int destination;
-        private Subscription pathFinderSubscription;
+        public UnitModel unit { get; set; }
         private bool MoveAdjacentToDest { get; set; }
         private bool actionStarted { get; set; } = false;
         public bool completed { get; set; } = false;
@@ -30,7 +28,6 @@ namespace UnitAction
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
             this.destination = _destination;
-            this.pathFinderSubscription = this.pathFinderService.OnPathFinderMapUpdate(null, this.CheckIfPathObstructed);
         }
 
         public bool CheckCompleted()
@@ -42,12 +39,12 @@ namespace UnitAction
                         this.unit.position == this.destination - new Vector3Int(1, 0) ||
                         this.unit.position == this.destination + new Vector3Int(1, 0) ||
                         this.unit.position == this.destination - new Vector3Int(0, 1) ||
-                        this.unit.position == this.destination + new Vector3Int(0, 1)
+                        this.unit.position == this.destination + new Vector3Int(0, 1) ||
+                        this.unit.position == this.destination + new Vector3Int(0, 0)
                     ))
                 )
                 {
                     this.completed = true;
-                    this.pathFinderSubscription.unsubscribe();
                 }
                 else
                 {
@@ -60,7 +57,6 @@ namespace UnitAction
         public void CancelAction()
         {
             this.cancel = true;
-            this.pathFinderSubscription.unsubscribe();
         }
 
         public bool PerformAction()
@@ -79,19 +75,6 @@ namespace UnitAction
             }
             this.actionStarted = true;
             return unit.currentPath != null;
-        }
-
-        private void CheckIfPathObstructed(PathFinderMap newMap)
-        {
-            bool obstructed = false;
-            this.unit.currentPath.ForEach(pathStep =>
-            {
-                if (newMap.mapitems[pathStep.x, pathStep.y].impassable)
-                {
-                    obstructed = true;
-                }
-            });
-            if (obstructed) this.CancelAction();
         }
     }
 }

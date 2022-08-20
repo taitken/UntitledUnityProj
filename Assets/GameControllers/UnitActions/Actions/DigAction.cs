@@ -11,9 +11,9 @@ namespace UnitAction
 {
     public class DigAction : IUnitAction
     {
-        private UnitModel unit;
         private IPathFinderService pathFinderService;
         private IEnvironmentService environmentService;
+        public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public DigAction(UnitModel _unit,

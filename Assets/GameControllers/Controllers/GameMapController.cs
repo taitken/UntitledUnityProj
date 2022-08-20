@@ -162,8 +162,6 @@ namespace GameControllers
             }
         }
 
-
-
         public override void OnClickedByUser()
         {
             Debug.Log("clicked");

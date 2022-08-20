@@ -14,8 +14,8 @@ namespace UnitAction
     public class SplitBuildSupplyAction : IUnitAction
     {
         private IUnitOrderService orderService;
-        private UnitModel unit;
         private IList<ItemObjectModel> itemsToCollect;
+        public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         private decimal massToPickup { get; set; }

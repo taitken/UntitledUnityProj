@@ -142,7 +142,8 @@ namespace GameControllers.Services
 
         private IList<Vector3Int> AdjustPathToBeAdjacent(IList<Vector3Int> path, PathFinderMap _map)
         {
-            if (path == null || path.Count <= 1) return null;
+            if (path == null || path.Count == 0) return null;
+            if (path.Count == 1) return path;
             if ((path[path.Count - 1].x - path[path.Count - 2].x) != 0 && (path[path.Count - 1].y - path[path.Count - 2].y) != 0)
             {
                 // Diagonal condition

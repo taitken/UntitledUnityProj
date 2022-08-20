@@ -12,13 +12,13 @@ namespace UnitAction
 {
     public class PickupItemAction : IUnitAction
     {
-        private UnitModel unit;
         private IPathFinderService pathFinderService;
         private IItemObjectService itemObjectService;
         private IBuildingService buildingService;
         private ItemObjectModel itemObjModel;
         private Subscription subscription;
         private decimal massToPickup;
+        public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public PickupItemAction(UnitModel _unit,

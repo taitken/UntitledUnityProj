@@ -15,14 +15,16 @@ namespace UnitAction
     {
         private IUnitOrderService orderService;
         private IItemObjectService itemService;
-        private UnitModel unit;
         private Vector3Int coordinates;
+        public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
-        public CreateNewStoreOrderAction(Vector3Int _coordinates,
+        public CreateNewStoreOrderAction(UnitModel _unit,
+                          Vector3Int _coordinates,
                           IUnitOrderService _orderService,
                           IItemObjectService _itemService)
         {
+            this.unit = _unit;
             this.orderService = _orderService;
             this.itemService = _itemService;
             this.coordinates = _coordinates;

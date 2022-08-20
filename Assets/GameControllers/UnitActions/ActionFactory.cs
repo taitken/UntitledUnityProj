@@ -53,7 +53,7 @@ namespace UnitAction
                     ItemObjectModel bsItem = this.itemService.FindClosestItem(buildSupplyOrder.itemType, _unit.position);
                     if (NullItemCheck(bsItem, buildSupplyOrder)) break;
                     decimal bsMassToClaim = this.itemService.DetermineMassToPickup(_unit, bsItem, buildSupplyOrder.itemMass);
-                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new ClaimItemAction(bsItem, this.itemService, bsMassToClaim))
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new ClaimItemAction(_unit, bsItem, this.itemService, bsMassToClaim))
                         .Then(() => { return new SplitBuildSupplyAction(_unit, this.orderService, new List<ItemObjectModel> { bsItem }, bsMassToClaim); })
                         .Then(() => { return new MoveAction(_unit, bsItem.position, this.pathFinderService, this.environmentService, false); })
                         .Then(() => { return new PickupItemAction(_unit, this.itemService, this.buildingService, bsItem, bsMassToClaim); })
@@ -66,7 +66,7 @@ namespace UnitAction
                     ItemObjectModel psItem = this.itemService.FindClosestItem(productionSupplyOrder.itemType, _unit.position);
                     if (NullItemCheck(psItem, productionSupplyOrder)) break;
                     decimal psMassToClaim = this.itemService.DetermineMassToPickup(_unit, psItem, productionSupplyOrder.itemMass);
-                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new ClaimItemAction(psItem, this.itemService, psMassToClaim))
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new ClaimItemAction(_unit, psItem, this.itemService, psMassToClaim))
                         .Then(() => { return new MoveAction(_unit, psItem.position, this.pathFinderService, this.environmentService, false); })
                         .Then(() => { return new PickupItemAction(_unit, this.itemService, this.buildingService, psItem, psMassToClaim); })
                         .Then(() => { return new MoveAction(_unit, productionSupplyOrder.coordinates, this.pathFinderService, this.environmentService, true); })
@@ -78,11 +78,11 @@ namespace UnitAction
                     Vector3Int coordinates = _unit.currentOrder.coordinates;
                     if (NullItemCheck(storeOrder.itemModel, storeOrder)) break;
                     decimal sMassToClaim = this.itemService.DetermineMassToPickup(_unit, storeOrder.itemModel);
-                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new ClaimItemAction(storeOrder.itemModel, this.itemService, sMassToClaim))
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new ClaimItemAction(_unit, storeOrder.itemModel, this.itemService, sMassToClaim))
                         .Then(() => { return new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, false); })
                         .Then(() => { return new PickupItemAction(_unit, this.itemService, this.buildingService, storeOrder.itemModel, sMassToClaim); })
                         .Then(() => { return new DeleteOrderIconAction(_unit, this.orderService); })
-                        .Then(() => { return new CreateNewStoreOrderAction(coordinates, this.orderService, this.itemService); })
+                        .Then(() => { return new CreateNewStoreOrderAction(_unit, coordinates, this.orderService, this.itemService); })
                         .Then(() => { return new MoveAction(_unit, this.buildingService.GetClosestStorage(_unit.position).position, this.pathFinderService, this.environmentService, true); })
                         .Then(() => { return new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position))); });
                     break;

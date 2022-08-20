@@ -12,11 +12,11 @@ namespace UnitAction
 {
     public class ProductionSupplyAction : IUnitAction
     {
-        private UnitModel unit;
         private IBuildingService buildingService;
         private IItemObjectService itemObjectService;
         private ProductionSupplyOrder buildOrder;
         private IUnitOrderService unitOrderService;
+        public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public ProductionSupplyAction(UnitModel _unit,

@@ -19,6 +19,7 @@ namespace Environment
         private IUnitOrderService orderService;
         private IUnitService unitService;
         private IBuildingService buildingService;
+        private IPathFinderService pfService;
         private IEnvironmentService envService;
         private MouseActionModel mouseAction;
         private PlayerController.Factory characterFactory;
@@ -30,6 +31,7 @@ namespace Environment
                               IUnitService _unitService,
                               IEnvironmentService _envService,
                               IBuildingService _buildingService,
+                              IPathFinderService _pfService,
                               LayerCollider.Factory _layerColliderFactory,
                               PlayerController.Factory _characterFactory)
         {
@@ -37,6 +39,7 @@ namespace Environment
             this.orderService = _orderService;
             this.unitService = _unitService;
             this.envService = _envService;
+            this.pfService = _pfService;
             this.characterFactory = _characterFactory;
             this.buildingService = _buildingService;
             this.buildingService.SubscribeToNewBuildingTrigger(this, this.HandleNewBuilding);
@@ -79,10 +82,7 @@ namespace Environment
         {
             if (newBuilding is WallBuildingModel)
             {
-                MineableObjectModel[,] _mineableBlocks = this.envService.mineableObjects.Get();
-                BuildingObjectModel[,] _walls = new BuildingObjectModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
-                this.buildingService.buildingObseravable.Get().Filter(building => { return building is WallBuildingModel; }).ForEach(wall => { _walls[wall.position.x, wall.position.y] = wall; });
-                this.MoveObjectOffInvalidPosition(this.worldCharacters.Cast<MonoBaseObject>().ToList(), newBuilding.position, _walls, _mineableBlocks);
+                this.MoveObjectOffInvalidPosition(this.worldCharacters.Cast<MonoBaseObject>().ToList(), newBuilding.position, this.pfService.GetPathFinderMap());
             }
         }
 

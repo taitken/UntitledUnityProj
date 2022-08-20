@@ -28,7 +28,7 @@ namespace UnitAction
 
         public void Update()
         {
-            if (this.currentAction != null && this.currentAction.cancel)
+            if (this.currentAction != null && (this.currentAction.cancel || this.currentAction.unit.currentOrder == null))
             {
                 Debug.Log("Cancelled");
                 this.onCancel.Emit();

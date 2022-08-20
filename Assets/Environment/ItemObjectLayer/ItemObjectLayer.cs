@@ -19,6 +19,7 @@ namespace Environment
         private IItemObjectService itemService;
         private IBuildingService buildingService;
         private IEnvironmentService envService;
+        private IPathFinderService pfService;
         public IList<ItemObject> itemObjects = new List<ItemObject>();
         private IList<ItemObjectModel> itemObjectModels
         {
@@ -32,6 +33,7 @@ namespace Environment
         public void Construct(IItemObjectService _itemService,
                               ItemObject.Factory _itemObjectFactory,
                               LayerCollider.Factory _layerColliderFactory,
+                              IPathFinderService _pfService,
                               IEnvironmentService _envService,
                               IBuildingService _buildingService)
         {
@@ -40,6 +42,7 @@ namespace Environment
             this.itemService = _itemService;
             this.buildingService = _buildingService;
             this.envService = _envService;
+            this.pfService = _pfService;
             this.itemService.itemObseravable.Subscribe(this, this.HandleItemUpdates);
             this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.HandleItemStoreOrSupplyTrigger);
             this.itemService.onItemPickupOrDropTrigger.SubscribeQuietly(this, this.HandleItemPickupOrDropTrigger);
@@ -93,11 +96,32 @@ namespace Environment
         {
             if (newBuilding is WallBuildingModel)
             {
-                MineableObjectModel[,] _mineableBlocks = this.envService.mineableObjects.Get();
-                BuildingObjectModel[,] _walls = new BuildingObjectModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
-                this.buildingService.buildingObseravable.Get().Filter(building => { return building is WallBuildingModel; }).ForEach(wall => { _walls[wall.position.x, wall.position.y] = wall; });
-                this.MoveObjectOffInvalidPosition(this.itemObjects.Cast<MonoBaseObject>().ToList(), newBuilding.position, _walls, _mineableBlocks);
+                Vector3Int newPos = this.MoveObjectOffInvalidPosition(this.itemObjects.Cast<MonoBaseObject>().ToList(), newBuilding.position, this.pfService.GetPathFinderMap());
+                if (newPos != default(Vector3Int))
+                {
+                    this.MergeAllItemsAtPosition(newPos);
+                }
             }
+        }
+
+        private void MergeAllItemsAtPosition(Vector3Int newPos)
+        {
+            IList<ItemObjectModel> itemsToDelete = new List<ItemObjectModel>();
+            IList<ItemObject> objectsOnNewPos = this.itemObjects.Filter(item => { return item.itemObjectModel.position == newPos; });
+            var groupedObjs = objectsOnNewPos.GroupBy(item => item.itemObjectModel.itemType);
+            foreach (var group in groupedObjs)
+            {
+                ItemObject firstItem = group.ToList()[0];
+                group.ToList().ForEach((item, index) =>
+                {
+                    if (index > 0)
+                    {
+                        firstItem.itemObjectModel.MergeItemModel(item.itemObjectModel.mass);
+                        itemsToDelete.Add(item.itemObjectModel);
+                    }
+                });
+            }
+            itemsToDelete.ForEach(item => { this.itemService.RemoveItem(item.ID); });
         }
 
         public IList<ItemObject> GetItemObjects()

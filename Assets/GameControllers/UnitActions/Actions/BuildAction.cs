@@ -11,10 +11,10 @@ namespace UnitAction
 {
     public class BuildAction : IUnitAction
     {
-        private UnitModel unit;
         private IBuildingService buildingService;
         private BuildOrderModel buildOrder;
         private BuildingObjectFactory buildingFactory;
+        public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public BuildAction(UnitModel _unit,

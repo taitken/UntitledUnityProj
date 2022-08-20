@@ -13,10 +13,10 @@ namespace UnitAction
 {
     public class StoreAction : IUnitAction
     {
-        private UnitModel unit;
         private IBuildingService buidlingService;
         private IItemObjectService itemObjectService;
         private StorageBuildingModel buildingModel;
+        public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public StoreAction(UnitModel _unit,

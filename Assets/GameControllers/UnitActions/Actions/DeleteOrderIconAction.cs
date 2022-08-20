@@ -13,7 +13,7 @@ namespace UnitAction
     public class DeleteOrderIconAction : IUnitAction
     {
         private IUnitOrderService orderService;
-        private UnitModel unit;
+        public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public DeleteOrderIconAction(UnitModel _unit,
