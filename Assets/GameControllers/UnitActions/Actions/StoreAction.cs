@@ -54,7 +54,7 @@ namespace UnitAction
                 ItemObjectModel existingStoredItem = this.buildingModel.buildingStorage.GetItem(itemModel.itemType);
                 if (existingStoredItem != null)
                 {
-                    existingStoredItem.MergeItemModel(itemModel.mass);
+                    existingStoredItem.AddMass(itemModel.mass);
                     this.itemObjectService.RemoveItem(itemModel.ID);
                 }
                 else

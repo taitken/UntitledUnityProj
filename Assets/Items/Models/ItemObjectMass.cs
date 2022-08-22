@@ -1,11 +1,9 @@
 
-using Item.Models;
-
-namespace Building.Models
+namespace Item.Models
 {
-    public struct BuildingSupply
+    public struct ItemObjectMass
     {
-        public BuildingSupply(eItemType _itemType, decimal _mass)
+        public ItemObjectMass(eItemType _itemType, decimal _mass)
         {
             this.itemType = _itemType;
             this.mass = _mass;

@@ -9,7 +9,8 @@ namespace Item.Models
         Iron,
         Coal,
         CopperOre,
-        Copper
+        Copper,
+        OrganicMass
     }
 }
 

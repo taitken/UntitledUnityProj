@@ -63,7 +63,7 @@ namespace Building
             this.productionBuildingModel.selectedItemRecipe.inputs.ForEach(input =>
             {
                 ItemObjectModel itemObject = this.productionBuildingModel.buildingStorage.GetItem(input.itemType);
-                itemObject.mass -= input.mass;
+                itemObject.RemoveMass(input.mass);
                 if (itemObject.mass <= 0)
                 {
                     this.itemService.RemoveItem(itemObject.ID);
@@ -72,7 +72,7 @@ namespace Building
             this.productionBuildingModel.buildingStorage.RemoveItem(this.productionBuildingModel.buildingStorage.GetItems().Filter(supply => { return supply.mass <= 0; }));
             this.productionBuildingModel.selectedItemRecipe.outputs.ForEach(output =>
             {
-                this.itemService.AddItem(new ItemObjectModel(this.productionBuildingModel.position, output.mass, output.itemType, ItemObjectModel.eItemState.OnGround));
+                this.itemService.AddItem(new ItemObjectModel(this.productionBuildingModel.position, output, ItemObjectModel.eItemState.OnGround));
             });
             AllocatedItemRecipe allocatedItem = this.productionBuildingModel.itemRecipes.Find(recipe => { return recipe.recipe == this.productionBuildingModel.selectedItemRecipe; });
             allocatedItem.counter--;
@@ -87,7 +87,7 @@ namespace Building
                 if (supplyModel.currentBuildSupplyModel == null)
                 {
                     // Hard to interpet. 
-                    BuildingSupply input = this.productionBuildingModel.itemRecipes.Find(recipe =>
+                    ItemObjectMass input = this.productionBuildingModel.itemRecipes.Find(recipe =>
                     {
                         return recipe.counter > 0 && recipe.recipe.inputs.Any(input =>
                         {
@@ -107,7 +107,7 @@ namespace Building
 
         private void RefreshProductionSupplyModels()
         {
-            IList<BuildingSupply> requiredItems = new List<BuildingSupply>();
+            IList<ItemObjectMass> requiredItems = new List<ItemObjectMass>();
             this.productionBuildingModel.itemRecipes.ForEach(recipe =>
             {
                 if (recipe.counter > 0)
@@ -122,7 +122,7 @@ namespace Building
                     }
                 }
             });
-            IList<BuildingSupply> newItemsToRequest = requiredItems.Filter(input => { return !this.currentProductionSupplyModels.Any(model => { return model.input.itemType == input.itemType; }); });
+            IList<ItemObjectMass> newItemsToRequest = requiredItems.Filter(input => { return !this.currentProductionSupplyModels.Any(model => { return model.input.itemType == input.itemType; }); });
             IList<ProductionSupplyOrder> ordersToRemove = this.currentProductionSupplyModels.Filter(order => { return !requiredItems.Any(input => { return input.itemType == order.input.itemType; }); });
             newItemsToRequest.ForEach(input => { this.currentProductionSupplyModels.Add(new ProductionSupplyOrder(null, input)); });
             this.currentProductionSupplyModels = this.currentProductionSupplyModels.Filter(order =>

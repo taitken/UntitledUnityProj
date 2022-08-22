@@ -8,7 +8,7 @@ namespace Unit.Models
 {
     public class UnitModel : BaseObjectModel
     {
-        public UnitModel(float _movespeed, Vector3 _localPosition, Vector3Int _position) : base(_position, 400)
+        public UnitModel(float _movespeed, Vector3 _localPosition, Vector3Int _position) : base(_position, new List<ItemObjectMass>{new ItemObjectMass(eItemType.OrganicMass, 400)})
         {
             this.moveSpeed = _movespeed;
             this.localPosition = _localPosition;

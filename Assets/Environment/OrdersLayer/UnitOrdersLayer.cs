@@ -42,6 +42,7 @@ namespace Environment
             if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Build && this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.FloorTile ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Dig ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Store ||
+                this.orderService.mouseAction.Get().mouseType == eMouseAction.Deconstruct ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Cancel)
             {
 

@@ -12,6 +12,7 @@ using Characters;
 using Environment;
 using MineableBlocks.Models;
 using Building.Models;
+using Item.Models;
 
 namespace GameControllers
 {
@@ -78,7 +79,7 @@ namespace GameControllers
             {
                 for (int y = 0; y < MonoBehaviourLayer.MAP_HEIGHT; y++)
                 {
-                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), Random.Range(200, 400), GroundTileModel.eGroundTypes.grass));
+                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, Random.Range(200, 400))}, GroundTileModel.eGroundTypes.grass));
                 }
             }
             this.environmentService.groundTiles.Set(newGroundTiles);
@@ -155,7 +156,7 @@ namespace GameControllers
                 {
                     for (int y = 0; y < newMap.GetLength(1); y++)
                     {
-                        newMap[x,y] = new PathFinderMapItem(x, y, _mineableObjects[x, y] != null || _walls[x, y] != null);
+                        newMap[x, y] = new PathFinderMapItem(x, y, _mineableObjects[x, y] != null || _walls[x, y] != null);
                     }
                 }
                 this.pathFinderService.SetPathFinderMap(new PathFinderMap(newMap));

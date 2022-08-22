@@ -5,10 +5,10 @@ using Item.Models;
 
 namespace ObjectComponents
 {
-    public class BuildingStorageComponent : ObjectComponent
+    public class ObjectStorage : ObjectComponent
     {
         private IList<ItemObjectModel> storedItems { get; set; }
-        public BuildingStorageComponent() : base()
+        public ObjectStorage() : base()
         {
             this.storedItems = new List<ItemObjectModel>();
         }

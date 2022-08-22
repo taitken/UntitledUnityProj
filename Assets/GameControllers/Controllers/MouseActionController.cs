@@ -90,6 +90,9 @@ namespace GameControllers
                 case eMouseAction.Cancel:
                     this.CommandClick(true, "UnitOrderLayer", "BuildingLayer");
                     break;
+                case eMouseAction.Deconstruct:
+                    this.CommandClick(true, "BuildingLayer");
+                    break;
             }
         }
 
@@ -123,6 +126,9 @@ namespace GameControllers
                     break;
                 case eMouseAction.Cancel:
                     this.DragClick(this.dragEvent, "UnitOrderLayer", "BuildingLayer");
+                    break;
+                case eMouseAction.Deconstruct:
+                    this.DragClick(this.dragEvent, "BuildingLayer");
                     break;
             }
             this.dragEvent = null;

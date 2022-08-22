@@ -21,6 +21,7 @@ namespace Environment
         private IEnvironmentService environmentService;
         private IItemObjectService itemService;
         private MouseActionModel mouseAction;
+        private DiContainer diContainer;
         private BuildingObjectFactory buildingModelFactory;
         private BuildSiteObject.Factory buildSiteFactory;
         private IUiPanelService contextService;
@@ -37,6 +38,7 @@ namespace Environment
                               IUiPanelService _contextService,
                               IItemObjectService _itemService,
                               LayerCollider.Factory _layerColliderFactory,
+                              DiContainer _diContainer,
                               BuildSiteObject.Factory _buildSiteFactory)
         {
             this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "BuildingLayer");
@@ -46,6 +48,7 @@ namespace Environment
             this.contextService = _contextService;
             this.buildSiteFactory = _buildSiteFactory;
             this.itemService = _itemService;
+            this.diContainer = _diContainer;
             this.buildingModelFactory = new BuildingObjectFactory();
         }
 
@@ -104,7 +107,7 @@ namespace Environment
 
         private BuildingObject CreateBuilding(BuildingObjectModel buildingObj)
         {
-            BuildingObject building = Instantiate<BuildingObject>(this.buildingService.buildingAssetController.GetBuildingPrefab(buildingObj.buildingType));
+            BuildingObject building = this.diContainer.InstantiatePrefab(this.buildingService.buildingAssetController.GetBuildingPrefab(buildingObj.buildingType)).GetComponent<BuildingObject>();
             building.Initialise(this.contextService, buildingObj, this.environmentService, this.itemService, this.buildingService, this.orderService);
             return building;
         }

@@ -63,7 +63,7 @@ namespace UnitAction
                 ItemObjectModel existingStoredItem = buildSiteModel.suppliedItems.Find(item => { return item.itemType == itemModel.itemType; });
                 if (existingStoredItem != null)
                 {
-                    existingStoredItem.MergeItemModel(itemModel.mass);
+                    existingStoredItem.AddMass(itemModel.mass);
                     this.itemObjectService.RemoveItem(itemModel.ID);
                 }
                 else

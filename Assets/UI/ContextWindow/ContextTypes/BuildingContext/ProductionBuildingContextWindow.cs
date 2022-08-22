@@ -62,7 +62,7 @@ namespace UI
             }
         }
 
-        private void SetupNewItem(BuildingSupply input, int index, ItemSlot baseSlot, string requiredNumber, string currentNumber)
+        private void SetupNewItem(ItemObjectMass input, int index, ItemSlot baseSlot, string requiredNumber, string currentNumber)
         {
             ItemSlot newItemSlot;
             if (index > 0)

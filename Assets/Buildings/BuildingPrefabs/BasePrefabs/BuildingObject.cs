@@ -5,6 +5,8 @@ using Extensions;
 using UI.Services;
 using UI.Models;
 using GameControllers.Services;
+using GameControllers.Models;
+using System;
 
 namespace Building
 {
@@ -42,6 +44,19 @@ namespace Building
         protected virtual void OnCreation()
         {
 
+        }
+
+        public override BaseObjectModel GetBaseObjectModel()
+        {
+            return this.buildingObjectModel;
+        }
+
+        public override void OnClickedByUser()
+        {
+            if (this.unitOrderService.mouseAction.Get().mouseType == eMouseAction.Deconstruct)
+            {
+                this.unitOrderService.AddOrder(new DeconstructOrderModel(this.buildingObjectModel.position, this.buildingObjectModel, true));
+            }
         }
 
 

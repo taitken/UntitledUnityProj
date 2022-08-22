@@ -7,6 +7,7 @@ namespace GameControllers.Models
         Build,
         Store,
         BuildSupply,
-        ProductionSupply
+        ProductionSupply,
+        Deconstruct
     }
 }

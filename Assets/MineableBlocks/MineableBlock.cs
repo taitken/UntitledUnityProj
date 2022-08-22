@@ -10,6 +10,7 @@ using Item.Models;
 using UI.Services;
 using UI.Models;
 using System;
+using ObjectComponents;
 
 namespace Environment
 {
@@ -66,12 +67,6 @@ namespace Environment
         public override void OnMouseExit()
         {
             this.uiPanelService.RemoveContext(this.mineableObjectModel.ID);
-        }
-
-        protected override void BeforeDeath()
-        {
-            this.uiPanelService.RemoveContext(this.mineableObjectModel.ID);
-            this.itemService.AddItem(new ItemObjectModel(this.mineableObjectModel.position, mineableObjectModel.mass, this.mineableObjectModel.itemDrop, ItemObjectModel.eItemState.OnGround));
         }
 
         public override void OnClickedByUser()

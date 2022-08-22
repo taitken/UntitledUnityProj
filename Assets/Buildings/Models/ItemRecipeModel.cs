@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using Item.Models;
 
 namespace Building.Models
 {
     public class ItemRecipeModel : BaseModel
     {
         public string recipeName { get; set; }
-        public IList<BuildingSupply> inputs { get; set; }
-        public IList<BuildingSupply> outputs { get; set; }
+        public IList<ItemObjectMass> inputs { get; set; }
+        public IList<ItemObjectMass> outputs { get; set; }
         public float productionPointsMax { get; set; }
         public float productionPointsCurrent { get; set; }
-        public ItemRecipeModel(string _recipeName, IList<BuildingSupply> _inputs, IList<BuildingSupply> _outputs, float _productionPointsMax) : base()
+        public ItemRecipeModel(string _recipeName, IList<ItemObjectMass> _inputs, IList<ItemObjectMass> _outputs, float _productionPointsMax) : base()
         {
             this.recipeName = _recipeName;
             this.inputs = _inputs;

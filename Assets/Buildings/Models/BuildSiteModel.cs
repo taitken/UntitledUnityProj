@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Item.Models;
+using ObjectComponents;
 using UnityEngine;
 
 namespace Building.Models
@@ -36,7 +37,7 @@ namespace Building.Models
             }
         }
 
-        public BuildSiteModel(BuildingObjectModel buildingModel) : base(buildingModel.position, 0)
+        public BuildSiteModel(BuildingObjectModel buildingModel) : base(buildingModel.position, buildingModel.requiredItems.Map(item => { return new ItemObjectMass(item.itemType, 0); }))
         {
             this.buildingType = buildingModel.buildingType;
             this.buildingModel = buildingModel;
@@ -48,6 +49,7 @@ namespace Building.Models
             itemObj.itemState = ItemObjectModel.eItemState.InSupply;
             itemObj.position = this.position;
             this.suppliedItems.Add(itemObj);
+            this.GetObjectComponent<ObjectComposition>().AddMass(itemObj.itemType, itemObj.mass);
         }
     }
 }

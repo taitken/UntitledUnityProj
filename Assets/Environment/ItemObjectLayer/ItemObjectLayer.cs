@@ -89,6 +89,7 @@ namespace Environment
             if (item != null && this.itemObjects.Find(obj => { return obj.itemObjectModel.ID == item.ID; }) == null)
             {
                 this.itemObjects.Add(this.CreateItemObject(item));
+                if(item.itemState == ItemObjectModel.eItemState.OnGround) this.MergeAllItemsAtPosition(item.position);
             }
         }
 
@@ -116,7 +117,7 @@ namespace Environment
                 {
                     if (index > 0)
                     {
-                        firstItem.itemObjectModel.MergeItemModel(item.itemObjectModel.mass);
+                        firstItem.itemObjectModel.AddMass(item.itemObjectModel.mass);
                         itemsToDelete.Add(item.itemObjectModel);
                     }
                 });

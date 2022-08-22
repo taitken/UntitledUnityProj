@@ -84,7 +84,11 @@ namespace UnitAction
                         .Then(() => { return new DeleteOrderIconAction(_unit, this.orderService); })
                         .Then(() => { return new CreateNewStoreOrderAction(_unit, coordinates, this.orderService, this.itemService); })
                         .Then(() => { return new MoveAction(_unit, this.buildingService.GetClosestStorage(_unit.position).position, this.pathFinderService, this.environmentService, true); })
-                        .Then(() => { return new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(this.environmentService.tileMapRef.LocalToCell(_unit.position))); });
+                        .Then(() => { return new StoreAction(_unit, this.itemService, this.buildingService, this.buildingService.GetClosestStorage(_unit.position)); });
+                    break;
+                case eOrderTypes.Deconstruct:
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
+                        .Then(() => { return new DeconstructAction(_unit, this.buildingService); });
                     break;
             }
             return newSequence;

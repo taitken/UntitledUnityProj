@@ -10,10 +10,11 @@ using GameControllers.Services;
 using Zenject;
 using GameControllers.Models;
 using Item.Models;
+using System;
 
 namespace Building
 {
-    public class BuildSiteObject : MonoBehaviour2
+    public class BuildSiteObject : MonoBaseObject
     {
         public IUnitOrderService orderService { get; set; }
         private IBuildingService buildingService { get; set; }
@@ -52,7 +53,7 @@ namespace Building
                 {
                     if (x + y > 0)
                     {
-                        GameObject gameObject = Instantiate(spriteObjects[0], new Vector3(0,0), default(Quaternion));
+                        GameObject gameObject = Instantiate(spriteObjects[0], new Vector3(0, 0), default(Quaternion));
                         gameObject.transform.SetParent(this.transform);
                         gameObject.transform.localPosition = new Vector3(x * IEnvironmentService.TILE_WIDTH_PIXELS, y * IEnvironmentService.TILE_WIDTH_PIXELS);
                         this.spriteObjects.Add(gameObject);
@@ -81,6 +82,11 @@ namespace Building
                 if (order != null) this.orderService.RemoveOrder(order.ID);
                 this.buildingService.RemoveBuildSite(this.buildSiteModel.ID);
             }
+        }
+
+        public override BaseObjectModel GetBaseObjectModel()
+        {
+            return this.buildSiteModel;
         }
 
         protected override void BeforeDeath()

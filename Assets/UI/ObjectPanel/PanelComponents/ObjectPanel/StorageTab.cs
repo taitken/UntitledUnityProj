@@ -10,9 +10,9 @@ namespace UI.Panel
     public class StorageTab : MonoBehaviour2
     {
         public TextMeshProUGUI textBox;
-        private BuildingStorageComponent storageComponent;
+        private ObjectStorage storageComponent;
 
-        public void Initalise(BuildingStorageComponent _storageComponent)
+        public void Initalise(ObjectStorage _storageComponent)
         {
             this.storageComponent = _storageComponent;
             this.SetText();

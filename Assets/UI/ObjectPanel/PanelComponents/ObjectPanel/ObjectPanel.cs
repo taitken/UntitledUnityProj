@@ -39,7 +39,7 @@ namespace UI.Panel
 
         private bool ConfigureStorageTab()
         {
-            BuildingStorageComponent storageComponent = this.objectPanelModel.objectModel.GetObjectComponent<BuildingStorageComponent>();
+            ObjectStorage storageComponent = this.objectPanelModel.objectModel.GetObjectComponent<ObjectStorage>();
             if (storageComponent != null)
             {
                 this.storageTab.Initalise(storageComponent);

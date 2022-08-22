@@ -11,7 +11,7 @@ namespace Building.Models
         public const int MAX_STORAGE_MULT = 10;
         public IList<AllocatedItemRecipe> itemRecipes { get; set; }
         public ItemRecipeModel selectedItemRecipe { get; set; }
-        public BuildingStorageComponent buildingStorage { get; set; }
+        public ObjectStorage buildingStorage { get; set; }
         public bool isFullySupplied
         {
             get
@@ -39,7 +39,7 @@ namespace Building.Models
         {
             this.itemRecipes = new List<AllocatedItemRecipe>();
             _buildStats.itemRecipes.ForEach(recipe => { this.itemRecipes.Add(new AllocatedItemRecipe(0, recipe)); });
-            this.buildingStorage = new BuildingStorageComponent();
+            this.buildingStorage = new ObjectStorage();
             this.objectComponents.Add(this.buildingStorage);
         }
 
@@ -49,7 +49,7 @@ namespace Building.Models
             ItemObjectModel existingItem = this.buildingStorage.GetItems().Find(supply => { return supply.itemType == itemObject.itemType; });
             if (existingItem != null)
             {
-                existingItem.MergeItemModel(itemObject.mass);
+                existingItem.AddMass(itemObject.mass);
                 return true;
             }
             else

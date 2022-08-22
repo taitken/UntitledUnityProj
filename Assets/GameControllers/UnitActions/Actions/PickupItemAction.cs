@@ -66,7 +66,7 @@ namespace UnitAction
                 ItemObjectModel.eItemState originState = this.itemObjModel.itemState;
                 if (this.itemObjModel.mass > this.massToPickup)
                 {
-                    itemToAttach = this.itemObjModel.SplitItemModel(this.massToPickup);
+                    itemToAttach = this.itemObjModel.RemoveMass(this.massToPickup);
                     this.unit.carriedItem = itemToAttach;
                     this.itemObjectService.AddItem(itemToAttach);
                 }

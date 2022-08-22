@@ -8,6 +8,7 @@ namespace GameControllers.Models
         Dig,
         Build,
         Cancel,
-        Store
+        Store,
+        Deconstruct
     }
 }

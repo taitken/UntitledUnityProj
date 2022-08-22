@@ -21,7 +21,7 @@ namespace Building.Models
         public Vector2 size { get; set; }
         public decimal storageMax { get; set; }
         public eWallTypes wallType { get; set; }
-        public IList<BuildingSupply> buildSupply { get; set; }
+        public IList<ItemObjectMass> buildSupply { get; set; }
         public IList<ItemRecipeModel> itemRecipes { get; set; }
     }
 
@@ -37,7 +37,7 @@ namespace Building.Models
                     {
                         buildingName = "Chest",
                         size = new Vector2(1, 1),
-                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 400) },
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
                         storageMax = 10000
                     };
                     break;
@@ -46,7 +46,7 @@ namespace Building.Models
                     {
                         buildingName = "Floor Tile",
                         size = new Vector2(1, 1),
-                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 25) }
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 25) }
                     };
                     break;
                 case eBuildingType.Smelter:
@@ -54,16 +54,16 @@ namespace Building.Models
                     {
                         buildingName = "Smelter",
                         size = new Vector2(2, 2),
-                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 800) },
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 800) },
                         itemRecipes = new List<ItemRecipeModel>()
                             {
                                 new ItemRecipeModel("Iron",
-                                new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 200), new BuildingSupply(eItemType.Coal, 25) },
-                                new List<BuildingSupply>() { new BuildingSupply(eItemType.Iron, 25) },
+                                new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 200), new ItemObjectMass(eItemType.Coal, 25) },
+                                new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Iron, 25) },
                                 10 ),
                                 new ItemRecipeModel("Copper",
-                                new List<BuildingSupply>() { new BuildingSupply(eItemType.CopperOre, 200), new BuildingSupply(eItemType.Coal, 25) },
-                                new List<BuildingSupply>() { new BuildingSupply(eItemType.Copper, 100) },
+                                new List<ItemObjectMass>() { new ItemObjectMass(eItemType.CopperOre, 200), new ItemObjectMass(eItemType.Coal, 25) },
+                                new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Copper, 100) },
                                 10 )
                             }
 
@@ -74,7 +74,7 @@ namespace Building.Models
                     {
                         buildingName = "Torch",
                         size = new Vector2(1, 1),
-                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 50) }
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 50) }
                     };
                     break;
                 case eBuildingType.Wall:
@@ -83,7 +83,7 @@ namespace Building.Models
                         buildingName = "Wall",
                         size = new Vector2(1, 1),
                         wallType = eWallTypes.Stone,
-                        buildSupply = new List<BuildingSupply>() { new BuildingSupply(eItemType.Stone, 25) }
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 25) }
                     };
                     break;
             }

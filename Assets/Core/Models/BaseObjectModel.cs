@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Item.Models;
 using ObjectComponents;
 using UnityEngine;
 
@@ -8,20 +9,20 @@ namespace System
     {
         protected IList<ObjectComponent> objectComponents { get; set; }
         public Vector3Int position { get; set; }
-        public float spriteOffset {get;set;} = 0;
-        public decimal mass { get; set; }
-        public BaseObjectModel(Vector3Int _position, decimal _mass) : base()
+        public decimal mass { get { return this.GetObjectComponent<ObjectComposition>().GetMass(); } }
+        public float spriteOffset { get; set; } = 0;
+        public BaseObjectModel(Vector3Int _position, IList<ItemObjectMass> objectComp) : base()
         {
             this.position = _position;
-            this.mass = _mass;
             this.objectComponents = new List<ObjectComponent>();
+            this.objectComponents.Add(new ObjectComposition(objectComp));
         }
 
-        public T GetObjectComponent<T>() where T: ObjectComponent
+        public T GetObjectComponent<T>() where T : ObjectComponent
         {
-            for (int i = 0; i < this.objectComponents.Count ; i++)
+            for (int i = 0; i < this.objectComponents.Count; i++)
             {
-                if(this.objectComponents[i] is T)
+                if (this.objectComponents[i] is T)
                 {
                     return this.objectComponents[i] as T;
                 }

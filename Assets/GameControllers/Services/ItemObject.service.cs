@@ -35,7 +35,8 @@ namespace GameControllers.Services
             {
                 ItemObjectModel existingItem = _items.Find(existingitem =>
                 {
-                    return item.itemState == eItemState.OnGround &&
+                    return existingitem.itemState == eItemState.OnGround &&
+                            item.itemState == eItemState.OnGround &&
                             item.itemType == existingitem.itemType &&
                             item.position == existingitem.position;
                 });
@@ -45,7 +46,7 @@ namespace GameControllers.Services
                 }
                 else
                 {
-                    existingItem.MergeItemModel(item.mass);
+                    existingItem.AddMass(item.mass);
                 }
                 this.itemObseravable.Set(_items);
             }

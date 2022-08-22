@@ -19,12 +19,12 @@ namespace Building.Models
 
     public class ProductionSupplyOrder
     {
-        public ProductionSupplyOrder(ProductionSupplyOrderModel _buildSupplyOrder, BuildingSupply _buildSupply )
+        public ProductionSupplyOrder(ProductionSupplyOrderModel _buildSupplyOrder, ItemObjectMass _buildSupply )
         {
             currentBuildSupplyModel = _buildSupplyOrder;
             this.input = _buildSupply;
         }
         public ProductionSupplyOrderModel currentBuildSupplyModel { get; set; }
-        public BuildingSupply input {get;set;}
+        public ItemObjectMass input {get;set;}
     }
 }
