@@ -36,6 +36,9 @@ namespace Building
                 case eBuildingType.Wall:
                     newBuilding = new WallBuildingModel(_position, _buildingType, buildStats);
                     break;
+                case eBuildingType.Door:
+                    newBuilding = new DoorBuildingModel(_position, _buildingType, buildStats);
+                    break;
                 default:
                     newBuilding = null;
                     Debug.LogException(new System.Exception("Building Model Factory failed to build model as no legitmate building type was supplied"));

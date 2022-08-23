@@ -84,7 +84,7 @@ namespace Building
                                         new Vector3(this.buildingObjectModel.size.x * IEnvironmentService.TILE_WIDTH_PIXELS, this.buildingObjectModel.size.y * IEnvironmentService.TILE_WIDTH_PIXELS));
             bc.offset = new Vector3(((sr.bounds.size.x / IEnvironmentService.TILE_WIDTH_PIXELS) - this.buildingObjectModel.size.x) * -IEnvironmentService.TILE_WIDTH_PIXELS / 2,
                                     ((sr.bounds.size.y / IEnvironmentService.TILE_WIDTH_PIXELS) - this.buildingObjectModel.size.y) * -IEnvironmentService.TILE_WIDTH_PIXELS / 2);
-            bc.size = bounds.size;
+            bc.size = new Vector3(bounds.size.x / transform.localScale.x, bounds.size.y / transform.localScale.y);
         }
 
         protected virtual List<string> GenerateContextWindowBody()

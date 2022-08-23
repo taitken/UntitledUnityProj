@@ -53,4 +53,5 @@ MonoBehaviour:
   - {fileID: -5526388672013679580, guid: c5580864710d23241b8db847bd8125cd, type: 3}
   - {fileID: -6412042486152799529, guid: 2c2cbe4b5d07c0047ab110d89fff97a0, type: 3}
   - {fileID: -376832349318257434, guid: a4709f1701d338b4b96083dabc6c2186, type: 3}
+  - {fileID: -423987302994313888, guid: e07139b46df86d74b8aab3b59c01aa72, type: 3}
   buildGhostPrefab: {fileID: 9138618262794428890, guid: b5ea765ade9165c4586305b332c8d95b, type: 3}

@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83bbd0c8c3745934294a2e049ac95314, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  textBox: {fileID: 1050797249184293731}
 --- !u!1 &6142793505056587483
 GameObject:
   m_ObjectHideFlags: 0

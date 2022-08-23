@@ -14,7 +14,7 @@ namespace UI.Panel
         public PanelTabSection panelTabSection;
         public DetailsTab detailTab;
         public StorageTab storageTab;
-        
+
         public override void Construct(BasePanelModel panelWindowModel)
         {
             this.objectPanelModel = panelWindowModel as ObjectPanelModel;
@@ -29,12 +29,26 @@ namespace UI.Panel
         private void ConfigureTabs()
         {
             IList<(ePanelTabTypes, string)> tabs = new List<(ePanelTabTypes, string)>();
-            tabs.Add((ePanelTabTypes.Details, "Details"));
+            if (this.ConfigureDetailsTab()) tabs.Add((ePanelTabTypes.Details, "Details"));
             tabs.Add((ePanelTabTypes.Details, "Details2"));
             if (this.ConfigureStorageTab()) tabs.Add((ePanelTabTypes.Storage, "Storage"));
             this.panelTabSection.Initalise(this.GetComponent<Image>().rectTransform.sizeDelta.x - 2, tabs);
             this.panelTabSection.OnTabSelect.OnEmit(this.OnTabSelect);
             this.OnTabSelect(ePanelTabTypes.Details);
+        }
+
+        private bool ConfigureDetailsTab()
+        {
+            ObjectComposition objectComposition = this.objectPanelModel.objectModel.GetObjectComponent<ObjectComposition>();
+            if (objectComposition != null)
+            {
+                this.detailTab.Initalise(objectComposition);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         private bool ConfigureStorageTab()
