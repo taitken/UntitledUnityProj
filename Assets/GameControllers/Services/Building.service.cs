@@ -13,6 +13,7 @@ namespace GameControllers.Services
         public BuildingAssetController buildingAssetController { get; set; }
         public MonoObseravable<IList<BuildingObjectModel>> buildingObseravable { get; set; } = new MonoObseravable<IList<BuildingObjectModel>>(new List<BuildingObjectModel>());
         public MonoObseravable<BuildingObjectModel> newBuildingObservable { get; set; } = new MonoObseravable<BuildingObjectModel>(null);
+        public MonoObseravable<BuildingObjectModel> removedBuildingObservable { get; set; } = new MonoObseravable<BuildingObjectModel>(null);
         public MonoObseravable<IList<BuildSiteModel>> buildingSiteObseravable { get; set; } = new MonoObseravable<IList<BuildSiteModel>>(new List<BuildSiteModel>());
         private IList<StorageBuildingModel> storageBuilding { get { return this.buildingObseravable.Get().Filter(building => { return building is StorageBuildingModel; }).Map(storageBuilding => { return storageBuilding as StorageBuildingModel; }); } }
 
@@ -51,13 +52,20 @@ namespace GameControllers.Services
             }
         }
         public void RemoveBuilding(long id)
-        {
+        {   
+            BuildingObjectModel removedBuilding = this.buildingObseravable.Get().Find(building => { return building.ID == id; });
             this.buildingObseravable.Set(this.buildingObseravable.Get().Filter(building => { return building.ID != id; }));
+            this.removedBuildingObservable.Set(removedBuilding);
         }
 
         public void SubscribeToNewBuildingTrigger(MonoBehaviour2 monobehaviour, Action<BuildingObjectModel> _newBuilding)
         {
             this.newBuildingObservable.SubscribeQuietly(monobehaviour, _newBuilding);
+        }
+
+        public void SubscribeToRemovedBuildingTrigger(MonoBehaviour2 monobehaviour, Action<BuildingObjectModel> _newBuilding)
+        {
+            this.removedBuildingObservable.SubscribeQuietly(monobehaviour, _newBuilding);
         }
 
         public void AddBuildSite(BuildSiteModel buildSite)

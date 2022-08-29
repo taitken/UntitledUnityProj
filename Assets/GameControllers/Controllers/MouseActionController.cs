@@ -112,7 +112,7 @@ namespace GameControllers
 
         private void HandleLeftDragEnd()
         {
-            this.dragEvent.draggedObjects.ForEach(obj => { obj.GetComponent<MonoBehaviour2>().OnDragEnd(this.dragEvent); });
+            this.dragEvent.draggedObjects.ForEach(obj => { if(obj != null) obj.GetComponent<MonoBehaviour2>().OnDragEnd(this.dragEvent); });
             switch (this.currentMouseAction.mouseType)
             {
                 case eMouseAction.Build:

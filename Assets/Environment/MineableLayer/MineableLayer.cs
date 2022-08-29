@@ -6,6 +6,8 @@ using Environment.Models;
 using GameControllers.Services;
 using Extensions;
 using Zenject;
+using Building;
+using Building.Models;
 
 namespace Environment
 {
@@ -13,6 +15,7 @@ namespace Environment
     {
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
+        private IBuildingService buildingService;
         private MineableBlock.Factory hunkFactory;
         private MineableBlock[,] mineableBlocks;
 
@@ -20,11 +23,13 @@ namespace Environment
         public void Construct(IUnitOrderService _orderService,
                               MineableBlock.Factory _hunkFactory,
                               IEnvironmentService _environmentService,
+                              IBuildingService _buildingService,
                               LayerCollider.Factory _layerColliderFactory)
         {
             this.InitiliseMonoLayer(_layerColliderFactory, new Vector2(MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT), "MineableLayer");
             this.hunkFactory = _hunkFactory;
             this.orderService = _orderService;
+            this.buildingService = _buildingService;
             this.environmentService = _environmentService;
         }
 
@@ -48,6 +53,8 @@ namespace Environment
                     }
                 }
             });
+            this.buildingService.SubscribeToNewBuildingTrigger(this, newBuilding => { this.ReMapBlocksAround(newBuilding.position); });
+            this.buildingService.SubscribeToRemovedBuildingTrigger(this, removedBuilding => { this.ReMapBlocksAround(removedBuilding.position); });
         }
 
         // Update is called once per frame
@@ -120,21 +127,24 @@ namespace Environment
         private void ReMapSprites(MineableBlock[,] hunksToRefresh)
         {
             MineableBlock[,] hunkMapArray = this.mineableBlocks;
-            // Very inefficient implementation
-            // -- To redo
+            WallBuildingModel[,] buildingMap = new WallBuildingModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
+            this.buildingService.buildingObseravable.Get().Filter(wall => { return wall.buildingType == eBuildingType.Wall; }).ForEach(wall =>
+            {
+                buildingMap[wall.position.x, wall.position.y] = wall as WallBuildingModel;
+            });
             foreach (MineableBlock hunk in hunksToRefresh)
             {
                 if (hunk != null)
                 {
                     Vector3Int cellPos = this.tilemap.LocalToCell(hunk.gameObject.transform.localPosition);
-                    bool x0y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y + 1, hunkMapArray);
-                    bool x1y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y + 1, hunkMapArray);
-                    bool x2y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y + 1, hunkMapArray);
-                    bool x0y1 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y, hunkMapArray);
-                    bool x2y1 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y, hunkMapArray);
-                    bool x0y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y - 1, hunkMapArray);
-                    bool x1y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y - 1, hunkMapArray);
-                    bool x2y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y - 1, hunkMapArray);
+                    bool x0y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y + 1, hunkMapArray) || SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y + 1, buildingMap);
+                    bool x1y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y + 1, hunkMapArray) || SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y + 1, buildingMap);
+                    bool x2y0 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y + 1, hunkMapArray) || SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y + 1, buildingMap);
+                    bool x0y1 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y, hunkMapArray) || SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y, buildingMap);
+                    bool x2y1 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y, hunkMapArray) || SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y, buildingMap);
+                    bool x0y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y - 1, hunkMapArray) || SpriteTileMapping.HunkExistsInPosition(cellPos.x - 1, cellPos.y - 1, buildingMap);
+                    bool x1y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y - 1, hunkMapArray) || SpriteTileMapping.HunkExistsInPosition(cellPos.x, cellPos.y - 1, buildingMap);
+                    bool x2y2 = SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y - 1, hunkMapArray) || SpriteTileMapping.HunkExistsInPosition(cellPos.x + 1, cellPos.y - 1, buildingMap);
                     hunk.UpdateSprite(SpriteTileMapping.getMapping(x0y0, x1y0, x2y0, x0y1, x2y1, x0y2, x1y2, x2y2));
                 }
             }

@@ -68,8 +68,7 @@ namespace Characters
 
         void Update()
         {
-            this.unitModel.localPosition = new Vector3(this.gameObject.transform.position.x + this.unitModel.spriteOffset, this.gameObject.transform.position.y + this.unitModel.spriteOffset);
-            this.unitModel.position = this.environmentService.LocalToCell(this.unitModel.localPosition);
+            this.UpdatePositions();
         }
 
         protected void FixedUpdate()
@@ -97,6 +96,13 @@ namespace Characters
                     this.pathingLine.UpdateLine(newLinePath);
                 }
             }
+        }
+
+        private void UpdatePositions()
+        {
+            this.unitModel.localPosition = new Vector3(this.gameObject.transform.position.x + this.unitModel.spriteOffset, this.gameObject.transform.position.y + this.unitModel.spriteOffset);
+            this.unitModel.position = this.environmentService.LocalToCell(this.unitModel.localPosition);
+            if(this.unitModel.carriedItem != null) this.unitModel.carriedItem.position = this.unitModel.position;
         }
 
         private void HandleOrderUpdates(IList<UnitOrderModel> orders)
