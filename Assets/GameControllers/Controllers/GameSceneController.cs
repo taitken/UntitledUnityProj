@@ -12,6 +12,7 @@ namespace GameControllers
         public ActionController actionController;
         public MouseActionController mouseActionController;
         public GameMapController gameMapController;
+        public DayCycleController dayCycleController;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private IBuildingService buildingService;

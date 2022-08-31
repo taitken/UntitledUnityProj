@@ -47,6 +47,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<IUnitOrderService>().To<UnitOrderService>().AsSingle();
         Container.Bind<IUnitService>().To<UnitService>().AsSingle();
         Container.Bind<IPathFinderService>().To<PathFinderService>().AsSingle();
+        Container.Bind<IDayCycleService>().To<DayCycleService>().AsSingle();
         Container.Bind<IEnvironmentService>().To<EnvironmentService>().AsSingle().OnInstantiated<EnvironmentService>((ctx, service) => { service.SetMineableBlockAssetController(mineableBlockAssetController); });
         Container.Bind<IBuildingService>().To<BuildingService>().AsSingle().OnInstantiated<BuildingService>((ctx, service) => { service.SetBuildingAssetController(BuildingAssetController); });
         Container.Bind<IItemObjectService>().To<ItemObjectService>().AsSingle().OnInstantiated<ItemObjectService>((ctx, service) =>
