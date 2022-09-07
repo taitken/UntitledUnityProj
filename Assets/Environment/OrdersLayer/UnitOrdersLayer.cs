@@ -39,7 +39,8 @@ namespace Environment
 
         public override void OnDrag(DragEventModel dragEvent)
         {
-            if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Build && this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.FloorTile ||
+            if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Build 
+                && (this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.FloorTile || this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.FarmPlot) ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Dig ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Store ||
                 this.orderService.mouseAction.Get().mouseType == eMouseAction.Deconstruct ||

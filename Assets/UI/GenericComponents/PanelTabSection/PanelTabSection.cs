@@ -12,16 +12,16 @@ namespace UI.Panel
     public class PanelTabSection : MonoBehaviour2
     {
         public Image border;
-        public EventEmitter<ePanelTabTypes> OnTabSelect = new EventEmitter<ePanelTabTypes>();
+        public EventEmitter<BaseTabContent> OnTabSelect = new EventEmitter<BaseTabContent>();
         public PanelTabBackground background;
         public TextMeshProUGUI label;
         private Vector2 defaultBackgroundSize;
         private IList<TabSectionModel> sections { get; set; } = new List<TabSectionModel>();
         // Start is called before the first frame update
 
-        public void Initalise(float width, IList<(ePanelTabTypes, string)> sectionTypes)
+        public void Initalise(float width, IList<(BaseTabContent, string)> contentTabs)
         {
-            float newWidth = width / sectionTypes.Count;
+            float newWidth = width / contentTabs.Count;
 
             this.background = Instantiate(this.background);
             this.background.transform.SetParent(this.transform);
@@ -30,10 +30,10 @@ namespace UI.Panel
             this.sections.Add(tabSectionPrefab);
 
             this.defaultBackgroundSize = new Vector2(newWidth - 2, this.background.GetComponent<Image>().rectTransform.sizeDelta.y);
-            this.label.SetText(sectionTypes[0].Item2);
-            for (int i = 0; i < sectionTypes.Count - 1; i++)
+            this.label.SetText(contentTabs[0].Item2);
+            for (int i = 0; i < contentTabs.Count - 1; i++)
             {
-                this.sections.Add(tabSectionPrefab.Copy(this.transform, sectionTypes[i + 1].Item2));
+                this.sections.Add(tabSectionPrefab.Copy(this.transform, contentTabs[i + 1].Item2));
             }
             this.sections.ForEach((section, index) =>
             {
@@ -41,7 +41,7 @@ namespace UI.Panel
                 {
                     this.sections.ForEach(existingRT => { existingRT.background.GetComponent<Image>().rectTransform.sizeDelta = this.defaultBackgroundSize; });
                     tab.GetComponent<Image>().rectTransform.sizeDelta = new Vector2(tab.GetComponent<Image>().rectTransform.sizeDelta.x, tab.GetComponent<Image>().rectTransform.sizeDelta.y + 2);
-                    this.OnTabSelect.Emit(sectionTypes[index].Item1);
+                    this.OnTabSelect.Emit(contentTabs[index].Item1);
                 });
                 RectTransform borderRT = section.border.GetComponent<RectTransform>();
                 RectTransform backgroundRT = section.background.GetComponent<RectTransform>();

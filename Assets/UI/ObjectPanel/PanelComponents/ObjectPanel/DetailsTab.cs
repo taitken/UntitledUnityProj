@@ -7,7 +7,7 @@ using UtilityClasses;
 
 namespace UI.Panel
 {
-    public class DetailsTab : MonoBehaviour2
+    public class DetailsTab : BaseTabContent
     {
         public TextMeshProUGUI textBox;
         private ObjectComposition objectComposition;

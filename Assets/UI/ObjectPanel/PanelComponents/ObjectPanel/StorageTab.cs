@@ -7,7 +7,7 @@ using UtilityClasses;
 
 namespace UI.Panel
 {
-    public class StorageTab : MonoBehaviour2
+    public class StorageTab : BaseTabContent
     {
         public TextMeshProUGUI textBox;
         private ObjectStorage storageComponent;

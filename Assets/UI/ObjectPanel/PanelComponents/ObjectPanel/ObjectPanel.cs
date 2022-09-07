@@ -11,7 +11,7 @@ namespace UI.Panel
     public class ObjectPanel : BasePanel
     {
         private ObjectPanelModel objectPanelModel;
-        public PanelTabSection panelTabSection;
+        public PanelWindow panelWindow;
         public DetailsTab detailTab;
         public StorageTab storageTab;
 
@@ -28,13 +28,11 @@ namespace UI.Panel
 
         private void ConfigureTabs()
         {
-            IList<(ePanelTabTypes, string)> tabs = new List<(ePanelTabTypes, string)>();
-            if (this.ConfigureDetailsTab()) tabs.Add((ePanelTabTypes.Details, "Details"));
-            tabs.Add((ePanelTabTypes.Details, "Details2"));
-            if (this.ConfigureStorageTab()) tabs.Add((ePanelTabTypes.Storage, "Storage"));
-            this.panelTabSection.Initalise(this.GetComponent<Image>().rectTransform.sizeDelta.x - 2, tabs);
-            this.panelTabSection.OnTabSelect.OnEmit(this.OnTabSelect);
-            this.OnTabSelect(ePanelTabTypes.Details);
+            IList<(BaseTabContent, string)> tabs = new List<(BaseTabContent, string)>();
+            if (this.ConfigureDetailsTab()) tabs.Add((this.detailTab, "Details"));
+            tabs.Add((this.detailTab, "Details2"));
+            if (this.ConfigureStorageTab()) tabs.Add((this.storageTab, "Storage"));
+            this.panelWindow.Initialise(tabs);
         }
 
         private bool ConfigureDetailsTab()
@@ -62,21 +60,6 @@ namespace UI.Panel
             else
             {
                 return false;
-            }
-        }
-
-        private void OnTabSelect(ePanelTabTypes tabSelected)
-        {
-            this.detailTab.gameObject.SetActive(false);
-            this.storageTab.gameObject.SetActive(false);
-            switch (tabSelected)
-            {
-                case ePanelTabTypes.Details:
-                    this.detailTab.gameObject.SetActive(true);
-                    break;
-                case ePanelTabTypes.Storage:
-                    this.storageTab.gameObject.SetActive(true);
-                    break;
             }
         }
     }

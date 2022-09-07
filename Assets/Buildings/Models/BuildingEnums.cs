@@ -13,7 +13,8 @@ namespace Building.Models
         Smelter,
         Torch,
         Wall,
-        Door
+        Door,
+        FarmPlot
     }
 
     public class BuildingStatsModel
@@ -95,6 +96,14 @@ namespace Building.Models
                         size = new Vector2(1, 1),
                         doorType = eDoorTypes.Stone,
                         buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 200) }
+                    };
+                    break;
+                case eBuildingType.FarmPlot:
+                    buildingStats = new BuildingStatsModel
+                    {
+                        buildingName = "Farm Plot",
+                        size = new Vector2(1, 1),
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 100) }
                     };
                     break;
             }

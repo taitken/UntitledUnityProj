@@ -139,9 +139,10 @@ namespace Environment
 
         public override void OnDragEnd(DragEventModel dragEvent)
         {
-            if (this.mouseAction.mouseType == eMouseAction.Build && this.mouseAction.buildingType == eBuildingType.FloorTile)
+            if (this.mouseAction.mouseType == eMouseAction.Build &&
+                (this.mouseAction.buildingType == eBuildingType.FloorTile || this.mouseAction.buildingType == eBuildingType.FarmPlot))
             {
-                this.HandleFloorDragEnd(dragEvent);
+                this.HandleAreaBuild(dragEvent);
             }
             if (this.mouseAction.mouseType == eMouseAction.Build && this.mouseAction.buildingType == eBuildingType.Wall)
             {
@@ -149,7 +150,7 @@ namespace Environment
             }
         }
 
-        private void HandleFloorDragEnd(DragEventModel dragEvent)
+        private void HandleAreaBuild(DragEventModel dragEvent)
         {
             Vector3Int startPos = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.initialDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));
             Vector3Int endPos = this.environmentService.LocalToCell(new Vector3(dragEvent.currentDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.currentDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));

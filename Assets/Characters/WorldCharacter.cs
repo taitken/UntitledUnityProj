@@ -191,6 +191,7 @@ namespace Characters
             {
                 this.carriedObj = itemObj;
                 itemObj.transform.SetParent(this.transform);
+                itemObj.transform.localPosition = new Vector3(0,0,0);
             }
         }
 
