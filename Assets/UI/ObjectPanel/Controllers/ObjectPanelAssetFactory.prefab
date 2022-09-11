@@ -46,4 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panelPrefabs:
   - {fileID: -8479398082642375778, guid: 63d85d91c63e73045ae1d938eb4c81c8, type: 3}
-  - {fileID: 1900678791490852507, guid: b0c8353935bb4fd44bfaf4f64a71f557, type: 3}
+  - {fileID: 1066595904193716362, guid: fa73a4b543fe203489b880b8f19e82f9, type: 3}
+  - {fileID: 309431975226453081, guid: 2a6851c742556964f960abd2c08daf7a, type: 3}

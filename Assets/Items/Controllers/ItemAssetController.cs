@@ -11,7 +11,6 @@ namespace GameControllers
 {
     public class ItemAssetController : MonoBehaviour2
     {
-
         public List<Sprite> itemSprites;
 
         [Inject]
@@ -35,7 +34,7 @@ namespace GameControllers
 
         private void ThrowMissingItemError(eItemType itemType)
         {
-                Debug.LogException(new System.Exception("Chosen item prefab has not been added to the Item Asset Controller. Attemped type: " + itemType.ToString()));
+            Debug.LogException(new System.Exception("Chosen item prefab has not been added to the Item Asset Controller. Attemped type: " + itemType.ToString()));
         }
     }
 }

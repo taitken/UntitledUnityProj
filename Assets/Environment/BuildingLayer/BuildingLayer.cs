@@ -180,7 +180,7 @@ namespace Environment
             && !this.orderService.IsExistingOrderAtLocation(coordinates)
             && (this.mouseAction.buildingType != eBuildingType.FloorTile || this.buildingService.IsFloorSpaceAvailable(coordinates)))
             {
-                BuildingTypeStats.GetBuildingStats(this.mouseAction.buildingType).buildSupply.ForEach(requiredItem =>
+                BuildingStatsLibrary.GetBuildingStats(this.mouseAction.buildingType).buildSupply.ForEach(requiredItem =>
                 {
                     this.orderService.AddOrder(new BuildSupplyOrderModel(coordinates, requiredItem.itemType, requiredItem.mass, this.mouseAction.buildingType));
                 });
@@ -189,7 +189,7 @@ namespace Environment
 
         private void ShowBuildGhost(eBuildingType _buildingType)
         {
-            BuildingStatsModel buildStats = BuildingTypeStats.GetBuildingStats(_buildingType);
+            BuildingStatsModel buildStats = BuildingStatsLibrary.GetBuildingStats(_buildingType);
             if (this.ghostBuilding == null)
             {
                 this.ghostBuilding = this.buildingService.GetBuildingGhostPrefab(_buildingType);

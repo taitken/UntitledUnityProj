@@ -7,7 +7,8 @@ namespace UI.Models
     public enum ePanelTypes
     {
         ObjectInfo,
-        RecipeSelector
+        RecipeSelector,
+        SeedSelector
     }
 }
 

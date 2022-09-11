@@ -5,9 +5,8 @@ using Item.Models;
 
 namespace Building
 {
-    public class FarmPlot : BuildingObject
+    public class FarmPlot : GrowerBuildingObject
     {
-        public GrowerBuildingModel growerBuildingModel;
         protected override void OnCreation()
         {
             this.growerBuildingModel = this.buildingObjectModel as GrowerBuildingModel;

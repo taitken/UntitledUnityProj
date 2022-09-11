@@ -10,7 +10,9 @@ namespace Item.Models
         Coal,
         CopperOre,
         Copper,
-        OrganicMass
+        OrganicMass,
+        Acorn,
+        
     }
 }
 

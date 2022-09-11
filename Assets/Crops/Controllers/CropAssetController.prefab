@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1033596291329692551}
-  - component: {fileID: -4515043457546939891}
+  - component: {fileID: 2589930850606040896}
   m_Layer: 0
-  m_Name: ItemAssetController
+  m_Name: CropAssetController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-4515043457546939891
+--- !u!114 &2589930850606040896
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,12 +41,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 594482890390587726}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07071feeae8fb374695d08d0f51be63e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6945f42e97db94b41b36092538162959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSprites:
-  - {fileID: 1469512341, guid: 0720cbab5a509964ba2063518497d4d8, type: 3}
-  - {fileID: -403898891, guid: f0941becac4a72a4da130e3b5ef17130, type: 3}
-  - {fileID: 1926064115, guid: 7c9f7c789ec5cc04989019f106ff9cc7, type: 3}
-  - {fileID: -1707727506, guid: 7c9f7c789ec5cc04989019f106ff9cc7, type: 3}
-  - {fileID: -1903627656, guid: 7c9f7c789ec5cc04989019f106ff9cc7, type: 3}
+  seedSpriteSheets:
+  - {fileID: 2800000, guid: 27e3667bdd82cb442959f42939115c17, type: 3}
+  - {fileID: 2800000, guid: 89f8f8d847d0897418d7bc211d0d5130, type: 3}
+  - {fileID: 2800000, guid: 4420da498d4a9654f8321623a5579e06, type: 3}
+  - {fileID: 2800000, guid: 106e6ed39c4047a4a864654a16d6b1fd, type: 3}
+  - {fileID: 2800000, guid: dab0b2ba95fb0de47a740ed2d621bc16, type: 3}
+  - {fileID: 2800000, guid: 8ec21e5d53732ef4aa5517cd29505626, type: 3}
+  - {fileID: 2800000, guid: 94e25d97d427ded45bfcdaf53a44acc5, type: 3}
+  - {fileID: 2800000, guid: e03840bf2d08af6488d05e5da4040cce, type: 3}
+  - {fileID: 2800000, guid: 4c407ef11ef65bb4980fbc438e75498e, type: 3}
+  - {fileID: 2800000, guid: 34d5994d829bb78429863729deb2f751, type: 3}
+  - {fileID: 2800000, guid: 92fbb0d4fb309f44394dd8c0dafb29cf, type: 3}
+  - {fileID: 2800000, guid: c21e725dadab64344975f0b17884eac0, type: 3}

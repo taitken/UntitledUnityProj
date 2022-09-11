@@ -1,10 +1,6 @@
 using System;
-using GameControllers.Models;
-using GameControllers.Services;
 using Building.Models;
 using UnityEngine;
-using Item.Models;
-using System.Collections.Generic;
 
 namespace Building
 {
@@ -18,7 +14,7 @@ namespace Building
         public BuildingObjectModel CreateBuildingModel(Vector3Int _position, eBuildingType _buildingType)
         {
             BuildingObjectModel newBuilding;
-            BuildingStatsModel buildStats = BuildingTypeStats.GetBuildingStats(_buildingType);
+            BuildingStatsModel buildStats = BuildingStatsLibrary.GetBuildingStats(_buildingType);
             switch (_buildingType)
             {
                 case eBuildingType.Chest:

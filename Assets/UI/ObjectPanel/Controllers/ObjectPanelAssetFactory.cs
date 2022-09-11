@@ -27,6 +27,9 @@ namespace UI
                     case ePanelTypes.RecipeSelector:
                         newPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(-413, 270);
                         break;
+                    case ePanelTypes.SeedSelector:
+                        newPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(-413, 270);
+                        break;
                 }
                 return newPanel;
             }
