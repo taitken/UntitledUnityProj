@@ -14,13 +14,21 @@ namespace UI
     {
         private IUiPanelService uiPanelService;
         private IList<BasePanel> panels = new List<BasePanel>();
-        private IItemObjectService itemService;
+        private IList<IBaseService> services;
         [Inject]
-        public void Construct(IUiPanelService _contextService, IItemObjectService _itemService)
+        public void Construct(IUiPanelService _contextService, 
+                              IItemObjectService _itemService,  
+                              IBuildingService _buildingService, 
+                              IUnitOrderService _unitOrderService, 
+                              ICropService _cropService)
         {
+            this.services = new List<IBaseService>();
             this.uiPanelService = _contextService;
-            this.itemService = _itemService;
             this.uiPanelService.selectedObjectPanels.SubscribeQuietly(this, this.OnObjectSelected);
+            this.services.Add(_itemService);
+            this.services.Add(_buildingService);
+            this.services.Add(_unitOrderService);
+            this.services.Add(_cropService);
         }
         // Start is called before the first frame update
         void Start()
@@ -35,7 +43,7 @@ namespace UI
             {
                 panels.ForEach(panel =>
                 {
-                    BasePanel newPanel = this.uiPanelService.GetPanelAssetFactory().CreatePanelWindow(this.GetComponent<RectTransform>(), panel, this.itemService);
+                    BasePanel newPanel = this.uiPanelService.GetPanelAssetFactory().CreatePanelWindow(this.GetComponent<RectTransform>(), panel, this.services);
                     this.panels.Add(newPanel);
                 });
 

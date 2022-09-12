@@ -18,6 +18,8 @@ using UI.Services;
 using UI.Models;
 using Unit.Models;
 using UtilityClasses;
+using Crops.Models;
+using Crops;
 
 public class GameInstaller : MonoInstaller
 {
@@ -26,6 +28,7 @@ public class GameInstaller : MonoInstaller
     public GameObject OrderIconPrefab;
     public GameObject CharacterPathLine;
     public GameObject ItemObject;
+    public GameObject CropObject;
     public GameObject ObjectContextWindow;
     public GameObject ItemList;
     public GameObject LayerCollider;
@@ -33,6 +36,7 @@ public class GameInstaller : MonoInstaller
     public GameObject OrderSelectionPrefab;
     public MineableBlockAssetController mineableBlockAssetController;
     public BuildingAssetController BuildingAssetController;
+    public CropAssetController CropAssetController;
     public ContextAssetFactory ContextAssetFactory;
     public ObjectPanelAssetFactory ObjectPanelAssetFactory;
     public ItemAssetController ItemAssetController;
@@ -50,6 +54,7 @@ public class GameInstaller : MonoInstaller
         Container.Bind<IDayCycleService>().To<DayCycleService>().AsSingle();
         Container.Bind<IEnvironmentService>().To<EnvironmentService>().AsSingle().OnInstantiated<EnvironmentService>((ctx, service) => { service.SetMineableBlockAssetController(mineableBlockAssetController); });
         Container.Bind<IBuildingService>().To<BuildingService>().AsSingle().OnInstantiated<BuildingService>((ctx, service) => { service.SetBuildingAssetController(BuildingAssetController); });
+        Container.Bind<ICropService>().To<CropService>().AsSingle().OnInstantiated<CropService>((ctx, service) => { service.SetCropAssetController(CropAssetController); });
         Container.Bind<IItemObjectService>().To<ItemObjectService>().AsSingle().OnInstantiated<ItemObjectService>((ctx, service) =>
         {
             service.SetItemObjectHook(() => { return this.ItemObjectLayer.GetItemObjects(); });
@@ -61,6 +66,7 @@ public class GameInstaller : MonoInstaller
         Container.BindFactory<MineableObjectModel, MineableBlock, MineableBlock.Factory>().FromComponentInNewPrefab(MineableBlockPrefab);
         Container.BindFactory<UnitOrderModel, OrderIcon, OrderIcon.Factory>().FromComponentInNewPrefab(OrderIconPrefab);
         Container.BindFactory<ItemObjectModel, ItemObject, ItemObject.Factory>().FromComponentInNewPrefab(ItemObject);
+        Container.BindFactory<CropObjectModel, CropObject, CropObject.Factory>().FromComponentInNewPrefab(CropObject);
         Container.BindFactory<IList<Vector3>, CharacterPathLine, CharacterPathLine.Factory>().FromComponentInNewPrefab(CharacterPathLine);
         Container.BindFactory<Vector2, string, IList<Action>, IList<Action<DragEventModel>>, LayerCollider, LayerCollider.Factory>().FromComponentInNewPrefab(LayerCollider);
         Container.BindFactory<BuildSiteModel, BuildSiteObject, BuildSiteObject.Factory>().FromComponentInNewPrefab(BuildSiteObject);

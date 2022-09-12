@@ -15,23 +15,16 @@ namespace UI.Panel
     {
         public Color originalColour;
         public GameObject background;
-        private AllocatedItemRecipe allocatedItemRecipe;
-        public TextMeshProUGUI recipeCounter;
-        public TextMeshProUGUI itemName;
+        public TextMeshProUGUI cropName;
+        public ItemThumbnail cropThumbnail;
+        private bool selected;
         // Start is called before the first frame update
 
-        public void Construct(AllocatedItemRecipe _allocatedItemRecipe)
+        public void Initialise(string _itemName, Sprite _itemThumbnail)
         {
-            this.allocatedItemRecipe = _allocatedItemRecipe;
-            this.itemName.SetText(this.allocatedItemRecipe.recipe.recipeName);
-            this.recipeCounter.SetText(this.allocatedItemRecipe.counter.ToString());
-        }
-
-        private void IncrementRecipeCounterVal(int increment)
-        {
-            int number = Math.Max(0, int.Parse(this.recipeCounter.text) + increment);
-            this.recipeCounter.SetText(number.ToString());
-            this.allocatedItemRecipe.counter = number;
+            this.selected = false;
+            this.cropName.SetText(_itemName);
+            this.cropThumbnail.SetImage(_itemThumbnail);
         }
 
         public void OnMouseClick()
@@ -44,7 +37,7 @@ namespace UI.Panel
             MouseIconSingleton.SetCursorTexure(GameControllers.Models.eMouseAction.Pointer);
             this.originalColour = this.background.GetComponent<Image>().color;
             this.background.GetComponent<Image>().color = this.originalColour;
-            this.background.GetComponent<Image>().color = new Color(0.9765f, 0.9765f, 0.9765f);
+            this.background.GetComponent<Image>().color = new Color(0.96f, 1, 0.985f);
         }
         public override void OnMouseExit()
         {

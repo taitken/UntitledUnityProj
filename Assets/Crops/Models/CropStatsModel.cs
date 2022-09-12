@@ -8,9 +8,11 @@ namespace Crops.Models
 {
     public class CropStatsModel
     {
+        public string cropName { get; set; }
         public float growTime { get; set; }
         public IList<ItemObjectMass> producedItems { get; set; }
         public Sprite[] sprites { get; set; }
+        public eCropType cropType { get; set; }
     }
 }
 

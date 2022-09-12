@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6945f42e97db94b41b36092538162959, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seedSpriteSheets:
+  cropPrefab: {fileID: 0}
+  cropSpritesSheets:
   - {fileID: 2800000, guid: 27e3667bdd82cb442959f42939115c17, type: 3}
   - {fileID: 2800000, guid: 89f8f8d847d0897418d7bc211d0d5130, type: 3}
   - {fileID: 2800000, guid: 4420da498d4a9654f8321623a5579e06, type: 3}

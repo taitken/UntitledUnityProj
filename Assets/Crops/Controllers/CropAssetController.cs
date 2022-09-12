@@ -7,70 +7,39 @@ using Zenject;
 using Environment.Models;
 using UtilityClasses;
 using Crops;
+using Crops.Models;
 
 namespace GameControllers
 {
     public class CropAssetController : MonoBehaviour2
     {
-        public Texture2D[] seedSpriteSheets;
-        public Sprite[][] seedSprites;
-
+        public Texture2D[] cropSpritesSheets;
+        public Sprite[][] cropSprites;
         public void Initialise()
         {
-            this.seedSprites = new Sprite[seedSpriteSheets.Length][];
-            this.seedSpriteSheets.ForEach((sheet, index) =>
+            this.cropSprites = new Sprite[cropSpritesSheets.Length][];
+            this.cropSpritesSheets.ForEach((sheet, index) =>
             {
-                this.seedSprites[index] = Resources.LoadAll<Sprite>(sheet.name);
+                this.cropSprites[index] = Resources.LoadAll<Sprite>(sheet.name);
             });
         }
 
-        // public BuildingObject GetBuildingPrefab(eBuildingType buildingType)
-        // {
-        //     if (this.buildingPrefabs.Count > (int)buildingType)
-        //     {
-        //         return this.buildingPrefabs[(int)buildingType] as BuildingObject;
-        //     }
-        //     else
-        //     {
-        //         this.ThrowMissingPrefabError(buildingType);
-        //         return null;
-        //     }
-        // }
+        public Sprite[] GetCropSpriteSet(eCropType cropType)
+        {
+            if (this.cropSprites.Length > (int)cropType)
+            {
+                return this.cropSprites[(int)cropType];
+            }
+            else
+            {
+                this.ThrowMissingSpriteError(cropType);
+                return null;
+            }
+        }
 
-        // public SpriteRenderer GetBuildingSprite(eBuildingType buildingType)
-        // {
-        //     if (this.buildingPrefabs.Count > (int)buildingType)
-        //     {
-        //         return this.buildingPrefabs[(int)buildingType].gameObject.GetComponent<SpriteRenderer>();
-        //     }
-        //     else
-        //     {
-        //         this.ThrowMissingPrefabError(buildingType);
-        //         return null;
-        //     }
-        // }
-
-        // public Sprite[] GetWallSpriteSet(eWallTypes wallType)
-        // {
-        //     if (this.wallSprites.Length > (int)wallType)
-        //     {
-        //         return this.wallSprites[(int)wallType];
-        //     }
-        //     else
-        //     {
-        //         this.ThrowMissingSpriteError(wallType);
-        //         return null;
-        //     }
-        // }
-
-        // private void ThrowMissingSpriteError(eWallTypes wallType)
-        // {
-        //     Debug.LogException(new System.Exception("Chosen wall type sprite set has not been added to the Wall Asset Controller. Attemped type: " + wallType.ToString()));
-        // }
-
-        // private void ThrowMissingPrefabError(eBuildingType buildingType)
-        // {
-        //     Debug.LogException(new System.Exception("Chosen building prefab has not been added to the Building Asset Controller. Attemped type: " + buildingType.ToString()));
-        // }
+        private void ThrowMissingSpriteError(eCropType cropType)
+        {
+            Debug.LogException(new System.Exception("Chosen crop type sprite set has not been added to the Crop Asset Controller. Attemped type: " + cropType.ToString()));
+        }
     }
 }

@@ -167,7 +167,7 @@ MonoBehaviour:
   BuildingAssetController: {fileID: 4649490261548486794, guid: d4cd166f806427248920d6967e20c57b, type: 3}
   ContextAssetFactory: {fileID: 5320498567221088340, guid: 0eb3aaddfea65ac4ea0628adf770c273, type: 3}
   ObjectPanelAssetFactory: {fileID: 6473043570781843, guid: 801345b3717fc514cb89190f69fb9ce2, type: 3}
-  ItemAssetController: {fileID: -4515043457546939891, guid: 609aae676c46bd443b6d280e1f8f8f55, type: 3}
+  ItemAssetController: {fileID: 1908640304627590238, guid: 609aae676c46bd443b6d280e1f8f8f55, type: 3}
   ItemObjectLayer: {fileID: 746842677}
   mouseIconController: {fileID: 7792391620747549597, guid: 6cc4ab549dceb6544ad4b6c09fe6200e, type: 3}
 --- !u!114 &156683541

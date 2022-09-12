@@ -5,8 +5,10 @@ namespace Crops.Models
 {
     public enum eCropType
     {
-        Acorn,
-        Flower
+        Blumberry,
+        Pubberbill,
+        Grunberry,
+        Luttipod
     }
 }
 

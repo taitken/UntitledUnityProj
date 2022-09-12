@@ -110,5 +110,22 @@ namespace UnityEngine
             this.BeforeDeath();
             Destroy(gameObject);
         }
+
+        protected T GetService<T>(IList<IBaseService> _services) where T : IBaseService
+        {
+            T returnService = default(T);
+            try
+            {
+                returnService = (T)_services.Find(service =>
+                {
+                    return typeof(T).IsAssignableFrom(service.GetType());
+                });
+            }
+            catch (System.Exception)
+            {
+                Debug.LogException(new System.Exception("Service type does not exist in the provided service list. Attemped type: " + typeof(T).ToString()));
+            }
+            return returnService;
+        }
     }
 }

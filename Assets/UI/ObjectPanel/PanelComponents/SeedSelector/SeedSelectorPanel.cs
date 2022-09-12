@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameControllers.Services;
 using TMPro;
-using UI.GenericComponents;
 using UI.Models;
-using UnityEngine;
-using UnityEngine.UI;
 
 namespace UI.Panel
 {
@@ -20,7 +18,7 @@ namespace UI.Panel
             {
                 if (text.tag == "UiHeader") text.SetText(recipePanelModel.title);
             });
-            this.seedSelector.Initalise(recipePanelModel);
+            this.seedSelector.Initalise(recipePanelModel, this.GetService<IItemObjectService>(), this.GetService<ICropService>());
         }
     }
 }
