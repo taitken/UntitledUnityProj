@@ -63,7 +63,7 @@ namespace Environment
         private CropObject CreateCrop(CropObjectModel cropModel)
         {
             CropObject newCropObject = this.cropFactory.Create(cropModel);
-            newCropObject.transform.position = cropModel.position;
+            newCropObject.transform.position = this.envService.CellToLocal(cropModel.position);
             return newCropObject;
         }
     }

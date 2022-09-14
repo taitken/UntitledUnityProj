@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 6730490154780963502}
   - component: {fileID: 3547499385871852735}
   - component: {fileID: 8287215454203060993}
-  - component: {fileID: -6053363609582272189}
-  m_Layer: 11
-  m_Name: CharacterLayer
+  - component: {fileID: 4280047860684755125}
+  m_Layer: 13
+  m_Name: CropLayer
   m_TagString: AllowMovement
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138,7 +138,7 @@ TilemapCollider2D:
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
   m_ExtrusionFactor: 0.00001
---- !u!114 &-6053363609582272189
+--- !u!114 &4280047860684755125
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -147,6 +147,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 4430207392527310350}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 373d61fc67e57354a9ed5b389f097111, type: 3}
+  m_Script: {fileID: 11500000, guid: 9d56b6a01f680d04da3e05799b72bb86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

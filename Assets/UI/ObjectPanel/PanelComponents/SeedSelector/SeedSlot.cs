@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Building.Models;
+using Crops.Models;
 using TMPro;
 using UI.GenericComponents;
 using UI.Models;
@@ -14,30 +15,40 @@ namespace UI.Panel
     public class SeedSlot : MonoBehaviour2
     {
         public Color originalColour;
+        public Color highlightedColor;
         public GameObject background;
         public TextMeshProUGUI cropName;
         public ItemThumbnail cropThumbnail;
-        private bool selected;
+        public eCropType cropType;
+        public EventEmitter<eCropType?> onCropTypeSelectEmitter = new EventEmitter<eCropType?>();
         // Start is called before the first frame update
 
-        public void Initialise(string _itemName, Sprite _itemThumbnail)
+        public void Initialise(string _itemName, Sprite _itemThumbnail, eCropType _cropType)
         {
-            this.selected = false;
+            this.originalColour = this.background.GetComponent<Image>().color;
+            this.cropType = _cropType;
             this.cropName.SetText(_itemName);
             this.cropThumbnail.SetImage(_itemThumbnail);
         }
 
         public void OnMouseClick()
         {
+            this.onCropTypeSelectEmitter.Emit(this.cropType);
+        }
 
+        public void SetBackgroundColor(Color newColor)
+        {
+            this.originalColour = newColor;
+            if(this.background.GetComponent<Image>().color != this.highlightedColor)
+            {
+                this.background.GetComponent<Image>().color = newColor;
+            }
         }
 
         public override void OnMouseEnter()
         {
             MouseIconSingleton.SetCursorTexure(GameControllers.Models.eMouseAction.Pointer);
-            this.originalColour = this.background.GetComponent<Image>().color;
-            this.background.GetComponent<Image>().color = this.originalColour;
-            this.background.GetComponent<Image>().color = new Color(0.96f, 1, 0.985f);
+            this.background.GetComponent<Image>().color = this.highlightedColor;
         }
         public override void OnMouseExit()
         {

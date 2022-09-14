@@ -91,6 +91,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seedSlotPrefab: {fileID: 436018330919947446}
+  defaultBG: {r: 1, g: 1, b: 1, a: 1}
+  selectedBG: {r: 0.7783019, g: 0.9286315, b: 1, a: 1}
 --- !u!1001 &4610680407779004503
 PrefabInstance:
   m_ObjectHideFlags: 0

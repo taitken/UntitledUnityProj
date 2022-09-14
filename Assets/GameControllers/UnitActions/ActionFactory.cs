@@ -53,7 +53,6 @@ namespace UnitAction
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
                         .Then(() => { return new PlantSeedAction(_unit, this.cropService, this.itemService); });
                     break;
-
                 case eOrderTypes.BuildSupply:
                     BuildSupplyOrderModel buildSupplyOrder = _unit.currentOrder as BuildSupplyOrderModel;
                     ItemObjectModel bsItem = this.itemService.FindClosestItem(buildSupplyOrder.itemType, _unit.position);

@@ -50,7 +50,7 @@ namespace UnitAction
             else
             {
                 CropObjectModel newCrop = new CropObjectModel(this.cropPlantOrder.coordinates, new ItemObjectMass(eItemType.OrganicMass, 1));
-                this.cropPlantOrder.growerBuilding.PlantCrop(newCrop); 
+                this.cropPlantOrder.growerBuilding.cropObject = newCrop; 
                 this.cropService.AddCrop(newCrop);
                 this.completed = true;
             }
