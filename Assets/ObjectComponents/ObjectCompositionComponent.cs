@@ -5,10 +5,10 @@ using Item.Models;
 
 namespace ObjectComponents
 {
-    public class ObjectComposition : ObjectComponent
+    public class ObjectCompositionComponent : ObjectComponent
     {
         private IList<ItemObjectMass> objectComposition;
-        public ObjectComposition(IList<ItemObjectMass> _objectComposition) : base()
+        public ObjectCompositionComponent(IList<ItemObjectMass> _objectComposition) : base()
         {
             this.objectComposition = _objectComposition;
         }

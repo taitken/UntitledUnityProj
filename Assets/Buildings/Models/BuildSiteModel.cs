@@ -49,7 +49,7 @@ namespace Building.Models
             itemObj.itemState = ItemObjectModel.eItemState.InSupply;
             itemObj.position = this.position;
             this.suppliedItems.Add(itemObj);
-            this.GetObjectComponent<ObjectComposition>().AddMass(itemObj.itemType, itemObj.mass);
+            this.GetObjectComponent<ObjectCompositionComponent>().AddMass(itemObj.itemType, itemObj.mass);
         }
     }
 }

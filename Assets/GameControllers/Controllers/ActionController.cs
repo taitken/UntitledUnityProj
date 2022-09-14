@@ -31,10 +31,11 @@ public class ActionController : MonoBehaviour2
                           IEnvironmentService _environmentService,
                           IPathFinderService _pathFinderService,
                           IBuildingService _buildingService,
-                          IItemObjectService _itemService)
+                          IItemObjectService _itemService,
+                          ICropService _cropService)
     {
-        this.services = new List<IBaseService>() { _orderService, _unitService, _environmentService, _pathFinderService, _buildingService, _itemService };
-        this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService, _itemService);
+        this.services = new List<IBaseService>() { _orderService, _unitService, _environmentService, _pathFinderService, _buildingService, _itemService, _cropService };
+        this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService, _itemService, _cropService);
         _orderService.orders.Subscribe(this, this.HandleOrderUpdates);
         _unitService.unitObseravable.Subscribe(this, updatedUnits => { this.currentUnits = updatedUnits; });
         InvokeRepeating("CheckAndAssignOrder", 1f, 1f);

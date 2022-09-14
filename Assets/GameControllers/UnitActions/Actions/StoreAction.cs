@@ -8,6 +8,7 @@ using GameControllers.Services;
 using Item.Models;
 using Unit.Models;
 using Building.Models;
+using ObjectComponents;
 
 namespace UnitAction
 {
@@ -15,19 +16,19 @@ namespace UnitAction
     {
         private IBuildingService buidlingService;
         private IItemObjectService itemObjectService;
-        private StorageBuildingModel buildingModel;
+        private BaseObjectModel objectToStore;
         public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
         public StoreAction(UnitModel _unit,
                           IItemObjectService _itemObjectService,
                           IBuildingService _buidlingService,
-                          BuildingObjectModel _building)
+                          BaseObjectModel _objectToStore)
         {
             this.unit = _unit;
             this.itemObjectService = _itemObjectService;
             this.buidlingService = _buidlingService;
-            this.buildingModel = _building as StorageBuildingModel;
+            this.objectToStore = _objectToStore;
         }
 
         public bool CheckCompleted()
@@ -45,13 +46,18 @@ namespace UnitAction
                 this.cancel = true;
                 Debug.LogException(new System.Exception("Store action failed. Unit not carrying item."));
             }
+            else if (this.objectToStore.GetObjectComponent<ObjectStorageComponent>() == null)
+            {
+                this.cancel = true;
+                Debug.LogException(new System.Exception("Store action failed. Selected object has no storage component."));
+            }
             else
             {
                 ItemObjectModel itemModel = this.unit.carriedItem;
                 itemModel.itemState = ItemObjectModel.eItemState.InStorage;
-                itemModel.position = this.buildingModel.position;
-                // Supply build site
-                ItemObjectModel existingStoredItem = this.buildingModel.buildingStorage.GetItem(itemModel.itemType);
+                itemModel.position = this.objectToStore.position;
+                // Supply building
+                ItemObjectModel existingStoredItem = this.objectToStore.GetObjectComponent<ObjectStorageComponent>().GetItem(itemModel.itemType);
                 if (existingStoredItem != null)
                 {
                     existingStoredItem.AddMass(itemModel.mass);
@@ -59,7 +65,7 @@ namespace UnitAction
                 }
                 else
                 {
-                    this.buildingModel.StoreItem(itemModel);
+                    this.objectToStore.GetObjectComponent<ObjectStorageComponent>().AddItem(itemModel);
                 }
                 this.itemObjectService.onItemStoreOrSupplyTrigger.Set(this.unit.carriedItem);
                 this.completed = true;

@@ -9,13 +9,13 @@ namespace System
     {
         protected IList<ObjectComponent> objectComponents { get; set; }
         public Vector3Int position { get; set; }
-        public decimal mass { get { return this.GetObjectComponent<ObjectComposition>().GetMass(); } }
+        public decimal mass { get { return this.GetObjectComponent<ObjectCompositionComponent>().GetMass(); } }
         public float spriteOffset { get; set; } = 0;
         public BaseObjectModel(Vector3Int _position, IList<ItemObjectMass> objectComp) : base()
         {
             this.position = _position;
             this.objectComponents = new List<ObjectComponent>();
-            this.objectComponents.Add(new ObjectComposition(objectComp));
+            this.objectComponents.Add(new ObjectCompositionComponent(objectComp));
         }
 
         public T GetObjectComponent<T>() where T : ObjectComponent

@@ -97,7 +97,7 @@ namespace Building
                     ItemObjectModel currentSupply = this.productionBuildingModel.buildingStorage.GetItem(supplyModel.input.itemType);
                     if (currentSupply == null || currentSupply.mass < (input.mass * ProductionBuildingModel.MAX_STORAGE_MULT) / 2)
                     {
-                        ProductionSupplyOrderModel newOrder = new ProductionSupplyOrderModel(this.buildingObjectModel.position, input.itemType, (input.mass * ProductionBuildingModel.MAX_STORAGE_MULT) - (currentSupply == null ? 0 : currentSupply.mass));
+                        SupplyOrderModel newOrder = new SupplyOrderModel(this.productionBuildingModel, input.itemType, (input.mass * ProductionBuildingModel.MAX_STORAGE_MULT) - (currentSupply == null ? 0 : currentSupply.mass));
                         this.currentProductionSupplyModels[index] = new ProductionSupplyOrder(newOrder, supplyModel.input);
                         this.unitOrderService.AddOrder(newOrder);
                     }

@@ -10,16 +10,16 @@ using System.Collections.Generic;
 
 namespace UnitAction
 {
-    public class ProductionSupplyAction : IUnitAction
+    public class SupplyAction : IUnitAction
     {
         private IBuildingService buildingService;
         private IItemObjectService itemObjectService;
-        private ProductionSupplyOrder buildOrder;
+        private SupplyOrderModel buildOrder;
         private IUnitOrderService unitOrderService;
         public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
-        public ProductionSupplyAction(UnitModel _unit,
+        public SupplyAction(UnitModel _unit,
                           IBuildingService _buildingService,
                           IItemObjectService _itemObjectService,
                           IUnitOrderService _unitOrderService)
@@ -48,7 +48,7 @@ namespace UnitAction
             }
             else
             {
-                ProductionSupplyOrderModel supplyOrder = this.unit.currentOrder as ProductionSupplyOrderModel;
+                SupplyOrderModel supplyOrder = this.unit.currentOrder as SupplyOrderModel;
                 ProductionBuildingModel buildingModel = this.buildingService.buildingObseravable.Get()
                     .Find(building => { return building.position == supplyOrder.coordinates && building.buildingType != eBuildingType.FloorTile; }) as ProductionBuildingModel;
 

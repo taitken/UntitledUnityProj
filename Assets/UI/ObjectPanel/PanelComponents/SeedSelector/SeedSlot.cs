@@ -44,7 +44,5 @@ namespace UI.Panel
             MouseIconSingleton.SetCursorTexure(GameControllers.Models.eMouseAction.None);
             this.background.GetComponent<Image>().color = this.originalColour;
         }
-
-
     }
 }

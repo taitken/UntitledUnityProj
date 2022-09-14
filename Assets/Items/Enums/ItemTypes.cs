@@ -11,7 +11,10 @@ namespace Item.Models
         CopperOre,
         Copper,
         OrganicMass,
-        Acorn,
+        BlumberrySeed,
+        PubberbillSeed,
+        GrunberrySeed,
+        LuttipodSeed
         
     }
 }

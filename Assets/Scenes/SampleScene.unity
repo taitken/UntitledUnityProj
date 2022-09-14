@@ -158,6 +158,7 @@ MonoBehaviour:
   OrderIconPrefab: {fileID: 8917811264261866009, guid: 4c0921b22f31935429d14ea61fa48ed0, type: 3}
   CharacterPathLine: {fileID: 8217750135311177496, guid: cb638f4bdcfc9b94f9d5f8b302e53dbd, type: 3}
   ItemObject: {fileID: 9175849334378074136, guid: 7dbf387d7945fcb439ab6f0faccfad5e, type: 3}
+  CropObject: {fileID: 9175849334378074136, guid: 8440f45cf0fb1d64dbb06331ad06e026, type: 3}
   ObjectContextWindow: {fileID: 9045927156703606938, guid: c055d567dde0a7a4b8ecf1da0098318e, type: 3}
   ItemList: {fileID: 3950618509756104263, guid: 92cad9a1cfaef014285eacba1d824c5b, type: 3}
   LayerCollider: {fileID: 2919357594930836622, guid: f29456b2636e3b14785de59cdc888b5a, type: 3}
@@ -165,6 +166,7 @@ MonoBehaviour:
   OrderSelectionPrefab: {fileID: 4782722188414989856, guid: 61297c39b20faf248ae03fb4f53439d7, type: 3}
   mineableBlockAssetController: {fileID: 2378697867644745971, guid: 72afc2cd4846ea642ab6d2c4e05ecc2a, type: 3}
   BuildingAssetController: {fileID: 4649490261548486794, guid: d4cd166f806427248920d6967e20c57b, type: 3}
+  CropAssetController: {fileID: 2589930850606040896, guid: 4a52f4624d8967b488f7978a891d0533, type: 3}
   ContextAssetFactory: {fileID: 5320498567221088340, guid: 0eb3aaddfea65ac4ea0628adf770c273, type: 3}
   ObjectPanelAssetFactory: {fileID: 6473043570781843, guid: 801345b3717fc514cb89190f69fb9ce2, type: 3}
   ItemAssetController: {fileID: 1908640304627590238, guid: 609aae676c46bd443b6d280e1f8f8f55, type: 3}

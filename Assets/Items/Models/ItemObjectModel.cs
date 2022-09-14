@@ -23,13 +23,13 @@ namespace Item.Models
         {
             decimal newMass = this.mass - massToSplitOff;
             if (newMass <= 0) return this;
-            this.GetObjectComponent<ObjectComposition>().RemoveMass(this.itemType, massToSplitOff);
+            this.GetObjectComponent<ObjectCompositionComponent>().RemoveMass(this.itemType, massToSplitOff);
             return new ItemObjectModel(this.position, new ItemObjectMass(this.itemType, massToSplitOff), eItemState.OnCharacter);
         }
 
         public void AddMass(decimal newMass)
         {
-            this.GetObjectComponent<ObjectComposition>().AddMass(this.itemType, newMass);
+            this.GetObjectComponent<ObjectCompositionComponent>().AddMass(this.itemType, newMass);
         }
 
         public enum eItemState

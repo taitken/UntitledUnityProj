@@ -13,6 +13,7 @@ namespace Crops.Models
         public IList<ItemObjectMass> producedItems { get; set; }
         public Sprite[] sprites { get; set; }
         public eCropType cropType { get; set; }
+        public eItemType seedItemType {get;set;}
     }
 }
 

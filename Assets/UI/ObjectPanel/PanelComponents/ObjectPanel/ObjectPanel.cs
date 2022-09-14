@@ -37,7 +37,7 @@ namespace UI.Panel
 
         private bool ConfigureDetailsTab()
         {
-            ObjectComposition objectComposition = this.objectPanelModel.objectModel.GetObjectComponent<ObjectComposition>();
+            ObjectCompositionComponent objectComposition = this.objectPanelModel.objectModel.GetObjectComponent<ObjectCompositionComponent>();
             if (objectComposition != null)
             {
                 this.detailTab.Initalise(objectComposition);
@@ -51,7 +51,7 @@ namespace UI.Panel
 
         private bool ConfigureStorageTab()
         {
-            ObjectStorage storageComponent = this.objectPanelModel.objectModel.GetObjectComponent<ObjectStorage>();
+            ObjectStorageComponent storageComponent = this.objectPanelModel.objectModel.GetObjectComponent<ObjectStorageComponent>();
             if (storageComponent != null)
             {
                 this.storageTab.Initalise(storageComponent);

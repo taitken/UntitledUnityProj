@@ -30,8 +30,8 @@ namespace UnityEngine
 
         protected override void BeforeDeath()
         {
-            ObjectComposition oc = this.GetBaseObjectModel().GetObjectComponent<ObjectComposition>();
-            ObjectStorage os = this.GetBaseObjectModel().GetObjectComponent<ObjectStorage>();
+            ObjectCompositionComponent oc = this.GetBaseObjectModel().GetObjectComponent<ObjectCompositionComponent>();
+            ObjectStorageComponent os = this.GetBaseObjectModel().GetObjectComponent<ObjectStorageComponent>();
             if (oc != null)
             {
                 oc.GetComposition().ForEach(item =>

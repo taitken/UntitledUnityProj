@@ -10,9 +10,9 @@ namespace UI.Panel
     public class StorageTab : BaseTabContent
     {
         public TextMeshProUGUI textBox;
-        private ObjectStorage storageComponent;
+        private ObjectStorageComponent storageComponent;
 
-        public void Initalise(ObjectStorage _storageComponent)
+        public void Initalise(ObjectStorageComponent _storageComponent)
         {
             this.storageComponent = _storageComponent;
             this.SetText();

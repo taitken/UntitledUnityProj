@@ -28,7 +28,8 @@ namespace Crops.Models
                         growTime = 2f,
                         producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
                         sprites = new Sprite[7],
-                        cropType = eCropType.Blumberry
+                        cropType = eCropType.Blumberry,
+                        seedItemType = eItemType.BlumberrySeed
                     };
                     break;
                 case eCropType.Grunberry:
@@ -38,7 +39,8 @@ namespace Crops.Models
                         growTime = 4f,
                         producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
                         sprites = new Sprite[7],
-                        cropType = eCropType.Grunberry
+                        cropType = eCropType.Grunberry,
+                        seedItemType = eItemType.GrunberrySeed
                     };
                     break;
                 case eCropType.Pubberbill:
@@ -48,7 +50,8 @@ namespace Crops.Models
                         growTime = 4f,
                         producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
                         sprites = new Sprite[7],
-                        cropType = eCropType.Pubberbill
+                        cropType = eCropType.Pubberbill,
+                        seedItemType = eItemType.PubberbillSeed
                     };
                     break;
                 case eCropType.Luttipod:
@@ -58,7 +61,8 @@ namespace Crops.Models
                         growTime = 4f,
                         producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
                         sprites = new Sprite[7],
-                        cropType = eCropType.Luttipod
+                        cropType = eCropType.Luttipod,
+                        seedItemType = eItemType.LuttipodSeed
                     };
                     break;
             }

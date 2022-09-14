@@ -10,9 +10,9 @@ namespace UI.Panel
     public class DetailsTab : BaseTabContent
     {
         public TextMeshProUGUI textBox;
-        private ObjectComposition objectComposition;
+        private ObjectCompositionComponent objectComposition;
 
-        public void Initalise(ObjectComposition _objectComposition)
+        public void Initalise(ObjectCompositionComponent _objectComposition)
         {
             this.objectComposition = _objectComposition;
             this.SetText();

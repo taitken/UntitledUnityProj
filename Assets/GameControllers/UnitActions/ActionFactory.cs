@@ -17,6 +17,7 @@ namespace UnitAction
         IUnitOrderService orderService;
         IBuildingService buildingService;
         IItemObjectService itemService;
+        ICropService cropService;
         Tilemap tilemap;
         Func<bool> completeCondition { get; set; }
 
@@ -24,11 +25,13 @@ namespace UnitAction
                              IEnvironmentService _environmentService,
                              IUnitOrderService _orderService,
                              IBuildingService _buildingService,
-                             IItemObjectService _itemService)
+                             IItemObjectService _itemService,
+                             ICropService _cropService)
         {
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
             this.orderService = _orderService;
+            this.cropService = _cropService;
             this.buildingService = _buildingService;
             this.itemService = _itemService;
         }
@@ -42,10 +45,13 @@ namespace UnitAction
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
                         .Then(() => { return new DigAction(_unit, this.pathFinderService, this.environmentService); });
                     break;
-
                 case eOrderTypes.Build:
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
                         .Then(() => { return new BuildAction(_unit, this.buildingService); });
+                    break;
+                case eOrderTypes.CropPlant:
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
+                        .Then(() => { return new PlantSeedAction(_unit, this.cropService, this.itemService); });
                     break;
 
                 case eOrderTypes.BuildSupply:
@@ -60,19 +66,17 @@ namespace UnitAction
                         .Then(() => { return new MoveAction(_unit, buildSupplyOrder.coordinates, this.pathFinderService, this.environmentService, true); })
                         .Then(() => { return new BuildSupplyAction(_unit, this.buildingService, this.itemService, this.orderService); });
                     break;
-
-                case eOrderTypes.ProductionSupply:
-                    ProductionSupplyOrderModel productionSupplyOrder = _unit.currentOrder as ProductionSupplyOrderModel;
-                    ItemObjectModel psItem = this.itemService.FindClosestItem(productionSupplyOrder.itemType, _unit.position);
-                    if (NullItemCheck(psItem, productionSupplyOrder)) break;
-                    decimal psMassToClaim = this.itemService.DetermineMassToPickup(_unit, psItem, productionSupplyOrder.itemMass);
+                case eOrderTypes.Supply:
+                    SupplyOrderModel supplyOrder = _unit.currentOrder as SupplyOrderModel;
+                    ItemObjectModel psItem = this.itemService.FindClosestItem(supplyOrder.itemType, _unit.position);
+                    if (NullItemCheck(psItem, supplyOrder)) break;
+                    decimal psMassToClaim = this.itemService.DetermineMassToPickup(_unit, psItem, supplyOrder.itemMass);
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new ClaimItemAction(_unit, psItem, this.itemService, psMassToClaim))
                         .Then(() => { return new MoveAction(_unit, psItem.position, this.pathFinderService, this.environmentService, false); })
                         .Then(() => { return new PickupItemAction(_unit, this.itemService, this.buildingService, psItem, psMassToClaim); })
-                        .Then(() => { return new MoveAction(_unit, productionSupplyOrder.coordinates, this.pathFinderService, this.environmentService, true); })
-                        .Then(() => { return new ProductionSupplyAction(_unit, this.buildingService, this.itemService, this.orderService); });
+                        .Then(() => { return new MoveAction(_unit, supplyOrder.coordinates, this.pathFinderService, this.environmentService, true); })
+                        .Then(() => { return new StoreAction(_unit, this.itemService, this.buildingService, supplyOrder.objectToSupply); });
                     break;
-
                 case eOrderTypes.Store:
                     StoreOrderModel storeOrder = _unit.currentOrder as StoreOrderModel;
                     Vector3Int coordinates = _unit.currentOrder.coordinates;
