@@ -20,6 +20,7 @@ namespace Environment
         private IBuildingService buildingService;
         private IEnvironmentService environmentService;
         private IItemObjectService itemService;
+        private ICropService cropService;
         private MouseActionModel mouseAction;
         private DiContainer diContainer;
         private BuildingObjectFactory buildingModelFactory;
@@ -37,6 +38,7 @@ namespace Environment
                               IBuildingService _buildingService,
                               IUiPanelService _contextService,
                               IItemObjectService _itemService,
+                              ICropService _cropService,
                               LayerCollider.Factory _layerColliderFactory,
                               DiContainer _diContainer,
                               BuildSiteObject.Factory _buildSiteFactory)
@@ -48,6 +50,7 @@ namespace Environment
             this.contextService = _contextService;
             this.buildSiteFactory = _buildSiteFactory;
             this.itemService = _itemService;
+            this.cropService = _cropService;
             this.diContainer = _diContainer;
             this.buildingModelFactory = new BuildingObjectFactory();
         }
@@ -108,7 +111,7 @@ namespace Environment
         private BuildingObject CreateBuilding(BuildingObjectModel buildingObj)
         {
             BuildingObject building = this.diContainer.InstantiatePrefab(this.buildingService.buildingAssetController.GetBuildingPrefab(buildingObj.buildingType)).GetComponent<BuildingObject>();
-            building.Initialise(this.contextService, buildingObj, this.environmentService, this.itemService, this.buildingService, this.orderService);
+            building.Initialise(this.contextService, buildingObj, this.environmentService, this.itemService, this.buildingService, this.orderService, this.cropService);
             return building;
         }
 

@@ -56,6 +56,7 @@ namespace UI.Panel
                 this.seedSelectorPanelModel.growerBuildingModel.selectedCropType = null;
                 this.seedSlots.ForEach(slot => { slot.SetBackgroundColor(this.defaultBG); });
             }
+            this.seedSelectorPanelModel.growerBuildingModel.NotifyModelUpdate();
         }
 
         private Vector3 GetSeedSlotPosition(int index)

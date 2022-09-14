@@ -27,7 +27,6 @@ namespace UnityEngine
         {
 
         }
-
         protected override void BeforeDeath()
         {
             ObjectCompositionComponent oc = this.GetBaseObjectModel().GetObjectComponent<ObjectCompositionComponent>();

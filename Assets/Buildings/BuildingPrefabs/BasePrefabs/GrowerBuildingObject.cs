@@ -6,26 +6,21 @@ using UI.Models;
 using GameControllers.Models;
 using Item.Models;
 using UnityEngine;
+using Crops.Models;
 
 namespace Building
 {
     public class GrowerBuildingObject : BuildingObject
     {
         public GrowerBuildingModel growerBuildingModel;
-        protected override void OnCreation()
+        private eCropType? selectedCropType;
+        public void Start()
         {
+            Debug.Log("ongrowcreation");
             this.growerBuildingModel = this.buildingObjectModel as GrowerBuildingModel;
+            this.growerBuildingModel.ListenForUpdates(this.ListenForModelUpdates);
+            this.selectedCropType = this.growerBuildingModel.selectedCropType;
         }
-
-        // public void Update()
-        // {
-
-        // }
-
-        // public void FixedUpdate()
-        // {
-            
-        // }
 
         public override void OnSelect()
         {
@@ -35,18 +30,13 @@ namespace Building
             this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
-        // protected override List<string> GenerateContextWindowBody()
-        // {
-        //     List<string> newContext = base.GenerateContextWindowBody();
-        //     newContext.Add("Produces other items");
-        //     this.productionBuildingModel.selectedItemRecipe.inputs.ForEach(input =>
-        //     {
-        //         ItemObjectModel supplyCurrent = this.productionBuildingModel.buildingStorage.GetItem(input.itemType);
-        //         newContext.Add(input.itemType.ToString() + ": " +
-        //             (supplyCurrent != null ? supplyCurrent.mass : 0).ToString() + "/" +
-        //             LocalisationDict.GetMassString(input.mass));
-        //     });
-        //     return newContext;
-        // }
+        public void ListenForModelUpdates()
+        {
+            // Selected crop when none is selected
+            if (this.growerBuildingModel.selectedCropType != null && this.selectedCropType == null)
+            {
+                this.unitOrderService.AddOrder(new SupplyOrderModel(this.growerBuildingModel, this.cropService.GetCropStats((eCropType)this.growerBuildingModel.selectedCropType).seedItemType, 1));
+            }
+        }
     }
 }

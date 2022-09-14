@@ -10,7 +10,6 @@ namespace Building.Models
         public eBuildingType buildingType { get; set; }
         public IList<ItemObjectMass> requiredItems { get; set; }
         public Vector2 size { get; set; }
-
         public IList<Vector3Int> positions
         {
             get
