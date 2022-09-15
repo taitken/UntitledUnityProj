@@ -8,14 +8,20 @@ namespace Crops.Models
 {
     public class CropObjectModel : BaseObjectModel
     {
-        public CropObjectModel(Vector3Int _position, ItemObjectMass _seed) : base(_position, new List<ItemObjectMass> { _seed })
+        public const int NUM_GROW_STAGES = 7;
+        public const int COMPLETED_GROW_STAGE = 5;
+        public CropObjectModel(Vector3Int _position, ItemObjectMass _seed, CropStatsModel cropStats) : base(_position, new List<ItemObjectMass> { _seed })
         {
-
+            this.growStage = 1;
+            this.cropType = cropStats.cropType;
+            this.growTime = cropStats.growTime;
+            this.producedItems = cropStats.producedItems;
         }
-        public float growTime { get; set; }
-        private CropStatsModel cropStats { get; set; }
+        public eCropType cropType { get; set; }
+        public int growTime { get; set; } // Time in hour ticks
+        public int growTicks { get; set; }
+        public float growStage { get; set; }
         public IList<ItemObjectMass> producedItems { get; set; }
-        public Sprite[] sprites { get; set; }
     }
 }
 

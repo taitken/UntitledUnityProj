@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8996101868864187772}
   - component: {fileID: -6878869171817516572}
-  - component: {fileID: 4279153506197780075}
   - component: {fileID: 6502124333956324108}
+  - component: {fileID: -258291255994801118}
   m_Layer: 10
   m_Name: CropObject
   m_TagString: Untagged
@@ -86,18 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4279153506197780075
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9175849334378074136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28b6f785e75471c4794dcbaecc57ecd5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!61 &6502124333956324108
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -124,3 +112,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.16, y: 0.16}
   m_EdgeRadius: 0
+--- !u!114 &-258291255994801118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9175849334378074136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1b9f38e58a69c47922e93f30faec33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

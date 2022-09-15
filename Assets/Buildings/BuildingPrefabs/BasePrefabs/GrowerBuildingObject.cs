@@ -7,19 +7,19 @@ using GameControllers.Models;
 using Item.Models;
 using UnityEngine;
 using Crops.Models;
+using ObjectComponents;
 
 namespace Building
 {
     public class GrowerBuildingObject : BuildingObject
     {
         public GrowerBuildingModel growerBuildingModel;
-        private eCropType? selectedCropType;
+        private CropObjectModel currentCrop;
         public void Start()
         {
-            Debug.Log("ongrowcreation");
             this.growerBuildingModel = this.buildingObjectModel as GrowerBuildingModel;
             this.growerBuildingModel.ListenForUpdates(this.ListenForModelUpdates);
-            this.selectedCropType = this.growerBuildingModel.selectedCropType;
+            this.growerBuildingModel.GetObjectComponent<ObjectStorageComponent>().ListenForItemsAdded(this.ListenForItemsStored);
         }
 
         public override void OnSelect()
@@ -33,9 +33,17 @@ namespace Building
         public void ListenForModelUpdates()
         {
             // Selected crop when none is selected
-            if (this.growerBuildingModel.selectedCropType != null && this.selectedCropType == null)
+            if (this.growerBuildingModel.selectedCropType != null && this.currentCrop == null)
             {
                 this.unitOrderService.AddOrder(new SupplyOrderModel(this.growerBuildingModel, this.cropService.GetCropStats((eCropType)this.growerBuildingModel.selectedCropType).seedItemType, 1));
+            }
+        }
+
+        public void ListenForItemsStored(IList<ItemObjectModel> items)
+        {
+            if(this.currentCrop == null && items.Any(seed => {return this.cropService.GetCropStats((eCropType)this.growerBuildingModel.selectedCropType).seedItemType == seed.itemType;}))
+            {
+                this.unitOrderService.AddOrder(new CropPlantOrderModel(this.growerBuildingModel.position, (eCropType)this.growerBuildingModel.selectedCropType, this.growerBuildingModel));
             }
         }
     }

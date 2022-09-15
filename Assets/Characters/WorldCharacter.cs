@@ -102,7 +102,7 @@ namespace Characters
         {
             this.unitModel.localPosition = new Vector3(this.gameObject.transform.position.x + this.unitModel.spriteOffset, this.gameObject.transform.position.y + this.unitModel.spriteOffset);
             this.unitModel.position = this.environmentService.LocalToCell(this.unitModel.localPosition);
-            if(this.unitModel.carriedItem != null) this.unitModel.carriedItem.position = this.unitModel.position;
+            if(this.unitModel.carriedItem != null && this.unitModel.carriedItem.itemState == ItemObjectModel.eItemState.OnCharacter) this.unitModel.carriedItem.position = this.unitModel.position;
         }
 
         private void HandleOrderUpdates(IList<UnitOrderModel> orders)
@@ -198,6 +198,7 @@ namespace Characters
         private void DetachItemFromUnit()
         {
             this.carriedObj = null;
+            this.unitModel.carriedItem = null;
             ItemObject foundItem = this.GetComponentInChildren<ItemObject>();
             if (foundItem) foundItem.transform.SetParent(null);
         }

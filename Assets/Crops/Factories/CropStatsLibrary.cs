@@ -25,9 +25,8 @@ namespace Crops.Models
                     cropStats = new CropStatsModel
                     {
                         cropName = "Blumberry",
-                        growTime = 2f,
+                        growTime = 24,
                         producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
-                        sprites = new Sprite[7],
                         cropType = eCropType.Blumberry,
                         seedItemType = eItemType.BlumberrySeed
                     };
@@ -36,9 +35,8 @@ namespace Crops.Models
                     cropStats = new CropStatsModel
                     {
                         cropName = "Grunberry",
-                        growTime = 4f,
+                        growTime = 48,
                         producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
-                        sprites = new Sprite[7],
                         cropType = eCropType.Grunberry,
                         seedItemType = eItemType.GrunberrySeed
                     };
@@ -47,9 +45,8 @@ namespace Crops.Models
                     cropStats = new CropStatsModel
                     {
                         cropName = "Pubberbill",
-                        growTime = 4f,
+                        growTime = 96,
                         producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
-                        sprites = new Sprite[7],
                         cropType = eCropType.Pubberbill,
                         seedItemType = eItemType.PubberbillSeed
                     };
@@ -58,9 +55,8 @@ namespace Crops.Models
                     cropStats = new CropStatsModel
                     {
                         cropName = "Luttipod",
-                        growTime = 4f,
+                        growTime = 96,
                         producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
-                        sprites = new Sprite[7],
                         cropType = eCropType.Luttipod,
                         seedItemType = eItemType.LuttipodSeed
                     };

@@ -13,25 +13,41 @@ using Crops.Models;
 
 namespace Crops
 {
-    
+
     public class CropObject : MonoBaseObject
     {
         public CropObjectModel cropObjectModel;
         public IItemObjectService itemService;
         public IUnitOrderService orderService;
         private IUiPanelService uiPanelService;
+        private ICropService cropService;
+        private IDayCycleService dayCycleService;
         private MouseActionModel mouseAction;
         [Inject]
         public void Construct(CropObjectModel _cropObjectModel,
                                 IUiPanelService _contextWindowService,
+                                ICropService _cropService,
                                 IUnitOrderService _orderService,
-                                IItemObjectService _itemService)
+                                IItemObjectService _itemService,
+                                IDayCycleService _dayCycleService)
         {
             this.cropObjectModel = _cropObjectModel;
             this.itemService = _itemService;
+            this.cropService = _cropService;
+            this.dayCycleService = _dayCycleService;
             this.uiPanelService = _contextWindowService;
             this.orderService = _orderService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
+            this.dayCycleService.OnHourTickObservable.SubscribeQuietly(this, this.AddGrowTick);
+            this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[0];
+        }
+
+        private void AddGrowTick(int hour)
+        {
+            this.cropObjectModel.growTicks++;
+            float tickDivider = 1f / (float)CropObjectModel.COMPLETED_GROW_STAGE;
+            int currentStep = (int)((float)this.cropObjectModel.growTicks / (float)this.cropObjectModel.growTime / tickDivider);
+            this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[currentStep];
         }
 
         public override void OnSelect()

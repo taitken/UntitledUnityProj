@@ -18,11 +18,14 @@ namespace GameControllers.Models
             this.growerBuilding = _growerBuilding;
         }
 
+        public override bool IsUniqueCheck(IList<UnitOrderModel> orderList)
+        {
+            return orderList.Find(existingOrder => { return this.ID == existingOrder.ID || (this.coordinates == existingOrder.coordinates && this.orderType == existingOrder.orderType); }) == null;
+        }
+
         public override bool CanAssignToUnit(IList<IBaseService> _services, UnitModel _unitModel)
         {
-            IItemObjectService itemSerivce = this.GetService<IItemObjectService>(_services);
-            ICropService cropService = this.GetService<ICropService>(_services);
-            return itemSerivce.IsItemAvailable(cropService.GetCropStats(this.cropType).seedItemType) && base.CanAssignToUnit(_services, _unitModel);
+            return base.CanAssignToUnit(_services, _unitModel);
         }
     }
 }

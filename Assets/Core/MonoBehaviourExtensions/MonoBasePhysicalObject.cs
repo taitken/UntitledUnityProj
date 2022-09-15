@@ -42,6 +42,7 @@ namespace UnityEngine
             {
                 os.GetItems().ForEach(item =>
                 {
+                    item.itemState = ItemObjectModel.eItemState.OnGround;
                     this.itemObjectService.onItemPickupOrDropTrigger.Set(item);
                 });
             }
