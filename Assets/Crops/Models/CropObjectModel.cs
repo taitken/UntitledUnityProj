@@ -15,9 +15,11 @@ namespace Crops.Models
             this.growStage = 1;
             this.cropType = cropStats.cropType;
             this.growTime = cropStats.growTime;
+            this.cropName = cropStats.cropName;
             this.producedItems = cropStats.producedItems;
         }
         public eCropType cropType { get; set; }
+        public string cropName { get; set; }
         public int growTime { get; set; } // Time in hour ticks
         public int growTicks { get; set; }
         public float growStage { get; set; }

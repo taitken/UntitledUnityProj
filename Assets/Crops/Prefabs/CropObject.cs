@@ -53,7 +53,7 @@ namespace Crops
         public override void OnSelect()
         {
             IList<BasePanelModel> panels = new List<BasePanelModel>();
-            panels.Add(new ObjectPanelModel(this.cropObjectModel.ID, "Crop", this.cropObjectModel));
+            panels.Add(new ObjectPanelModel(this.cropObjectModel.ID, this.cropObjectModel.cropName, this.cropObjectModel));
             this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
@@ -62,7 +62,7 @@ namespace Crops
             List<string> newContext = new List<string>();
             newContext.Add(LocalisationDict.GetMassString(this.cropObjectModel.mass));
             newContext.Add("Item");
-            this.uiPanelService.AddContext(new ObjectContextWindowModel(this.cropObjectModel.ID, "Crop", newContext));
+            this.uiPanelService.AddContext(new ObjectContextWindowModel(this.cropObjectModel.ID, this.cropObjectModel.cropName, newContext));
         }
 
         public override void OnMouseExit()
