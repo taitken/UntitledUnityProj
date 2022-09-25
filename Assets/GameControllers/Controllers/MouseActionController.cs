@@ -16,6 +16,7 @@ namespace GameControllers
         IUnitOrderService orderService;
         IEnvironmentService environmentService;
         IUiPanelService uiPanelService;
+        private MonoBaseObject previouslySelectedObject;
         private const float DRAG_TIME_LENGTH = 0.2f;
         private float leftClickDownDuration;
         private Vector3 dragClickStart;
@@ -106,13 +107,13 @@ namespace GameControllers
             this.dragEvent.currentDragLocation = mousePos;
             this.dragEvent.draggedObjects.ForEach(obj =>
             {
-                if(obj != null) obj.GetComponent<MonoBehaviour2>().OnDrag(this.dragEvent);
+                if (obj != null) obj.GetComponent<MonoBehaviour2>().OnDrag(this.dragEvent);
             });
         }
 
         private void HandleLeftDragEnd()
         {
-            this.dragEvent.draggedObjects.ForEach(obj => { if(obj != null) obj.GetComponent<MonoBehaviour2>().OnDragEnd(this.dragEvent); });
+            this.dragEvent.draggedObjects.ForEach(obj => { if (obj != null) obj.GetComponent<MonoBehaviour2>().OnDragEnd(this.dragEvent); });
             switch (this.currentMouseAction.mouseType)
             {
                 case eMouseAction.Build:
@@ -260,21 +261,23 @@ namespace GameControllers
 
         private void SelectClick()
         {
-            ContactFilter2D filter = new ContactFilter2D();
-            IList<RaycastHit2D> hitObjects = this.RayCastOnMouse(filter);
             bool hitFound = false;
-            foreach (RaycastHit2D hitObject in hitObjects)
+            int previousHitIndex = -1;
+            ContactFilter2D filter = new ContactFilter2D();
+            IList<MonoBaseObject> hitObjects = this.RayCastOnMouse(filter)
+                                                .Filter(hit => { return hit.collider != null && hit.collider.gameObject.GetComponent<MonoBaseObject>(); })
+                                                .Map(obj => { return obj.collider.gameObject.GetComponent<MonoBaseObject>(); });
+            hitObjects.ForEach((obj, index) => { if (this.previouslySelectedObject == obj) previousHitIndex = index; });
+            if (previousHitIndex == hitObjects.Count - 1) previousHitIndex = -1;
+            hitObjects.ForEach((hitObject, index) =>
             {
-                if (hitObject.collider != null)
+                if (hitFound == false && index > previousHitIndex)
                 {
-                    if (hitObject.collider.gameObject.GetComponent<MonoBaseObject>())
-                    {
-                        hitObject.collider.gameObject.GetComponent<MonoBaseObject>().OnSelect();
-                        hitFound = true;
-                        break;
-                    };
+                    this.previouslySelectedObject = hitObject;
+                    hitObject.OnSelect();
+                    hitFound = true;
                 }
-            };
+            });
             if (!hitFound) this.uiPanelService.selectedObjectPanels.Set(null);
         }
     }
