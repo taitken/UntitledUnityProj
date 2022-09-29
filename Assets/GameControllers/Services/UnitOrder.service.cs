@@ -23,6 +23,15 @@ namespace GameControllers.Services
                 this.orders.Set(_orders);
             }
         }
+        public IList<UnitOrderModel> GetOrders()
+        {
+            return this.orders.Get();
+        }
+
+        public IList<T> GetOrders<T>() where T : UnitOrderModel
+        {
+            return this.orders.Get().Filter(order => { return order.orderType is T; }).Map(order => { return order as T; });
+        }
 
         public void RemoveOrder(long id)
         {

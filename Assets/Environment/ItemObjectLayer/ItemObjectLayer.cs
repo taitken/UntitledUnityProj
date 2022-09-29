@@ -54,10 +54,10 @@ namespace Environment
         void Start()
         {
             this.tilemap = GetComponent<Tilemap>();
-            this.itemService.AddItem(new ItemObjectModel(this.envService.LocalToCell(new Vector3(8f, 8f, 0)), new ItemObjectMass(eItemType.GrunberrySeed, 1), eItemState.OnGround));
-            this.itemService.AddItem(new ItemObjectModel(this.envService.LocalToCell(new Vector3(8f, 8f, 0)), new ItemObjectMass(eItemType.BlumberrySeed, 1), eItemState.OnGround));
-            this.itemService.AddItem(new ItemObjectModel(this.envService.LocalToCell(new Vector3(8f, 8f, 0)), new ItemObjectMass(eItemType.LuttipodSeed, 1), eItemState.OnGround));
-            this.itemService.AddItem(new ItemObjectModel(this.envService.LocalToCell(new Vector3(8f, 8f, 0)), new ItemObjectMass(eItemType.PubberbillSeed, 1), eItemState.OnGround));
+            this.itemService.AddItemToWorld(new ItemObjectModel(this.envService.LocalToCell(new Vector3(8f, 8f, 0)), new ItemObjectMass(eItemType.GrunberrySeed, 1), eItemState.OnGround));
+            this.itemService.AddItemToWorld(new ItemObjectModel(this.envService.LocalToCell(new Vector3(8f, 8f, 0)), new ItemObjectMass(eItemType.BlumberrySeed, 1), eItemState.OnGround));
+            this.itemService.AddItemToWorld(new ItemObjectModel(this.envService.LocalToCell(new Vector3(8f, 8f, 0)), new ItemObjectMass(eItemType.LuttipodSeed, 1), eItemState.OnGround));
+            this.itemService.AddItemToWorld(new ItemObjectModel(this.envService.LocalToCell(new Vector3(8f, 8f, 0)), new ItemObjectMass(eItemType.PubberbillSeed, 1), eItemState.OnGround));
         }
 
         // Update is called once per frame
@@ -127,7 +127,7 @@ namespace Environment
                     }
                 });
             }
-            itemsToDelete.ForEach(item => { this.itemService.RemoveItem(item.ID); });
+            itemsToDelete.ForEach(item => { this.itemService.RemoveItemFromWorld(item.ID); });
         }
 
         public IList<ItemObject> GetItemObjects()

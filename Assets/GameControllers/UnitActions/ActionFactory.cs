@@ -93,6 +93,15 @@ namespace UnitAction
                     newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
                         .Then(() => { return new DeconstructAction(_unit, this.buildingService); });
                     break;
+                case eOrderTypes.CropHarvest:
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
+                        .Then(() => { return new CropHarvestAction(_unit, this.cropService, this.itemService); });
+                    break;
+                case eOrderTypes.CropRemove:
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder, new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, true))
+                        .Then(() => { return new CropHarvestAction(_unit, this.cropService, this.itemService); })
+                        .Then(() => { return new RemoveSeedAction(_unit, this.cropService, this.itemService); });
+                    break;
             }
             return newSequence;
         }

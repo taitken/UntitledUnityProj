@@ -16,6 +16,8 @@ namespace GameControllers.Services
         void OnOrderIconHideTrigger(MonoBehaviour2 behaviour, Action<UnitOrderModel> trigger);
         void DeleteOrderIcon(UnitOrderModel unitOrder);
         void AddOrder(UnitOrderModel order);
+        IList<UnitOrderModel> GetOrders() ;
+        IList<T> GetOrders<T>() where T : UnitOrderModel;
         void RemoveOrder(long id);
         bool IsExistingOrderAtLocation(Vector3Int _location);
     }

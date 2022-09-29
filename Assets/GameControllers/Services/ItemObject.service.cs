@@ -28,7 +28,7 @@ namespace GameControllers.Services
             this.itemAssetController = _itemAssetController;
         }
 
-        public void AddItem(ItemObjectModel item)
+        public void AddItemToWorld(ItemObjectModel item)
         {
             IList<ItemObjectModel> _items = this.itemObseravable.Get();
             if (item != null && _items.Find(existingitem => { return item.ID == existingitem.ID; }) == null)
@@ -52,7 +52,7 @@ namespace GameControllers.Services
             }
         }
 
-        public void RemoveItem(long id)
+        public void RemoveItemFromWorld(long id)
         {
             this.itemObseravable.Set(this.itemObseravable.Get().Filter(order => { return order.ID != id; }));
         }

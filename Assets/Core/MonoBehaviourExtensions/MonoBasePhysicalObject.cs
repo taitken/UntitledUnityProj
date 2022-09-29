@@ -35,7 +35,7 @@ namespace UnityEngine
             {
                 oc.GetComposition().ForEach(item =>
                 {
-                    this.itemObjectService.AddItem(new ItemObjectModel(this.GetBaseObjectModel().position, item, ItemObjectModel.eItemState.OnGround));
+                    this.itemObjectService.AddItemToWorld(new ItemObjectModel(this.GetBaseObjectModel().position, item, ItemObjectModel.eItemState.OnGround));
                 });
             }
             if (os != null)

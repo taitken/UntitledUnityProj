@@ -68,17 +68,17 @@ namespace UnitAction
                 {
                     itemToAttach = this.itemObjModel.RemoveMass(this.massToPickup);
                     this.unit.carriedItem = itemToAttach;
-                    this.itemObjectService.AddItem(itemToAttach);
+                    this.itemObjectService.AddItemToWorld(itemToAttach);
                 }
                 else if (originState == ItemObjectModel.eItemState.InStorage)
                 {
-                    this.itemObjectService.RemoveItem(itemToAttach.ID);
+                    this.itemObjectService.RemoveItemFromWorld(itemToAttach.ID);
                     this.buildingService.buildingObseravable.Get()
                         .Map(building => { return building as StorageBuildingModel; })
                         .Find(building => { return building.position == this.itemObjModel.position; })
                         .RemoveItem(itemToAttach);
                     this.unit.carriedItem = itemToAttach;
-                    this.itemObjectService.AddItem(itemToAttach);
+                    this.itemObjectService.AddItemToWorld(itemToAttach);
                 }
                 this.unit.carriedItem = itemToAttach;
                 this.itemObjectService.onItemPickupOrDropTrigger.NotifyAllSubscribers();

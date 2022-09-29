@@ -9,6 +9,8 @@ namespace GameControllers.Models
         BuildSupply,
         Supply,
         Deconstruct,
-        CropPlant
+        CropPlant,
+        CropHarvest,
+        CropRemove
     }
 }

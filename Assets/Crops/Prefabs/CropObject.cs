@@ -40,14 +40,18 @@ namespace Crops
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
             this.dayCycleService.OnHourTickObservable.SubscribeQuietly(this, this.AddGrowTick);
             this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[0];
+            this.cropObjectModel.ListenForUpdates(this.ListenForModelUpdates);
         }
 
         private void AddGrowTick(int hour)
         {
             this.cropObjectModel.growTicks++;
-            float tickDivider = 1f / (float)CropObjectModel.COMPLETED_GROW_STAGE;
-            int currentStep = (int)((float)this.cropObjectModel.growTicks / (float)this.cropObjectModel.growTime / tickDivider);
-            this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[currentStep];
+            this.UpdateCropSprite();
+        }
+
+        private void ListenForModelUpdates()
+        {
+            this.UpdateCropSprite();
         }
 
         public override void OnSelect()
@@ -55,6 +59,13 @@ namespace Crops
             IList<BasePanelModel> panels = new List<BasePanelModel>();
             panels.Add(new ObjectPanelModel(this.cropObjectModel.ID, this.cropObjectModel.cropName, this.cropObjectModel));
             this.uiPanelService.selectedObjectPanels.Set(panels);
+        }
+
+        private void UpdateCropSprite()
+        {
+            float tickDivider = 1f / (float)CropObjectModel.COMPLETED_GROW_STAGE;
+            int currentStep = (int)((float)this.cropObjectModel.growTicks / (float)this.cropObjectModel.growTime / tickDivider);
+            this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[currentStep];
         }
 
         public override void OnMouseEnter()

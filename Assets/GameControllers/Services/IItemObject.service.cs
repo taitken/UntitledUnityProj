@@ -15,8 +15,8 @@ namespace GameControllers.Services
         MonoObseravable<ItemObjectModel> onItemPickupOrDropTrigger { get; set; }
         MonoObseravable<ItemObjectModel> onItemStoreOrSupplyTrigger { get; set; }
         void SetItemObjectHook(Func<IList<ItemObject>> _itemObjectHook);
-        void AddItem(ItemObjectModel item);
-        void RemoveItem(long id);
+        void AddItemToWorld(ItemObjectModel item);
+        void RemoveItemFromWorld(long id);
         ItemObjectModel FindClosestItem(eItemType _itemType, Vector3Int _startingPos);
         decimal DetermineMassToPickup(UnitModel unit, ItemObjectModel item);
         decimal DetermineMassToPickup(UnitModel unit, ItemObjectModel item, decimal massRequested);

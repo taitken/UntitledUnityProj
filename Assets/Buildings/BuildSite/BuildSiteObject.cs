@@ -104,7 +104,7 @@ namespace Building
             {
                 this.buildSiteModel.suppliedItems.ForEach(item =>
                 {
-                    this.itemService.RemoveItem(item.ID);
+                    this.itemService.RemoveItemFromWorld(item.ID);
                 });
             }
         }

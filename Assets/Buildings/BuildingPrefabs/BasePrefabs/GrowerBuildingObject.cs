@@ -14,7 +14,7 @@ namespace Building
     public class GrowerBuildingObject : BuildingObject
     {
         public GrowerBuildingModel growerBuildingModel;
-        private CropObjectModel currentCrop;
+        private CropObjectModel currentCrop { get { return this.growerBuildingModel.cropObject; } }
         public void Start()
         {
             this.growerBuildingModel = this.buildingObjectModel as GrowerBuildingModel;
@@ -35,13 +35,22 @@ namespace Building
             // Selected crop when none is selected
             if (this.growerBuildingModel.selectedCropType != null && this.currentCrop == null)
             {
+                SupplyOrderModel existingOrder = this.unitOrderService.GetOrders<SupplyOrderModel>().Find(order =>{return order.objectToSupply == this.growerBuildingModel;});
+                if(existingOrder != null)
+                {
+                    this.unitOrderService.RemoveOrder(existingOrder.ID);
+                }
                 this.unitOrderService.AddOrder(new SupplyOrderModel(this.growerBuildingModel, this.cropService.GetCropStats((eCropType)this.growerBuildingModel.selectedCropType).seedItemType, 1));
+            }
+            if (this.growerBuildingModel.selectedCropType != null && this.currentCrop != null && this.growerBuildingModel.selectedCropType != this.currentCrop.cropType)
+            {
+                this.unitOrderService.AddOrder(new CropRemoveOrderModel(this.growerBuildingModel.position, this.growerBuildingModel));
             }
         }
 
         public void ListenForItemsStored(IList<ItemObjectModel> items)
         {
-            if(this.currentCrop == null && items.Any(seed => {return this.cropService.GetCropStats((eCropType)this.growerBuildingModel.selectedCropType).seedItemType == seed.itemType;}))
+            if (this.currentCrop == null && items.Any(seed => { return this.cropService.GetCropStats((eCropType)this.growerBuildingModel.selectedCropType).seedItemType == seed.itemType; }))
             {
                 this.unitOrderService.AddOrder(new CropPlantOrderModel(this.growerBuildingModel.position, (eCropType)this.growerBuildingModel.selectedCropType, this.growerBuildingModel));
             }

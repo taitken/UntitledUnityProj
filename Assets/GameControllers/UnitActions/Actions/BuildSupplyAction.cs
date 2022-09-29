@@ -64,7 +64,7 @@ namespace UnitAction
                 if (existingStoredItem != null)
                 {
                     existingStoredItem.AddMass(itemModel.mass);
-                    this.itemObjectService.RemoveItem(itemModel.ID);
+                    this.itemObjectService.RemoveItemFromWorld(itemModel.ID);
                 }
                 else
                 {
