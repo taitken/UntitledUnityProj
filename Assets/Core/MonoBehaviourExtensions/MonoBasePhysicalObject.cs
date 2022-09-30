@@ -4,6 +4,7 @@ using GameControllers.Models;
 using GameControllers.Services;
 using Item.Models;
 using ObjectComponents;
+using UI.Services;
 using UnityEngine;
 using UtilityClasses;
 using Zenject;
@@ -13,10 +14,13 @@ namespace UnityEngine
     public class MonoBaseObject : MonoBehaviour2
     {
         protected IItemObjectService itemObjectService;
+        protected IUiPanelService uiPanelService;
         [Inject]
-        public void Construct(IItemObjectService _itemService)
+        public void Construct(IItemObjectService _itemService,
+                                IUiPanelService _uiPanelService)
         {
             this.itemObjectService = _itemService;
+            this.uiPanelService = _uiPanelService;
         }
         public virtual BaseObjectModel GetBaseObjectModel()
         {
@@ -35,7 +39,10 @@ namespace UnityEngine
             {
                 oc.GetComposition().ForEach(item =>
                 {
-                    this.itemObjectService.AddItemToWorld(new ItemObjectModel(this.GetBaseObjectModel().position, item, ItemObjectModel.eItemState.OnGround));
+                    if (item.itemType != eItemType.OrganicMass)
+                    {
+                        this.itemObjectService.AddItemToWorld(new ItemObjectModel(this.GetBaseObjectModel().position, item, ItemObjectModel.eItemState.OnGround));
+                    }
                 });
             }
             if (os != null)
@@ -46,6 +53,7 @@ namespace UnityEngine
                     this.itemObjectService.onItemPickupOrDropTrigger.Set(item);
                 });
             }
+            if (this.GetBaseObjectModel() != null) this.uiPanelService.RemoveContext(this.GetBaseObjectModel().ID);
         }
     }
 }

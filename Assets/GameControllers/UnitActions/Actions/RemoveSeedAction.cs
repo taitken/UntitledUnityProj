@@ -1,3 +1,4 @@
+using System.Linq;
 using System;
 using UnityEngine;
 using GameControllers.Models;
@@ -41,7 +42,8 @@ namespace UnitAction
         }
         public bool PerformAction()
         {
-            if (this.cropPlantOrder.growerBuilding.cropObject == null)
+            ObjectStorageComponent objectStorage = this.cropPlantOrder.growerBuilding.GetObjectComponent<ObjectStorageComponent>();
+            if (objectStorage.GetItems().Count == 0)
             {
                 this.cancel = true;
                 Debug.LogException(new System.Exception("Remove seed action failed. Grower building does not have a seed."));
@@ -49,16 +51,13 @@ namespace UnitAction
             else
             {
                 IList<ItemObjectModel> storedSeeds = new List<ItemObjectModel>();
-                this.cropPlantOrder.growerBuilding.GetObjectComponent<ObjectStorageComponent>().GetItems().ForEach(item => { storedSeeds.Add(item); });
+                objectStorage.GetItems().ForEach(item => { storedSeeds.Add(item); });
                 storedSeeds.ForEach(seed =>
                 {
-                    this.cropPlantOrder.growerBuilding.GetObjectComponent<ObjectStorageComponent>().RemoveItem(seed);
+                    objectStorage.RemoveItem(seed);
                     seed.itemState = ItemObjectModel.eItemState.OnGround;
                     this.itemService.AddItemToWorld(seed);
                 });
-                this.cropService.RemoveCrop(this.cropPlantOrder.growerBuilding.cropObject.ID);
-                this.cropPlantOrder.growerBuilding.cropObject = null;
-                this.cropPlantOrder.growerBuilding.NotifyModelUpdate();
                 this.completed = true;
             }
             return true;

@@ -10,6 +10,7 @@ using UI.Models;
 using UtilityClasses;
 using System;
 using Crops.Models;
+using ObjectComponents;
 
 namespace Crops
 {
@@ -19,13 +20,11 @@ namespace Crops
         public CropObjectModel cropObjectModel;
         public IItemObjectService itemService;
         public IUnitOrderService orderService;
-        private IUiPanelService uiPanelService;
         private ICropService cropService;
         private IDayCycleService dayCycleService;
         private MouseActionModel mouseAction;
         [Inject]
         public void Construct(CropObjectModel _cropObjectModel,
-                                IUiPanelService _contextWindowService,
                                 ICropService _cropService,
                                 IUnitOrderService _orderService,
                                 IItemObjectService _itemService,
@@ -35,23 +34,16 @@ namespace Crops
             this.itemService = _itemService;
             this.cropService = _cropService;
             this.dayCycleService = _dayCycleService;
-            this.uiPanelService = _contextWindowService;
             this.orderService = _orderService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
             this.dayCycleService.OnHourTickObservable.SubscribeQuietly(this, this.AddGrowTick);
             this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[0];
-            this.cropObjectModel.ListenForUpdates(this.ListenForModelUpdates);
         }
 
         private void AddGrowTick(int hour)
         {
             this.cropObjectModel.growTicks++;
-            this.UpdateCropSprite();
-        }
-
-        private void ListenForModelUpdates()
-        {
-            this.UpdateCropSprite();
+            this.UpdateCropStage();
         }
 
         public override void OnSelect()
@@ -61,11 +53,24 @@ namespace Crops
             this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
-        private void UpdateCropSprite()
+        private void UpdateCropStage()
         {
             float tickDivider = 1f / (float)CropObjectModel.COMPLETED_GROW_STAGE;
-            int currentStep = (int)((float)this.cropObjectModel.growTicks / (float)this.cropObjectModel.growTime / tickDivider);
-            this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[currentStep];
+            this.cropObjectModel.growStage = (int)((float)this.cropObjectModel.growTicks / (float)this.cropObjectModel.growTime / tickDivider) + 1;
+            this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[(int)this.cropObjectModel.growStage - 1];
+            // Add Fruit
+            if (this.cropObjectModel.growStage >= CropObjectModel.COMPLETED_GROW_STAGE)
+            {
+                CropStatsModel cropStats = CropStatsLibrary.GetCropStats(this.cropObjectModel.cropType);
+                ObjectCompositionComponent cropCompoisition = this.cropObjectModel.GetObjectComponent<ObjectCompositionComponent>();
+                cropStats.producedItems.ForEach(item =>
+                {
+                    if (cropCompoisition.GetMass(item.itemType) == 0)
+                    {
+                        cropCompoisition.AddToComposition(item.itemType, item.mass);
+                    }
+                });
+            }
         }
 
         public override void OnMouseEnter()
@@ -90,13 +95,6 @@ namespace Crops
         {
             return this.cropObjectModel;
         }
-
-        protected override void BeforeDeath()
-        {
-            this.uiPanelService.RemoveContext(this.cropObjectModel.ID);
-        }
-
-
         public class Factory : PlaceholderFactory<CropObjectModel, CropObject>
         {
         }

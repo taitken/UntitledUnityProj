@@ -35,13 +35,19 @@ namespace Building
             // Selected crop when none is selected
             if (this.growerBuildingModel.selectedCropType != null && this.currentCrop == null)
             {
-                SupplyOrderModel existingOrder = this.unitOrderService.GetOrders<SupplyOrderModel>().Find(order =>{return order.objectToSupply == this.growerBuildingModel;});
-                if(existingOrder != null)
+                CropStatsModel cropStats = this.cropService.GetCropStats((eCropType)this.growerBuildingModel.selectedCropType);
+                if (this.growerBuildingModel.GetObjectComponent<ObjectStorageComponent>().GetItem(cropStats.seedItemType) == null)
                 {
-                    this.unitOrderService.RemoveOrder(existingOrder.ID);
+                    SupplyOrderModel existingOrder = this.unitOrderService.GetOrders<SupplyOrderModel>().Find(order => { return order.objectToSupply == this.growerBuildingModel; });
+                    if (existingOrder != null) this.unitOrderService.RemoveOrder(existingOrder.ID);
+                    this.unitOrderService.AddOrder(new SupplyOrderModel(this.growerBuildingModel, cropStats.seedItemType, 1));
                 }
-                this.unitOrderService.AddOrder(new SupplyOrderModel(this.growerBuildingModel, this.cropService.GetCropStats((eCropType)this.growerBuildingModel.selectedCropType).seedItemType, 1));
+                else
+                {
+                    this.cropService.AddCrop(new CropObjectModel(this.growerBuildingModel.position, new ItemObjectMass(eItemType.OrganicMass, 1), cropStats));
+                }
             }
+            // Replace Crop with another
             if (this.growerBuildingModel.selectedCropType != null && this.currentCrop != null && this.growerBuildingModel.selectedCropType != this.currentCrop.cropType)
             {
                 this.unitOrderService.AddOrder(new CropRemoveOrderModel(this.growerBuildingModel.position, this.growerBuildingModel));

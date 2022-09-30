@@ -32,6 +32,18 @@ namespace ObjectComponents
         {
             return this.objectComposition.Filter(item => { return item.itemType == _itemType; }).Sum(item => { return item.mass; });
         }
+
+        public void AddToComposition(eItemType _itemType, decimal _mass)
+        {
+            if (this.GetMass(_itemType) > 0)
+            {
+                this.AddMass(_itemType, _mass);
+            }
+            else
+            {
+                this.objectComposition.Add(new ItemObjectMass(_itemType, _mass));
+            }
+        }
         public void AddMass(eItemType _itemType, decimal _massToAdd)
         {
             int itemIndex = -1;

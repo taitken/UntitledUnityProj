@@ -16,6 +16,7 @@ namespace UnitAction
     {
         private ICropService cropService;
         private CropObjectModel cropObject;
+        private GrowerBuildingModel growerBuildingModel;
         private IItemObjectService itemService;
         public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
@@ -36,6 +37,7 @@ namespace UnitAction
             {
                 CropRemoveOrderModel cropOrder = _unit.currentOrder as CropRemoveOrderModel;
                 this.cropObject = cropOrder.growerBuilding.cropObject;
+                this.growerBuildingModel = cropOrder.growerBuilding;
             }
         }
 
@@ -58,16 +60,12 @@ namespace UnitAction
             }
             else
             {
-                if (cropObj.growStage >= CropObjectModel.COMPLETED_GROW_STAGE)
+                this.cropService.RemoveCrop(this.cropObject.ID);
+                if (this.growerBuildingModel != null)
                 {
-                    cropObj.producedItems.ForEach(item =>
-                    {
-                        this.itemService.AddItemToWorld(new ItemObjectModel(this.unit.position, item, ItemObjectModel.eItemState.OnGround));
-                    });
+                    this.growerBuildingModel.cropObject = null;
+                    this.growerBuildingModel.NotifyModelUpdate();
                 }
-                cropObj.growStage = 1;
-                cropObj.growTicks = 0;
-                this.cropObject.NotifyModelUpdate();
                 this.completed = true;
             }
             return true;
