@@ -32,12 +32,13 @@ namespace UnitAction
             {
                 CropHarvestOrderModel cropOrder = _unit.currentOrder as CropHarvestOrderModel;
                 this.cropObject = cropOrder.cropObjectModel;
+                this.growerBuildingModel = cropOrder.growerBuildingModel;
             }
             if (_unit.currentOrder is CropRemoveOrderModel)
             {
                 CropRemoveOrderModel cropOrder = _unit.currentOrder as CropRemoveOrderModel;
-                this.cropObject = cropOrder.growerBuilding.cropObject;
-                this.growerBuildingModel = cropOrder.growerBuilding;
+                this.cropObject = cropOrder.growerBuildingModel.cropObject;
+                this.growerBuildingModel = cropOrder.growerBuildingModel;
             }
         }
 

@@ -42,7 +42,7 @@ namespace UnitAction
         }
         public bool PerformAction()
         {
-            ObjectStorageComponent objectStorage = this.cropPlantOrder.growerBuilding.GetObjectComponent<ObjectStorageComponent>();
+            ObjectStorageComponent objectStorage = this.cropPlantOrder.growerBuildingModel.GetObjectComponent<ObjectStorageComponent>();
             if (objectStorage.GetItems().Count == 0)
             {
                 this.cancel = true;

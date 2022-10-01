@@ -40,7 +40,7 @@ namespace UI.Panel
             ObjectCompositionComponent objectComposition = this.objectPanelModel.objectModel.GetObjectComponent<ObjectCompositionComponent>();
             if (objectComposition != null)
             {
-                this.detailTab.Initalise(objectComposition);
+                this.detailTab.Initalise(objectComposition, this.objectPanelModel.objectModel);
                 return true;
             }
             else

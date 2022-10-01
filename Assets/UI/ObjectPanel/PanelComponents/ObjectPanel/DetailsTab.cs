@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ObjectComponents;
@@ -10,11 +11,13 @@ namespace UI.Panel
     public class DetailsTab : BaseTabContent
     {
         public TextMeshProUGUI textBox;
+        public BaseObjectModel objectModel;
         private ObjectCompositionComponent objectComposition;
 
-        public void Initalise(ObjectCompositionComponent _objectComposition)
+        public void Initalise(ObjectCompositionComponent _objectComposition, BaseObjectModel _objectModel)
         {
             this.objectComposition = _objectComposition;
+            this.objectModel = _objectModel;
             this.SetText();
         }
 
@@ -33,7 +36,9 @@ namespace UI.Panel
                 {
                     itemRow.Add(LocalisationDict.GetMassString(item.mass) + " - " + item.itemType.ToString());
                 });
-                this.textBox.SetText(itemRow.Count > 0 ? boxString + itemRow.ConcatStrings("\n") : "No items stored");
+                string objectCompositionString = itemRow.Count > 0 ? boxString + itemRow.ConcatStrings("\n") : "No items stored";
+                this.textBox.SetText((this.objectModel.objectDescription != null ? this.objectModel.objectDescription + "\n" : "")
+                                        + objectCompositionString);
             }
         }
     }

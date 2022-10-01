@@ -17,17 +17,14 @@ namespace Item
         public ItemObjectModel itemObjectModel;
         public IItemObjectService itemService;
         public IUnitOrderService orderService;
-        private IUiPanelService uiPanelService;
         private MouseActionModel mouseAction;
         [Inject]
         public void Construct(ItemObjectModel _itemObjectModel,
-                                IUiPanelService _contextWindowService,
                                 IUnitOrderService _orderService,
                                 IItemObjectService _itemService)
         {
             this.itemObjectModel = _itemObjectModel;
             this.itemService = _itemService;
-            this.uiPanelService = _contextWindowService;
             this.orderService = _orderService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
             this.GetComponent<SpriteRenderer>().sprite = this.itemService.GetItemSprite(this.itemObjectModel.itemType);

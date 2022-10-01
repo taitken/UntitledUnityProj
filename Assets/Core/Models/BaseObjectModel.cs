@@ -11,6 +11,7 @@ namespace System
         protected IList<ObjectComponent> objectComponents { get; set; }
         private EventEmitter updateNotifier = new EventEmitter();
         public Vector3Int position { get; set; }
+        public string objectDescription { get; set; }
         public decimal mass { get { return this.GetObjectComponent<ObjectCompositionComponent>().GetMass(); } }
         public float spriteOffset { get; set; } = 0;
         public BaseObjectModel(Vector3Int _position, IList<ItemObjectMass> objectComp) : base()

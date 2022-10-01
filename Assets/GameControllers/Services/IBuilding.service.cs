@@ -18,6 +18,8 @@ namespace GameControllers.Services
         SpriteRenderer GetBuildingSprite(eBuildingType buildingType);
         Sprite[] GetWallSprites(eWallTypes wallType);
         void AddBuilding(BuildingObjectModel building);
+        public IList<BuildingObjectModel> GetBuildings();
+        public IList<T> GetBuildings<T>() where T : BuildingObjectModel;
         void RemoveBuilding(long id);
         void SubscribeToNewBuildingTrigger(MonoBehaviour2 monobehaviour, Action<BuildingObjectModel> _newBuilding);
         void SubscribeToRemovedBuildingTrigger(MonoBehaviour2 monobehaviour, Action<BuildingObjectModel> _newBuilding);

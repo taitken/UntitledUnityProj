@@ -14,7 +14,11 @@ namespace Item.Models
         BlumberrySeed,
         PubberbillSeed,
         GrunberrySeed,
-        LuttipodSeed
+        LuttipodSeed,
+        Blumberry,
+        Pubberbill,
+        Grunberry,
+        Luttipod
         
     }
 }

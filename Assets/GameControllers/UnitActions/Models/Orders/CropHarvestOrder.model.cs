@@ -10,9 +10,11 @@ namespace GameControllers.Models
     public class CropHarvestOrderModel : UnitOrderModel
     {
         public CropObjectModel cropObjectModel;
-        public CropHarvestOrderModel(Vector3Int _coordinates, CropObjectModel _cropObjectModel, bool showIcon = false) : base(_coordinates, eOrderTypes.CropHarvest, showIcon)
+        public GrowerBuildingModel growerBuildingModel;
+        public CropHarvestOrderModel(Vector3Int _coordinates, CropObjectModel _cropObjectModel, GrowerBuildingModel _growerBuildingModel, bool showIcon = false) : base(_coordinates, eOrderTypes.CropHarvest, showIcon)
         {
             this.cropObjectModel = _cropObjectModel;
+            this.growerBuildingModel = _growerBuildingModel;
         }
 
         public override bool IsUniqueCheck(IList<UnitOrderModel> orderList)

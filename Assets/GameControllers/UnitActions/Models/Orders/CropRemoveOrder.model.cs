@@ -8,10 +8,10 @@ namespace GameControllers.Models
 {
     public class CropRemoveOrderModel : UnitOrderModel
     {
-        public GrowerBuildingModel growerBuilding;
-        public CropRemoveOrderModel(Vector3Int _coordinates, GrowerBuildingModel _growerBuilding, bool showIcon = false) : base(_coordinates, eOrderTypes.CropRemove, showIcon)
+        public GrowerBuildingModel growerBuildingModel;
+        public CropRemoveOrderModel(Vector3Int _coordinates, GrowerBuildingModel _growerBuildingModel, bool showIcon = false) : base(_coordinates, eOrderTypes.CropRemove, showIcon)
         {
-            this.growerBuilding = _growerBuilding;
+            this.growerBuildingModel = _growerBuildingModel;
         }
 
         public override bool IsUniqueCheck(IList<UnitOrderModel> orderList)

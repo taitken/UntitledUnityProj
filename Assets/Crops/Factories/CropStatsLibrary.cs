@@ -25,8 +25,8 @@ namespace Crops.Models
                     cropStats = new CropStatsModel
                     {
                         cropName = "Blumberry",
-                        growTime = 24,
-                        producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
+                        growTime = 6,
+                        producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Blumberry, 5) },
                         cropType = eCropType.Blumberry,
                         seedItemType = eItemType.BlumberrySeed
                     };
@@ -35,8 +35,8 @@ namespace Crops.Models
                     cropStats = new CropStatsModel
                     {
                         cropName = "Grunberry",
-                        growTime = 48,
-                        producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
+                        growTime = 6,
+                        producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Grunberry, 5) },
                         cropType = eCropType.Grunberry,
                         seedItemType = eItemType.GrunberrySeed
                     };
@@ -45,8 +45,8 @@ namespace Crops.Models
                     cropStats = new CropStatsModel
                     {
                         cropName = "Pubberbill",
-                        growTime = 96,
-                        producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
+                        growTime = 6,
+                        producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Pubberbill, 5) },
                         cropType = eCropType.Pubberbill,
                         seedItemType = eItemType.PubberbillSeed
                     };
@@ -55,8 +55,8 @@ namespace Crops.Models
                     cropStats = new CropStatsModel
                     {
                         cropName = "Luttipod",
-                        growTime = 96,
-                        producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
+                        growTime = 6,
+                        producedItems = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Luttipod, 5) },
                         cropType = eCropType.Luttipod,
                         seedItemType = eItemType.LuttipodSeed
                     };

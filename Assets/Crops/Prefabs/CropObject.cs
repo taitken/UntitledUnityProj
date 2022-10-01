@@ -11,6 +11,7 @@ using UtilityClasses;
 using System;
 using Crops.Models;
 using ObjectComponents;
+using Building.Models;
 
 namespace Crops
 {
@@ -20,6 +21,7 @@ namespace Crops
         public CropObjectModel cropObjectModel;
         public IItemObjectService itemService;
         public IUnitOrderService orderService;
+        private IBuildingService buildingService;
         private ICropService cropService;
         private IDayCycleService dayCycleService;
         private MouseActionModel mouseAction;
@@ -28,6 +30,7 @@ namespace Crops
                                 ICropService _cropService,
                                 IUnitOrderService _orderService,
                                 IItemObjectService _itemService,
+                                IBuildingService _buildingService,
                                 IDayCycleService _dayCycleService)
         {
             this.cropObjectModel = _cropObjectModel;
@@ -35,6 +38,7 @@ namespace Crops
             this.cropService = _cropService;
             this.dayCycleService = _dayCycleService;
             this.orderService = _orderService;
+            this.buildingService = _buildingService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
             this.dayCycleService.OnHourTickObservable.SubscribeQuietly(this, this.AddGrowTick);
             this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[0];
@@ -56,20 +60,34 @@ namespace Crops
         private void UpdateCropStage()
         {
             float tickDivider = 1f / (float)CropObjectModel.COMPLETED_GROW_STAGE;
-            this.cropObjectModel.growStage = (int)((float)this.cropObjectModel.growTicks / (float)this.cropObjectModel.growTime / tickDivider) + 1;
+            this.cropObjectModel.growStage = Math.Min((int)CropObjectModel.NUM_GROW_STAGES, (int)((float)this.cropObjectModel.growTicks / (float)this.cropObjectModel.growTime / tickDivider) + 1);
             this.GetComponent<SpriteRenderer>().sprite = this.cropService.GetCropSpriteSet(this.cropObjectModel.cropType)[(int)this.cropObjectModel.growStage - 1];
-            // Add Fruit
             if (this.cropObjectModel.growStage >= CropObjectModel.COMPLETED_GROW_STAGE)
             {
-                CropStatsModel cropStats = CropStatsLibrary.GetCropStats(this.cropObjectModel.cropType);
-                ObjectCompositionComponent cropCompoisition = this.cropObjectModel.GetObjectComponent<ObjectCompositionComponent>();
-                cropStats.producedItems.ForEach(item =>
+                this.AddFruit();
+                this.AddHarvestOrder();
+            }
+        }
+
+        private void AddFruit()
+        {
+            CropStatsModel cropStats = CropStatsLibrary.GetCropStats(this.cropObjectModel.cropType);
+            ObjectCompositionComponent cropCompoisition = this.cropObjectModel.GetObjectComponent<ObjectCompositionComponent>();
+            cropStats.producedItems.ForEach(item =>
+            {
+                if (cropCompoisition.GetMass(item.itemType) == 0)
                 {
-                    if (cropCompoisition.GetMass(item.itemType) == 0)
-                    {
-                        cropCompoisition.AddToComposition(item.itemType, item.mass);
-                    }
-                });
+                    cropCompoisition.AddToComposition(item.itemType, item.mass);
+                }
+            });
+        }
+
+        private void AddHarvestOrder()
+        {
+            if (!this.orderService.GetOrders<CropHarvestOrderModel>().Any(crop => { return crop.cropObjectModel == this.cropObjectModel; }))
+            {
+                GrowerBuildingModel building = this.buildingService.buildingObseravable.Get().Map(building =>{return building as GrowerBuildingModel;}).Find(building =>{return building != null && building.cropObject == this.cropObjectModel;});
+                this.orderService.AddOrder(new CropHarvestOrderModel(this.cropObjectModel.position, this.cropObjectModel, building));
             }
         }
 
