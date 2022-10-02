@@ -11,10 +11,11 @@ using Zenject;
 
 namespace UnityEngine
 {
-    public class MonoBaseObject : MonoBehaviour2
+    public abstract class MonoBaseObject : MonoBehaviour2
     {
         protected IItemObjectService itemObjectService;
         protected IUiPanelService uiPanelService;
+
         [Inject]
         public void Construct(IItemObjectService _itemService,
                                 IUiPanelService _uiPanelService)
@@ -22,11 +23,8 @@ namespace UnityEngine
             this.itemObjectService = _itemService;
             this.uiPanelService = _uiPanelService;
         }
-        public virtual BaseObjectModel GetBaseObjectModel()
-        {
-            Debug.LogException(new System.Exception("Get base object model not implemented for this object. Please implement GetBaseObjectModel."));
-            return null;
-        }
+        public abstract BaseObjectModel GetBaseObjectModel();
+
         public virtual void OnSelect()
         {
 

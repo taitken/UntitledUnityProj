@@ -91,10 +91,12 @@ namespace Environment
 
         public void HandleItemPickupOrDropTrigger(ItemObjectModel item)
         {
-            if (item != null && this.itemObjects.Find(obj => { return obj.itemObjectModel.ID == item.ID; }) == null)
+            if (item != null
+                && (item.itemState == ItemObjectModel.eItemState.OnGround || item.itemState == ItemObjectModel.eItemState.OnCharacter)
+                && this.itemObjects.Find(obj => { return obj.itemObjectModel.ID == item.ID; }) == null)
             {
                 this.itemObjects.Add(this.CreateItemObject(item));
-                if(item.itemState == ItemObjectModel.eItemState.OnGround) this.MergeAllItemsAtPosition(item.position);
+                if (item.itemState == ItemObjectModel.eItemState.OnGround) this.MergeAllItemsAtPosition(item.position);
             }
         }
 

@@ -72,16 +72,14 @@ namespace UnitAction
                 }
                 else if (originState == ItemObjectModel.eItemState.InStorage)
                 {
-                    this.itemObjectService.RemoveItemFromWorld(itemToAttach.ID);
                     this.buildingService.buildingObseravable.Get()
                         .Map(building => { return building as StorageBuildingModel; })
-                        .Find(building => { return building.position == this.itemObjModel.position; })
+                        .Find(building => { return building != null && building.position == this.itemObjModel.position; })
                         .RemoveItem(itemToAttach);
-                    this.unit.carriedItem = itemToAttach;
-                    this.itemObjectService.AddItemToWorld(itemToAttach);
                 }
+                itemToAttach.itemState = ItemObjectModel.eItemState.OnCharacter;
                 this.unit.carriedItem = itemToAttach;
-                this.itemObjectService.onItemPickupOrDropTrigger.NotifyAllSubscribers();
+                this.itemObjectService.onItemPickupOrDropTrigger.Set(itemToAttach);
                 this.completed = true;
             }
             return true;

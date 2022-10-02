@@ -44,7 +44,8 @@ namespace Building
                 }
                 else
                 {
-                    this.cropService.AddCrop(new CropObjectModel(this.growerBuildingModel.position, new ItemObjectMass(eItemType.OrganicMass, 1), cropStats));
+                    this.growerBuildingModel.cropObject = new CropObjectModel(this.growerBuildingModel.position, new ItemObjectMass(eItemType.OrganicMass, 1), cropStats);;
+                    this.cropService.AddCrop(this.growerBuildingModel.cropObject);
                 }
             }
             // Replace Crop with another
