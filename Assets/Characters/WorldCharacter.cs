@@ -102,7 +102,7 @@ namespace Characters
         {
             this.unitModel.localPosition = new Vector3(this.gameObject.transform.position.x + this.unitModel.spriteOffset, this.gameObject.transform.position.y + this.unitModel.spriteOffset);
             this.unitModel.position = this.environmentService.LocalToCell(this.unitModel.localPosition);
-            if(this.unitModel.carriedItem != null && this.unitModel.carriedItem.itemState == ItemObjectModel.eItemState.OnCharacter) this.unitModel.carriedItem.position = this.unitModel.position;
+            if (this.unitModel.carriedItem != null && this.unitModel.carriedItem.itemState == ItemObjectModel.eItemState.OnCharacter) this.unitModel.carriedItem.position = this.unitModel.position;
         }
 
         private void HandleOrderUpdates(IList<UnitOrderModel> orders)
@@ -130,8 +130,41 @@ namespace Characters
                 bool horizontalCollison = this.CollisionCheck(new Vector2(movement.x, 0));
                 bool verticalCollison = this.CollisionCheck(new Vector2(0, movement.y));
                 rb.MovePosition(rb.position + new Vector2(horizontalCollison ? 0 : movement.x, verticalCollison ? 0 : movement.y) * this.unitModel.moveSpeed * Time.fixedDeltaTime);
+                this.UpdateSpriteDirection(movement);
             }
             this.animator.SetBool("isMoving", movement != Vector2.zero);
+        }
+
+        protected void UpdateSpriteDirection(Vector2 movement)
+        {
+            if (movement.x > 0)
+            {
+                this.SetSpriteDirection(false, false, new Vector3(0, 0, -55));
+            }
+            else if (movement.x < 0)
+            {
+                this.SetSpriteDirection(true, false, new Vector3(0, 0, 65));
+            }
+            else if (movement.y > 0)
+            {
+                this.SetSpriteDirection(false, false, new Vector3(0, 0, 0));
+            }
+            else if (movement.y < 0)
+            {
+                this.SetSpriteDirection(false, true, new Vector3(0, 0, 0));
+            }
+        }
+
+        private void SetSpriteDirection(bool flipX, bool flipY, Vector3 angle)
+        {
+            this.transform.eulerAngles = angle;
+            this.GetComponent<SpriteRenderer>().flipX = flipX;
+            this.GetComponent<SpriteRenderer>().flipY = flipY;
+            this.GetComponentsInChildren<SpriteRenderer>().ForEach(sprite =>
+            {
+                sprite.flipX = flipX;
+                sprite.flipY = flipY;
+            });
         }
         private void CheckIfPathObstructed(PathFinderMap newMap)
         {
@@ -148,6 +181,7 @@ namespace Characters
                 if (obstructed) this.CancelMoving();
             }
         }
+
 
         protected void CancelMoving()
         {
@@ -191,7 +225,7 @@ namespace Characters
             {
                 this.carriedObj = itemObj;
                 itemObj.transform.SetParent(this.transform);
-                itemObj.transform.localPosition = new Vector3(0,0,0);
+                itemObj.transform.localPosition = new Vector3(0, 0, 0);
             }
         }
 

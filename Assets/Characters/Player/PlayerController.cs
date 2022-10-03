@@ -31,16 +31,15 @@ namespace Characters
         }
         void OnMove(InputValue moveVal)
         {
-
             this.movementInput = moveVal.Get<Vector2>();
-            this.setSpriteDirection(moveVal);
+            this.SetSpriteDirection(moveVal);
         }
         public void activateAttack()
         {
             this.animator.SetTrigger("attack");
         }
 
-        private void setSpriteDirection(InputValue moveVal)
+        private void SetSpriteDirection(InputValue moveVal)
         {
             if (moveVal.Get<Vector2>().x != 0)
             {
