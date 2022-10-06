@@ -73,6 +73,17 @@ namespace Characters
 
         protected void FixedUpdate()
         {
+            this.UpdateNeeds();
+            this.CheckPathingAndMove();
+        }
+
+        private void UpdateNeeds()
+        {
+            this.unitModel.needsComponent.UpdateFullness(1);
+        }
+
+        private void CheckPathingAndMove()
+        {
             if (this.unitModel.currentPath != null && this.unitModel.currentPath.Count > 0)
             {
                 Vector3 nextPoint = this.environmentService.CellToLocal(this.unitModel.currentPath[0]);
@@ -129,7 +140,7 @@ namespace Characters
             {
                 bool horizontalCollison = this.CollisionCheck(new Vector2(movement.x, 0));
                 bool verticalCollison = this.CollisionCheck(new Vector2(0, movement.y));
-                rb.MovePosition(rb.position + new Vector2(horizontalCollison ? 0 : movement.x, verticalCollison ? 0 : movement.y) * this.unitModel.moveSpeed * Time.fixedDeltaTime);
+                rb.MovePosition(rb.position + new Vector2(horizontalCollison ? 0 : movement.x, verticalCollison ? 0 : movement.y) * this.unitModel.moveSpeed * GameTime.fixedDeltaTime);
                 this.UpdateSpriteDirection(movement);
             }
             this.animator.SetBool("isMoving", movement != Vector2.zero);
@@ -191,7 +202,7 @@ namespace Characters
 
         protected bool CollisionCheck(Vector2 movement)
         {
-            Physics2D.Raycast(this.transform.position, movement, movementFilter, castCollisions, this.unitModel.moveSpeed * (Time.fixedDeltaTime * 1f) + collisionOffset
+            Physics2D.Raycast(this.transform.position, movement, movementFilter, castCollisions, this.unitModel.moveSpeed * (GameTime.fixedDeltaTime * 1f) + collisionOffset
             );
             return castCollisions.Filter(collision => { return collision.collider.gameObject.tag != "AllowMovement"; }).Count != 0;
         }
@@ -235,6 +246,13 @@ namespace Characters
             this.unitModel.carriedItem = null;
             ItemObject foundItem = this.GetComponentInChildren<ItemObject>();
             if (foundItem) foundItem.transform.SetParent(null);
+        }
+
+        public override void OnSelect()
+        {
+            IList<BasePanelModel> panels = new List<BasePanelModel>();
+            panels.Add(new ObjectPanelModel(this.unitModel.ID, "Drone", this.unitModel));
+            this.uiPanelService.selectedObjectPanels.Set(panels);
         }
 
         public override void OnMouseEnter()

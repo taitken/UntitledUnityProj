@@ -50,7 +50,7 @@ namespace Building
         {
             if (this.productionBuildingModel.isFullySupplied)
             {
-                this.productionBuildingModel.selectedItemRecipe.productionPointsCurrent += Time.fixedDeltaTime;
+                this.productionBuildingModel.selectedItemRecipe.productionPointsCurrent += GameTime.fixedDeltaTime;
                 if (this.productionBuildingModel.selectedItemRecipe.productionPointsCurrent >= this.productionBuildingModel.selectedItemRecipe.productionPointsMax)
                 {
                     this.ProduceItem();

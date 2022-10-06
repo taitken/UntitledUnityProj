@@ -3,6 +3,7 @@ using UnityEngine;
 using GameControllers.Services;
 using GameControllers;
 using Zenject;
+using UtilityClasses;
 
 namespace GameControllers
 {
@@ -24,7 +25,7 @@ namespace GameControllers
         // Update is called once per frame
         void FixedUpdate()
         {
-            this.dayCycleService.UpdateCycle(Time.deltaTime);
+            this.dayCycleService.UpdateCycle(GameTime.deltaTime);
         }
     }
 }

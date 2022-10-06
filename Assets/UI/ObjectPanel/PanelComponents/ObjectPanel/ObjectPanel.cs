@@ -14,6 +14,7 @@ namespace UI.Panel
         public PanelWindow panelWindow;
         public DetailsTab detailTab;
         public StorageTab storageTab;
+        public CharacterNeedsTab charNeedsTab;
 
         public override void Construct(BasePanelModel panelWindowModel)
         {
@@ -32,6 +33,7 @@ namespace UI.Panel
             if (this.ConfigureDetailsTab()) tabs.Add((this.detailTab, "Details"));
             tabs.Add((this.detailTab, "Details2"));
             if (this.ConfigureStorageTab()) tabs.Add((this.storageTab, "Storage"));
+            if (this.ConfigureCharNeedsTab()) tabs.Add((this.charNeedsTab, "Needs"));
             this.panelWindow.Initialise(tabs);
         }
 
@@ -55,6 +57,20 @@ namespace UI.Panel
             if (storageComponent != null)
             {
                 this.storageTab.Initalise(storageComponent);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool ConfigureCharNeedsTab()
+        {
+            ObjectNeedsComponent objectNeeds = this.objectPanelModel.objectModel.GetObjectComponent<ObjectNeedsComponent>();
+            if (objectNeeds != null)
+            {
+                this.charNeedsTab.Initalise(objectNeeds);
                 return true;
             }
             else
