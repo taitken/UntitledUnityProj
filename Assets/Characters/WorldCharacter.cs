@@ -81,7 +81,7 @@ namespace Characters
             {
                 MovementHelper.MoveRigidBody2D(this.GetComponent<Rigidbody2D>(), new Vector2(1, 1), this.unitModel.moveSpeed, this.unitModel.currentPath, this.environmentService);
                 this.UpdatePositions();
-                this.pathingLine = MovementHelper.UpdateMoveLine(this.pathingLine, this.pathLineFactory, this.transform.position, this.unitModel.currentPath, this.environmentService);
+                this.pathingLine = MovementHelper.GetCharacterPathLine(this.pathingLine, this.pathLineFactory, this.transform.position, this.unitModel.currentPath, this.environmentService);
             }
         }
 

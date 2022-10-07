@@ -16,7 +16,7 @@ namespace UtilityClasses
             return finalDirection;
         }
 
-        public static CharacterPathLine UpdateMoveLine(CharacterPathLine _currentPathLine, CharacterPathLine.Factory _pathLineFactory, Vector3 _lineStartPos,IList<Vector3Int> _currentPath, IEnvironmentService _envService)
+        public static CharacterPathLine GetCharacterPathLine(CharacterPathLine _currentPathLine, CharacterPathLine.Factory _pathLineFactory, Vector3 _lineStartPos,IList<Vector3Int> _currentPath, IEnvironmentService _envService)
         {
             IList<Vector3> newLinePath = _currentPath.Map(item => { return _envService.CellToLocal(item); });
             newLinePath.Insert(0, _lineStartPos);
