@@ -30,12 +30,13 @@ namespace Characters.Utils
 
         }
 
-        public void UpdateLine(IList<Vector3> newPath)
+        public CharacterPathLine UpdateLine(IList<Vector3> newPath)
         {
             Vector3[] positions = new Vector3[newPath.Count];
             newPath.CopyTo(positions, 0);
             this.lineRenderer.positionCount = newPath.Count;
             this.lineRenderer.SetPositions(positions);
+            return this;
         }
 
         public void SetUpLine(Transform[] points)

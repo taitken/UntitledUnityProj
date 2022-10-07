@@ -29,9 +29,6 @@ namespace Characters
         protected IUiPanelService contextWindowService;
         protected CharacterPathLine.Factory pathLineFactory;
         protected CharacterPathLine pathingLine;
-        protected Rigidbody2D rb;
-        protected SpriteRenderer sr;
-        protected Animator animator;
         protected ItemObject carriedObj;
         public ContactFilter2D movementFilter = new ContactFilter2D();
         protected List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
@@ -60,19 +57,11 @@ namespace Characters
             this.itemService.onItemPickupOrDropTrigger.Subscribe(this, this.OnItemPickupOrDrop);
             this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.OnItemStoreOrSupply);
             this.pathFinderService.OnPathFinderMapUpdate(this, this.CheckIfPathObstructed);
-
-            rb = GetComponent<Rigidbody2D>();
-            animator = GetComponent<Animator>();
-            sr = GetComponent<SpriteRenderer>();
         }
 
         public override BaseObjectModel GetBaseObjectModel()
         {
             return this.unitModel;
-        }
-
-        void Update()
-        {
         }
 
         protected void FixedUpdate()
@@ -90,24 +79,12 @@ namespace Characters
         {
             if (this.unitModel.currentPath != null && this.unitModel.currentPath.Count > 0)
             {
-                this.MoveUnit(new Vector2(1, 1));
-                this.UpdateMoveLine();
+                MovementHelper.MoveRigidBody2D(this.GetComponent<Rigidbody2D>(), new Vector2(1, 1), this.unitModel.moveSpeed, this.unitModel.currentPath, this.environmentService);
+                this.UpdatePositions();
+                this.pathingLine = MovementHelper.UpdateMoveLine(this.pathingLine, this.pathLineFactory, this.transform.position, this.unitModel.currentPath, this.environmentService);
             }
         }
 
-        private void UpdateMoveLine()
-        {
-            IList<Vector3> newLinePath = this.unitModel.currentPath.Map(item => { return this.environmentService.CellToLocal(item); });
-            newLinePath.Insert(0, this.gameObject.transform.position);
-            if (this.pathingLine == null)
-            {
-                this.pathingLine = this.pathLineFactory.Create(newLinePath);
-            }
-            else
-            {
-                this.pathingLine.UpdateLine(newLinePath);
-            }
-        }
 
         private void UpdatePositions()
         {
@@ -123,93 +100,6 @@ namespace Characters
                 this.CancelMoving();
                 this.DetachItemFromUnit();
             }
-        }
-
-        protected void MoveUnit(Vector2 distance)
-        {
-            if (distance != Vector2.zero)
-            {
-                Vector3 nextPoint = this.environmentService.CellToLocal(this.unitModel.currentPath[0]);
-                Vector2 direction = this.gameObject.transform.position.GetDirection(nextPoint);
-                Vector2 newPosition = rb.position + (distance * direction * this.unitModel.moveSpeed * GameTime.fixedDeltaTime);
-                Vector2 overshootDistance = this.GetMovementOvershoot(direction, newPosition, nextPoint);
-                this.UpdateSpriteDirection(direction);
-                // Overshot movement location
-                if (overshootDistance.x > 0 && direction.y == 0
-                    || overshootDistance.y > 0 && direction.x == 0
-                    || overshootDistance.y > 0 && overshootDistance.x > 0)
-                {
-                    this.rb.MovePosition(nextPoint);
-                    this.UpdatePositions();
-                    this.unitModel.currentPath.RemoveAt(0);
-                    if (this.unitModel.currentPath.Count > 0
-                        && (overshootDistance.x + overshootDistance.y) > 0.02f)
-                    {
-                        this.MoveUnit(overshootDistance / this.unitModel.moveSpeed / GameTime.fixedDeltaTime);
-                    }
-                }
-                // Did not overshoot
-                else
-                {
-                    this.rb.MovePosition(newPosition);
-                    if ((Vector3)newPosition == nextPoint) this.unitModel.currentPath.RemoveAt(0);
-                    this.UpdatePositions();
-                }
-            }
-        }
-
-        protected Vector2 GetMovementOvershoot(Vector2 direction, Vector2 newEndPosition, Vector3 currentPathPoint)
-        {
-            Vector2 overShootMovement = new Vector2(0, 0);
-            if (direction.x > 0 && newEndPosition.x > currentPathPoint.x)
-            {
-                overShootMovement += new Vector2(newEndPosition.x - currentPathPoint.x, 0);
-            }
-            if (direction.x < 0 && newEndPosition.x < currentPathPoint.x)
-            {
-                overShootMovement += new Vector2(newEndPosition.x - currentPathPoint.x, 0);
-            }
-            if (direction.y > 0 && newEndPosition.y > currentPathPoint.y)
-            {
-                overShootMovement += new Vector2(0, newEndPosition.y - currentPathPoint.y);
-            }
-            if (direction.y < 0 && newEndPosition.y < currentPathPoint.y)
-            {
-                overShootMovement += new Vector2(0, newEndPosition.y - currentPathPoint.y);
-            }
-            return new Vector2(Math.Abs(overShootMovement.x), Math.Abs(overShootMovement.y));
-        }
-
-        protected void UpdateSpriteDirection(Vector2 movement)
-        {
-            if (movement.x > 0)
-            {
-                this.SetSpriteDirection(false, false, new Vector3(0, 0, -55));
-            }
-            else if (movement.x < 0)
-            {
-                this.SetSpriteDirection(true, false, new Vector3(0, 0, 65));
-            }
-            else if (movement.y > 0)
-            {
-                this.SetSpriteDirection(false, false, new Vector3(0, 0, 0));
-            }
-            else if (movement.y < 0)
-            {
-                this.SetSpriteDirection(false, true, new Vector3(0, 0, 0));
-            }
-        }
-
-        private void SetSpriteDirection(bool flipX, bool flipY, Vector3 angle)
-        {
-            this.transform.eulerAngles = angle;
-            this.GetComponent<SpriteRenderer>().flipX = flipX;
-            this.GetComponent<SpriteRenderer>().flipY = flipY;
-            this.GetComponentsInChildren<SpriteRenderer>().ForEach(sprite =>
-            {
-                sprite.flipX = flipX;
-                sprite.flipY = flipY;
-            });
         }
         private void CheckIfPathObstructed(PathFinderMap newMap)
         {

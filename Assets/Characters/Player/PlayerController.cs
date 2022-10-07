@@ -25,28 +25,10 @@ namespace Characters
         {
             base.FixedUpdate();
         }
-        void OnMove(InputValue moveVal)
-        {
-            this.movementInput = moveVal.Get<Vector2>();
-            this.SetSpriteDirection(moveVal);
-        }
-        public void activateAttack()
-        {
-            this.animator.SetTrigger("attack");
-        }
-
-        private void SetSpriteDirection(InputValue moveVal)
-        {
-            if (moveVal.Get<Vector2>().x != 0)
-            {
-                this.sr.flipX = moveVal.Get<Vector2>().x < 0;
-            }
-        }
 
         public void SwordAttack()
         {
             this.lockMovement();
-            this.swordAttack.Attack(this.sr.flipX);
         }
 
         public void EndSwordAttack()
