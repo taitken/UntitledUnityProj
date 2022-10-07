@@ -1,4 +1,9 @@
 
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Globalization;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,14 +66,13 @@ namespace Characters
             sr = GetComponent<SpriteRenderer>();
         }
 
-        void Start()
+        public override BaseObjectModel GetBaseObjectModel()
         {
-
+            return this.unitModel;
         }
 
         void Update()
         {
-            this.UpdatePositions();
         }
 
         protected void FixedUpdate()
@@ -86,26 +90,22 @@ namespace Characters
         {
             if (this.unitModel.currentPath != null && this.unitModel.currentPath.Count > 0)
             {
-                Vector3 nextPoint = this.environmentService.CellToLocal(this.unitModel.currentPath[0]);
-                Vector2 direction = this.gameObject.transform.position.GetDirection(nextPoint);
-                if (direction == Vector2.zero)
-                {
-                    this.unitModel.currentPath.RemoveAt(0);
-                }
-                else
-                {
-                    this.MoveUnit(direction);
-                }
-                IList<Vector3> newLinePath = this.unitModel.currentPath.Map(item => { return this.environmentService.CellToLocal(item); });
-                newLinePath.Insert(0, this.gameObject.transform.position);
-                if (this.pathingLine == null)
-                {
-                    this.pathingLine = this.createMovePath(newLinePath);
-                }
-                else
-                {
-                    this.pathingLine.UpdateLine(newLinePath);
-                }
+                this.MoveUnit(new Vector2(1, 1));
+                this.UpdateMoveLine();
+            }
+        }
+
+        private void UpdateMoveLine()
+        {
+            IList<Vector3> newLinePath = this.unitModel.currentPath.Map(item => { return this.environmentService.CellToLocal(item); });
+            newLinePath.Insert(0, this.gameObject.transform.position);
+            if (this.pathingLine == null)
+            {
+                this.pathingLine = this.pathLineFactory.Create(newLinePath);
+            }
+            else
+            {
+                this.pathingLine.UpdateLine(newLinePath);
             }
         }
 
@@ -124,26 +124,60 @@ namespace Characters
                 this.DetachItemFromUnit();
             }
         }
-        public override BaseObjectModel GetBaseObjectModel()
-        {
-            return this.unitModel;
-        }
 
-        private CharacterPathLine createMovePath(IList<Vector3> path)
+        protected void MoveUnit(Vector2 distance)
         {
-            return this.pathLineFactory.Create(path);
-        }
-
-        protected void MoveUnit(Vector2 movement)
-        {
-            if (movement != Vector2.zero)
+            if (distance != Vector2.zero)
             {
-                bool horizontalCollison = this.CollisionCheck(new Vector2(movement.x, 0));
-                bool verticalCollison = this.CollisionCheck(new Vector2(0, movement.y));
-                rb.MovePosition(rb.position + new Vector2(horizontalCollison ? 0 : movement.x, verticalCollison ? 0 : movement.y) * this.unitModel.moveSpeed * GameTime.fixedDeltaTime);
-                this.UpdateSpriteDirection(movement);
+                Vector3 nextPoint = this.environmentService.CellToLocal(this.unitModel.currentPath[0]);
+                Vector2 direction = this.gameObject.transform.position.GetDirection(nextPoint);
+                Vector2 newPosition = rb.position + (distance * direction * this.unitModel.moveSpeed * GameTime.fixedDeltaTime);
+                Vector2 overshootDistance = this.GetMovementOvershoot(direction, newPosition, nextPoint);
+                this.UpdateSpriteDirection(direction);
+                // Overshot movement location
+                if (overshootDistance.x > 0 && direction.y == 0
+                    || overshootDistance.y > 0 && direction.x == 0
+                    || overshootDistance.y > 0 && overshootDistance.x > 0)
+                {
+                    this.rb.MovePosition(nextPoint);
+                    this.UpdatePositions();
+                    this.unitModel.currentPath.RemoveAt(0);
+                    if (this.unitModel.currentPath.Count > 0
+                        && (overshootDistance.x + overshootDistance.y) > 0.02f)
+                    {
+                        this.MoveUnit(overshootDistance / this.unitModel.moveSpeed / GameTime.fixedDeltaTime);
+                    }
+                }
+                // Did not overshoot
+                else
+                {
+                    this.rb.MovePosition(newPosition);
+                    if ((Vector3)newPosition == nextPoint) this.unitModel.currentPath.RemoveAt(0);
+                    this.UpdatePositions();
+                }
             }
-            this.animator.SetBool("isMoving", movement != Vector2.zero);
+        }
+
+        protected Vector2 GetMovementOvershoot(Vector2 direction, Vector2 newEndPosition, Vector3 currentPathPoint)
+        {
+            Vector2 overShootMovement = new Vector2(0, 0);
+            if (direction.x > 0 && newEndPosition.x > currentPathPoint.x)
+            {
+                overShootMovement += new Vector2(newEndPosition.x - currentPathPoint.x, 0);
+            }
+            if (direction.x < 0 && newEndPosition.x < currentPathPoint.x)
+            {
+                overShootMovement += new Vector2(newEndPosition.x - currentPathPoint.x, 0);
+            }
+            if (direction.y > 0 && newEndPosition.y > currentPathPoint.y)
+            {
+                overShootMovement += new Vector2(0, newEndPosition.y - currentPathPoint.y);
+            }
+            if (direction.y < 0 && newEndPosition.y < currentPathPoint.y)
+            {
+                overShootMovement += new Vector2(0, newEndPosition.y - currentPathPoint.y);
+            }
+            return new Vector2(Math.Abs(overShootMovement.x), Math.Abs(overShootMovement.y));
         }
 
         protected void UpdateSpriteDirection(Vector2 movement)
@@ -192,7 +226,6 @@ namespace Characters
                 if (obstructed) this.CancelMoving();
             }
         }
-
 
         protected void CancelMoving()
         {

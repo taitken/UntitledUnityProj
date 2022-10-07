@@ -40,7 +40,7 @@ namespace UnitAction
                         this.unit.position == this.destination + new Vector3Int(1, 0) ||
                         this.unit.position == this.destination - new Vector3Int(0, 1) ||
                         this.unit.position == this.destination + new Vector3Int(0, 1) ||
-                        this.unit.position == this.destination + new Vector3Int(0, 0)
+                        this.unit.position == this.destination
                     ))
                 )
                 {

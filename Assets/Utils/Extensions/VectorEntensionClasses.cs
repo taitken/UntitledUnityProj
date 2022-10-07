@@ -24,14 +24,14 @@ namespace System.Collections.Generic
             {
                 y = -1;
             }
-            if (Math.Abs(origin.x - destination.x) < 0.02f)
-            {
-                x = 0;
-            }
-            if (Math.Abs(origin.y - destination.y) < 0.02f)
-            {
-                y = 0;
-            }
+            // if (Math.Abs(origin.x - destination.x) < 0.02f)
+            // {
+            //     x = 0;
+            // }
+            // if (Math.Abs(origin.y - destination.y) < 0.02f)
+            // {
+            //     y = 0;
+            // }
             return new Vector2(x, y);
         }
     }

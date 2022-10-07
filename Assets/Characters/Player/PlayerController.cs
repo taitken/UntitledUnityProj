@@ -24,10 +24,6 @@ namespace Characters
         private new void FixedUpdate()
         {
             base.FixedUpdate();
-            if (this.canMove)
-            {
-                this.MoveUnit(this.movementInput);
-            }
         }
         void OnMove(InputValue moveVal)
         {
