@@ -38,7 +38,7 @@ public class ActionController : MonoBehaviour2
         this.actionFactory = new ActionFactory(_pathFinderService, _environmentService, _orderService, _buildingService, _itemService, _cropService);
         _orderService.orders.Subscribe(this, this.HandleOrderUpdates);
         _unitService.unitObseravable.Subscribe(this, updatedUnits => { this.currentUnits = updatedUnits; });
-        InvokeRepeating("CheckAndAssignOrder", 1f, 1f);
+        InvokeRepeating("CheckAndAssignOrder", 1f, 0.2f);
     }
 
     // Start is called before the first frame update

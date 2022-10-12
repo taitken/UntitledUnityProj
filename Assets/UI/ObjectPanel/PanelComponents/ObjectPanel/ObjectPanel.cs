@@ -30,53 +30,11 @@ namespace UI.Panel
         private void ConfigureTabs()
         {
             IList<(BaseTabContent, string)> tabs = new List<(BaseTabContent, string)>();
-            if (this.ConfigureDetailsTab()) tabs.Add((this.detailTab, "Details"));
+            if (this.detailTab.Initalise(this.objectPanelModel.objectModel)) tabs.Add((this.detailTab, "Details"));
             tabs.Add((this.detailTab, "Details2"));
-            if (this.ConfigureStorageTab()) tabs.Add((this.storageTab, "Storage"));
-            if (this.ConfigureCharNeedsTab()) tabs.Add((this.charNeedsTab, "Needs"));
+            if (this.storageTab.Initalise(this.objectPanelModel.objectModel)) tabs.Add((this.storageTab, "Storage"));
+            if (this.charNeedsTab.Initalise(this.objectPanelModel.objectModel)) tabs.Add((this.charNeedsTab, "Needs"));
             this.panelWindow.Initialise(tabs);
-        }
-
-        private bool ConfigureDetailsTab()
-        {
-            ObjectCompositionComponent objectComposition = this.objectPanelModel.objectModel.GetObjectComponent<ObjectCompositionComponent>();
-            if (objectComposition != null)
-            {
-                this.detailTab.Initalise(objectComposition, this.objectPanelModel.objectModel);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool ConfigureStorageTab()
-        {
-            ObjectStorageComponent storageComponent = this.objectPanelModel.objectModel.GetObjectComponent<ObjectStorageComponent>();
-            if (storageComponent != null)
-            {
-                this.storageTab.Initalise(storageComponent);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private bool ConfigureCharNeedsTab()
-        {
-            ObjectNeedsComponent objectNeeds = this.objectPanelModel.objectModel.GetObjectComponent<ObjectNeedsComponent>();
-            if (objectNeeds != null)
-            {
-                this.charNeedsTab.Initalise(objectNeeds);
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 }

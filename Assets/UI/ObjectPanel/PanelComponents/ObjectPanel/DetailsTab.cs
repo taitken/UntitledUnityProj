@@ -3,27 +3,36 @@ using System.Collections;
 using System.Collections.Generic;
 using ObjectComponents;
 using TMPro;
+using UI.GenericComponents;
 using UnityEngine;
 using UtilityClasses;
 
 namespace UI.Panel
 {
-    public class DetailsTab : BaseTabContent
+    public class DetailsTab : BaseObjectTabContent
     {
         public TextMeshProUGUI textBox;
         public BaseObjectModel objectModel;
+        public PlainProgressBar hitPointsBar;
         private ObjectCompositionComponent objectComposition;
-
-        public void Initalise(ObjectCompositionComponent _objectComposition, BaseObjectModel _objectModel)
+        private ObjectHitPointsComponent objectHitPoints;
+        public override bool Initalise(BaseObjectModel _baseObj)
         {
-            this.objectComposition = _objectComposition;
-            this.objectModel = _objectModel;
-            this.SetText();
+            this.objectComposition = _baseObj.GetObjectComponent<ObjectCompositionComponent>();
+            if (objectComposition != null)
+            {
+                this.objectHitPoints = _baseObj.GetObjectComponent<ObjectHitPointsComponent>();
+                this.objectModel = _baseObj;
+                this.SetText();
+                return true;
+            }
+            return false;
         }
 
         public void Update()
         {
             this.SetText();
+            this.UpdateHitPointsBar();
         }
 
         private void SetText()
@@ -39,6 +48,14 @@ namespace UI.Panel
                 string objectCompositionString = itemRow.Count > 0 ? boxString + itemRow.ConcatStrings("\n") : "No items stored";
                 this.textBox.SetText((this.objectModel.objectDescription != null ? this.objectModel.objectDescription + "\n" : "")
                                         + objectCompositionString);
+            }
+        }
+
+        private void UpdateHitPointsBar()
+        {
+            if (this.objectHitPoints != null)
+            {
+                this.hitPointsBar.UpdatePercentage(this.objectHitPoints.currentHitPoints / this.objectHitPoints.maxHitPoints);
             }
         }
     }

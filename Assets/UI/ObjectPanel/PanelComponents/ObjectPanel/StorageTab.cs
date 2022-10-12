@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using ObjectComponents;
@@ -7,17 +8,23 @@ using UtilityClasses;
 
 namespace UI.Panel
 {
-    public class StorageTab : BaseTabContent
+    public class StorageTab : BaseObjectTabContent
     {
         public TextMeshProUGUI textBox;
+        public BaseObjectModel objectModel;
         private ObjectStorageComponent storageComponent;
 
-        public void Initalise(ObjectStorageComponent _storageComponent)
+        public override bool Initalise(BaseObjectModel _baseObj)
         {
-            this.storageComponent = _storageComponent;
-            this.SetText();
+            this.storageComponent = _baseObj.GetObjectComponent<ObjectStorageComponent>();
+            if (storageComponent != null)
+            {
+                this.objectModel = _baseObj;
+                this.SetText();
+                return true;
+            }
+            return false;
         }
-
         public void Update()
         {
             this.SetText();

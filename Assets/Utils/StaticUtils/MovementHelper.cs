@@ -16,7 +16,7 @@ namespace UtilityClasses
             return finalDirection;
         }
 
-        public static CharacterPathLine GetCharacterPathLine(CharacterPathLine _currentPathLine, CharacterPathLine.Factory _pathLineFactory, Vector3 _lineStartPos,IList<Vector3Int> _currentPath, IEnvironmentService _envService)
+        public static CharacterPathLine GetCharacterPathLine(CharacterPathLine _currentPathLine, CharacterPathLine.Factory _pathLineFactory, Vector3 _lineStartPos, IList<Vector3Int> _currentPath, IEnvironmentService _envService)
         {
             IList<Vector3> newLinePath = _currentPath.Map(item => { return _envService.CellToLocal(item); });
             newLinePath.Insert(0, _lineStartPos);
@@ -30,12 +30,35 @@ namespace UtilityClasses
             }
         }
 
+        public static Vector2 GetDirection(Vector3 origin, Vector3 destination)
+        {
+            float x = 0;
+            float y = 0;
+            if (origin.x < destination.x)
+            {
+                x = 1;
+            }
+            if (origin.x > destination.x)
+            {
+                x = -1;
+            }
+            if (origin.y < destination.y)
+            {
+                y = 1;
+            }
+            if (origin.y > destination.y)
+            {
+                y = -1;
+            }
+            return new Vector2(x, y);
+        }
+
         private static Vector2 MoveObject(Rigidbody2D _rb, Vector2 _distance, float _moveSpeed, IList<Vector3Int> _currentPath, IEnvironmentService _envService)
         {
             if (_distance != Vector2.zero)
             {
                 Vector3 nextPoint = _envService.CellToLocal(_currentPath[0]);
-                Vector2 direction = _rb.gameObject.transform.position.GetDirection(nextPoint);
+                Vector2 direction = MovementHelper.GetDirection(_rb.gameObject.transform.position, nextPoint);
                 Vector2 newPosition = _rb.position + (_distance * direction * _moveSpeed * GameTime.fixedDeltaTime);
                 Vector2 overshootDistance = MovementHelper.GetMovementOvershoot(direction, newPosition, nextPoint);
                 // Overshot movement location
@@ -122,5 +145,7 @@ namespace UtilityClasses
                 sprite.flipY = flipY;
             });
         }
+
+
     }
 }

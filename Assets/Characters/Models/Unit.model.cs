@@ -16,7 +16,9 @@ namespace Unit.Models
             this.maxCarryWeight = 400;
             this.spriteOffset = 0.08f;
             this.needsComponent = new ObjectNeedsComponent();
+            this.hitPointsComponent = new ObjectHitPointsComponent(100);
             this.objectComponents.Add(this.needsComponent);
+            this.objectComponents.Add(this.hitPointsComponent);
         }
         public string currentHealth { get; set; }
         public IList<Vector3Int> currentPath { get; set; }
@@ -26,6 +28,7 @@ namespace Unit.Models
         public Vector3 localPosition { get; set; }
         public UnitOrderModel currentOrder { get; set; }
         public ObjectNeedsComponent needsComponent { get; set; }
+        public ObjectHitPointsComponent hitPointsComponent { get; set; }
         public ItemObjectModel carriedItem
         {
             get

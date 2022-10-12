@@ -1,5 +1,6 @@
 
 using System.Net.Mime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,8 @@ namespace UI.GenericComponents
     public class PlainProgressBar : MonoBehaviour
     {
         public ProgressBlit progressBlit;
+        public string label;
+
         private RectTransform rectTransform;
         private float barWidth;
         private int visibleObjects;
@@ -16,6 +19,7 @@ namespace UI.GenericComponents
         {
             this.rectTransform = this.progressBlit.GetComponent<RectTransform>();
             this.barWidth = this.rectTransform.rect.width;
+            this.GetComponentInChildren<TextMeshProUGUI>().SetText(this.label);
             this.UpdatePercentage(0);
         }
 

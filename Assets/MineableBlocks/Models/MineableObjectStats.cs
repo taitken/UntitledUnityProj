@@ -8,6 +8,7 @@ namespace MineableBlocks.Models
         public eItemType dropType { get; set; }
         public int minMass { get; set; }
         public int maxMass { get; set; }
+        public int hitPoints { get; set; }
     }
 
     public static class MineableBlockTypeStats
@@ -23,7 +24,8 @@ namespace MineableBlocks.Models
                         name = "Stone Block",
                         dropType = eItemType.Stone,
                         minMass = 200,
-                        maxMass = 400
+                        maxMass = 400,
+                        hitPoints = 100
                     };
                     break;
                 case eMineableBlockType.Coal:
@@ -32,7 +34,8 @@ namespace MineableBlocks.Models
                         name = "Coal Block",
                         dropType = eItemType.Coal,
                         minMass = 400,
-                        maxMass = 800
+                        maxMass = 800,
+                        hitPoints = 100
                     };
                     break;
                 case eMineableBlockType.Copper:
@@ -41,7 +44,8 @@ namespace MineableBlocks.Models
                         name = "Copper Block",
                         dropType = eItemType.CopperOre,
                         minMass = 800,
-                        maxMass = 1200
+                        maxMass = 1200,
+                        hitPoints = 100
                     };
                     break;
             }

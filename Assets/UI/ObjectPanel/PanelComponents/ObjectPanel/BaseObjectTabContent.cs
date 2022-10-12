@@ -5,7 +5,7 @@ using TMPro;
 using UI.Models;
 using UnityEngine;
 
-public abstract class BaseTabContent : MonoBehaviour2
+public abstract class BaseObjectTabContent : BaseTabContent
 {
-    
+    public abstract bool Initalise(BaseObjectModel _baseObj);
 }

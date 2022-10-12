@@ -9,17 +9,23 @@ using UtilityClasses;
 
 namespace UI.Panel
 {
-    public class CharacterNeedsTab : BaseTabContent
+    public class CharacterNeedsTab : BaseObjectTabContent
     {
         public TextMeshProUGUI textBox;
         public PlainProgressBar hungerBar;
         public BaseObjectModel objectModel;
         private ObjectNeedsComponent objectNeeds;
 
-        public void Initalise(ObjectNeedsComponent _objectNeeds)
+        public override bool Initalise(BaseObjectModel _baseObj)
         {
-            this.objectNeeds = _objectNeeds;
-            this.SetText();
+            this.objectNeeds = _baseObj.GetObjectComponent<ObjectNeedsComponent>();
+            if (objectNeeds != null)
+            {
+                this.objectModel =_baseObj;
+                this.SetText();
+                return true;
+            }
+            return false;
         }
 
         public void Update()
