@@ -18,7 +18,6 @@ namespace Environment
     {
         private IUnitOrderService orderService;
         private IItemObjectService itemService;
-        private IUiPanelService uiPanelService;
         private IEnvironmentService environmentService;
         public Sprite[] spriteList;
         private SpriteRenderer spriteRenderer;

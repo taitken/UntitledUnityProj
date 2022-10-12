@@ -14,7 +14,13 @@ namespace ObjectComponents
         private float _currentHitPoints { get; set; }
         private float _maxHitPoints { get; set; }
 
-        public ObjectHitPointsComponent(float startingHitPoints) : base()
+        public ObjectHitPointsComponent() : base()
+        {
+            this._maxHitPoints = 100;
+            this._currentHitPoints = 100;
+        }
+
+        public void Initalise(float startingHitPoints)
         {
             this._maxHitPoints = startingHitPoints;
             this._currentHitPoints = startingHitPoints;

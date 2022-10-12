@@ -53,10 +53,12 @@ namespace Characters
             this.pathLineFactory = _pathLineFactory;
             this.unitModel = _unitModel;
 
+            // Listeners
             this.orderService.orders.Subscribe(this, this.HandleOrderUpdates);
             this.itemService.onItemPickupOrDropTrigger.Subscribe(this, this.OnItemPickupOrDrop);
             this.itemService.onItemStoreOrSupplyTrigger.SubscribeQuietly(this, this.OnItemStoreOrSupply);
             this.pathFinderService.OnPathFinderMapUpdate(this, this.CheckIfPathObstructed);
+            this.unitModel.ListenForUpdates(this.ListenForModelUpdates);
         }
 
         public override BaseObjectModel GetBaseObjectModel()
@@ -68,6 +70,11 @@ namespace Characters
         {
             this.UpdateNeeds();
             this.CheckPathingAndMove();
+        }
+        
+        protected void ListenForModelUpdates()
+        {
+
         }
 
         private void UpdateNeeds()

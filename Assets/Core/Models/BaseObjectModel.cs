@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Reflection;
+using Environment.Models;
 using Item.Models;
 using ObjectComponents;
 using UnityEngine;
@@ -8,7 +10,7 @@ namespace System
 {
     public abstract class BaseObjectModel : BaseModel
     {
-        protected IList<ObjectComponent> objectComponents { get; set; }
+        private IList<ObjectComponent> objectComponents { get; set; }
         private EventEmitter updateNotifier = new EventEmitter();
         public Vector3Int position { get; set; }
         public string objectDescription { get; set; }
@@ -17,8 +19,18 @@ namespace System
         public BaseObjectModel(Vector3Int _position, IList<ItemObjectMass> objectComp) : base()
         {
             this.position = _position;
+            this.IntialiseObjectComponents(objectComp);
+        }
+
+        private void IntialiseObjectComponents(IList<ItemObjectMass> objectComp)
+        {
             this.objectComponents = new List<ObjectComponent>();
             this.objectComponents.Add(new ObjectCompositionComponent(objectComp));
+            IList<ObjectComponentAttribute> objComAttrs = this.GetType().GetCustomAttributes(typeof(ObjectComponentAttribute), true).Map(attr => { return attr as ObjectComponentAttribute; });
+            objComAttrs.ForEach(objComAttr =>
+            {
+                this.objectComponents.Add(Activator.CreateInstance(objComAttr.objectComponentType) as ObjectComponent);
+            });
         }
 
         public void ListenForUpdates(Action updateAction)

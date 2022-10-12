@@ -24,19 +24,16 @@ namespace UnitAction
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
         }
-
         public bool CheckCompleted()
         {
             return this.environmentService.mineableObjects.Get()[this.unit.currentOrder.coordinates.x, this.unit.currentOrder.coordinates.y] == null;
         }
-
         public void CancelAction()
         {
             this.cancel = true;
         }
         public bool PerformAction()
         {
-
             MineableObjectModel mineableObj = this.environmentService.mineableObjects.Get()[this.unit.currentOrder.coordinates.x, this.unit.currentOrder.coordinates.y];
             if (mineableObj != null) this.environmentService.RemoveMineableObject(mineableObj.position);
             return true;

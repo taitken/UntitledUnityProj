@@ -7,6 +7,7 @@ using UnityEngine;
 
 namespace Environment.Models
 {
+    [ObjectComponentAttribute(typeof(ObjectHitPointsComponent))]
     public class MineableObjectModel : TileObjectModel
     {
         public eMineableBlockType mineableBlockType;
@@ -18,9 +19,8 @@ namespace Environment.Models
         {
             this.mineableBlockType = _blockType;
             this.itemDrop = _blockStats.dropType;
-            this.blockName = _blockStats.name;            
-            this.hitPointsComponent = new ObjectHitPointsComponent(_blockStats.hitPoints);
-            this.objectComponents.Add(this.hitPointsComponent);
+            this.blockName = _blockStats.name;
+            this.GetObjectComponent<ObjectHitPointsComponent>().Initalise(_blockStats.hitPoints);
         }
     }
 }

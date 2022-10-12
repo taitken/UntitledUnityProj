@@ -7,15 +7,15 @@ using UnityEngine;
 
 namespace Building.Models
 {
+    [ObjectComponentAttribute(typeof(ObjectStorageComponent))]
     public class GrowerBuildingModel : BuildingObjectModel
     {
         public eCropType? selectedCropType { get; set; }
         public CropObjectModel cropObject { get; set; }
-        public ObjectStorageComponent buildingStorage { get; set; }
+        public ObjectStorageComponent buildingStorage { get { return this.GetObjectComponent<ObjectStorageComponent>(); } }
         public GrowerBuildingModel(Vector3Int _position, eBuildingType _buildingType, BuildingStatsModel _buildStats) : base(_position, _buildingType, _buildStats)
         {
-            this.buildingStorage = new ObjectStorageComponent();
-            this.objectComponents.Add(this.buildingStorage);
+            
         }
     }
 }
