@@ -15,7 +15,7 @@ namespace Building
     {
         public GrowerBuildingModel growerBuildingModel;
         private CropObjectModel currentCrop { get { return this.growerBuildingModel.cropObject; } }
-        public void Start()
+        public void Awake()
         {
             this.growerBuildingModel = this.buildingObjectModel as GrowerBuildingModel;
             this.growerBuildingModel.ListenForUpdates(this.ListenForModelUpdates);

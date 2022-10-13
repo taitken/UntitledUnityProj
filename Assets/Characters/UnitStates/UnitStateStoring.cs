@@ -1,15 +1,21 @@
-using Characters;
 
-namespace Unit.Models
+using Unit.Models;
+
+namespace Characters
 {
-    public class UnitStatePlanting : BaseUnitState
+    public class UnitStateStoring : BaseUnitState
     {
-        public UnitStatePlanting() : base(eUnitState.Planting)
+        public UnitStateStoring() : base(eUnitState.Storing)
         {
 
         }
 
         public override void Update(WorldCharacter worldChar)
+        {
+
+        }
+
+        public override void FixedUpdate(WorldCharacter worldChar)
         {
 
         }

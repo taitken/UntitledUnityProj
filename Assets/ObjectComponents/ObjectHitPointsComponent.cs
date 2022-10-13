@@ -13,11 +13,13 @@ namespace ObjectComponents
         public float maxHitPoints { get { return this._maxHitPoints; } }
         private float _currentHitPoints { get; set; }
         private float _maxHitPoints { get; set; }
+        private EventEmitter onZeroHitpointsEmitter { get; set; }
 
         public ObjectHitPointsComponent() : base()
         {
             this._maxHitPoints = 100;
             this._currentHitPoints = 100;
+            this.onZeroHitpointsEmitter = new EventEmitter();
         }
 
         public void Initalise(float startingHitPoints)
@@ -29,6 +31,15 @@ namespace ObjectComponents
         public void TakeDamage(float damage)
         {
             this._currentHitPoints = Math.Max(0, this._currentHitPoints - damage);
+            if(this._currentHitPoints <= 0)
+            {
+                this.onZeroHitpointsEmitter.Emit();
+            }
+        }
+
+        public void OnZeroHitPoints(Action action)
+        {
+            this.onZeroHitpointsEmitter.OnEmit(action);
         }
 
     }

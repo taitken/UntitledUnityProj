@@ -13,6 +13,7 @@ namespace UnitAction
     {
         private IPathFinderService pathFinderService;
         private IEnvironmentService environmentService;
+        private DigOrderModel digOrder;
         public UnitModel unit { get; set; }
         public bool completed { get; set; } = false;
         public bool cancel { get; set; } = false;
@@ -23,6 +24,7 @@ namespace UnitAction
             this.unit = _unit;
             this.pathFinderService = _pathFinderService;
             this.environmentService = _environmentService;
+            this.digOrder = this.unit.currentOrder as DigOrderModel;
         }
         public bool CheckCompleted()
         {
@@ -34,8 +36,8 @@ namespace UnitAction
         }
         public bool PerformAction()
         {
-            MineableObjectModel mineableObj = this.environmentService.mineableObjects.Get()[this.unit.currentOrder.coordinates.x, this.unit.currentOrder.coordinates.y];
-            if (mineableObj != null) this.environmentService.RemoveMineableObject(mineableObj.position);
+            this.unit.unitState = eUnitState.Digging;
+            //if (mineableObj != null) this.environmentService.RemoveMineableObject(mineableObj.position);
             return true;
         }
     }

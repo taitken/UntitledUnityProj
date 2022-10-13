@@ -18,7 +18,7 @@ namespace Characters.Utils
             this.initalPath = _path;
         }
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             this.lineRenderer = GetComponent<LineRenderer>();
             this.UpdateLine(this.initalPath);

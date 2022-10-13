@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using GameControllers.Models;
 using GameControllers.Services;
 using Item.Models;
 using ObjectComponents;
 using UI.Services;
-using UnityEngine;
-using UtilityClasses;
 using Zenject;
 
 namespace UnityEngine
@@ -24,6 +21,20 @@ namespace UnityEngine
             this.uiPanelService = _uiPanelService;
         }
         public abstract BaseObjectModel GetBaseObjectModel();
+
+        // Not to be overridden. Use Awake() instead.
+        public void Start()
+        {
+            BaseObjectModel test = this.GetBaseObjectModel();
+            if (this.GetBaseObjectModel() != null)
+            {
+                ObjectHitPointsComponent hitPointsComponent = this.GetBaseObjectModel().GetObjectComponent<ObjectHitPointsComponent>();
+                if (hitPointsComponent != null)
+                {
+                    hitPointsComponent.OnZeroHitPoints(this.Destroy);
+                }
+            }
+        }
 
         public virtual void OnSelect()
         {
@@ -52,6 +63,7 @@ namespace UnityEngine
                 });
             }
             if (this.GetBaseObjectModel() != null) this.uiPanelService.RemoveContext(this.GetBaseObjectModel().ID);
+            if (this.GetBaseObjectModel() != null) this.uiPanelService.RemovePanelsForObject(this.GetBaseObjectModel().ID);
         }
     }
 }

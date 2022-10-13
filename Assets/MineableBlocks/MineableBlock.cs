@@ -43,10 +43,6 @@ namespace Environment
         {
             this.spriteRenderer = this.GetComponent<SpriteRenderer>();
         }
-        // Start is called before the first frame update
-        private void Start()
-        {
-        }
 
         public override void OnSelect()
         {
@@ -72,13 +68,19 @@ namespace Environment
         {
             if (this.mouseAction.mouseType == eMouseAction.Dig)
             {
-                this.orderService.AddOrder(new DigOrderModel(this.mineableObjectModel.position));
+                this.orderService.AddOrder(new DigOrderModel(this.mineableObjectModel));
             }
         }
 
         public override BaseObjectModel GetBaseObjectModel()
         {
             return this.mineableObjectModel;
+        }
+
+        protected override void BeforeDeath()
+        {
+            this.environmentService.RemoveMineableObject(this.mineableObjectModel.position);
+            base.BeforeDeath();
         }
 
         public void UpdateSprite(int spriteID)

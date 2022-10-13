@@ -17,6 +17,7 @@ namespace UI.Services
         ObjectPanelAssetFactory GetPanelAssetFactory();
         void AddContext(ContextWindowModel context);
         void RemoveContext(long modelID);
+        void RemovePanelsForObject(long modelID);
     }
 }
 

@@ -22,14 +22,15 @@ namespace Characters
 {
     public class WorldCharacter : MonoBaseObject
     {
+        public IEnvironmentService environmentService;
+        public CharacterPathLine.Factory pathLineFactory;
+        public CharacterPathLine pathingLine;
         protected IUnitOrderService orderService;
         protected IPathFinderService pathFinderService;
-        protected IEnvironmentService environmentService;
         protected IItemObjectService itemService;
         protected IUiPanelService contextWindowService;
-        protected CharacterPathLine.Factory pathLineFactory;
-        protected CharacterPathLine pathingLine;
         protected ItemObject carriedObj;
+        protected BaseUnitState unitState;
         public ContactFilter2D movementFilter = new ContactFilter2D();
         protected List<RaycastHit2D> castCollisions = new List<RaycastHit2D>();
         public UnitModel unitModel { get; set; }
@@ -52,6 +53,7 @@ namespace Characters
             this.itemService = _itemService;
             this.pathLineFactory = _pathLineFactory;
             this.unitModel = _unitModel;
+            this.unitState = UnitStateFactory.CreateUnitState(this.unitModel.unitState);
 
             // Listeners
             this.orderService.orders.Subscribe(this, this.HandleOrderUpdates);
@@ -66,12 +68,27 @@ namespace Characters
             return this.unitModel;
         }
 
+        protected void Update()
+        {
+            this.CheckAndUpdateState();
+            this.unitState.Update(this);
+        }
+
         protected void FixedUpdate()
         {
+            this.CheckAndUpdateState();
             this.UpdateNeeds();
-            this.CheckPathingAndMove();
+            this.unitState.FixedUpdate(this);
         }
-        
+
+        private void CheckAndUpdateState()
+        {
+            if (this.unitModel.unitState != this.unitState.stateEnum)
+            {
+                this.unitState = UnitStateFactory.CreateUnitState(this.unitModel.unitState);
+            }
+        }
+
         protected void ListenForModelUpdates()
         {
 
@@ -81,25 +98,6 @@ namespace Characters
         {
             this.unitModel.needsComponent.UpdateFullness(1);
         }
-
-        private void CheckPathingAndMove()
-        {
-            if (this.unitModel.currentPath != null && this.unitModel.currentPath.Count > 0)
-            {
-                MovementHelper.MoveRigidBody2D(this.GetComponent<Rigidbody2D>(), new Vector2(1, 1), this.unitModel.moveSpeed, this.unitModel.currentPath, this.environmentService);
-                this.UpdatePositions();
-                this.pathingLine = MovementHelper.GetCharacterPathLine(this.pathingLine, this.pathLineFactory, this.transform.position, this.unitModel.currentPath, this.environmentService);
-            }
-        }
-
-
-        private void UpdatePositions()
-        {
-            this.unitModel.localPosition = new Vector3(this.gameObject.transform.position.x + this.unitModel.spriteOffset, this.gameObject.transform.position.y + this.unitModel.spriteOffset);
-            this.unitModel.position = this.environmentService.LocalToCell(this.unitModel.localPosition);
-            if (this.unitModel.carriedItem != null && this.unitModel.carriedItem.itemState == ItemObjectModel.eItemState.OnCharacter) this.unitModel.carriedItem.position = this.unitModel.position;
-        }
-
         private void HandleOrderUpdates(IList<UnitOrderModel> orders)
         {
             if (this.unitModel.currentOrder == null && this.unitModel.currentPath != null)

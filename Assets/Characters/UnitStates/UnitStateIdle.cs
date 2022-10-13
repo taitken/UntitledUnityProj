@@ -1,6 +1,6 @@
-using Characters;
+using Unit.Models;
 
-namespace Unit.Models
+namespace Characters
 {
     public class UnitStateIdle : BaseUnitState
     {
@@ -10,6 +10,11 @@ namespace Unit.Models
         }
 
         public override void Update(WorldCharacter worldChar)
+        {
+
+        }
+
+        public override void FixedUpdate(WorldCharacter worldChar)
         {
 
         }

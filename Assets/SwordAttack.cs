@@ -12,7 +12,7 @@ namespace Characters
         public ActionController actionController;
         Transform tf;
 
-        void Start()
+        void Awake()
         {
             this.tf = GetComponent<Transform>();
             this.attackOffset = transform.localPosition;

@@ -31,11 +31,7 @@ namespace UI
             this.itemMassText.SetText(LocalisationDict.GetMassString(this.itemListModel.mass));
             this.itemThumbnail.SetImage(this.itemListModel.sprite);
         }
-        // Start is called before the first frame update
-        void Start()
-        {
 
-        }
 
         // Update is called once per frame
         void Update()

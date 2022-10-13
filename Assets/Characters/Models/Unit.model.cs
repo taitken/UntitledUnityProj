@@ -19,10 +19,24 @@ namespace Unit.Models
             this.spriteOffset = 0.08f;
             this.GetObjectComponent<ObjectHitPointsComponent>().Initalise(100);
             this.unitState = eUnitState.Idle;
+            this.unitSex = UnitBioLibrary.GetSex();
+            this.unitName = UnitBioLibrary.GetName(this.unitSex);
         }
+
+        public IList<Vector3Int> currentPath
+        {
+            get { return _currentPath; }
+            set
+            {
+                _currentPath = value;
+                this.unitState = eUnitState.Moving;
+            }
+        }
+        private IList<Vector3Int> _currentPath { get; set; }
+        public string unitName { get; set; }
+        public eCharacterSex unitSex { get; set; }
         public eUnitState unitState { get; set; }
         public string currentHealth { get; set; }
-        public IList<Vector3Int> currentPath { get; set; }
         public string maxHealth { get; set; }
         public int maxCarryWeight { get; set; }
         public float moveSpeed { get; set; }
@@ -32,10 +46,7 @@ namespace Unit.Models
         public ObjectHitPointsComponent hitPointsComponent { get { return this.GetObjectComponent<ObjectHitPointsComponent>(); } }
         public ItemObjectModel carriedItem
         {
-            get
-            {
-                return this._carriedItem;
-            }
+            get { return this._carriedItem; }
             set
             {
                 this._carriedItem = value;

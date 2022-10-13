@@ -58,5 +58,14 @@ namespace UI.Services
         {
             this.contextObseravable.Set(this.contextObseravable.Get().Filter(context => { return context.objectID != modelID; }));
         }
+
+        public void RemovePanelsForObject(long modelID)
+        {
+            if (this.selectedObjectPanels.Get() != null)
+            {
+                this.selectedObjectPanels.Set(this.selectedObjectPanels.Get().Filter(panel => { return panel.objectID != modelID; }));
+            }
+        }
     }
+
 }

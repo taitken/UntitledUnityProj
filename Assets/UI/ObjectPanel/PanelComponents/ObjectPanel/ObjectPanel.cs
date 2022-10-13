@@ -13,6 +13,7 @@ namespace UI.Panel
         private ObjectPanelModel objectPanelModel;
         public PanelWindow panelWindow;
         public DetailsTab detailTab;
+        public CharacterBioTab characterBioTab;
         public StorageTab storageTab;
         public CharacterNeedsTab charNeedsTab;
 
@@ -30,6 +31,7 @@ namespace UI.Panel
         private void ConfigureTabs()
         {
             IList<(BaseTabContent, string)> tabs = new List<(BaseTabContent, string)>();
+            if (this.characterBioTab.Initalise(this.objectPanelModel.objectModel)) tabs.Add((this.characterBioTab, "Bio"));
             if (this.detailTab.Initalise(this.objectPanelModel.objectModel)) tabs.Add((this.detailTab, "Details"));
             tabs.Add((this.detailTab, "Details2"));
             if (this.storageTab.Initalise(this.objectPanelModel.objectModel)) tabs.Add((this.storageTab, "Storage"));

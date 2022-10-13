@@ -27,7 +27,7 @@ namespace Characters
         private float _hitPoints = 2;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             this.animator = GetComponent<Animator>();
 
