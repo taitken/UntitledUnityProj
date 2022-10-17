@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,20 +15,49 @@ namespace Item
 {
     public class ItemObject : MonoBaseObject
     {
+        public GameObject itemSprite;
+        public GameObject itemShadow;
         public ItemObjectModel itemObjectModel;
         public IItemObjectService itemService;
+        public IEnvironmentService envService;
         public IUnitOrderService orderService;
         private MouseActionModel mouseAction;
+        private IList<Vector3> movePath;
         [Inject]
         public void Construct(ItemObjectModel _itemObjectModel,
                                 IUnitOrderService _orderService,
-                                IItemObjectService _itemService)
+                                IItemObjectService _itemService,
+                                IEnvironmentService _envService)
         {
             this.itemObjectModel = _itemObjectModel;
             this.itemService = _itemService;
             this.orderService = _orderService;
+            this.envService = _envService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
-            this.GetComponent<SpriteRenderer>().sprite = this.itemService.GetItemSprite(this.itemObjectModel.itemType);
+            this.itemSprite.GetComponent<SpriteRenderer>().sprite = this.itemService.GetItemSprite(this.itemObjectModel.itemType);
+        }
+
+        public void Start()
+        {
+            this.BounceSpawn();
+        }
+
+        public void BounceSpawn()
+        {
+            this.movePath = new List<Vector3>();
+            this.movePath.Add(new Vector3(this.transform.position.x, this.transform.position.y + this.itemSprite.transform.localPosition.y + 0.5f));
+            this.movePath.Add(new Vector3(this.transform.position.x, this.transform.position.y + this.itemSprite.transform.localPosition.y));
+            this.movePath.Add(new Vector3(this.transform.position.x, this.transform.position.y + this.itemSprite.transform.localPosition.y + 0.25f));
+            this.movePath.Add(new Vector3(this.transform.position.x, this.transform.position.y + this.itemSprite.transform.localPosition.y));
+        }
+
+        public void FixedUpdate()
+        {
+            if (this.movePath != null && this.movePath.Count > 0)
+            {
+                MovementHelper.MoveRigidBody2D(this.itemSprite.GetComponent<Rigidbody2D>(), new Vector2(1, 1), 0.2f, this.movePath, this.envService, false);
+            }
+
         }
 
         public override void OnSelect()
