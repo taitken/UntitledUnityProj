@@ -72,7 +72,7 @@ namespace Building
             this.productionBuildingModel.buildingStorage.RemoveItem(this.productionBuildingModel.buildingStorage.GetItems().Filter(supply => { return supply.mass <= 0; }));
             this.productionBuildingModel.selectedItemRecipe.outputs.ForEach(output =>
             {
-                this.itemService.AddItemToWorld(new ItemObjectModel(this.productionBuildingModel.position, output, ItemObjectModel.eItemState.OnGround));
+                this.itemService.AddItemToWorld(new ItemObjectModel(this.productionBuildingModel.position, output, ItemObjectModel.eItemState.OnGround, true));
             });
             AllocatedItemRecipe allocatedItem = this.productionBuildingModel.itemRecipes.Find(recipe => { return recipe.recipe == this.productionBuildingModel.selectedItemRecipe; });
             allocatedItem.counter--;

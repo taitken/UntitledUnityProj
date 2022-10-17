@@ -113,7 +113,8 @@ namespace Characters
                 bool obstructed = false;
                 this.unitModel.currentPath.ForEach(pathStep =>
                 {
-                    if (newMap.mapitems[pathStep.x, pathStep.y].impassable)
+                    Vector3Int cellPos = this.environmentService.LocalToCell(pathStep);
+                    if (newMap.mapitems[cellPos.x, cellPos.y].impassable)
                     {
                         obstructed = true;
                     }

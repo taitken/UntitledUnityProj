@@ -20,7 +20,6 @@ namespace Environment
         private IItemObjectService itemService;
         private IEnvironmentService environmentService;
         public Sprite[] spriteList;
-        private SpriteRenderer spriteRenderer;
         private MouseActionModel mouseAction;
         public MineableObjectModel mineableObjectModel;
 
@@ -38,10 +37,6 @@ namespace Environment
             this.uiPanelService = _uiPanelService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
             this.spriteList = this.environmentService.GetMineableBlockSprites(this.mineableObjectModel.mineableBlockType);
-        }
-        private void Awake()
-        {
-            this.spriteRenderer = this.GetComponent<SpriteRenderer>();
         }
 
         public override void OnSelect()
@@ -85,7 +80,7 @@ namespace Environment
 
         public void UpdateSprite(int spriteID)
         {
-            this.spriteRenderer.sprite = this.spriteList[spriteID];
+            this.GetComponent<SpriteRenderer>().sprite = this.spriteList[spriteID];
         }
 
         public class Factory : PlaceholderFactory<MineableObjectModel, MineableBlock>

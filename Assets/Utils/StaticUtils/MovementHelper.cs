@@ -9,13 +9,6 @@ namespace UtilityClasses
     public class MovementHelper
     {
         // Moves a given rigid body a given distance along a defined path. Returns final direction sprite is facing.
-        public static Vector2 MoveRigidBody2D(Rigidbody2D _rb, Vector2 _distance, float _moveSpeed, IList<Vector3Int> _currentPath, IEnvironmentService _envService, bool _updateSpriteDirection = true)
-        {
-            Vector2 finalDirection = MovementHelper.MoveObject(_rb, _distance, _moveSpeed, _currentPath, _envService, _updateSpriteDirection);
-            if (_updateSpriteDirection) MovementHelper.UpdateSpriteDirection(_rb.gameObject, finalDirection);
-            return finalDirection;
-        }
-
         public static Vector2 MoveRigidBody2D(Rigidbody2D _rb, Vector2 _distance, float _moveSpeed, IList<Vector3> _currentPath, IEnvironmentService _envService, bool _updateSpriteDirection = true)
         {
             Vector2 finalDirection = MovementHelper.MoveObject(_rb, _distance, _moveSpeed, _currentPath, _envService, _updateSpriteDirection);
@@ -23,9 +16,9 @@ namespace UtilityClasses
             return finalDirection;
         }
 
-        public static CharacterPathLine GetCharacterPathLine(CharacterPathLine _currentPathLine, CharacterPathLine.Factory _pathLineFactory, Vector3 _lineStartPos, IList<Vector3Int> _currentPath, IEnvironmentService _envService)
+        public static CharacterPathLine GetCharacterPathLine(CharacterPathLine _currentPathLine, CharacterPathLine.Factory _pathLineFactory, Vector3 _lineStartPos, IList<Vector3> _currentPath, IEnvironmentService _envService)
         {
-            IList<Vector3> newLinePath = _currentPath.Map(item => { return _envService.CellToLocal(item); });
+            IList<Vector3> newLinePath = _currentPath.Map(item => { return item; });
             newLinePath.Insert(0, _lineStartPos);
             if (_currentPathLine == null)
             {
@@ -60,47 +53,12 @@ namespace UtilityClasses
             return new Vector2(x, y);
         }
 
-        private static Vector2 MoveObject(Rigidbody2D _rb, Vector2 _distance, float _moveSpeed, IList<Vector3Int> _currentPath, IEnvironmentService _envService, bool _updateSpriteDirection)
-        {
-            if (_distance != Vector2.zero)
-            {
-                Vector3 nextPoint = _envService.CellToLocal(_currentPath[0]);
-                Vector2 direction = MovementHelper.GetDirection(_rb.gameObject.transform.position, nextPoint);
-                Vector2 newPosition = _rb.position + (_distance * direction * _moveSpeed * GameTime.fixedDeltaTime);
-                Vector2 overshootDistance = MovementHelper.GetMovementOvershoot(direction, newPosition, nextPoint);
-                // Overshot movement location
-                if (overshootDistance.x > 0 && direction.y == 0
-                    || overshootDistance.y > 0 && direction.x == 0
-                    || overshootDistance.y > 0 && overshootDistance.x > 0)
-                {
-                    _rb.MovePosition(nextPoint);
-                    _currentPath.RemoveAt(0);
-                    if (_currentPath.Count > 0
-                        && (overshootDistance.x + overshootDistance.y) > 0.02f)
-                    {
-                        return MovementHelper.MoveRigidBody2D(_rb, overshootDistance / _moveSpeed / GameTime.fixedDeltaTime, _moveSpeed, _currentPath, _envService, _updateSpriteDirection);
-                    }
-                    else
-                    {
-                        return direction;
-                    }
-                }
-                // Did not overshoot
-                else
-                {
-                    _rb.MovePosition(newPosition);
-                    if ((Vector3)newPosition == nextPoint) _currentPath.RemoveAt(0);
-                    return direction;
-                }
-            }
-            return Vector2.zero;
-        }
         private static Vector2 MoveObject(Rigidbody2D _rb, Vector2 _distance, float _moveSpeed, IList<Vector3> _currentPath, IEnvironmentService _envService, bool _updateSpriteDirection)
         {
             if (_distance != Vector2.zero)
             {
                 Vector3 nextPoint = _currentPath[0];
-                Vector2 direction = MovementHelper.GetDirection(_rb.gameObject.transform.position, nextPoint);
+                Vector2 direction = MovementHelper.GetDirection(_rb.gameObject.transform.localPosition, nextPoint);
                 Vector2 newPosition = _rb.position + (_distance * direction * _moveSpeed * GameTime.fixedDeltaTime);
                 Vector2 overshootDistance = MovementHelper.GetMovementOvershoot(direction, newPosition, nextPoint);
                 // Overshot movement location

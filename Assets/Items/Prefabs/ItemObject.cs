@@ -23,6 +23,7 @@ namespace Item
         public IUnitOrderService orderService;
         private MouseActionModel mouseAction;
         private IList<Vector3> movePath;
+        private Vector3 baseShadowLocalScale;
         [Inject]
         public void Construct(ItemObjectModel _itemObjectModel,
                                 IUnitOrderService _orderService,
@@ -35,20 +36,25 @@ namespace Item
             this.envService = _envService;
             this.orderService.mouseAction.Subscribe(this, action => { this.mouseAction = action; });
             this.itemSprite.GetComponent<SpriteRenderer>().sprite = this.itemService.GetItemSprite(this.itemObjectModel.itemType);
+            this.baseShadowLocalScale = this.itemShadow.transform.localScale;
         }
 
         public void Start()
         {
-            this.BounceSpawn();
+            if (this.itemObjectModel.moveOnSpawn)
+            {
+                this.BounceSpawn();
+                this.itemObjectModel.moveOnSpawn = false;
+            }
         }
 
         public void BounceSpawn()
         {
             this.movePath = new List<Vector3>();
-            this.movePath.Add(new Vector3(this.transform.position.x, this.transform.position.y + this.itemSprite.transform.localPosition.y + 0.5f));
-            this.movePath.Add(new Vector3(this.transform.position.x, this.transform.position.y + this.itemSprite.transform.localPosition.y));
-            this.movePath.Add(new Vector3(this.transform.position.x, this.transform.position.y + this.itemSprite.transform.localPosition.y + 0.25f));
-            this.movePath.Add(new Vector3(this.transform.position.x, this.transform.position.y + this.itemSprite.transform.localPosition.y));
+            this.movePath.Add(new Vector3(0, this.transform.position.y + this.itemSprite.transform.localPosition.y + 0.05f));
+            this.movePath.Add(new Vector3(0, this.transform.position.y + this.itemSprite.transform.localPosition.y));
+            this.movePath.Add(new Vector3(0, this.transform.position.y + this.itemSprite.transform.localPosition.y + 0.025f));
+            this.movePath.Add(new Vector3(0, this.transform.position.y + this.itemSprite.transform.localPosition.y));
         }
 
         public void FixedUpdate()
@@ -56,8 +62,8 @@ namespace Item
             if (this.movePath != null && this.movePath.Count > 0)
             {
                 MovementHelper.MoveRigidBody2D(this.itemSprite.GetComponent<Rigidbody2D>(), new Vector2(1, 1), 0.2f, this.movePath, this.envService, false);
+                this.itemShadow.transform.localScale = this.baseShadowLocalScale * (1 / (1 + this.itemSprite.transform.localPosition.y));
             }
-
         }
 
         public override void OnSelect()

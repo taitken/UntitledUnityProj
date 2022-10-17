@@ -23,7 +23,7 @@ namespace Unit.Models
             this.unitName = UnitBioLibrary.GetName(this.unitSex);
         }
 
-        public IList<Vector3Int> currentPath
+        public IList<Vector3> currentPath
         {
             get { return _currentPath; }
             set
@@ -32,7 +32,7 @@ namespace Unit.Models
                 this.unitState = eUnitState.Moving;
             }
         }
-        private IList<Vector3Int> _currentPath { get; set; }
+        private IList<Vector3> _currentPath { get; set; }
         public string unitName { get; set; }
         public eCharacterSex unitSex { get; set; }
         public eUnitState unitState { get; set; }

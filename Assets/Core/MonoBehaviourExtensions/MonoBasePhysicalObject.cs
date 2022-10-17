@@ -23,7 +23,7 @@ namespace UnityEngine
         public abstract BaseObjectModel GetBaseObjectModel();
 
         // Not to be overridden. Use Awake() instead.
-        public void Start()
+        public void Awake()
         {
             BaseObjectModel test = this.GetBaseObjectModel();
             if (this.GetBaseObjectModel() != null)
@@ -50,7 +50,7 @@ namespace UnityEngine
                 {
                     if (item.itemType != eItemType.OrganicMass)
                     {
-                        this.itemObjectService.AddItemToWorld(new ItemObjectModel(this.GetBaseObjectModel().position, item, ItemObjectModel.eItemState.OnGround));
+                        this.itemObjectService.AddItemToWorld(new ItemObjectModel(this.GetBaseObjectModel().position, item, ItemObjectModel.eItemState.OnGround, true));
                     }
                 });
             }
