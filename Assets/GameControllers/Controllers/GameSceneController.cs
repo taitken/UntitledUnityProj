@@ -3,6 +3,7 @@ using UnityEngine;
 using GameControllers.Services;
 using GameControllers;
 using Zenject;
+using UtilityClasses;
 
 namespace GameControllers
 {
@@ -13,6 +14,7 @@ namespace GameControllers
         public MouseActionController mouseActionController;
         public GameMapController gameMapController;
         public DayCycleController dayCycleController;
+        public MovementHelper movementHelper;
         private IUnitOrderService orderService;
         private IEnvironmentService environmentService;
         private IBuildingService buildingService;
@@ -26,6 +28,7 @@ namespace GameControllers
             this.orderService = _orderService;
             this.environmentService = _environmentService;
             this.pathFinderService = _pathFinderService;
+            MovementSingleton.SetMovementHelper(this.movementHelper);
         }
         // Start is called before the first frame update
         void Start()

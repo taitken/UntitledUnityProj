@@ -72,10 +72,10 @@ namespace UnitAction
                 }
                 else if (originState == ItemObjectModel.eItemState.InStorage)
                 {
-                    this.buildingService.buildingObseravable.Get()
+                    StorageBuildingModel storageBuilding = this.buildingService.buildingObseravable.Get()
                         .Map(building => { return building as StorageBuildingModel; })
-                        .Find(building => { return building != null && building.position == this.itemObjModel.position; })
-                        .RemoveItem(itemToAttach);
+                        .Find(building => { return building != null && building.position == this.itemObjModel.position; });
+                    if(storageBuilding != null) storageBuilding.RemoveItem(itemToAttach);
                 }
                 itemToAttach.itemState = ItemObjectModel.eItemState.OnCharacter;
                 this.unit.carriedItem = itemToAttach;

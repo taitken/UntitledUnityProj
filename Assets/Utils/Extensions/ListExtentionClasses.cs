@@ -47,6 +47,7 @@ namespace System.Collections.Generic
 
         public static IList<t2> Map<t1, t2>(this IList<t1> list, Func<t1, t2> callback)
         {
+            if (list == null) return null;
             IList<t2> returnList = new List<t2>();
             foreach (t1 listItem in list)
             {

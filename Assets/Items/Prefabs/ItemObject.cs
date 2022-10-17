@@ -22,6 +22,7 @@ namespace Item
         public IEnvironmentService envService;
         public IUnitOrderService orderService;
         private MouseActionModel mouseAction;
+        private IList<Vector3> bouncePath;
         private IList<Vector3> movePath;
         private Vector3 baseShadowLocalScale;
         [Inject]
@@ -50,18 +51,23 @@ namespace Item
 
         public void BounceSpawn()
         {
+            const float RADIUS = .04f;
+            int degrees = UnityEngine.Random.Range(0, 360);
+            this.bouncePath = new List<Vector3>();
+            this.bouncePath.Add(new Vector3(0, this.itemSprite.transform.localPosition.y + 0.05f));
+            this.bouncePath.Add(new Vector3(0, this.itemSprite.transform.localPosition.y));
+            this.bouncePath.Add(new Vector3(0, this.itemSprite.transform.localPosition.y + 0.025f));
+            this.bouncePath.Add(new Vector3(0, this.itemSprite.transform.localPosition.y));
+            MovementSingleton.GetMovementHelper().MoveObject(this.itemSprite.transform, new Vector2(1, 1), 0.2f, this.bouncePath, false, false);
             this.movePath = new List<Vector3>();
-            this.movePath.Add(new Vector3(0, this.transform.position.y + this.itemSprite.transform.localPosition.y + 0.05f));
-            this.movePath.Add(new Vector3(0, this.transform.position.y + this.itemSprite.transform.localPosition.y));
-            this.movePath.Add(new Vector3(0, this.transform.position.y + this.itemSprite.transform.localPosition.y + 0.025f));
-            this.movePath.Add(new Vector3(0, this.transform.position.y + this.itemSprite.transform.localPosition.y));
+            this.movePath.Add(new Vector3(this.transform.position.x + (float)(RADIUS * Math.Cos(degrees)), this.transform.position.y + (float)(RADIUS * Math.Sin(degrees))));
+            MovementSingleton.GetMovementHelper().MoveObject(this.transform, new Vector2(1, 1), 0.05f, this.movePath, false, false);
         }
 
         public void FixedUpdate()
         {
-            if (this.movePath != null && this.movePath.Count > 0)
+            if (this.bouncePath != null && this.bouncePath.Count > 0)
             {
-                MovementHelper.MoveRigidBody2D(this.itemSprite.GetComponent<Rigidbody2D>(), new Vector2(1, 1), 0.2f, this.movePath, this.envService, false);
                 this.itemShadow.transform.localScale = this.baseShadowLocalScale * (1 / (1 + this.itemSprite.transform.localPosition.y));
             }
         }

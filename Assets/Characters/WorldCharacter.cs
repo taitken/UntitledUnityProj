@@ -23,8 +23,6 @@ namespace Characters
     public class WorldCharacter : MonoBaseObject
     {
         public IEnvironmentService environmentService;
-        public CharacterPathLine.Factory pathLineFactory;
-        public CharacterPathLine pathingLine;
         protected IUnitOrderService orderService;
         protected IPathFinderService pathFinderService;
         protected IItemObjectService itemService;
@@ -41,7 +39,6 @@ namespace Characters
                               IEnvironmentService _environmentService,
                               IItemObjectService _itemService,
                               IUiPanelService _contextWindowService,
-                              CharacterPathLine.Factory _pathLineFactory,
                               UnitModel _unitModel
         )
         {
@@ -51,9 +48,8 @@ namespace Characters
             this.environmentService = _environmentService;
             this.contextWindowService = _contextWindowService;
             this.itemService = _itemService;
-            this.pathLineFactory = _pathLineFactory;
             this.unitModel = _unitModel;
-            this.unitState = UnitStateFactory.CreateUnitState(this.unitModel.unitState);
+            this.unitState = UnitStateFactory.CreateUnitState(this, this.unitModel.unitState);
 
             // Listeners
             this.orderService.orders.Subscribe(this, this.HandleOrderUpdates);
@@ -85,7 +81,7 @@ namespace Characters
         {
             if (this.unitModel.unitState != this.unitState.stateEnum)
             {
-                this.unitState = UnitStateFactory.CreateUnitState(this.unitModel.unitState);
+                this.unitState = UnitStateFactory.CreateUnitState(this, unitModel.unitState);
             }
         }
 
@@ -125,8 +121,7 @@ namespace Characters
 
         protected void CancelMoving()
         {
-            this.unitModel.currentPath = null;
-            if (this.pathingLine != null) this.pathingLine.Destroy();
+            this.unitModel.currentPath.Clear();
         }
 
         protected bool CollisionCheck(Vector2 movement)

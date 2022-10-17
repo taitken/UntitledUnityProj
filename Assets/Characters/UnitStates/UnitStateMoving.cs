@@ -7,11 +7,17 @@ namespace Characters
 {
     public class UnitStateMoving : BaseUnitState
     {
+        private ObjectMovement objectMovement;
         public UnitStateMoving() : base(eUnitState.Moving)
         {
 
         }
 
+        public override void Initialise(WorldCharacter worldChar)
+        {
+            this.objectMovement = MovementSingleton.GetMovementHelper().MoveObject(worldChar.transform, new Vector2(1, 1), worldChar.unitModel.moveSpeed, worldChar.unitModel.currentPath);
+            this.objectMovement.onMovementFinished.OnEmit(() => { worldChar.unitModel.unitState = eUnitState.Idle; });
+        }
         public override void Update(WorldCharacter worldChar)
         {
 
@@ -21,13 +27,7 @@ namespace Characters
         {
             if (worldChar.unitModel.currentPath != null && worldChar.unitModel.currentPath.Count > 0)
             {
-                MovementHelper.MoveRigidBody2D(worldChar.GetComponent<Rigidbody2D>(), new Vector2(1, 1), worldChar.unitModel.moveSpeed, worldChar.unitModel.currentPath, worldChar.environmentService);
                 this.UpdatePositions(worldChar);
-                worldChar.pathingLine = MovementHelper.GetCharacterPathLine(worldChar.pathingLine, worldChar.pathLineFactory, worldChar.transform.position, worldChar.unitModel.currentPath, worldChar.environmentService);
-            }
-            else
-            {
-                worldChar.unitModel.unitState = eUnitState.Idle;
             }
         }
 

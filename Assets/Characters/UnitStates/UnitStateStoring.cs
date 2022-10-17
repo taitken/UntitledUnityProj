@@ -9,7 +9,11 @@ namespace Characters
         {
 
         }
+        
+        public override void Initialise(WorldCharacter worldChar)
+        {
 
+        }
         public override void Update(WorldCharacter worldChar)
         {
 

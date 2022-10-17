@@ -4,7 +4,7 @@ namespace Characters
 {
     public class UnitStateFactory
     {
-        public static BaseUnitState CreateUnitState(eUnitState unitState)
+        public static BaseUnitState CreateUnitState(WorldCharacter unit, eUnitState unitState)
         {
             BaseUnitState returnState;
             switch (unitState)
@@ -28,6 +28,7 @@ namespace Characters
                     returnState = new UnitStateIdle();
                     break;
             }
+            returnState.Initialise(unit);
             return returnState;
         }
     }

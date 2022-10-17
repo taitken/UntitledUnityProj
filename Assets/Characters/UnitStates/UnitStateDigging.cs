@@ -21,6 +21,11 @@ namespace Characters
         {
             this.timeSinceLastDig = this.digInterval;
         }
+        
+        public override void Initialise(WorldCharacter worldChar)
+        {
+
+        }
 
         // Convoluted -- should be a better way than bool flags.
         public override void Update(WorldCharacter worldChar)
@@ -52,7 +57,7 @@ namespace Characters
 
         public override void FixedUpdate(WorldCharacter worldChar)
         {
-            this.HandleDigAnimation(worldChar);
+            //this.HandleDigAnimation(worldChar);
         }
 
         private void StartDig(WorldCharacter worldChar)
@@ -67,25 +72,14 @@ namespace Characters
                 this.digAnimPath.Add(new Vector3(worldChar.transform.position.x + (.05f * this.direction.x), worldChar.transform.position.y + (.05f * this.direction.y)));
                 this.digAnimPath.Add(this.originalPosition);
             }
+            MovementSingleton.GetMovementHelper().MoveObject(worldChar.transform, new Vector2(1, 1), .75f, this.digAnimPath, false, false).onMovementFinished.OnEmit(()=>this.currentlyDigging = false);
         }
 
         private void FaceBlock(WorldCharacter worldChar)
         {
             MineableObjectModel mineTarget = (worldChar.unitModel.currentOrder as DigOrderModel).targetToMine;
-            this.direction = MovementHelper.GetDirection(worldChar.transform.position, worldChar.environmentService.CellToLocal(mineTarget.position));
-            MovementHelper.UpdateSpriteDirection(worldChar.gameObject, this.direction);
-        }
-
-        private void HandleDigAnimation(WorldCharacter worldChar)
-        {
-            if (this.digAnimPath.Count > 0)
-            {
-                MovementHelper.MoveRigidBody2D(worldChar.GetComponent<Rigidbody2D>(), new Vector2(1, 1), .75f, this.digAnimPath, worldChar.environmentService, false);
-            }
-            else
-            {
-                this.currentlyDigging = false;
-            }
+            this.direction = MovementSingleton.GetMovementHelper().GetDirection(worldChar.transform.position, worldChar.environmentService.CellToLocal(mineTarget.position));
+            MovementSingleton.GetMovementHelper().UpdateSpriteDirection(worldChar.gameObject, this.direction);
         }
     }
 }
