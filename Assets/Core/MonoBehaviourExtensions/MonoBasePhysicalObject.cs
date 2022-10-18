@@ -12,6 +12,7 @@ namespace UnityEngine
     {
         protected IItemObjectService itemObjectService;
         protected IUiPanelService uiPanelService;
+        protected IList<GameObjectComponent> goComponents;
 
         [Inject]
         public void Construct(IItemObjectService _itemService,
@@ -19,6 +20,7 @@ namespace UnityEngine
         {
             this.itemObjectService = _itemService;
             this.uiPanelService = _uiPanelService;
+            this.goComponents = new List<GameObjectComponent>();
         }
         public abstract BaseObjectModel GetBaseObjectModel();
 
@@ -39,6 +41,17 @@ namespace UnityEngine
         public virtual void OnSelect()
         {
 
+        }
+        public T GetObjectComponent<T>() where T : GameObjectComponent
+        {
+            for (int i = 0; i < this.goComponents.Count; i++)
+            {
+                if (this.goComponents[i] is T)
+                {
+                    return this.goComponents[i] as T;
+                }
+            }
+            return null;
         }
         protected override void BeforeDeath()
         {

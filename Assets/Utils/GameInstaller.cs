@@ -20,6 +20,7 @@ using Unit.Models;
 using UtilityClasses;
 using Crops.Models;
 using Crops;
+using ObjectComponents;
 
 public class GameInstaller : MonoInstaller
 {
@@ -29,6 +30,7 @@ public class GameInstaller : MonoInstaller
     public GameObject CharacterPathLine;
     public GameObject ItemObject;
     public GameObject CropObject;
+    public GameObject GoFieldOfViewComponent;
     public GameObject ObjectContextWindow;
     public GameObject ItemList;
     public GameObject LayerCollider;
@@ -67,6 +69,7 @@ public class GameInstaller : MonoInstaller
         Container.BindFactory<UnitOrderModel, OrderIcon, OrderIcon.Factory>().FromComponentInNewPrefab(OrderIconPrefab);
         Container.BindFactory<ItemObjectModel, ItemObject, ItemObject.Factory>().FromComponentInNewPrefab(ItemObject);
         Container.BindFactory<CropObjectModel, CropObject, CropObject.Factory>().FromComponentInNewPrefab(CropObject);
+        Container.BindFactory<MonoBaseObject, GoFieldOfViewComponent, GoFieldOfViewComponent.Factory>().FromComponentInNewPrefab(GoFieldOfViewComponent);
         Container.BindFactory<IList<Vector3>, CharacterPathLine, CharacterPathLine.Factory>().FromComponentInNewPrefab(CharacterPathLine);
         Container.BindFactory<Vector2, string, IList<Action>, IList<Action<DragEventModel>>, LayerCollider, LayerCollider.Factory>().FromComponentInNewPrefab(LayerCollider);
         Container.BindFactory<BuildSiteModel, BuildSiteObject, BuildSiteObject.Factory>().FromComponentInNewPrefab(BuildSiteObject);

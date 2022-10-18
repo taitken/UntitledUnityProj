@@ -17,6 +17,7 @@ using Item.Models;
 using UtilityClasses;
 using UI.Services;
 using UI.Models;
+using ObjectComponents;
 
 namespace Characters
 {
@@ -39,9 +40,11 @@ namespace Characters
                               IEnvironmentService _environmentService,
                               IItemObjectService _itemService,
                               IUiPanelService _contextWindowService,
-                              UnitModel _unitModel
+                              UnitModel _unitModel,
+                              GoFieldOfViewComponent.Factory goFovCompFactory
         )
         {
+            this.goComponents.Add(goFovCompFactory.Create(this));
             this.movementFilter.SetLayerMask(LayerMask.GetMask("MineableLayer"));
             this.orderService = _orderService;
             this.pathFinderService = _pathFinderService;
