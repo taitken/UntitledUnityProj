@@ -12,6 +12,7 @@ namespace GameControllers.Services
     {
         public MonoObseravable<MineableObjectModel[,]> mineableObjects { get; set; } = new MonoObseravable<MineableObjectModel[,]>(null);
         public MonoObseravable<IList<GroundTileModel>> groundTiles { get; set; } = new MonoObseravable<IList<GroundTileModel>>(new List<GroundTileModel>());
+        private MonoObseravable<FogModel[,]> fogModels { get; set; } = new MonoObseravable<FogModel[,]>(null);
         private MineableBlockAssetController mineableBlockAssetController { get; set; }
         public Tilemap tileMapRef { get; set; }
 
@@ -39,6 +40,27 @@ namespace GameControllers.Services
             MineableObjectModel[,] _mineableObjects = this.mineableObjects.Get();
             _mineableObjects[_position.x, _position.y] = null;
             this.mineableObjects.Set(_mineableObjects);
+        }
+
+        public MonoObseravable<FogModel[,]> GetFogObservable()
+        {
+            return this.fogModels;
+        }
+
+        public void AddFogObject(FogModel fogModel)
+        {
+            FogModel[,] _fogModels = this.fogModels.Get();
+            if (fogModel != null && _fogModels[fogModel.position.x, fogModel.position.y] == null)
+            {
+                _fogModels[fogModel.position.x, fogModel.position.y] = fogModel;
+                this.fogModels.Set(_fogModels);
+            }
+        }
+        public void RemoveFogObject(Vector3Int _position)
+        {
+            FogModel[,] _fogModels = this.fogModels.Get();
+            _fogModels[_position.x, _position.y] = null;
+            this.fogModels.Set(_fogModels);
         }
 
         public IList<Vector3Int> GetCellsInArea(Vector3 startPos, Vector3 endPos)

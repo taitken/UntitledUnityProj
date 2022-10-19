@@ -55,6 +55,7 @@ namespace GameControllers
         {
             this.ConfigureGroundTiles();
             this.ConfigureMineableTiles();
+            this.ConfigureFogObjects();
             this.environmentService.groundTiles.Subscribe(this, groundLayer =>
             {
                 this.groundTiles = groundLayer;
@@ -76,7 +77,7 @@ namespace GameControllers
             {
                 for (int y = 0; y < MonoBehaviourLayer.MAP_HEIGHT; y++)
                 {
-                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, Random.Range(200, 400))}, GroundTileModel.eGroundTypes.grass));
+                    newGroundTiles.Add(new GroundTileModel(new Vector3Int(x, y, 0), new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, Random.Range(200, 400)) }, GroundTileModel.eGroundTypes.grass));
                 }
             }
             this.environmentService.groundTiles.Set(newGroundTiles);
@@ -89,6 +90,22 @@ namespace GameControllers
             this.SetBlockDeposit(newmineableTiles, eMineableBlockType.Copper, 30, 35, 60, 35);
             this.FillMapGapsWithStoneBlocks(newmineableTiles);
             this.CompleteMap(newmineableTiles);
+        }
+
+        private void ConfigureFogObjects()
+        {
+            FogModel[,] newFogModels = new FogModel[MonoBehaviourLayer.MAP_WIDTH, MonoBehaviourLayer.MAP_HEIGHT];
+            for (int i = 0; i < newFogModels.GetLength(0); i++)
+            {
+                for (int ii = 0; ii < newFogModels.GetLength(1); ii++)
+                {
+                    if (!this.IsStartingZone(i, ii))
+                    {
+                        newFogModels[i, ii] = new FogModel(new Vector3Int(i, ii), new List<ItemObjectMass>());
+                    }
+                }
+            }
+            this.environmentService.GetFogObservable().Set(newFogModels);
         }
 
         private void SetBlockDeposit(MineableObjectModel[,] newMineableTiles, eMineableBlockType blockType, int depositMin, int depositMax, int spreadChance, int spreadDecrement)

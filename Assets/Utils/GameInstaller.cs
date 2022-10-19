@@ -30,6 +30,7 @@ public class GameInstaller : MonoInstaller
     public GameObject CharacterPathLine;
     public GameObject ItemObject;
     public GameObject CropObject;
+    public GameObject FogObject;
     public GameObject GoFieldOfViewComponent;
     public GameObject ObjectContextWindow;
     public GameObject ItemList;
@@ -75,6 +76,7 @@ public class GameInstaller : MonoInstaller
         Container.BindFactory<BuildSiteModel, BuildSiteObject, BuildSiteObject.Factory>().FromComponentInNewPrefab(BuildSiteObject);
         Container.BindFactory<Vector3Int, Vector3, OrderSelection, OrderSelection.Factory>().FromComponentInNewPrefab(OrderSelectionPrefab);
         Container.BindFactory<ItemListModel, ItemList, ItemList.Factory>().FromComponentInNewPrefab(ItemList);
+        Container.BindFactory<FogModel, FogObject, FogObject.Factory>().FromComponentInNewPrefab(FogObject);
 
 
         // Building Objects

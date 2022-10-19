@@ -29,7 +29,7 @@ namespace UtilityClasses
             for (int i = 0; i < this.objectMovements.Count; i++)
             {
                 ObjectMovement objMove = this.objectMovements[i];
-                if (objMove.movePath != null && objMove.movePath.Count > 0)
+                if (objMove.movePath != null && objMove.movePath.Count > 0 && objMove.transform != null)
                 {
                     objMove.finalDirection = this.MoveObjectTransform(objMove.transform, new Vector2(1, 1), objMove.moveSpeed, objMove.movePath, objMove.updateSpriteDirection);
                     if (objMove.showPathingLine) objMove.pathLine = this.GetCharacterPathLine(objMove);

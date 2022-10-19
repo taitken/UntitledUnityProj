@@ -22,7 +22,7 @@ TagManager:
   - CharacterLayer
   - FloorLayer
   - CropLayer
-  - 
+  - FogLayer
   - 
   - 
   - 
@@ -52,4 +52,7 @@ TagManager:
     locked: 0
   - name: OrderLayer
     uniqueID: 2589551925
+    locked: 0
+  - name: FogLayer
+    uniqueID: 4271882027
     locked: 0

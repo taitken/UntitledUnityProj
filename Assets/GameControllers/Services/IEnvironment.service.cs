@@ -19,6 +19,9 @@ namespace GameControllers.Services
         Sprite[] GetMineableBlockSprites(eMineableBlockType blockType);
         void AddMineableObject(MineableObjectModel mineableObject);
         void RemoveMineableObject(Vector3Int _position);
+        MonoObseravable<FogModel[,]> GetFogObservable();
+        void AddFogObject(FogModel fogModel);
+        void RemoveFogObject(Vector3Int _position);
         IList<Vector3Int> GetCellsInArea(Vector3 startPos, Vector3 endPos);
         IList<Vector3Int> GetCellsInArea(Vector3Int startPos, Vector3Int endPos);
         Vector3Int LocalToCell(Vector3 localPosition);
