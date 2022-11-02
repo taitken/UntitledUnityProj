@@ -18,7 +18,7 @@ namespace GameControllers.Services
         void SetMineableBlockAssetController(MineableBlockAssetController _mineableBlockAssetController);
         Sprite[] GetMineableBlockSprites(eMineableBlockType blockType);
         void AddMineableObject(MineableObjectModel mineableObject);
-        void RemoveMineableObject(Vector3Int _position);
+        void RemoveMineableObject(Vector3Int _position, bool _removeSilently = false);
         MonoObseravable<FogModel[,]> GetFogObservable();
         void AddFogObject(FogModel fogModel);
         void RemoveFogObject(Vector3Int _position);

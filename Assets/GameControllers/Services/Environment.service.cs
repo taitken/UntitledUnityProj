@@ -35,11 +35,11 @@ namespace GameControllers.Services
                 this.mineableObjects.Set(_mineableObjects);
             }
         }
-        public void RemoveMineableObject(Vector3Int _position)
+        public void RemoveMineableObject(Vector3Int _position, bool _removeSilently = false)
         {
             MineableObjectModel[,] _mineableObjects = this.mineableObjects.Get();
             _mineableObjects[_position.x, _position.y] = null;
-            this.mineableObjects.Set(_mineableObjects);
+            if (!_removeSilently) this.mineableObjects.Set(_mineableObjects);
         }
 
         public MonoObseravable<FogModel[,]> GetFogObservable()

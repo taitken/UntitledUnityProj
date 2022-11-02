@@ -7,6 +7,7 @@ using GameControllers.Models;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UI.Services;
+using Environment;
 
 namespace GameControllers
 {
@@ -224,10 +225,12 @@ namespace GameControllers
         }
 
         // Checks a Raycast list and clicks the first object
-        private void ClickObject(List<RaycastHit2D> hitObjects)
+        private void ClickObject(IList<RaycastHit2D> hitObjects)
         {
             if (hitObjects.Count > 0)
             {
+                // Prioritise non layers
+                hitObjects = hitObjects.Filter(obj => { return obj.collider.gameObject.GetComponent<LayerCollider>() == null; });
                 this.ClickObject(hitObjects[0]);
             }
         }

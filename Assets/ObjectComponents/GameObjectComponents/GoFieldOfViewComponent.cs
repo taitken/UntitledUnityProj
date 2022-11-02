@@ -39,13 +39,6 @@ namespace ObjectComponents
             this.angle = 0f;
             this.origin = baseObject.transform.position;
             float angleIncrease = FOV / RAY_COUNT;
-            Vector3[] vertices = new Vector3[RAY_COUNT + 1 + 1];
-            Vector2[] uv = new Vector2[vertices.Length];
-            int[] triangles = new int[RAY_COUNT * 3];
-
-            vertices[0] = this.origin;
-            int vertextIndex = 1;
-            int triangleIndex = 0;
             for (int i = 0; i <= RAY_COUNT; i++)
             {
                 List<RaycastHit2D> raycastHit2d = new List<RaycastHit2D>();
@@ -58,15 +51,6 @@ namespace ObjectComponents
                         hitFogModels.Add(hitFogObject.fogModel);
                     }
                 });
-
-                if (i > 0)
-                {
-                    triangles[triangleIndex + 0] = 0;
-                    triangles[triangleIndex + 1] = vertextIndex - 1;
-                    triangles[triangleIndex + 2] = vertextIndex;
-                    triangleIndex += 3;
-                }
-                vertextIndex++;
                 this.angle -= angleIncrease;
             }
             if (hitFogModels.Count > 0)
