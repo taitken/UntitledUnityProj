@@ -8,6 +8,7 @@ namespace Building.Models
     public class BuildingObjectModel : BaseObjectModel
     {
         public eBuildingType buildingType { get; set; }
+        public eBuildingCategory buildingCategory { get; set; }
         public IList<ItemObjectMass> requiredItems { get; set; }
         public Vector2 size { get; set; }
         public IList<Vector3Int> positions
@@ -30,6 +31,7 @@ namespace Building.Models
             this.buildingType = _buildingType;
             this.requiredItems = _buildStats.buildSupply;
             this.size = _buildStats.size;
+            this.buildingCategory = _buildStats.buildCategory;
         }
     }
 }

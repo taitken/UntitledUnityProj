@@ -12,4 +12,13 @@ namespace Building.Models
         Door,
         FarmPlot
     }
+
+    public enum eBuildingCategory
+    {
+        Decor,
+        Struct,
+        Store,
+        Refine,
+        Grow
+    }
 }

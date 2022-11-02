@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2891796641390259769
+--- !u!1 &2603079567947814721
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,44 +8,44 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1013047770611491670}
-  - component: {fileID: 6473043570781843}
-  m_Layer: 0
-  m_Name: ObjectPanelAssetFactory
+  - component: {fileID: 7022081554810890603}
+  - component: {fileID: 2204424373726399381}
+  m_Layer: 5
+  m_Name: BuildingPanelController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1013047770611491670
-Transform:
+--- !u!224 &7022081554810890603
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2891796641390259769}
+  m_GameObject: {fileID: 2603079567947814721}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.496665, y: 9.145279, z: 0.071381316}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6473043570781843
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2204424373726399381
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2891796641390259769}
+  m_GameObject: {fileID: 2603079567947814721}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e183561f1fbbee4bb46d6abfd6c7b9e, type: 3}
+  m_Script: {fileID: 11500000, guid: c0087fee88ffe144f86d8a96e4025d7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panelPrefabs:
-  - {fileID: -8479398082642375778, guid: 63d85d91c63e73045ae1d938eb4c81c8, type: 3}
-  - {fileID: 1066595904193716362, guid: fa73a4b543fe203489b880b8f19e82f9, type: 3}
-  - {fileID: 309431975226453081, guid: 2a6851c742556964f960abd2c08daf7a, type: 3}
-  - {fileID: 5899841152589235559, guid: 9633a60c81ddd294980de79694d82d0b, type: 3}

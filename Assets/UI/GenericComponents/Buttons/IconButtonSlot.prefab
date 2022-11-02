@@ -11,10 +11,10 @@ GameObject:
   - component: {fileID: 1185658713079434389}
   - component: {fileID: 9177765409353989190}
   - component: {fileID: 2778897838896016343}
-  - component: {fileID: 4175225238341000417}
   - component: {fileID: 7341926580810030721}
+  - component: {fileID: -7611882246802512010}
   m_Layer: 5
-  m_Name: SeedSlot
+  m_Name: IconButtonSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40,8 +40,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 581.1229, y: -187.53299}
-  m_SizeDelta: {x: 1105.4418, y: 371.41003}
+  m_AnchoredPosition: {x: 71, y: -187.53299}
+  m_SizeDelta: {x: 71, y: 85}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &9177765409353989190
 CanvasRenderer:
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.5849056, g: 0.37687236, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -81,24 +81,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4175225238341000417
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2109639359537918415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 61e39e1bde1a6c248b45055c39202fe1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  originalColour: {r: 0, g: 0, b: 0, a: 0}
-  highlightedColor: {r: 0.6462264, g: 0.86993384, b: 1, a: 1}
-  background: {fileID: 4769194795534534295}
-  cropName: {fileID: 4418657623031275711}
-  cropThumbnail: {fileID: 7016012432472722300}
-  cropType: 0
 --- !u!114 &7341926580810030721
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,8 +98,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4175225238341000417}
-          m_TargetAssemblyTypeName: UI.Panel.SeedSlot, Assembly-CSharp
+        - m_Target: {fileID: -7611882246802512010}
+          m_TargetAssemblyTypeName: UI.Panel.IconButtonSlot, Assembly-CSharp
           m_MethodName: OnMouseEnter
           m_Mode: 1
           m_Arguments:
@@ -132,8 +114,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4175225238341000417}
-          m_TargetAssemblyTypeName: UI.Panel.SeedSlot, Assembly-CSharp
+        - m_Target: {fileID: -7611882246802512010}
+          m_TargetAssemblyTypeName: UI.Panel.IconButtonSlot, Assembly-CSharp
           m_MethodName: OnMouseExit
           m_Mode: 1
           m_Arguments:
@@ -148,8 +130,8 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4175225238341000417}
-          m_TargetAssemblyTypeName: UI.Panel.SeedSlot, Assembly-CSharp
+        - m_Target: {fileID: -7611882246802512010}
+          m_TargetAssemblyTypeName: UI.Panel.IconButtonSlot, Assembly-CSharp
           m_MethodName: OnMouseClick
           m_Mode: 1
           m_Arguments:
@@ -160,6 +142,24 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &-7611882246802512010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2109639359537918415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e0a43b1dd2a5154a812bfe619c388a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  originalColour: {r: 0, g: 0, b: 0, a: 0}
+  highlightedColor: {r: 0.64705884, g: 0.87058824, b: 1, a: 1}
+  background: {fileID: 4769194795534534295}
+  title: {fileID: 4418657623031275711}
+  thumbnail: {fileID: 7016012432472722300}
+  returnEnemurator: 0
 --- !u!1 &4769194795534534295
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,8 +271,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 9.1, y: -0.041592}
-  m_SizeDelta: {x: 205.38, y: 37.8449}
+  m_AnchoredPosition: {x: -0.16603, y: -18.922}
+  m_SizeDelta: {x: 67.978, y: 37.8449}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6988291547765612651
 CanvasRenderer:
@@ -336,7 +336,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 32
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -444,11 +444,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4070094318722101342, guid: 8cdaea1eff5a3bd4ca08e5b8491f70b7, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -61.2
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 4070094318722101342, guid: 8cdaea1eff5a3bd4ca08e5b8491f70b7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 29.1
+      value: 9.7
       objectReference: {fileID: 0}
     - target: {fileID: 4070094318722101342, guid: 8cdaea1eff5a3bd4ca08e5b8491f70b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

@@ -10,7 +10,7 @@ using System;
 
 namespace UI
 {
-    public class ObjectPanelController : MonoBehaviour2
+    public class BuildingPanelController : MonoBehaviour2
     {
         private IUiPanelService uiPanelService;
         private IList<BasePanel> panels = new List<BasePanel>();
@@ -19,16 +19,14 @@ namespace UI
         public void Construct(IUiPanelService _contextService, 
                               IItemObjectService _itemService,  
                               IBuildingService _buildingService, 
-                              IUnitOrderService _unitOrderService, 
-                              ICropService _cropService)
+                              IUnitOrderService _unitOrderService)
         {
             this.services = new List<IBaseService>();
             this.uiPanelService = _contextService;
-            this.uiPanelService.selectedObjectPanels.SubscribeQuietly(this, this.OnObjectSelected);
+            this.uiPanelService.selectedBuildingPanels.SubscribeQuietly(this, this.OnBuildingsSelected);
             this.services.Add(_itemService);
             this.services.Add(_buildingService);
             this.services.Add(_unitOrderService);
-            this.services.Add(_cropService);
         }
         // Start is called before the first frame update
         void Start()
@@ -36,7 +34,7 @@ namespace UI
 
         }
 
-        private void OnObjectSelected(IList<BasePanelModel> panels)
+        private void OnBuildingsSelected(IList<BasePanelModel> panels)
         {
             this.panels.DestroyAll();
             if (panels != null)

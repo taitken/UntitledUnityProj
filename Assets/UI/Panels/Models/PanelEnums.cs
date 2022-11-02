@@ -8,7 +8,8 @@ namespace UI.Models
     {
         ObjectInfo,
         RecipeSelector,
-        SeedSelector
+        SeedSelector,
+        BuildingSelector
     }
 }
 

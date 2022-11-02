@@ -18,7 +18,8 @@ namespace Building.Models
                         buildingName = "Chest",
                         size = new Vector2(1, 1),
                         buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 400) },
-                        storageMax = 10000
+                        storageMax = 10000,
+                        buildCategory = eBuildingCategory.Store
                     };
                     break;
                 case eBuildingType.FloorTile:
@@ -26,7 +27,8 @@ namespace Building.Models
                     {
                         buildingName = "Floor Tile",
                         size = new Vector2(1, 1),
-                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 25) }
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 25) },
+                        buildCategory = eBuildingCategory.Struct
                     };
                     break;
                 case eBuildingType.Smelter:
@@ -45,7 +47,8 @@ namespace Building.Models
                                 new List<ItemObjectMass>() { new ItemObjectMass(eItemType.CopperOre, 200), new ItemObjectMass(eItemType.Coal, 25) },
                                 new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Copper, 100) },
                                 10 )
-                            }
+                            },
+                        buildCategory = eBuildingCategory.Refine
 
                     };
                     break;
@@ -54,7 +57,8 @@ namespace Building.Models
                     {
                         buildingName = "Torch",
                         size = new Vector2(1, 1),
-                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 50) }
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 50) },
+                        buildCategory = eBuildingCategory.Decor
                     };
                     break;
                 case eBuildingType.Wall:
@@ -63,7 +67,8 @@ namespace Building.Models
                         buildingName = "Wall",
                         size = new Vector2(1, 1),
                         wallType = eWallTypes.Stone,
-                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 25) }
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 25) },
+                        buildCategory = eBuildingCategory.Struct
                     };
                     break;
                 case eBuildingType.Door:
@@ -72,7 +77,8 @@ namespace Building.Models
                         buildingName = "Door",
                         size = new Vector2(1, 1),
                         doorType = eDoorTypes.Stone,
-                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 200) }
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 200) },
+                        buildCategory = eBuildingCategory.Struct
                     };
                     break;
                 case eBuildingType.FarmPlot:
@@ -80,7 +86,8 @@ namespace Building.Models
                     {
                         buildingName = "Farm Plot",
                         size = new Vector2(1, 1),
-                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 100) }
+                        buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 100) },
+                        buildCategory = eBuildingCategory.Grow
                     };
                     break;
             }

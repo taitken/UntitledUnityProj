@@ -17,6 +17,7 @@ namespace UI.Services
         }
         public MonoObseravable<IList<ContextWindowModel>> contextObseravable { get; set; } = new MonoObseravable<IList<ContextWindowModel>>(new List<ContextWindowModel>());
         public MonoObseravable<IList<BasePanelModel>> selectedObjectPanels { get; set; } = new MonoObseravable<IList<BasePanelModel>>(null);
+        public MonoObseravable<IList<BasePanelModel>> selectedBuildingPanels { get; set; } = new MonoObseravable<IList<BasePanelModel>>(null);
 
         public void SetContextAssetFactory(ContextAssetFactory assetFactory)
         {
@@ -40,9 +41,9 @@ namespace UI.Services
                 Debug.LogException(new System.Exception("Error setting a new asset factory in the UI service. Only one context window service may be set"));
             }
         }
-        public ObjectPanelAssetFactory GetPanelAssetFactory()
+        public BasePanel CreatePanelWindow(RectTransform parentTransform, BasePanelModel panelWindowModel, IList<IBaseService> services)
         {
-            return this.panelAssetFactory;
+            return this.panelAssetFactory.CreatePanelWindow(parentTransform, panelWindowModel, services);
         }
         public void AddContext(ContextWindowModel context)
         {
