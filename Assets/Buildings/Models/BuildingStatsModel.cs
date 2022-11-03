@@ -7,6 +7,7 @@ namespace Building.Models
 {
     public class BuildingStatsModel
     {
+        public eBuildingType buildingType { get; set; }
         public string buildingName { get; set; }
         public Vector2 size { get; set; }
         public decimal storageMax { get; set; }

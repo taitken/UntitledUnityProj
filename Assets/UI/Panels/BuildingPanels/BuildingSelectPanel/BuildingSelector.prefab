@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2604514801930127103}
   - component: {fileID: 1937467952321140588}
   - component: {fileID: 7288463919088841750}
-  - component: {fileID: -7242774407512513000}
+  - component: {fileID: 2021240699652971519}
   m_Layer: 5
-  m_Name: SeedSelector
+  m_Name: BuildingSelector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-7242774407512513000
+--- !u!114 &2021240699652971519
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,12 +87,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 73536256003599070}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2559ac86a43292a42a4dbeb5e8e50e1b, type: 3}
+  m_Script: {fileID: 11500000, guid: 861d122f91f091b488dfaec7a77a7572, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  seedSlotPrefab: {fileID: 6009189584753083067}
+  buildingSlot: {fileID: 6009189584753083067}
   defaultBG: {r: 1, g: 1, b: 1, a: 1}
-  selectedBG: {r: 0.7783019, g: 0.9286315, b: 1, a: 1}
+  selectedBG: {r: 0.7764706, g: 0.92941177, b: 1, a: 1}
 --- !u!1001 &4988237396942562765
 PrefabInstance:
   m_ObjectHideFlags: 0

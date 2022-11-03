@@ -7,7 +7,7 @@ namespace UI.Models
 {
     public class BuildingSelectorPanelModel : BasePanelModel
     {
-        eBuildingCategory buildingCategory;
+        public eBuildingCategory buildingCategory;
         public BuildingSelectorPanelModel(string _title, eBuildingCategory _buildingCategory) : base(0, _title, ePanelTypes.BuildingSelector)
         {
             this.title = _title;

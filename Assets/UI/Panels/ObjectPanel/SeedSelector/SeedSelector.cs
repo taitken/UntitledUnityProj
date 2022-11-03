@@ -32,8 +32,8 @@ namespace UI.Panel
                 newSlot.gameObject.SetActive(true);
                 newSlot.Initialise(stats.cropName, cropService.GetCropSpriteSet(stats.cropType)[4], (int)stats.cropType);
                 newSlot.onButtonSelectEmitter.OnEmit(this.OnCropTypeSelect);
-                Vector3 pos = this.GetSeedSlotPosition(index);
-                newSlot.GetComponent<RectTransform>().localPosition = this.GetSeedSlotPosition(index) - new Vector3(36, -126.5f);
+                Vector3 pos = UiPositioningHelper.GetIconButtonSlotPosition(index, this.seedSlotPrefab.gameObject, ITEMS_PER_ROW);
+                newSlot.GetComponent<RectTransform>().localPosition = pos - new Vector3(36, -126.5f);
             });
             if (_seedSelectorPanelModel.growerBuildingModel.selectedCropType != null)
             {
@@ -57,15 +57,6 @@ namespace UI.Panel
                 this.seedSlots.ForEach(slot => { slot.SetBackgroundColor(this.defaultBG); });
             }
             this.seedSelectorPanelModel.growerBuildingModel.NotifyModelUpdate();
-        }
-
-        private Vector3 GetSeedSlotPosition(int index)
-        {
-            float seedSlotWidth = this.seedSlotPrefab.GetComponent<RectTransform>().rect.width;
-            float seedSlotHeight = -this.seedSlotPrefab.GetComponent<RectTransform>().rect.height;
-            int row = (index) / ITEMS_PER_ROW;
-            int column = ((index) % ITEMS_PER_ROW);
-            return new Vector3((-seedSlotWidth / 2) + (seedSlotWidth * column), (seedSlotHeight / 2) + (seedSlotHeight * row), 0);
         }
     }
 }

@@ -23,6 +23,15 @@ namespace UI.Panel
         public EventEmitter<int> onButtonSelectEmitter = new EventEmitter<int>();
         // Start is called before the first frame update
 
+        public IconButtonSlot CreateNew(Transform _parentTransform, string _title, Sprite _thumbnail, int _returnEnemurator)
+        {
+            IconButtonSlot newSlot = Instantiate(this, Vector3.zero, default(UnityEngine.Quaternion));
+            newSlot.transform.parent = _parentTransform;
+            newSlot.gameObject.SetActive(true);
+            newSlot.Initialise(_title, _thumbnail, _returnEnemurator);
+            return newSlot;
+        }
+
         public void Initialise(string _title, Sprite _thumbnail, int _returnEnemurator)
         {
             this.originalColour = this.background.GetComponent<Image>().color;
@@ -39,7 +48,7 @@ namespace UI.Panel
         public void SetBackgroundColor(Color newColor)
         {
             this.originalColour = newColor;
-            if(this.background.GetComponent<Image>().color != this.highlightedColor)
+            if (this.background.GetComponent<Image>().color != this.highlightedColor)
             {
                 this.background.GetComponent<Image>().color = newColor;
             }

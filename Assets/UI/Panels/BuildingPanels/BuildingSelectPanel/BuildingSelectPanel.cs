@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameControllers.Services;
 using ObjectComponents;
 using TMPro;
 using UI.Models;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace UI.Panel
 {
     public class BuildingSelectPanel : BasePanel
     {
         private BuildingSelectorPanelModel buildingSelectPanelModel;
-        public PanelWindow panelWindow;
+        public BuildingSelector buildingSelector;
 
+        [Inject]
         public override void Construct(BasePanelModel panelWindowModel)
         {
             this.buildingSelectPanelModel = panelWindowModel as BuildingSelectorPanelModel;
@@ -21,6 +24,7 @@ namespace UI.Panel
             {
                 if (text.tag == "UiHeader") text.SetText(panelWindowModel.title);
             });
+            buildingSelector.Initalise(this.buildingSelectPanelModel, this.GetService<IUnitOrderService>(), this.GetService<IBuildingService>());
         }
 
         private void ConfigureTabs()

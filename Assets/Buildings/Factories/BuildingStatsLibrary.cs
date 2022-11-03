@@ -7,6 +7,19 @@ namespace Building.Models
 {
     public static class BuildingStatsLibrary
     {
+        public static IList<BuildingStatsModel> GetBuildingStats()
+        {
+            IList<BuildingStatsModel> buildStats = new List<BuildingStatsModel>();
+            foreach (eBuildingType i in eBuildingType.GetValues(typeof(eBuildingType)))
+            {
+                buildStats.Add(BuildingStatsLibrary.GetBuildingStats(i));
+            }
+            return buildStats;
+        }
+        public static IList<BuildingStatsModel> GetBuildingStats(eBuildingCategory buildingCategory)
+        {
+            return BuildingStatsLibrary.GetBuildingStats().Filter(buildStats => { return buildStats?.buildCategory == buildingCategory; });
+        }
         public static BuildingStatsModel GetBuildingStats(eBuildingType buildingType)
         {
             BuildingStatsModel buildingStats = null;
@@ -91,6 +104,7 @@ namespace Building.Models
                     };
                     break;
             }
+            if (buildingStats != null) buildingStats.buildingType = buildingType;
             return buildingStats;
         }
     }
