@@ -142,12 +142,13 @@ namespace Environment
 
         public override void OnDragEnd(DragEventModel dragEvent)
         {
+            eBuildingCategory buildingCategory = this.mouseAction.buildingType != eBuildingType.none ? BuildingStatsLibrary.GetBuildingStats(this.mouseAction.buildingType).buildCategory : eBuildingCategory.None;
             if (this.mouseAction.mouseType == eMouseAction.Build &&
-                (this.mouseAction.buildingType == eBuildingType.FloorTile || this.mouseAction.buildingType == eBuildingType.FarmPlot))
+                (buildingCategory  == eBuildingCategory.FloorTile || buildingCategory == eBuildingCategory.Grower))
             {
                 this.HandleAreaBuild(dragEvent);
             }
-            if (this.mouseAction.mouseType == eMouseAction.Build && this.mouseAction.buildingType == eBuildingType.Wall)
+            if (this.mouseAction.mouseType == eMouseAction.Build && buildingCategory == eBuildingCategory.Wall)
             {
                 this.HandleWallDragEnd(dragEvent);
             }
@@ -179,9 +180,10 @@ namespace Environment
 
         public void PlaceBuildingBlueprint(Vector3Int coordinates)
         {
-            if ((this.buildingService.IsBuildingSpaceAvailable(coordinates) || this.mouseAction.buildingType == eBuildingType.FloorTile)
+            eBuildingCategory buildingCategory = BuildingStatsLibrary.GetBuildingStats(this.mouseAction.buildingType).buildCategory;
+            if ((this.buildingService.IsBuildingSpaceAvailable(coordinates) || buildingCategory == eBuildingCategory.FloorTile)
             && !this.orderService.IsExistingOrderAtLocation(coordinates)
-            && (this.mouseAction.buildingType != eBuildingType.FloorTile || this.buildingService.IsFloorSpaceAvailable(coordinates)))
+            && (buildingCategory != eBuildingCategory.FloorTile || this.buildingService.IsFloorSpaceAvailable(coordinates)))
             {
                 BuildingStatsLibrary.GetBuildingStats(this.mouseAction.buildingType).buildSupply.ForEach(requiredItem =>
                 {

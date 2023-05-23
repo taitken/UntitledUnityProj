@@ -115,7 +115,7 @@ namespace GameControllers.Services
         public bool IsBuildingSpaceAvailable(Vector3Int _location)
         {
             IList<Vector3Int> locations = new List<Vector3Int>();
-            this.buildingObseravable.Get().Filter(building => { return building.buildingType != eBuildingType.FloorTile; }).ForEach(building => { building.positions.ForEach(pos => { locations.Add(pos); }); });
+            this.buildingObseravable.Get().Filter(building => { return building.buildingCategory != eBuildingCategory.FloorTile; }).ForEach(building => { building.positions.ForEach(pos => { locations.Add(pos); }); });
             this.buildingSiteObseravable.Get().ForEach(site => { site.buildingModel.positions.ForEach(pos => { locations.Add(site.position); }); });
             return !locations.Any(location => { return location == _location; });
         }
@@ -123,7 +123,7 @@ namespace GameControllers.Services
         public bool IsFloorSpaceAvailable(Vector3Int _location)
         {
             IList<Vector3Int> locations = new List<Vector3Int>();
-            this.buildingObseravable.Get().Filter(building => { return building.buildingType == eBuildingType.FloorTile; }).ForEach(building => { building.positions.ForEach(pos => { locations.Add(pos); }); });
+            this.buildingObseravable.Get().Filter(building => { return building.buildingCategory == eBuildingCategory.FloorTile; }).ForEach(building => { building.positions.ForEach(pos => { locations.Add(pos); }); });
             this.buildingSiteObseravable.Get().ForEach(site => { site.buildingModel.positions.ForEach(pos => { locations.Add(site.position); }); });
             return !locations.Any(location => { return location == _location; });
         }

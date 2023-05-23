@@ -14,6 +14,7 @@ namespace Building.Models
         public eBuildingCategory buildCategory { get; set; }
         public eWallTypes wallType { get; set; }
         public eDoorTypes doorType { get; set; }
+        public eFloorType floorType { get; set; }
         public IList<ItemObjectMass> buildSupply { get; set; }
         public IList<ItemRecipeModel> itemRecipes { get; set; }
     }

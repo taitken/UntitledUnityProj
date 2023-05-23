@@ -5,7 +5,9 @@ namespace Building.Models
     {
         none,
         Chest,
-        FloorTile,
+        BarracksFloorTile,
+        DiningFloorTile,
+        FoundryFloorTile,
         Smelter,
         Torch,
         Wall,
@@ -15,10 +17,20 @@ namespace Building.Models
 
     public enum eBuildingCategory
     {
+        None,
         Decor,
-        Struct,
-        Store,
-        Refine,
-        Grow
+        Door,
+        Wall,
+        Storage,
+        Production,
+        FloorTile,
+        Grower
+    }
+
+    public enum eFloorType
+    {
+        Barracks,
+        Dining,
+        Foundry
     }
 }

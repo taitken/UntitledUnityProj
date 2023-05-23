@@ -5,6 +5,7 @@ using GameControllers.Services;
 using GameControllers.Models;
 using Zenject;
 using System;
+using Building.Models;
 
 namespace Environment
 {
@@ -39,12 +40,13 @@ namespace Environment
 
         public override void OnDrag(DragEventModel dragEvent)
         {
-            if (this.orderService.mouseAction.Get().mouseType == eMouseAction.Build 
-                && (this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.FloorTile || this.orderService.mouseAction.Get().buildingType == Building.Models.eBuildingType.FarmPlot) ||
-                this.orderService.mouseAction.Get().mouseType == eMouseAction.Dig ||
-                this.orderService.mouseAction.Get().mouseType == eMouseAction.Store ||
-                this.orderService.mouseAction.Get().mouseType == eMouseAction.Deconstruct ||
-                this.orderService.mouseAction.Get().mouseType == eMouseAction.Cancel)
+            MouseActionModel mouseAction = this.orderService.mouseAction.Get();
+            if (mouseAction.mouseType == eMouseAction.Build 
+                && (BuildingStatsLibrary.GetBuildingStats(mouseAction.buildingType).buildCategory  == eBuildingCategory.FloorTile || BuildingStatsLibrary.GetBuildingStats(mouseAction.buildingType).buildCategory  == eBuildingCategory.Grower) ||
+                mouseAction.mouseType == eMouseAction.Dig ||
+                mouseAction.mouseType == eMouseAction.Store ||
+                mouseAction.mouseType == eMouseAction.Deconstruct ||
+                mouseAction.mouseType == eMouseAction.Cancel)
             {
 
                 Vector3Int dragInitiationLocation = this.environmentService.LocalToCell(new Vector3(dragEvent.initialDragLocation.x + IEnvironmentService.TILE_WIDTH_PIXELS / 2, dragEvent.initialDragLocation.y + IEnvironmentService.TILE_WIDTH_PIXELS / 2, 0));

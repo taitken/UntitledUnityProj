@@ -50,7 +50,7 @@ namespace UnitAction
             {
                 SupplyOrderModel supplyOrder = this.unit.currentOrder as SupplyOrderModel;
                 ProductionBuildingModel buildingModel = this.buildingService.buildingObseravable.Get()
-                    .Find(building => { return building.position == supplyOrder.coordinates && building.buildingType != eBuildingType.FloorTile; }) as ProductionBuildingModel;
+                    .Find(building => { return building.position == supplyOrder.coordinates && building.buildingCategory != eBuildingCategory.FloorTile; }) as ProductionBuildingModel;
 
                 if (buildingModel.SupplyItem(this.unit.carriedItem)) this.itemObjectService.RemoveItemFromWorld(this.unit.carriedItem.ID);
                 this.itemObjectService.onItemStoreOrSupplyTrigger.Set(this.unit.carriedItem);

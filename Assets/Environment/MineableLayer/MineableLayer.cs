@@ -69,6 +69,7 @@ namespace Environment
             {
                 IList<MineableObjectModel> objsToAdd = new List<MineableObjectModel>();
                 IList<MineableObjectModel> objsToRemove = new List<MineableObjectModel>();
+                
                 for (int x = 0; x < mineableObjs.GetLength(0); x++)
                 {
                     for (int y = 0; y < mineableObjs.GetLength(1); y++)
@@ -91,7 +92,6 @@ namespace Environment
                 {
                     MineableBlock hunk = this.mineableBlocks[mineableObj.position.x, mineableObj.position.y];
                     this.mineableBlocks[mineableObj.position.x, mineableObj.position.y] = null;
-                    hunk.Destroy();
                     this.ReMapBlocksAround(mineableObj.position);
                 });
             }

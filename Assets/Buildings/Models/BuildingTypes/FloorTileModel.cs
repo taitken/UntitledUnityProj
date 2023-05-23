@@ -7,9 +7,10 @@ namespace Building.Models
 {
     public class FloorTileModel : BuildingObjectModel
     {
+        eFloorType floorType;
         public FloorTileModel(Vector3Int _position, eBuildingType _buildingType, BuildingStatsModel _buildStats) : base(_position, _buildingType, _buildStats)
         {
-
+            this.floorType = _buildStats.floorType;
         }
     }
 }

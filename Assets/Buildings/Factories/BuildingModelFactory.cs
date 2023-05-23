@@ -15,27 +15,27 @@ namespace Building
         {
             BuildingObjectModel newBuilding;
             BuildingStatsModel buildStats = BuildingStatsLibrary.GetBuildingStats(_buildingType);
-            switch (_buildingType)
+            switch (buildStats.buildCategory)
             {
-                case eBuildingType.Chest:
+                case eBuildingCategory.Storage:
                     newBuilding = new StorageBuildingModel(_position, _buildingType, buildStats);
                     break;
-                case eBuildingType.FloorTile:
+                case eBuildingCategory.FloorTile:
                     newBuilding = new FloorTileModel(_position, _buildingType, buildStats);
                     break;
-                case eBuildingType.Smelter:
+                case eBuildingCategory.Production:
                     newBuilding = new ProductionBuildingModel(_position, _buildingType, buildStats);
                     break;
-                case eBuildingType.Torch:
+                case eBuildingCategory.Decor:
                     newBuilding = new DecorBuildingModel(_position, _buildingType, buildStats);
                     break;
-                case eBuildingType.Wall:
+                case eBuildingCategory.Wall:
                     newBuilding = new WallBuildingModel(_position, _buildingType, buildStats);
                     break;
-                case eBuildingType.Door:
+                case eBuildingCategory.Door:
                     newBuilding = new DoorBuildingModel(_position, _buildingType, buildStats);
                     break;
-                case eBuildingType.FarmPlot:
+                case eBuildingCategory.Grower:
                     newBuilding = new GrowerBuildingModel(_position, _buildingType, buildStats);
                     break;
                 default:
