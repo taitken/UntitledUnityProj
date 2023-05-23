@@ -10,12 +10,17 @@ namespace Unit.Models
 {
     public class RoomModel : BaseModel
     {
-        public RoomModel(IList<FloorTileModel> _connectedTiles )
+        public RoomModel(IList<FloorTileModel> _connectedTiles)
         {
-            connectedTiles = _connectedTiles;
+            if (_connectedTiles != null && _connectedTiles.Count > 0)
+            {
+                connectedTiles = _connectedTiles;
+                floorType = _connectedTiles[0].floorType;
+            }
         }
 
-        private IList<FloorTileModel> connectedTiles { get; set; }
+        public eFloorType floorType { get; set; }
+        public IList<FloorTileModel> connectedTiles { get; set; }
 
     }
 }
