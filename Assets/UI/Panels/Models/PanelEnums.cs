@@ -9,7 +9,8 @@ namespace UI.Models
         ObjectInfo,
         RecipeSelector,
         SeedSelector,
-        BuildingSelector
+        BuildingSelector,
+        RoomInfo
     }
 }
 

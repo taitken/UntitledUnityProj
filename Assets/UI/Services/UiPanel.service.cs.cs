@@ -41,6 +41,11 @@ namespace UI.Services
                 Debug.LogException(new System.Exception("Error setting a new asset factory in the UI service. Only one context window service may be set"));
             }
         }
+        public void ClearSelectedPanels()
+        {
+            this.selectedObjectPanels.Set(null);
+            this.selectedBuildingPanels.Set(null);
+        }
         public BasePanel CreatePanelWindow(RectTransform parentTransform, BasePanelModel panelWindowModel, IList<IBaseService> services)
         {
             return this.panelAssetFactory.CreatePanelWindow(parentTransform, panelWindowModel, services);

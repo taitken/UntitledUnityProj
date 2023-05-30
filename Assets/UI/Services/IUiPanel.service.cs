@@ -15,6 +15,7 @@ namespace UI.Services
         public MonoObseravable<IList<BasePanelModel>> selectedBuildingPanels { get; set; }
         void SetContextAssetFactory(ContextAssetFactory assetFactory);
         void SetPanelAssetFactory(ObjectPanelAssetFactory assetFactory);
+        void ClearSelectedPanels();
         BasePanel CreatePanelWindow(RectTransform parentTransform, BasePanelModel panelWindowModel, IList<IBaseService> services);
         void AddContext(ContextWindowModel context);
         void RemoveContext(long modelID);

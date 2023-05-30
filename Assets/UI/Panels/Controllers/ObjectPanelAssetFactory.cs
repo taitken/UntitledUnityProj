@@ -34,6 +34,9 @@ namespace UI
                     case ePanelTypes.BuildingSelector:
                         newPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(180, 270);
                         break;
+                    case ePanelTypes.RoomInfo:
+                        newPanel.GetComponent<RectTransform>().anchoredPosition = new Vector3(-190, 270);
+                        break;
                 }
                 return newPanel;
             }

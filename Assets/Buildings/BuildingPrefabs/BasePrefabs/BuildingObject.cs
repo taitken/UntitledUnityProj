@@ -17,18 +17,21 @@ namespace Building
         protected IItemObjectService itemService { get; set; }
         protected IBuildingService buildingService { get; set; }
         protected ICropService cropService { get; set; }
+        protected IRoomService roomService { get; set; }
         public void Initialise(IUiPanelService _uiPanelService,
                                         BuildingObjectModel _buildingObjectModel,
                                         IEnvironmentService _environmentService,
                                         IItemObjectService _itemObjectService,
                                         IBuildingService _buildingService,
                                         IUnitOrderService _orderService,
+                                        IRoomService _roomService,
                                         ICropService _cropService)
         {
             this.buildingObjectModel = _buildingObjectModel;
             this.unitOrderService = _orderService;
             this.itemService = _itemObjectService;
             this.buildingService = _buildingService;
+            this.roomService = _roomService;
             this.cropService = _cropService;
             this.SetMultiTilePosition(_environmentService.CellToLocal(_buildingObjectModel.position));
             this.UpdateBuildingBounds();

@@ -56,6 +56,20 @@ namespace System.Collections.Generic
             return returnList;
         }
 
+        public static IList<t1> Flatten<t1>(this IList<IList<t1>> list)
+        {
+            if (list == null) return null;
+            IList<t1> returnList = new List<t1>();
+            foreach (t1 listItem in list)
+            {
+                foreach (t1 subListItem in list)
+                {
+                    returnList.Add(subListItem);
+                }
+            }
+            return returnList;
+        }
+
         public static int Sum<t1>(this IList<t1> list, Func<t1, int> callback)
         {
             int returnVal = 0;

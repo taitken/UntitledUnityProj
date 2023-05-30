@@ -227,10 +227,10 @@ namespace GameControllers
         // Checks a Raycast list and clicks the first object
         private void ClickObject(IList<RaycastHit2D> hitObjects)
         {
+            // Prioritise non layers
+            hitObjects = hitObjects.Filter(obj => { return obj.collider.gameObject.GetComponent<LayerCollider>() == null; });
             if (hitObjects.Count > 0)
             {
-                // Prioritise non layers
-                hitObjects = hitObjects.Filter(obj => { return obj.collider.gameObject.GetComponent<LayerCollider>() == null; });
                 this.ClickObject(hitObjects[0]);
             }
         }
@@ -281,10 +281,9 @@ namespace GameControllers
                     hitFound = true;
                 }
             });
-            if (!hitFound) 
+            if (!hitFound)
             {
-                this.uiPanelService.selectedObjectPanels.Set(null);
-                this.uiPanelService.selectedBuildingPanels.Set(null);
+                this.uiPanelService.ClearSelectedPanels();
             }
         }
     }

@@ -6,10 +6,14 @@ using GameControllers.Models;
 using ObjectComponents;
 using Building.Models;
 
-namespace Unit.Models
+namespace Room.Models
 {
     public class RoomModel : BaseModel
     {
+
+        public eFloorType floorType { get; set; }
+        public IList<FloorTileModel> connectedTiles { get; set; }
+        public int size { get { return connectedTiles.Count; } }
         public RoomModel(IList<FloorTileModel> _connectedTiles)
         {
             if (_connectedTiles != null && _connectedTiles.Count > 0)
@@ -18,9 +22,6 @@ namespace Unit.Models
                 floorType = _connectedTiles[0].floorType;
             }
         }
-
-        public eFloorType floorType { get; set; }
-        public IList<FloorTileModel> connectedTiles { get; set; }
 
     }
 }

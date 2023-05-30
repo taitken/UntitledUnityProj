@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Building.Models;
 using GameControllers.Services;
-using Unit.Models;
+using Room.Models;
 using UnityEngine;
 using Zenject;
 

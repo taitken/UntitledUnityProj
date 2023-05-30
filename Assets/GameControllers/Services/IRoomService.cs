@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UtilityClasses;
-using Unit.Models;
+using Room.Models;
 using Building.Models;
 
 namespace GameControllers.Services
@@ -11,6 +11,9 @@ namespace GameControllers.Services
     {
         public MonoObseravable<IList<RoomModel>> roomObservable { get; set; }
         void AddRoom(RoomModel room);
+        IList<RoomModel> GetRooms();
+        IList<RoomModel> GetRooms(eFloorType _roomType);
+        RoomModel GetRoom(FloorTileModel _floorTile);
         void RemoveRoom(long id);
         RoomModel FindRoom(FloorTileModel[,] floorTileMap, FloorTileModel startingTile);
     }
