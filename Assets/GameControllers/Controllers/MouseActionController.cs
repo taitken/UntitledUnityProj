@@ -69,7 +69,7 @@ namespace GameControllers
             }
             if (Mouse.current.rightButton.wasPressedThisFrame)
             {
-                this.orderService.mouseAction.Set(new MouseActionModel(eMouseAction.None));
+                this.HandleRightClick();
             }
         }
 
@@ -96,6 +96,12 @@ namespace GameControllers
                     this.CommandClick(true, "BuildingLayer");
                     break;
             }
+        }
+
+        private void HandleRightClick()
+        {
+            this.orderService.mouseAction.Set(new MouseActionModel(eMouseAction.None));
+            this.uiPanelService.ClearSelectedPanels();
         }
 
         private void HandleLeftDrag()

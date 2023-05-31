@@ -41,7 +41,8 @@ namespace Building.Models
                         buildingName = "Barracks Tile",
                         size = new Vector2(1, 1),
                         buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 25) },
-                        buildCategory = eBuildingCategory.FloorTile
+                        buildCategory = eBuildingCategory.FloorTile,
+                        floorType = eFloorType.Barracks
                     };
                     break;
                 case eBuildingType.DiningFloorTile:
@@ -50,7 +51,8 @@ namespace Building.Models
                         buildingName = "Dining Tile",
                         size = new Vector2(1, 1),
                         buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 25) },
-                        buildCategory = eBuildingCategory.FloorTile
+                        buildCategory = eBuildingCategory.FloorTile,
+                        floorType = eFloorType.Dining
                     };
                     break;
                 case eBuildingType.FoundryFloorTile:
@@ -59,7 +61,8 @@ namespace Building.Models
                         buildingName = "Foundry Tile",
                         size = new Vector2(1, 1),
                         buildSupply = new List<ItemObjectMass>() { new ItemObjectMass(eItemType.Stone, 25) },
-                        buildCategory = eBuildingCategory.FloorTile
+                        buildCategory = eBuildingCategory.FloorTile,
+                        floorType = eFloorType.Foundry
                     };
                     break;
                 case eBuildingType.Smelter:

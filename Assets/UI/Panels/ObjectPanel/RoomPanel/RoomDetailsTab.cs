@@ -16,7 +16,8 @@ namespace UI.Panel
         public RoomModel roomModel;
         public bool Initalise(RoomModel _roomModel)
         {
-
+            this.roomModel = _roomModel;
+            this.SetText();
             return true;
         }
 
@@ -27,18 +28,17 @@ namespace UI.Panel
 
         private void SetText()
         {
-            // if (this.objectComposition != null)
-            // {
-            //     string boxString = "This object is made up of the following items: \n";
-            //     IList<string> itemRow = new List<string>();
-            //     this.objectComposition.GetComposition().ForEach(item =>
-            //     {
-            //         itemRow.Add(LocalisationDict.GetMassString(item.mass) + " - " + item.itemType.ToString());
-            //     });
-            //     string objectCompositionString = itemRow.Count > 0 ? boxString + itemRow.ConcatStrings("\n") : "No items stored";
-            //     this.textBox.SetText((this.objectModel.objectDescription != null ? this.objectModel.objectDescription + "\n" : "")
-            //                             + objectCompositionString);
-            // }
+            if (this.roomModel != null)
+            {
+                string boxString = "Room Details \n\n";
+                IList<string> itemRow = new List<string>();
+                itemRow.Add("Room Type: " + this.roomModel.floorType.ToString());
+                itemRow.Add("Connected Tiles: " + this.roomModel.connectedTiles.Count);
+                itemRow.Add("Border Tiles: " + this.roomModel.borderTiles.Count);
+                itemRow.Add("Enclosed Border Tiles: " + this.roomModel.enclosedBorders);
+                string objectCompositionString = boxString + itemRow.ConcatStrings("\n");
+                this.textBox.SetText(objectCompositionString);
+            }
         }
     }
 }

@@ -15,7 +15,7 @@ namespace GameControllers.Services
         IList<RoomModel> GetRooms(eFloorType _roomType);
         RoomModel GetRoom(FloorTileModel _floorTile);
         void RemoveRoom(long id);
-        RoomModel FindRoom(FloorTileModel[,] floorTileMap, FloorTileModel startingTile);
+        RoomModel FindRoom(BuildingObjectModel[,] floorTileMap, FloorTileModel startingTile);
     }
 }
 

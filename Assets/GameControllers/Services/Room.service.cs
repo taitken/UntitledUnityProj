@@ -35,7 +35,7 @@ namespace GameControllers.Services
                     {
                         matchedRooms.ForEach((room, index) => { if (index != 0) this.RemoveRoom(room.ID); });
                     }
-                    firstExistingRoom.connectedTiles = newRoom.connectedTiles;
+                    firstExistingRoom.UpdateRoomModel(newRoom);
                     this.roomObservable.NotifyAllSubscribers();
 
                 }
@@ -57,7 +57,7 @@ namespace GameControllers.Services
             RoomModel matchingRoom = null;
             for (int i = 0; i < rooms.Count; i++)
             {
-                if(rooms[i].connectedTiles.Find(tile =>{return tile.ID == _floorTile.ID;}) != null)
+                if (rooms[i].connectedTiles.Find(tile => { return tile.ID == _floorTile.ID; }) != null)
                 {
                     matchingRoom = rooms[i];
                     break;
@@ -95,14 +95,14 @@ namespace GameControllers.Services
             this.roomObservable.Set(this.roomObservable.Get().Filter(order => { return order.ID != id; }));
         }
 
-        public RoomModel FindRoom(FloorTileModel[,] floorTileMap, FloorTileModel startingTile)
+        public RoomModel FindRoom(BuildingObjectModel[,] floorTileMap, FloorTileModel startingTile)
         {
             RoomModel newRoom;
             IList<FloorTileModel> connectedTiles = new List<FloorTileModel>();
             connectedTiles.Add(startingTile);
             for (int i = 0; i < connectedTiles.Count; i++)
             {
-                IList<FloorTileModel> potentialTiles = new List<FloorTileModel>();
+                IList<BuildingObjectModel> potentialTiles = new List<BuildingObjectModel>();
                 potentialTiles.Add(floorTileMap[connectedTiles[i].position.x, connectedTiles[i].position.y + 1]);
                 potentialTiles.Add(floorTileMap[connectedTiles[i].position.x, connectedTiles[i].position.y - 1]);
                 potentialTiles.Add(floorTileMap[connectedTiles[i].position.x + 1, connectedTiles[i].position.y]);
@@ -110,14 +110,15 @@ namespace GameControllers.Services
 
                 potentialTiles.ForEach(potentialTile =>
                 {
-                    if (potentialTile != null && connectedTiles.Find(existingTile => { return existingTile == potentialTile; }) == null)
+                    // If tile exists, its a floor tile and its not in the list already
+                    if (potentialTile != null && potentialTile.buildingCategory == eBuildingCategory.FloorTile 
+                    && connectedTiles.Find(existingTile => { return existingTile == potentialTile; }) == null)
                     {
-                        connectedTiles.Add(potentialTile);
+                        connectedTiles.Add(potentialTile as FloorTileModel);
                     }
                 });
-
             }
-            newRoom = new RoomModel(connectedTiles);
+            newRoom = new RoomModel(connectedTiles, floorTileMap);
 
             return newRoom;
         }
