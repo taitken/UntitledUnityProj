@@ -35,6 +35,14 @@ namespace UtilityClasses
             return subscriptionRefernce;
         }
 
+        // Subscribes without triggering the subscription
+        public Subscription SubscribeQuietlyOnce(MonoBehaviour2 monobehaviour, Action<t1> subscription)
+        {
+            Subscription subscriptionRefernce = this.observableObject.SubscribeQuietlyNumberTimes(subscription, 1);
+            if (monobehaviour != null) monobehaviour.AddSubscription(subscriptionRefernce);
+            return subscriptionRefernce;
+        }
+
         public void NotifyAllSubscribers()
         {
             this.observableObject.NotifyAllSubscribers();

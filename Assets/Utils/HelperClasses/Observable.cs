@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 namespace UtilityClasses
 {
+
     public class Obseravable<t1>
     {
         private t1 ObseravableObject;
-        private IList<Action<t1>> subscribers;
+        // Action and number of times to be notified
+        private List<ObservableActionModel<t1>> subscribers;
         public Obseravable(t1 initialObject)
         {
-            this.subscribers = new List<Action<t1>>();
+            this.subscribers = new List<ObservableActionModel<t1>>();
             this.ObseravableObject = initialObject;
         }
         public t1 Get()
@@ -24,10 +26,10 @@ namespace UtilityClasses
 
         public Subscription Subscribe(Action<t1> subscription)
         {
-            this.subscribers.Add(subscription);
+            this.subscribers.Add(new ObservableActionModel<t1>(subscription, -1));
             Subscription subscriptionRefernce = new Subscription(delegate ()
             {
-                this.subscribers.Remove(subscription);
+                this.subscribers.Remove(this.subscribers.Find(sub => { return sub.action == subscription; }));
             });
             subscription(this.ObseravableObject);
 
@@ -37,19 +39,35 @@ namespace UtilityClasses
         // Subscribes without triggering the subscription
         public Subscription SubscribeQuietly(Action<t1> subscription)
         {
-            this.subscribers.Add(subscription);
+            this.subscribers.Add(new ObservableActionModel<t1>(subscription, -1));
             Subscription subscriptionRefernce = new Subscription(delegate ()
             {
-                this.subscribers.Remove(subscription);
+                this.subscribers.Remove(this.subscribers.Find(sub => { return sub.action == subscription; }));
+            });
+            return subscriptionRefernce;
+        }
+
+        // Subscribes without triggering the subscription, only triggers once.
+        public Subscription SubscribeQuietlyNumberTimes(Action<t1> subscription, int numberOfNotifications)
+        {
+            this.subscribers.Add(new ObservableActionModel<t1>(subscription, numberOfNotifications));
+            Subscription subscriptionRefernce = new Subscription(delegate ()
+            {
+                this.subscribers.Remove(this.subscribers.Find(sub => { return sub.action == subscription; }));
             });
             return subscriptionRefernce;
         }
 
         public void NotifyAllSubscribers()
         {
-            foreach (Action<t1> subscriber in this.subscribers)
+            for (int i = this.subscribers.Count - 1; i >= 0; i--)
             {
-                subscriber(this.ObseravableObject);
+                this.subscribers[i].action(this.ObseravableObject);
+                if (this.subscribers[i].notifcationsLeft > 0)
+                {
+                    this.subscribers[i].notifcationsLeft--;
+                    if (this.subscribers[i].notifcationsLeft == 0) this.subscribers.RemoveAt(i);
+                }
             }
         }
     }
@@ -79,5 +97,16 @@ namespace UtilityClasses
                 subscriber();
             }
         }
+    }
+
+    public class ObservableActionModel<t1>
+    {
+        public ObservableActionModel(Action<t1> _action, int _notifcationsLeft)
+        {
+            this.action = _action;
+            this.notifcationsLeft = _notifcationsLeft;
+        }
+        public Action<t1> action;
+        public int notifcationsLeft;
     }
 }

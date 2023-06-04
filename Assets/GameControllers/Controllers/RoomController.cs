@@ -13,20 +13,25 @@ namespace GameControllers
         IRoomService roomService;
         IBuildingService buildingService;
         IEnvironmentService envService;
+        DiContainer diContainer;
+        private IList<GameObject> tileHighlights = new List<GameObject>();
 
         [Inject]
         public void Construct(IRoomService _roomService,
                               IBuildingService _buildingService,
+                              DiContainer _diContainer,
                               IEnvironmentService _envService)
         {
             this.roomService = _roomService;
             this.buildingService = _buildingService;
             this.envService = _envService;
+            this.diContainer = _diContainer;
         }
 
         void Start()
         {
             this.buildingService.SubscribeToNewBuildingTrigger(this, this.MonitorNewBuilding);
+            this.AddSubscription(this.roomService.selectedRoomObservable.Subscribe(this, this.OnRoomSelect));
         }
 
         void MonitorNewBuilding(BuildingObjectModel newBuildingObjectModel)
@@ -45,6 +50,49 @@ namespace GameControllers
                         || tile.position.x == newBuildingObjectModel.position.x && tile.position.y == newBuildingObjectModel.position.y - 1)
                     {
                         this.CheckForNewRoomCreation(tile as FloorTileModel);
+                    }
+                });
+            }
+        }
+
+        void OnRoomSelect(RoomModel room)
+        {
+            for (int i = this.tileHighlights.Count - 1; i >= 0; i--)
+            {
+                Destroy(this.tileHighlights[i]);
+                this.tileHighlights.RemoveAt(i);
+            }
+            if (room != null)
+            {
+                GameObject tileHighlightPrefab = this.roomService.roomAssetController.GetTileHighlightPrefab();
+                room.borderTiles.ForEach(borderTile =>
+                {
+                    if (borderTile.endRoomTop)
+                    {
+                        GameObject newHighlight = this.diContainer.InstantiatePrefab(tileHighlightPrefab);
+                        newHighlight.transform.localPosition = this.envService.CellToLocal(borderTile.floorTile.position);
+                        this.tileHighlights.Add(newHighlight);
+                    }
+                    if (borderTile.endRoomBot)
+                    {
+                        GameObject newHighlight = this.diContainer.InstantiatePrefab(tileHighlightPrefab);
+                        newHighlight.transform.localPosition = this.envService.CellToLocal(borderTile.floorTile.position);
+                        newHighlight.transform.Rotate(new Vector3(0, 0, 180));
+                        this.tileHighlights.Add(newHighlight);
+                    }
+                    if (borderTile.endRoomLeft)
+                    {
+                        GameObject newHighlight = this.diContainer.InstantiatePrefab(tileHighlightPrefab);
+                        newHighlight.transform.localPosition = this.envService.CellToLocal(borderTile.floorTile.position);
+                        newHighlight.transform.Rotate(new Vector3(0, 0, 90));
+                        this.tileHighlights.Add(newHighlight);
+                    }
+                    if (borderTile.endRoomRight)
+                    {
+                        GameObject newHighlight = this.diContainer.InstantiatePrefab(tileHighlightPrefab);
+                        newHighlight.transform.localPosition = this.envService.CellToLocal(borderTile.floorTile.position);
+                        newHighlight.transform.Rotate(new Vector3(0, 0, 270));
+                        this.tileHighlights.Add(newHighlight);
                     }
                 });
             }
@@ -91,8 +139,8 @@ namespace GameControllers
                 // Check input floor tile is not covered.
                 if (buildingObjectModels[floorTileModel.position.x, floorTileModel.position.y].buildingCategory != eBuildingCategory.FloorTile)
                 {
-                    floorTiles = floorTiles.Filter(tile =>{return tile.ID != floorTileModel.ID;});
-                    if(floorTiles.Count == 0) return;
+                    floorTiles = floorTiles.Filter(tile => { return tile.ID != floorTileModel.ID; });
+                    if (floorTiles.Count == 0) return;
                     floorTileModel = floorTiles[0];
                 }
                 RoomModel newRoom = this.roomService.FindRoom(buildingObjectModels, floorTileModel);

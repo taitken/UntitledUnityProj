@@ -9,12 +9,14 @@ namespace GameControllers.Services
 {
     public class RoomService : BaseService, IRoomService
     {
-        public RoomService()
-        {
-
-        }
+        public RoomAssetController roomAssetController { get; set; }
         public MonoObseravable<IList<RoomModel>> roomObservable { get; set; } = new MonoObseravable<IList<RoomModel>>(new List<RoomModel>());
-
+        public MonoObseravable<RoomModel> selectedRoomObservable { get; set; } = new MonoObseravable<RoomModel>(null);
+        public void SetRoomAssetController(RoomAssetController _roomAssetController)
+        {
+            this.roomAssetController = _roomAssetController;
+            this.roomAssetController.Initialise();
+        }
         public void AddRoom(RoomModel newRoom)
         {
             IList<RoomModel> _rooms = this.roomObservable.Get();
@@ -95,6 +97,25 @@ namespace GameControllers.Services
             this.roomObservable.Set(this.roomObservable.Get().Filter(order => { return order.ID != id; }));
         }
 
+        public void SelectRoom(RoomModel room)
+        {
+            this.selectedRoomObservable.Set(room);
+        }
+
+        public void UnselectRoom()
+        {
+            this.selectedRoomObservable.Set(null);
+        }
+
+
+        public void UnselectRoom(long selectedRoomID)
+        {
+            if (this.selectedRoomObservable.Get() != null && this.selectedRoomObservable.Get().ID == selectedRoomID)
+            {
+                this.selectedRoomObservable.Set(null);
+            }
+        }
+
         public RoomModel FindRoom(BuildingObjectModel[,] floorTileMap, FloorTileModel startingTile)
         {
             RoomModel newRoom;
@@ -111,7 +132,7 @@ namespace GameControllers.Services
                 potentialTiles.ForEach(potentialTile =>
                 {
                     // If tile exists, its a floor tile and its not in the list already
-                    if (potentialTile != null && potentialTile.buildingCategory == eBuildingCategory.FloorTile 
+                    if (potentialTile != null && potentialTile.buildingCategory == eBuildingCategory.FloorTile
                     && connectedTiles.Find(existingTile => { return existingTile == potentialTile; }) == null)
                     {
                         connectedTiles.Add(potentialTile as FloorTileModel);
