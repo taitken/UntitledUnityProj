@@ -581,8 +581,8 @@ TextureImporter:
       name: DefaultWalls_22
       rect:
         serializedVersion: 2
-        x: 0
-        y: 32
+        x: 64
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -602,8 +602,8 @@ TextureImporter:
       name: DefaultWalls_23
       rect:
         serializedVersion: 2
-        x: 16
-        y: 32
+        x: 80
+        y: 48
         width: 16
         height: 16
       alignment: 0
@@ -623,7 +623,7 @@ TextureImporter:
       name: DefaultWalls_24
       rect:
         serializedVersion: 2
-        x: 32
+        x: 0
         y: 32
         width: 16
         height: 16
@@ -644,7 +644,7 @@ TextureImporter:
       name: DefaultWalls_25
       rect:
         serializedVersion: 2
-        x: 48
+        x: 16
         y: 32
         width: 16
         height: 16
@@ -665,7 +665,7 @@ TextureImporter:
       name: DefaultWalls_26
       rect:
         serializedVersion: 2
-        x: 64
+        x: 32
         y: 32
         width: 16
         height: 16
@@ -686,7 +686,7 @@ TextureImporter:
       name: DefaultWalls_27
       rect:
         serializedVersion: 2
-        x: 80
+        x: 48
         y: 32
         width: 16
         height: 16
@@ -707,8 +707,8 @@ TextureImporter:
       name: DefaultWalls_28
       rect:
         serializedVersion: 2
-        x: 0
-        y: 16
+        x: 64
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -728,8 +728,8 @@ TextureImporter:
       name: DefaultWalls_29
       rect:
         serializedVersion: 2
-        x: 32
-        y: 16
+        x: 80
+        y: 32
         width: 16
         height: 16
       alignment: 0
@@ -749,7 +749,7 @@ TextureImporter:
       name: DefaultWalls_30
       rect:
         serializedVersion: 2
-        x: 48
+        x: 0
         y: 16
         width: 16
         height: 16
@@ -770,7 +770,7 @@ TextureImporter:
       name: DefaultWalls_31
       rect:
         serializedVersion: 2
-        x: 64
+        x: 16
         y: 16
         width: 16
         height: 16
@@ -791,7 +791,7 @@ TextureImporter:
       name: DefaultWalls_32
       rect:
         serializedVersion: 2
-        x: 80
+        x: 32
         y: 16
         width: 16
         height: 16
@@ -812,8 +812,8 @@ TextureImporter:
       name: DefaultWalls_33
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 48
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -833,8 +833,8 @@ TextureImporter:
       name: DefaultWalls_34
       rect:
         serializedVersion: 2
-        x: 16
-        y: 0
+        x: 64
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -854,8 +854,8 @@ TextureImporter:
       name: DefaultWalls_35
       rect:
         serializedVersion: 2
-        x: 32
-        y: 0
+        x: 80
+        y: 16
         width: 16
         height: 16
       alignment: 0
@@ -875,7 +875,7 @@ TextureImporter:
       name: DefaultWalls_36
       rect:
         serializedVersion: 2
-        x: 48
+        x: 0
         y: 0
         width: 16
         height: 16
@@ -896,7 +896,7 @@ TextureImporter:
       name: DefaultWalls_37
       rect:
         serializedVersion: 2
-        x: 64
+        x: 16
         y: 0
         width: 16
         height: 16
@@ -917,7 +917,7 @@ TextureImporter:
       name: DefaultWalls_38
       rect:
         serializedVersion: 2
-        x: 80
+        x: 32
         y: 0
         width: 16
         height: 16
@@ -934,6 +934,69 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: DefaultWalls_39
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d7825a3ebd567344a823c341b45ee0e
+      internalID: -872214789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DefaultWalls_40
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2a6a105a8af28e45ba6baac20e94978
+      internalID: -786660025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: DefaultWalls_41
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d7ad315ead76c034cb524b5c97bd902a
+      internalID: -514225754
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -945,16 +1008,19 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      DefaultWalls_41: -514225754
       DefaultWalls_5: 1209792570
       DefaultWalls_20: -1085595129
       DefaultWalls_1: 1533176780
       DefaultWalls_4: -1522287210
       DefaultWalls_3: -1815531694
+      DefaultWalls_38: -43957363
       DefaultWalls_2: -1816069917
       DefaultWalls_30: 2099568099
       DefaultWalls_27: -1624206552
       DefaultWalls_10: -1779759633
       DefaultWalls_0: 671399179
+      DefaultWalls_40: -786660025
       DefaultWalls_6: -378355127
       DefaultWalls_9: -1164342374
       DefaultWalls_36: -1066136032
@@ -973,9 +1039,8 @@ TextureImporter:
       DefaultWalls_8: -36613567
       DefaultWalls_22: 202224648
       DefaultWalls_14: 1717199874
-      DefaultWalls_38: -43957363
-      DefaultWalls_35: -1602841964
       DefaultWalls_25: 885381045
+      DefaultWalls_35: -1602841964
       DefaultWalls_12: -1817664030
       DefaultWalls_33: -1541073665
       DefaultWalls_19: -569026660
@@ -984,6 +1049,7 @@ TextureImporter:
       DefaultWalls_16: -241529265
       DefaultWalls_15: 172524204
       DefaultWalls_23: -1033024376
+      DefaultWalls_39: -872214789
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

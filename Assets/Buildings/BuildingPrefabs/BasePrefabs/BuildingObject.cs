@@ -12,13 +12,14 @@ namespace Building
 {
     public abstract class BuildingObject : MonoBaseObject
     {
+        public eBuildingType buildingType;
         public BuildingObjectModel buildingObjectModel { get; set; }
         protected IUnitOrderService unitOrderService { get; set; }
         protected IItemObjectService itemService { get; set; }
         protected IBuildingService buildingService { get; set; }
         protected ICropService cropService { get; set; }
         protected IRoomService roomService { get; set; }
-        public void Initialise(IUiPanelService _uiPanelService,
+        public BuildingObject Initialise(IUiPanelService _uiPanelService,
                                         BuildingObjectModel _buildingObjectModel,
                                         IEnvironmentService _environmentService,
                                         IItemObjectService _itemObjectService,
@@ -37,6 +38,7 @@ namespace Building
             this.UpdateBuildingBounds();
             this.uiPanelService = _uiPanelService;
             this.OnCreation();
+            return this;
         }
 
         public override void OnSelect()

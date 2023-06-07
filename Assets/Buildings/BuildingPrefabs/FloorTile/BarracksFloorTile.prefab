@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -9176131918080639047}
   - component: {fileID: 220124168979189440}
   m_Layer: 12
-  m_Name: FloorTile
+  m_Name: BarracksFloorTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 310
-  m_Sprite: {fileID: 21300000, guid: b5f1b8e57ec040f4a897a1db23af60c4, type: 3}
+  m_Sprite: {fileID: 27705732, guid: f5d7891efad4cf84487e8b656f3f7bc2, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -98,6 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28464f506fd49f14cbd9c3eb3d5fb558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingType: 2
 --- !u!61 &220124168979189440
 BoxCollider2D:
   m_ObjectHideFlags: 0

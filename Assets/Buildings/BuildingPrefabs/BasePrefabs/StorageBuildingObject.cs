@@ -6,7 +6,9 @@ namespace Building
 {
     public class StorageBuildingObject : BuildingObject
     {
-        public StorageBuildingModel storageBuildingModel; 
+
+
+        public StorageBuildingModel storageBuildingModel;
 
         protected override void OnCreation()
         {

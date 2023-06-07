@@ -124,5 +124,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59d568708bd29d046890ba3455328c17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockSpriteSheets:
-  - {fileID: 2800000, guid: 874471d704e16864e998fa648702e3be, type: 3}
+  buildingType: 7
+  spriteList: []

@@ -146,6 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a541f3b7b69399e46bf10aabf8be6bff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildingType: 6
   lighting2D: {fileID: 2086827863035408148}
 --- !u!1 &7794707588412474380
 GameObject:

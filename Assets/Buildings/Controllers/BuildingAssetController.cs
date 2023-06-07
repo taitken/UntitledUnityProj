@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,11 +14,14 @@ namespace GameControllers
     {
         public Texture2D[] wallSpriteSheets;
         public Sprite[][] wallSprites;
-        public List<BuildingObject> buildingPrefabs;
+        public List<BuildingObject> buildingPrefabInput;
+        private BuildingObject[] buildingPrefabs;
         public GameObject buildGhostPrefab;
 
         public void Initialise()
         {
+            BuildingObject[] buildings = new BuildingObject[Enum.GetValues(typeof(eBuildingType)).Length];
+            this.buildingPrefabs = this.BuildPrefabArray();
             this.wallSprites = new Sprite[wallSpriteSheets.Length][];
             this.wallSpriteSheets.ForEach((sheet, index) =>
             {
@@ -37,7 +41,7 @@ namespace GameControllers
 
         public BuildingObject GetBuildingPrefab(eBuildingType buildingType)
         {
-            if (this.buildingPrefabs.Count > (int)buildingType)
+            if (this.buildingPrefabs.Length > (int)buildingType)
             {
                 return this.buildingPrefabs[(int)buildingType] as BuildingObject;
             }
@@ -50,7 +54,7 @@ namespace GameControllers
 
         public SpriteRenderer GetBuildingSprite(eBuildingType buildingType)
         {
-            if (this.buildingPrefabs.Count > (int)buildingType)
+            if (this.buildingPrefabs.Length > (int)buildingType)
             {
                 return this.buildingPrefabs[(int)buildingType].gameObject.GetComponent<SpriteRenderer>();
             }
@@ -69,14 +73,29 @@ namespace GameControllers
             }
             else
             {
-                this.ThrowMissingSpriteError(wallType);
+                this.ThrowMissingSpriteError(wallType.ToString());
                 return null;
             }
         }
 
-        private void ThrowMissingSpriteError(eWallTypes wallType)
+        public BuildingObject[] BuildPrefabArray()
         {
-            Debug.LogException(new System.Exception("Chosen wall type sprite set has not been added to the Wall Asset Controller. Attemped type: " + wallType.ToString()));
+            int buildingCount = Enum.GetValues(typeof(eBuildingType)).Length;
+            BuildingObject[] buildings = new BuildingObject[buildingCount];
+            for (int i = 1; i < buildingCount; i++)
+            {
+                buildings[i] = this.buildingPrefabInput.Find(prefab => { return prefab != null ? (int)prefab.buildingType == i : false; });
+                if (buildings[i] == null)
+                {
+                    this.ThrowMissingPrefabError((eBuildingType)i);
+                }
+            }
+            return buildings;
+        }
+
+        private void ThrowMissingSpriteError(string spriteName)
+        {
+            Debug.LogException(new System.Exception("Chosen wall type sprite set has not been added to the Wall Asset Controller. Attemped type: " + spriteName));
         }
 
         private void ThrowMissingPrefabError(eBuildingType buildingType)

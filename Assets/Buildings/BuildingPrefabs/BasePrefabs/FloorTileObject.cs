@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using UI.Models;
 using Room.Models;
 using UtilityClasses;
+using UnityEngine;
 
 namespace Building
 {
@@ -13,7 +14,6 @@ namespace Building
     {
         public FloorTileModel floorTileModel;
         private long selectedRoomID;
-        private Subscription sub;
         protected override void OnCreation()
         {
             this.floorTileModel = this.buildingObjectModel as FloorTileModel;
@@ -22,7 +22,7 @@ namespace Building
         public override void OnSelect()
         {
             RoomModel room = this.roomService.GetRoom(this.floorTileModel);
-            if (this.roomService.selectedRoomObservable.Get() == null || this.roomService.selectedRoomObservable.Get().ID != room.ID)
+            if (room != null && (this.roomService.selectedRoomObservable.Get() == null || this.roomService.selectedRoomObservable.Get().ID != room.ID))
             {
                 this.roomService.SelectRoom(room);
                 if (room != null)
@@ -35,17 +35,17 @@ namespace Building
                     // Unselect room on panel change
                     this.uiPanelService.selectedObjectPanels.SubscribeQuietlyOnce(this, panels =>
                     {
-                        this.unselectRoom(panels);
+                        this.UnSelectRoom(panels);
                     });
                     this.uiPanelService.selectedBuildingPanels.SubscribeQuietlyOnce(this, panels =>
                     {
-                        this.unselectRoom(panels);
+                        this.UnSelectRoom(panels);
                     });
                 }
             }
         }
 
-        private void unselectRoom(IList<BasePanelModel> panels)
+        private void UnSelectRoom(IList<BasePanelModel> panels)
         {
             if (panels == null || panels.Find(panel => { return panel.ID == this.selectedRoomID; }) == null)
             {
