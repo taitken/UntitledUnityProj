@@ -60,7 +60,7 @@ namespace GameControllers.Services
         // Not working for some reason
         public IList<T> GetBuildings<T>() where T : BuildingObjectModel
         {
-            return this.buildingObseravable.Get().Filter(building => { return building.buildingType is T; }).Map(building => { return building as T; });
+            return this.buildingObseravable.Get().Filter(building => { return building is T; }).Map(building => { return building as T; });
         }
         public void RemoveBuilding(long id)
         {

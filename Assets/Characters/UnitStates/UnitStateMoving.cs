@@ -1,3 +1,4 @@
+using GameControllers.Models;
 using Item.Models;
 using Unit.Models;
 using UnityEngine;
@@ -15,8 +16,13 @@ namespace Characters
 
         public override void Initialise(WorldCharacter worldChar)
         {
-            this.objectMovement = MovementSingleton.GetMovementHelper().MoveObject(worldChar.transform, new Vector2(1, 1), worldChar.unitModel.moveSpeed, worldChar.unitModel.currentPath);
-            this.objectMovement.onMovementFinished.OnEmit(() => { worldChar.unitModel.unitState = eUnitState.Idle; });
+            float moveSpeed = worldChar.unitModel.currentOrder is WanderOrderModel ? WanderOrderModel.WANDER_SPEED : worldChar.unitModel.moveSpeed;
+            this.objectMovement = MovementSingleton.GetMovementHelper().MoveObject(worldChar.transform, new Vector2(1, 1), moveSpeed, worldChar.unitModel.currentPath);
+            this.objectMovement.onMovementFinished.OnEmit(() =>
+            {
+                if (worldChar.unitModel.currentPath.Count == 0)
+                    worldChar.unitModel.unitState = eUnitState.Idle;
+            });
         }
         public override void Update(WorldCharacter worldChar)
         {

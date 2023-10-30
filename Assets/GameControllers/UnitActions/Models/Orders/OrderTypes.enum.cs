@@ -11,6 +11,7 @@ namespace GameControllers.Models
         Deconstruct,
         CropPlant,
         CropHarvest,
-        CropRemove
+        CropRemove,
+        Wander
     }
 }

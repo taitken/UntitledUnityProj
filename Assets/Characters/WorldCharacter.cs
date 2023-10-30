@@ -25,7 +25,7 @@ namespace Characters
     {
         public IEnvironmentService environmentService;
         protected IUnitOrderService orderService;
-        protected IPathFinderService pathFinderService;
+        public IPathFinderService pathFinderService;
         protected IItemObjectService itemService;
         protected IUiPanelService contextWindowService;
         protected ItemObject carriedObj;
@@ -105,6 +105,7 @@ namespace Characters
                 this.DetachItemFromUnit();
             }
         }
+        
         private void CheckIfPathObstructed(PathFinderMap newMap)
         {
             if (this.unitModel.currentPath != null)

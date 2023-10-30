@@ -11,7 +11,7 @@ namespace GameControllers.Models
     public class StoreOrderModel : UnitOrderModel
     {
         public ItemObjectModel itemModel {get;set;}
-        public StoreOrderModel(Vector3Int _coordinates,  ItemObjectModel _itemModel, bool showIcon = true) : base(_coordinates, eOrderTypes.Store, showIcon)
+        public StoreOrderModel(Vector3Int _coordinates,  ItemObjectModel _itemModel, bool showIcon = true) : base(_coordinates, eOrderTypes.Store, false, showIcon)
         {
             this.itemModel = _itemModel;
         }

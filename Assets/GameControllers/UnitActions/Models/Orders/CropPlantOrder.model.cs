@@ -12,7 +12,7 @@ namespace GameControllers.Models
     {
         public eCropType cropType;
         public GrowerBuildingModel growerBuilding;
-        public CropPlantOrderModel(Vector3Int _coordinates, eCropType _cropType, GrowerBuildingModel _growerBuilding, bool showIcon = false) : base(_coordinates, eOrderTypes.CropPlant, showIcon)
+        public CropPlantOrderModel(Vector3Int _coordinates, eCropType _cropType, GrowerBuildingModel _growerBuilding, bool showIcon = false) : base(_coordinates, eOrderTypes.CropPlant, false, showIcon)
         {
             this.cropType = _cropType;
             this.growerBuilding = _growerBuilding;

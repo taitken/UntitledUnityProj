@@ -11,7 +11,7 @@ namespace GameControllers.Models
     {
         public CropObjectModel cropObjectModel;
         public GrowerBuildingModel growerBuildingModel;
-        public CropHarvestOrderModel(Vector3Int _coordinates, CropObjectModel _cropObjectModel, GrowerBuildingModel _growerBuildingModel, bool showIcon = false) : base(_coordinates, eOrderTypes.CropHarvest, showIcon)
+        public CropHarvestOrderModel(Vector3Int _coordinates, CropObjectModel _cropObjectModel, GrowerBuildingModel _growerBuildingModel, bool showIcon = false) : base(_coordinates, eOrderTypes.CropHarvest, false, showIcon)
         {
             this.cropObjectModel = _cropObjectModel;
             this.growerBuildingModel = _growerBuildingModel;

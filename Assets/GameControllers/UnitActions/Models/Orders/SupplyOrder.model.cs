@@ -14,7 +14,7 @@ namespace GameControllers.Models
         public BaseObjectModel objectToSupply;
         public decimal itemMass;
         public SupplyOrderModel(BaseObjectModel _objectToSupply, eItemType _itemType, decimal _itemMass, bool _showOrderIcon = false) 
-            : base(_objectToSupply.position, eOrderTypes.Supply, _showOrderIcon)
+            : base(_objectToSupply.position, eOrderTypes.Supply, false, _showOrderIcon)
         {
             this.itemType = _itemType;
             this.itemMass = _itemMass;

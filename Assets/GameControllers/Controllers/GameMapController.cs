@@ -10,6 +10,7 @@ using Environment;
 using MineableBlocks.Models;
 using Building.Models;
 using Item.Models;
+using static Item.Models.ItemObjectModel;
 
 namespace GameControllers
 {
@@ -62,6 +63,8 @@ namespace GameControllers
             });
             this.environmentService.mineableObjects.Subscribe(this, _mineableObjects => { this.ConfigurePathfinderMap(); });
             this.buildingService.buildingObseravable.Subscribe(this, _buildings => { this.ConfigurePathfinderMap(); });
+            this.ConfigureStartingItems();
+            this.CreateRoom(new Vector3Int(45, 45), new Vector3Int(50, 55), new Vector3Int(50, 50), eFloorType.Barracks);
         }
 
         // Update is called once per frame
@@ -99,13 +102,71 @@ namespace GameControllers
             {
                 for (int ii = 0; ii < newFogModels.GetLength(1); ii++)
                 {
-                    if (!this.IsStartingZone(i, ii))
+                    if (!this.IsStartingZone(i, ii, 2, 2))
                     {
                         newFogModels[i, ii] = new FogModel(new Vector3Int(i, ii), new List<ItemObjectMass>());
                     }
                 }
             }
             this.environmentService.GetFogObservable().Set(newFogModels);
+        }
+
+        private void ConfigureStartingItems()
+        {
+            StorageBuildingModel newChest = new StorageBuildingModel(new Vector3Int(47, 47), eBuildingType.Chest, BuildingStatsLibrary.GetBuildingStats(eBuildingType.Chest));
+            this.buildingService.AddBuilding(newChest);
+            IList<ItemObjectModel> objectsToStore = new List<ItemObjectModel>();
+            objectsToStore.Add(new ItemObjectModel(newChest.position, new ItemObjectMass(eItemType.GrunberrySeed, 1), eItemState.InStorage, false));
+            objectsToStore.Add(new ItemObjectModel(newChest.position, new ItemObjectMass(eItemType.BlumberrySeed, 1), eItemState.InStorage, false));
+            objectsToStore.Add(new ItemObjectModel(newChest.position, new ItemObjectMass(eItemType.LuttipodSeed, 1), eItemState.InStorage, false));
+            objectsToStore.Add(new ItemObjectModel(newChest.position, new ItemObjectMass(eItemType.PubberbillSeed, 1), eItemState.InStorage, false));
+            objectsToStore.Add(new ItemObjectModel(newChest.position, new ItemObjectMass(eItemType.Stone, 10000), eItemState.InStorage, false));
+            objectsToStore.ForEach(obj =>
+            {
+                this.itemObjectService.AddItemToWorld(obj);
+                newChest.StoreItem(obj);
+            });
+        }
+
+        private void CreateRoom(Vector3Int _bottomLeftCorner, Vector3Int _topRightCorner, Vector3Int doorLocation, eFloorType _floorType)
+        {
+            // Walls
+            IList<WallBuildingModel> walls = new List<WallBuildingModel>();
+            walls.AddRange(this.BuildWall(_bottomLeftCorner, new Vector3Int(_bottomLeftCorner.x, _topRightCorner.y), true));
+            walls.AddRange(this.BuildWall(new Vector3Int(_bottomLeftCorner.x + 1, _bottomLeftCorner.y), new Vector3Int(_topRightCorner.x, _bottomLeftCorner.y), false));
+            walls.AddRange(this.BuildWall(new Vector3Int(_bottomLeftCorner.x, _topRightCorner.y), _topRightCorner, false));
+            walls.AddRange(this.BuildWall(new Vector3Int(_topRightCorner.x, _bottomLeftCorner.y), new Vector3Int(_topRightCorner.x, _topRightCorner.y + 1), true));
+
+            walls.ForEach(wall =>
+            {
+                if (wall.position != doorLocation)
+                    this.buildingService.AddBuilding(wall);
+            });
+            
+            // Door
+            this.buildingService.AddBuilding(new DoorBuildingModel(doorLocation, eBuildingType.Door, BuildingStatsLibrary.GetBuildingStats(eBuildingType.Door)));
+
+            // Floor
+            BuildingStatsModel floorType = BuildingStatsLibrary.GetBuildingStats().Find(stats => { return stats?.floorType == _floorType; });
+            for (int i = 1; i < _topRightCorner.x - _bottomLeftCorner.x; i++)
+            {
+                for (int ii = 1; ii < _topRightCorner.y - _bottomLeftCorner.y; ii++)
+                {
+                    this.buildingService.AddBuilding(new FloorTileModel(new Vector3Int(_bottomLeftCorner.x + i, _bottomLeftCorner.y + ii), floorType.buildingType, floorType));
+                }
+            }
+        }
+
+        private IList<WallBuildingModel> BuildWall(Vector3Int startOfLine, Vector3Int endOfLine, bool buildVertical)
+        {
+            IList<WallBuildingModel> walls = new List<WallBuildingModel>();
+            int stepCount = buildVertical ? endOfLine.y - startOfLine.y : endOfLine.x - startOfLine.x;
+            for (int i = 0; i < stepCount; i++)
+            {
+                Vector3Int pos = buildVertical ? new Vector3Int(startOfLine.x, startOfLine.y + i) : new Vector3Int(startOfLine.x + i, startOfLine.y);
+                walls.Add(new WallBuildingModel(pos, eBuildingType.Wall, BuildingStatsLibrary.GetBuildingStats(eBuildingType.Wall)));
+            }
+            return walls;
         }
 
         private void SetBlockDeposit(MineableObjectModel[,] newMineableTiles, eMineableBlockType blockType, int depositMin, int depositMax, int spreadChance, int spreadDecrement)
@@ -147,7 +208,12 @@ namespace GameControllers
 
         private bool IsStartingZone(int x, int y)
         {
-            return (x >= 48 && x <= 53 && y >= 48 && y <= 51);
+            return this.IsStartingZone(x, y, 0, 0);
+        }
+
+        private bool IsStartingZone(int x, int y, int extraX, int extraY)
+        {
+            return (x >= 45 - extraX && x <= 55 + extraX && y >= 45 - extraY && y <= 55 + extraY);
         }
 
         private void CompleteMap(MineableObjectModel[,] newMinableTiles)

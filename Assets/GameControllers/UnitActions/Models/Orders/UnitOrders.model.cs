@@ -8,16 +8,18 @@ namespace GameControllers.Models
 {
     public abstract class UnitOrderModel : BaseModel
     {
-        public UnitOrderModel(Vector3Int _coordinates, eOrderTypes _orderType, bool _displayIcon = true) : base()
+        public UnitOrderModel(Vector3Int _coordinates, eOrderTypes _orderType, bool _replaceableOrder, bool _displayIcon = true) : base()
         {
             this.coordinates = _coordinates;
             this.orderType = _orderType;
             this.displayIcon = _displayIcon;
+            this.replaceableOrder = _replaceableOrder;
             this.iconDeletedFromWorld = false;
         }
         public eOrderTypes orderType { get; set; }
         public Vector3Int coordinates { get; set; }
         public float prioritySetting { get; set; }
+        public bool replaceableOrder { get; set; }
         public bool displayIcon { get; set; }
         public bool iconDeletedFromWorld { get; set; }
         public virtual bool PathAdjacentToCoors { get { return true; } }

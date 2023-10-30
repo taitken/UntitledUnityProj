@@ -37,7 +37,12 @@ namespace GameControllers.Models
         public PathFinderMapItem GetPassableMapItemAt(int x, int y)
         {
             PathFinderMapItem item = this.GetMapItemAt(x, y);
-            return item == null || item.impassable ? null : item;
+            return (item == null || item.impassable) ? null : item;
+        }
+
+        public bool IsMapLocationPassable(int x, int y)
+        {
+            return this.GetMapItemAt(x, y) == null || !this.GetMapItemAt(x, y).impassable;
         }
 
         public void Refresh()

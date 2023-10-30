@@ -50,6 +50,8 @@ namespace UtilityClasses
 
         public ObjectMovement MoveObject(Transform _transform, Vector2 _distance, float _moveSpeed, IList<Vector3> _movePath, bool _updateSpriteDirection = true, bool showPathingLine = true)
         {
+            ObjectMovement existingMovementForObject = this.objectMovements.Find(objectMovement =>{return objectMovement.transform == _transform;});
+            if(existingMovementForObject != null) this.objectMovements.Remove(existingMovementForObject);
             ObjectMovement newObjMove = new ObjectMovement(_transform, _movePath, _moveSpeed, _updateSpriteDirection, showPathingLine);
             this.objectMovements.Add(newObjMove);
             return newObjMove;

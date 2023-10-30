@@ -8,7 +8,7 @@ namespace GameControllers.Services
 {
     public class PathFinderService : BaseService, IPathFinderService
     {
-        private MonoObseravable<PathFinderMap> pathFinderMap { get; set; } = new MonoObseravable<PathFinderMap>(new PathFinderMap(new PathFinderMapItem[1,1]));
+        private MonoObseravable<PathFinderMap> pathFinderMap { get; set; } = new MonoObseravable<PathFinderMap>(new PathFinderMap(new PathFinderMapItem[1, 1]));
 
         public PathFinderMap GetPathFinderMap()
         {
@@ -25,6 +25,11 @@ namespace GameControllers.Services
             return this.pathFinderMap.SubscribeQuietly(subscribingObj, action);
         }
 
+        public bool CanPathTo(Vector3Int startingPos, Vector3Int endPos, bool adjacentToEndPos)
+        {
+            return this.CanPathTo(startingPos, endPos, this.GetPathFinderMap(), adjacentToEndPos);
+        }
+
         public bool CanPathTo(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _pathFinderMap, bool adjacentToEndPos)
         {
             return this.FindPath(startingPos, endPos, _pathFinderMap, adjacentToEndPos) != null ? true : false;
@@ -34,7 +39,10 @@ namespace GameControllers.Services
         {
             return this.pathFinderMap.Get().mapitems[pos.x, pos.y].impassable;
         }
-
+        public IList<Vector3Int> FindPath(Vector3Int startingPos, Vector3Int endPos, bool adjacentToEndPos)
+        {
+            return this.FindPath(startingPos, endPos, this.GetPathFinderMap(), adjacentToEndPos);
+        }
         public IList<Vector3Int> FindPath(Vector3Int startingPos, Vector3Int endPos, PathFinderMap _map, bool adjacentToEndPos)
         {
             if (_map == null) return null;

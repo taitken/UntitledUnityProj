@@ -102,6 +102,10 @@ namespace UnitAction
                         .Then(() => { return new CropHarvestAction(_unit, this.cropService, this.itemService); })
                         .Then(() => { return new RemoveSeedAction(_unit, this.cropService, this.itemService); });
                     break;
+                case eOrderTypes.Wander:
+                    newSequence = new ActionSequence(this.orderService, _unit.currentOrder,
+                        new MoveAction(_unit, _unit.currentOrder.coordinates, this.pathFinderService, this.environmentService, false));
+                    break;
             }
             return newSequence;
         }

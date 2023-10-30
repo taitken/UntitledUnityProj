@@ -7,12 +7,12 @@ using Environment.Models;
 
 namespace GameControllers.Models
 {
-    public class DigOrderModel : UnitOrderModel
+    public class WanderOrderModel : UnitOrderModel
     {
-        public MineableObjectModel targetToMine;
-        public DigOrderModel(MineableObjectModel _targetToMine, bool showIcon = true) : base(_targetToMine.position, eOrderTypes.Dig, false, showIcon)
+        public static float WANDER_SPEED = 0.2f;
+        public WanderOrderModel(Vector3Int _endPos, bool showIcon = true) : base(_endPos, eOrderTypes.Wander, true, showIcon)
         {
-            this.targetToMine = _targetToMine;
+            
         }
 
         public override bool CanAssignToUnit(IList<IBaseService> _services, UnitModel _unitModel)
